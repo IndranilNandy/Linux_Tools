@@ -1,0 +1,30 @@
+pcname="DESKTOP-F3I6O06"
+sharedFolderInWindows="Shared_with_VMs"
+winuser="indranil nandy"
+defaultSharedFolder="$HOME/SharedFromWindows"
+
+mount_cifs_sharing() {
+    # Mount shared folder
+    sudo mount.cifs //$pcname/$sharedFolderInWindows $defaultSharedFolder -o user="$winuser"
+}
+
+unmount_cifs_sharing() {
+    # Unmount shared folder
+    sudo umount //$pcname/$sharedFolderInWindows
+}
+
+if_package_missing() {
+    prereqfile=$(basename $1 .sh).prereq
+    echo "prereq file = $prereqfile"
+    missing=$(
+        cat $prereqfile | 
+    xargs -I XYZ echo "apt --installed list 2> /dev/null | grep XYZ |  wc -l" | 
+    bash | 
+    xargs -I ABC echo "test ABC -gt 0; echo \$?" | 
+    bash | 
+    grep 1 | 
+    wc -l
+    )
+    echo "missing package = $missing"
+    return $missing
+}

@@ -3,6 +3,7 @@ Entrypoint directory:
     To use these scripts in any other bash script do a 'cd' to this directory first in a sub-shell, e.g., (cd root_dir && ./xyz.sh)
 
 Entry script:
+    ./.setup: call this for full installation
     ./git_installer.sh: complete installation script
 
 Installers:

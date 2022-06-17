@@ -1,0 +1,18 @@
+Entrypoint directory: 
+    All scripts under this directory and sub-directories should be run from this directory. All the script-paths are relative to this directory.
+    To use these scripts in any other bash script do a 'cd' to this directory first in a sub-shell, e.g., (cd root_dir && ./xyz.sh)
+
+Entry script:
+    ./.setup: call this for full installation
+    ./git_installer.sh: complete installation script
+
+Installers:
+    ./vscode_setup.sh: installs and configures vscode + all plugins, set vscode as default editor
+    ./plugins/all_plugins_installer.sh: installs and configures all plugins
+
+Uninstallers:
+    ./vscode_uninstaller.sh: uninstalls vscode
+    ./plugins/all_plugins_uninstaller.sh: uninstalls all plugins
+
+Plugins:
+    ./plugins/.plugins: list of installed plugins

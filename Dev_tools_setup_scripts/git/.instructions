@@ -1,0 +1,18 @@
+Entrypoint directory: 
+    All scripts under this directory and sub-directories should be run from this directory. All the script-paths are relative to this directory.
+    To use these scripts in any other bash script do a 'cd' to this directory first in a sub-shell, e.g., (cd root_dir && ./xyz.sh)
+
+Entry script:
+    ./git_installer.sh: complete installation script
+
+Installers:
+    ./git_installer.sh: installs and configures git + gcm
+    ./gcm_installer.sh: installs and configures gcm only
+
+Uninstallers:
+    ./git_uninstaller.sh: uninstalls git + gcm
+    ./gcm_uninstaller.sh: uninstalls gcm only
+
+Configurers:
+    ./configurer/git_configurer.sh: configures git only
+    ./configurer/gcm_configurer.sh: configures gcm only

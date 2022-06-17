@@ -1,0 +1,4 @@
+config_gcm() {
+    git-credential-manager-core configure
+    git config --global credential.credentialStore secretservice
+}

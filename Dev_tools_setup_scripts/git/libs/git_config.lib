@@ -1,0 +1,6 @@
+config_git() {
+    git config --global user.name "IndranilNandy"
+    git config --global user.email "${USER}@$(hostname)"
+
+    # Note: We are not setting core.editor, default editor is already set as VSCode
+}

@@ -2,5 +2,6 @@ config_git() {
     git config --global user.name "IndranilNandy"
     git config --global user.email "${USER}@$(hostname)"
 
-    # Note: We are not setting core.editor, default editor is already set as VSCode
+    # Note: We need to provide -w options, otherwise the 'git commit' wouldn't wait for the editor
+    git config --global core.editor "code -w"
 }

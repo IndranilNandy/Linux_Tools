@@ -1,0 +1,16 @@
+Entrypoint directory: 
+    All scripts under this directory and sub-directories should be run from this directory. All the script-paths are relative to this directory.
+    To use these scripts in any other bash script do a 'cd' to this directory first in a sub-shell, e.g., (cd root_dir && ./xyz.sh)
+
+Entry script:
+    ./.setup: main installation script
+
+Installer:
+    ./wine_installer.sh: installs wine
+    ./gecko/gecko_installer.sh: installs gecko
+
+Uninstaller:
+    ./wine_uninstaller.sh: removes wine
+
+Configurer:
+    ./configurer/wine_configurer.sh: configures wine

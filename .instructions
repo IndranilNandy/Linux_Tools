@@ -1,0 +1,5 @@
+Entrypoint directory: 
+    Only run .initgitconfig script from here.
+
+Entry script:
+    ./.initgitconfig: initialized git config for local repository

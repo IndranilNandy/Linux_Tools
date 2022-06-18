@@ -1,7 +1,18 @@
-config_git() {
+config_git_global() {
     git config --global user.name "IndranilNandy"
     git config --global user.email "${USER}@$(hostname)"
 
     # Note: We need to provide -w options, otherwise the 'git commit' wouldn't wait for the editor
+    # Ref. https://stackoverflow.com/questions/9725160/aborting-commit-due-to-empty-commit-message
     git config --global core.editor "code -w"
+}
+
+config_git_local() {
+    git config commit.template .gitmessage
+
+    # Resolving file permission issues while working between Windows and Ubuntu
+    # old mode 100644 new mode 100755
+    # Ref. https://stackoverflow.com/questions/1257592/how-do-i-remove-files-saying-old-mode-100755-new-mode-100644-from-unstaged-cha
+    # Ref. https://onedrive.live.com/redir?resid=36449486C8B7B4ED%21112&page=Edit&wd=target%28Tools%20and%20Softwares.one%7C17a65c2e-f4d2-4faa-b835-25c9f476d5b8%2FNotes%7C5ab3b2f0-17bc-486f-9665-11300ed76ed4%2F%29&wdorigin=NavigationUrl
+    git config core.filemode false 
 }

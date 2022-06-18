@@ -1,0 +1,11 @@
+Entrypoint directory: 
+    Run ./.setup script for installation.
+
+Entry script:
+    ./.setup: main installation script
+
+Installer:
+    ./usc_installer.sh: installs usc
+
+Uninstaller:
+    ./usc_uninstaller.sh: removes usc

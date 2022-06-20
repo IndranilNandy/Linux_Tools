@@ -6,8 +6,8 @@ Entry script:
     ./.setup: main installation script
 
 Installer:
-    ./meld_installer.sh: installs meld
+    ./xxdiff_installer.sh: installs xxdiff
 
 Uninstaller:
-    ./meld_uninstaller.sh: removes meld
+    ./xxdiff_uninstaller.sh: removes xxdiff
     

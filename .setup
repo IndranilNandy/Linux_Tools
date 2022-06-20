@@ -1,0 +1,12 @@
+#!/bin/bash
+
+commandsRepoRoot="/usr/local/bin/mycommands"
+
+create_mycommandsrepo() {
+    sudo mkdir $commandsRepoRoot
+    echo "export PATH=$PATH:$commandsRepoRoot" >> ~/.bashrc
+    echo "export MYCOMMANDSREPO=$commandsRepoRoot" >> ~/.bashrc
+    . ~/.bashrc
+}
+
+[[ -d $commandsRepoRoot ]] || ( echo "mycommands repo doesn't exist. creating now..."; create_mycommandsrepo )

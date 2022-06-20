@@ -1,0 +1,2 @@
+#!/bin/sh
+$MYCOMMANDSREPO/generic_tool $*

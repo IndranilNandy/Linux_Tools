@@ -1,0 +1,64 @@
+#!/bin/sh
+
+# Passing the following parameters to difftool:
+# http://jmodalwindow.java.net/manual/dpl/html/version.control.system.html
+# LOCAL BASE REMOTE MERGED
+
+export localFileName
+export baseFileName
+export remoteFileName
+export mergedFileName
+
+selectedTool=$(cat $MYCOMMANDSREPO/.tools  | grep "selected:" |sed 's/selected:\(.*\)/\1/')
+
+diff() {
+    localFileName=$1
+    remoteFileName=$2
+
+    NULL="/dev/null"
+
+    echo "[git difftool] - $localFileName $remoteFileName"
+
+    if [ "$remoteFileName" = "$NULL" ] ; then
+        echo "added: $localFileName"
+    elif [ "$localFileName" = "$NULL" ] ; then
+        echo "removed: $remoteFileName"
+    else
+        echo "changed: $localFileName"
+        cat $MYCOMMANDSREPO/.commands | grep "$selectedTool-diff" | sed "s/^$selectedTool-diff:\(.*\)/\1/" | bash
+    fi
+}
+
+merge() {
+    localFileName=$1
+    baseFileName=$2
+    remoteFileName=$3
+    mergedFileName=$4
+
+    NULL="/dev/null"
+
+    echo "in merge"
+    echo $localFileName
+    echo $baseFileName
+    echo $remoteFileName
+    echo $mergedFileName
+
+    echo "[git mergetool] - $localFileName $baseFileName $remoteFileName $mergedFileName"
+
+    if [ "$remoteFileName" = "$NULL" ] ; then
+        echo "removed: $baseFileName"
+    elif [ "$localFileName" = "$NULL" ] ; then
+        echo "added: $baseFileName"
+    else
+        echo "changed: $baseFileName" 
+        echo "repo: $MYCOMMANDSREPO"
+        echo "tool: $selectedTool"
+        cat $MYCOMMANDSREPO/.commands | grep "$selectedTool-merge" | sed "s/^$selectedTool-merge:\(.*\)/\1/" | bash
+    fi
+}
+
+if [ $# = 2 ];  then
+    diff $1 $2
+elif [ $# = 4 ];  then   
+    merge $1 $2 $3 $4
+fi

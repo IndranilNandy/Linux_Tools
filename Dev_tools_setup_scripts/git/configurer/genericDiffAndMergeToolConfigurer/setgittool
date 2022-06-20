@@ -1,0 +1,3 @@
+#!/bin/bash
+[[ $1 == "--help" ]] && ( cat $MYCOMMANDSREPO/.tools )
+[[ $1 != "--help" ]] && ( tool=$1; sudo sed -i "s/selected:\(.*\)/selected:"$tool"/" $MYCOMMANDSREPO/.tools )

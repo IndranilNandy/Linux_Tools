@@ -5,6 +5,9 @@ config_git_global() {
     # Note: We need to provide -w options, otherwise the 'git commit' wouldn't wait for the editor
     # Ref. https://stackoverflow.com/questions/9725160/aborting-commit-due-to-empty-commit-message
     git config --global core.editor "code -w"
+
+    # Configure external Merge and Diff tool with generic configurer
+    ./configurer/genericDiffAndMergeToolConfigurer/toolsConfigurer.sh
 }
 
 config_git_local() {

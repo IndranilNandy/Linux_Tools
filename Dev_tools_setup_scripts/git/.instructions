@@ -17,3 +17,14 @@ Uninstallers:
 Configurers:
     ./configurer/git_configurer.sh: configures git only
     ./configurer/gcm_configurer.sh: configures gcm only
+    ./configurer/genericDiffAndMergeToolConfigurer: configures generic external merge and diff tool
+
+How to use?
+1. setgittool:
+    Available from /usr/local/bin/mycommands as a global command.
+    Use: setgittool <toolname>, e.g., setgittool meld
+    Tools list: /usr/local/bin/mycommands/.tools lists all the tools currently available. If you install new tool update this list. Default is always 'winmerge'. You can change the 'selected' one using setgitool.
+    Merge and Diff commands: /usr/local/bin/mycommands/.commands lists the merge and diff commands corresponding to the tool. Whenever you add a new tool in .tools, add corresponding merge and diff commands in this file.
+
+2. Configure Git only:
+    Run ./configurer/git_configurer.sh

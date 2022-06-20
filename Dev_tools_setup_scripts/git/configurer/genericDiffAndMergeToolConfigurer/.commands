@@ -1,0 +1,11 @@
+winmerge-merge:wine $HOME/.wine/drive_c/Program\ Files/WinMerge/WinMergeU.exe -e -u -dl "Theirs $remoteFileName" -dm "Merged Result $remoteFileName" -dr "Mine $localFileName" "$remoteFileName" "$mergedFileName" "$localFileName" 
+winmerge-diff:wine $HOME/.wine/drive_c/Program\ Files/WinMerge/WinMergeU.exe -e -u -dl "Arg#1 $localFileName" -dr "Arg#2 $remoteFileName" $(echo $localFileName | tr '/' '\\') $(echo $remoteFileName | tr '/' '\\')
+meld-merge:meld $remoteFileName $mergedFileName $localFileName
+meld-diff:meld $localFileName $remoteFileName
+kdiff3-merge:kdiff3 $remoteFileName $localFileName -o $mergedFileName
+kdiff3-diff:kdiff3 $localFileName $remoteFileName
+xxdiff-merge:xxdiff $remoteFileName $mergedFileName $localFileName
+xxdiff-diff:xxdiff $localFileName $remoteFileName
+p4merge-merge:p4merge $baseFileName $localFileName $remoteFileName $mergedFileName
+p4merge-diff:p4merge $localFileName $remoteFileName
+

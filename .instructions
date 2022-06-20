@@ -2,4 +2,5 @@ Entrypoint directory:
     Only run .initgitconfig script from here.
 
 Entry script:
-    ./.initgitconfig: initialized git config for local repository
+    ./.setup: setup PATH and other env variables
+              invoke full installation and configuration script

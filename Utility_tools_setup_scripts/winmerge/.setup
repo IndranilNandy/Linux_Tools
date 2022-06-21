@@ -1,0 +1,3 @@
+#!/bin/bash
+
+./winmerge_installer.sh

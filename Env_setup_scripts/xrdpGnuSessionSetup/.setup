@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo -e "Changing to full Gnome session..."
+./xrdp_gnome_session_setup.sh /etc/xrdp/startwm.sh
+# sudo reboot

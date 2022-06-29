@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sudo cp /etc/xrdp/startwm.sh.bak /etc/xrdp/startwm.sh && sudo rm /etc/xrdp/startwm.sh.bak && echo "Reverted back to XRDP session default"
+# sudo reboot

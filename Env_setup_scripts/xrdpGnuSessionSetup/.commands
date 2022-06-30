@@ -1,0 +1,11 @@
+Command: setXrdpGnuSession
+    Description:
+        - use this command to get full GNU session experience.
+    Usage: 
+        setXrdpGnuSession
+
+Command: revert2XrdpSession
+    Description:
+        - use this command to revert back to XRDP session experience.
+    Usage: 
+        revert2XrdpSession

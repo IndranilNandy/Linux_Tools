@@ -12,3 +12,13 @@ Installers:
 Uninstallers:
     ./.revert: revert back to XRDP session default
     ./gcm_uninstaller.sh: uninstalls gcm only
+
+Commands:
+    setXrdpGnuSession: 
+        - use this command to get full GNU session experience.
+        - symbolic link is created in /usr/local/bin/mycommands
+        Usage: setXrdpGnuSession
+    revert2XrdpSession:
+        - use this command to revert back to XRDP session experience.
+        - symbolic link is created in /usr/local/bin/mycommands
+        Usage: revert2XrdpSession

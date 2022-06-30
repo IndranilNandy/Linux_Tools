@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Enable execute permission on all shell scripts
+find . -name "*.sh" | xargs -n1 chmod +x
+
+# timestamp=$(date -u +%s)
+# [[ -h $MYCOMMANDSREPO/setXrdpGnuSession ]] && sudo mv $MYCOMMANDSREPO/setXrdpGnuSession $MYCOMMANDSREPO/setXrdpGnuSession-$timestamp && echo "Created a backup - $MYCOMMANDSREPO/setXrdpGnuSession-$timestamp"
+
+yes | sudo ln -i -s $(pwd)/.setup $MYCOMMANDSREPO/setXrdpGnuSession && echo -e "\nCreated symbolink link [setXrdpGnuSession] in $MYCOMMANDSREPO"
+yes | sudo ln -i -s $(pwd)/.revert $MYCOMMANDSREPO/revert2XrdpSession && echo -e "\nCreated symbolink link [revert2XrdpSession] in $MYCOMMANDSREPO"
+
 echo -e "Changing to full Gnome session..."
 ./xrdp_gnome_session_setup.sh /etc/xrdp/startwm.sh
 # sudo reboot

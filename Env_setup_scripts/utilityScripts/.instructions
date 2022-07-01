@@ -1,0 +1,19 @@
+Entrypoint directory: 
+    All scripts under this directory and sub-directories should be run from this directory. All the script-paths are relative to this directory.
+    To use these scripts in any other bash script do a 'cd' to this directory first in a sub-shell, e.g., (cd root_dir && ./xyz.sh)
+
+Entry script:
+    ./.setup: call this for full setup
+
+Commands:
+    .commands: lists all exported commands.
+
+How to use?
+1. tracelink:
+    Available from /usr/local/bin/mycommands as a custom command.
+    Usage:  
+            (1) tracelink <linkname>, e.g., tracelink setgittool
+            If <linkname> is a valid link name(absolute/relative), it'll return the original source path of that link.
+            If <linkname> is any path (valid/invalid) to a file/directory, it'll return the same path.
+            Otherwise it'll show error.
+            Use this within a bash script to find the source path of that script, if that script is referred to by a symbolic link. Use as "tracelink ${0}" or "tracelink ${SOURCE_BASH}"

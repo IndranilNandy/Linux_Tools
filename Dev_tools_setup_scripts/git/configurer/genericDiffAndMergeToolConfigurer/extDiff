@@ -2,4 +2,12 @@
 # [ $# -eq 7 ] && echo "All 7 - 1:$1 2:$2 3:$3 4:$4 5:$5 6:$6 7:$7"
 # [ $# -eq 7 ] && /usr/local/bin/extMerge $2 $5
 
-$MYCOMMANDSREPO/generic_tool $*
+# curDir="$(pwd)/configurer/genericDiffAndMergeToolConfigurer"
+# curDir="$HOME/MyTools/Linux_Tools/Dev_tools_setup_scripts/git/configurer/genericDiffAndMergeToolConfigurer"
+if [ -L $(which extDiff) ]; then
+    curDir="$(dirname "$(tracelink extDiff)")"
+else
+    curDir="$(pwd)/configurer/genericDiffAndMergeToolConfigurer"
+fi
+
+$curDir/generic_tool $*

@@ -1,3 +1,12 @@
 #!/bin/bash
-[[ $1 == "--help" ]] && ( cat $MYCOMMANDSREPO/.tools )
-[[ $1 != "--help" ]] && ( tool=$1; sudo sed -i "s/selected:\(.*\)/selected:"$tool"/" $MYCOMMANDSREPO/.tools )
+
+# curDir="$(pwd)/configurer/genericDiffAndMergeToolConfigurer"
+# curDir="$HOME/MyTools/Linux_Tools/Dev_tools_setup_scripts/git/configurer/genericDiffAndMergeToolConfigurer"
+if [ -L $(which extDiff) ]; then
+    curDir="$(dirname "$(tracelink extDiff)")"
+else
+    curDir="$(pwd)/configurer/genericDiffAndMergeToolConfigurer"
+fi
+
+[[ $1 == "--help" ]] && ( cat $curDir/.tools )
+[[ $1 != "--help" ]] && ( tool=$1; sudo sed -i "s/selected:\(.*\)/selected:"$tool"/" $curDir/.tools )

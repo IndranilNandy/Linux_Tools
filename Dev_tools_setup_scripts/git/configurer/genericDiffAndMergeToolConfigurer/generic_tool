@@ -9,7 +9,15 @@ export baseFileName
 export remoteFileName
 export mergedFileName
 
-selectedTool=$(cat $MYCOMMANDSREPO/.tools  | grep "selected:" |sed 's/selected:\(.*\)/\1/')
+# curDir="$(pwd)/configurer/genericDiffAndMergeToolConfigurer"
+if [ -L $(which extDiff) ]; then
+    curDir="$(dirname "$(tracelink extDiff)")"
+else
+    curDir="$(pwd)/configurer/genericDiffAndMergeToolConfigurer"
+fi
+# curDir="$HOME/MyTools/Linux_Tools/Dev_tools_setup_scripts/git/configurer/genericDiffAndMergeToolConfigurer"
+
+selectedTool=$(cat $curDir/.tools  | grep "selected:" |sed 's/selected:\(.*\)/\1/')
 
 diff() {
     localFileName=$1
@@ -25,7 +33,7 @@ diff() {
         echo "removed: $remoteFileName"
     else
         echo "changed: $localFileName"
-        cat $MYCOMMANDSREPO/.commands | grep "$selectedTool-diff" | sed "s/^$selectedTool-diff:\(.*\)/\1/" | bash
+        cat $curDir/.toolcommands | grep "$selectedTool-diff" | sed "s/^$selectedTool-diff:\(.*\)/\1/" | bash
     fi
 }
 
@@ -51,9 +59,9 @@ merge() {
         echo "added: $baseFileName"
     else
         echo "changed: $baseFileName" 
-        echo "repo: $MYCOMMANDSREPO"
+        echo "repo: $curDir"
         echo "tool: $selectedTool"
-        cat $MYCOMMANDSREPO/.commands | grep "$selectedTool-merge" | sed "s/^$selectedTool-merge:\(.*\)/\1/" | bash
+        cat $curDir/.toolcommands | grep "$selectedTool-merge" | sed "s/^$selectedTool-merge:\(.*\)/\1/" | bash
     fi
 }
 

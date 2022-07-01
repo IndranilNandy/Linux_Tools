@@ -12,6 +12,6 @@ List of available tools for configuration:
 ----------------
 default:winmerge
 ----------------
-selected:p4merge
+selected:winmerge
 ----------------
 

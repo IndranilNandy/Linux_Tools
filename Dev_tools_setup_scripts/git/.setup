@@ -3,3 +3,6 @@
 # Enable execute permission on all shell scripts
 find . -name "*.sh" | xargs -n1 chmod +x
 ./git_installer.sh
+
+symlink=setgittool
+yes | sudo ln -i -s $(pwd)/configurer/genericDiffAndMergeToolConfigurer/setgittool $MYCOMMANDSREPO/$symlink && echo -e "\nCreated symbolink link [$symlink] in $MYCOMMANDSREPO"

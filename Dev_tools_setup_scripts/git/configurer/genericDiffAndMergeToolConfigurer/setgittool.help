@@ -1,0 +1,10 @@
+Usage:
+    setgittool --help - Shows the usage of the command alongwith a full list of available tools for configuring.
+    setgittool <toolname> - Set <toolname> as the current selected mergetool.
+
+List of available tools for configuration:
+    meld
+    winmerge
+    kdiff3
+    xxdiff
+    p4merge

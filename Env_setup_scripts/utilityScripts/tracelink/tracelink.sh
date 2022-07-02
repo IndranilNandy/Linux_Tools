@@ -1,5 +1,6 @@
 #!/bin/bash
-if [[ -n $1 ]]; then
+
+if [[ -n $1 ]] && [[ "$1" != "--help" ]]; then
     SCRIPT_PATH=$(which ${1})
     [[ ! -n $SCRIPT_PATH ]] && SCRIPT_PATH=${1}
 else
@@ -15,5 +16,7 @@ while [ -L "${SOURCE_PATH}" ]; do
     SOURCE_PATH="$(dirname "${SOURCE_PATH}")/${TARGET}"
   fi
 done
+
+(( "$#" == 1 )) && [[ "$1" == "--help" ]] && cat "$(dirname "${SOURCE_PATH}")"/tracelink.help && exit 0
 
 echo "${SOURCE_PATH}"

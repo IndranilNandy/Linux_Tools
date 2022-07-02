@@ -12,13 +12,7 @@ Usage:
     tracelink --help
         Shows the help contents.
 
-Defaults:
-    winpc="DESKTOP-F3I6O06"
-    winshare="Shared_with_VMs"
-    winuser="indranil nandy"
-    linuxshare="$HOME/SharedFromWindows"
-
 Examples:
-    cmount
-    cmount winpc="DESKTOP-F3I6O06" winuser="indranil nandy" winshare="Shared_with_VMs" linuxshare="$HOME/SharedFromWindows"
-    cmount linuxshare="$HOME/SharedFromWindows"
+    tracelink setgittool
+    tracelink
+    tracelink --help

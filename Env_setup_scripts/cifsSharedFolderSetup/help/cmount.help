@@ -3,7 +3,10 @@ Description:
 
 Usage:
     cmount [winpc=<windows_pc_name>] [winuser=<windows_username>] [winshare=<windows_shared_folder_path>] [linuxshare=<linux_shared_folder_path>]
-    cmount :    this will use the default values.
+    cmount 
+        This will use the default values.
+    cmount --help
+        Shows the help contents.
 
 Defaults:
     winpc="DESKTOP-F3I6O06"

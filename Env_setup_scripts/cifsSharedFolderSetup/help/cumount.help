@@ -3,8 +3,11 @@ Description:
 
 Usage:
     cumount [winpc=<windows_pc_name>][winshare=<windows_shared_folder_path>]
-    cumount :   this unmounts the default "winshare"; 
-                if the same "winshare" is mounted on multiple directories in Linux system, each of those will be unmounted by each execution of cumount.
+    cumount
+        This unmounts the default "winshare"; 
+        if the same "winshare" is mounted on multiple directories in Linux system, each of those will be unmounted by each execution of cumount.
+    cumount --help
+        Shows the help contents.
 
 Defaults:
     winpc="DESKTOP-F3I6O06"

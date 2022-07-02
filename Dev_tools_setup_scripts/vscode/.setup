@@ -2,4 +2,6 @@
 
 # Enable execute permission on all shell scripts
 find . -name "*.sh" | xargs -n1 chmod +x
-./vscode_setup.sh
+./vscode_installer.sh
+
+yes | sudo ln -s -i $(pwd)/extensions/refresh_extension_list.sh $MYCOMMANDSREPO/code-ext

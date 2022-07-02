@@ -1,0 +1,22 @@
+Description:
+    List and update VSCode extensions.
+
+Usage:
+    code-ext --list
+    code-ext
+        List all VSCode extensions currently installed
+    code-ext --refresh
+        Refresh and update .extensions file with any new installed extension in VSCode, which is currently missing in the file.
+    code-ext --update
+        If any of the extensions listed in the .extension file is missing in the VSCode setup, it installs that extension.
+    code-ext --help
+        Shows the help contents.
+
+Examples:
+    code-ext
+    code-ext --list
+    code-ext --refresh
+    code-ext --update
+    code-ext --help
+
+

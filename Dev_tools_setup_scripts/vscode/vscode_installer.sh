@@ -26,9 +26,9 @@ setAsDefaultEditor() {
     sudo update-alternatives --set editor /usr/bin/code
 }
 
-installAllPlugins() {
-    ./plugins/all_plugins_installer.sh
+installAllExtensions() {
+    ./extensions/all_extensions_installer.sh
 }
 
-(installRepoKey) && (installPackage) && (registerEditor) && (setAsDefaultEditor) && (installAllPlugins)
+(installRepoKey) && (installPackage) && (registerEditor) && (setAsDefaultEditor) && (installAllExtensions)
 

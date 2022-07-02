@@ -1,0 +1,3 @@
+#!/bin/bash
+
+./display_settings_configurer.sh

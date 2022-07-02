@@ -1,0 +1,12 @@
+Description:
+    Use this command to to revert back to XRDP session experience.
+
+Usage:
+    revert2XrdpSession
+        Reverts back /etc/xrdp/startwm.sh to revert back to XRDP session experience
+    revert2XrdpSession --help
+        Shows the help contents.
+
+Examples:
+    revert2XrdpSession
+    revert2XrdpSession --help

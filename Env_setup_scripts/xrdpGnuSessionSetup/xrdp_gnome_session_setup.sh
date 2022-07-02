@@ -11,8 +11,16 @@ updateXrdpScript() {
 
 export -f updateXrdpScript
 
-file=${1}
+if [[ -z $(which setXrdpGnuSession) ]]; then
+    curDir=$(pwd)
+else
+    curDir=$(dirname "$(tracelink "$(which setXrdpGnuSession)")")
+fi
+
+(( "$#" == 1 )) && [[ "$1" == "--help" ]] && cat $curDir/help/setXrdpGnuSession.help && exit 0
+
+file="/etc/xrdp/startwm.sh"
 
 [[ ! -e "$file" ]] && echo -e "Failed to change to full Gnome session.\n$file: File doesn't exist. Exiting." && exit 1
 [[ ! -e "$file".bak ]] && echo "Creating backup file ${file}.bak" && sudo cp "$file" "$file".bak
-cat ./config/.xrdp-gnome-session-config | xargs -I INPUT bash -c "updateXrdpScript 'INPUT' $file" && echo -e "Successfully changed to full Gnome session.\nReboot needed"
+cat $curDir/config/.xrdp-gnome-session-config | xargs -I INPUT bash -c "updateXrdpScript 'INPUT' $file" && echo -e "Successfully changed to full Gnome session.\nReboot needed"

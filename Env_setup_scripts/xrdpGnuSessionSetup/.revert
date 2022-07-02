@@ -1,6 +1,12 @@
 #!/bin/bash
 
-# symlink="$MYCOMMANDSREPO"/setXrdpGnuSession
-# [[ -h "$symlink" ]] && sudo rm "$symlink" && echo "Removed symbolic link $symlink"
+if [[ -z $(which setXrdpGnuSession) ]]; then
+    curDir=$(pwd)
+else
+    curDir=$(dirname "$(tracelink "$(which setXrdpGnuSession)")")
+fi
+
+(( "$#" == 1 )) && [[ "$1" == "--help" ]] && cat $curDir/help/revert2XrdpSession.help && exit 0
+
 sudo cp /etc/xrdp/startwm.sh.bak /etc/xrdp/startwm.sh && sudo rm /etc/xrdp/startwm.sh.bak && echo "Reverted back to XRDP session default"
 # sudo reboot

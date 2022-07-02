@@ -1,0 +1,12 @@
+Description:
+    Use this command to get full GNU session experience while being in Xrdp session.
+
+Usage:
+    setXrdpGnuSession
+        Changes /etc/xrdp/startwm.sh to change to a full GNU session
+    setXrdpGnuSession --help
+        Shows the help contents.
+
+Examples:
+    setXrdpGnuSession
+    setXrdpGnuSession --help

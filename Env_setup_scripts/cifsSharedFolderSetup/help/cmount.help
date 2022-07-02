@@ -1,0 +1,17 @@
+Description:
+    Mount a directory shared from a Windows system on another directory on this Linux system
+
+Usage:
+    cmount [winpc=<windows_pc_name>] [winuser=<windows_username>] [winshare=<windows_shared_folder_path>] [linuxshare=<linux_shared_folder_path>]
+    cmount :    this will use the default values.
+
+Defaults:
+    winpc="DESKTOP-F3I6O06"
+    winshare="Shared_with_VMs"
+    winuser="indranil nandy"
+    linuxshare="$HOME/SharedFromWindows"
+
+Examples:
+    cmount
+    cmount winpc="DESKTOP-F3I6O06" winuser="indranil nandy" winshare="Shared_with_VMs" linuxshare="$HOME/SharedFromWindows"
+    cmount linuxshare="$HOME/SharedFromWindows"

@@ -1,20 +1,22 @@
-pcname="DESKTOP-F3I6O06"
-sharedFolderInWindows="Shared_with_VMs"
-winuser="indranil nandy"
-defaultSharedFolder="$HOME/SharedFromWindows"
+
 
 mount_cifs_sharing() {
     # Mount shared folder
+    echo "pcname=$pcname.. sharedFolderInWindows=$sharedFolderInWindows.. defaultSharedFolder=$defaultSharedFolder.. winuser=$winuser"
+
     sudo mount.cifs //$pcname/$sharedFolderInWindows $defaultSharedFolder -o user="$winuser"
 }
 
 unmount_cifs_sharing() {
     # Unmount shared folder
+    # echo "pcname=$pcname.. sharedFolderInWindows=$sharedFolderInWindows"
     sudo umount //$pcname/$sharedFolderInWindows
 }
 
 if_package_missing() {
-    prereqfile=$(basename $1 .sh).prereq
+    #prereqfile=$(basename $1 .sh).prereq
+    prereqfile=${1}
+
     echo "prereq file = $prereqfile"
     missing=$(
         cat $prereqfile | 

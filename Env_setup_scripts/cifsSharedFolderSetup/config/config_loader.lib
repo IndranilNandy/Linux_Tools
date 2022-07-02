@@ -1,0 +1,35 @@
+load_config() {
+    echo "here $*";
+
+    # Default values
+    pcname="DESKTOP-F3I6O06"
+    sharedFolderInWindows="Shared_with_VMs"
+    winuser="indranil nandy"
+    defaultSharedFolder="$HOME/SharedFromWindows"
+    echo "default"
+
+# echo ${2}
+    for i in $*;
+    do
+        # echo $i
+        case $i in
+            --winpc*) 
+                pcname=$(echo $i | sed "s/--winpc=\(.*\)/\1/")
+                echo "pcname=$pcname";
+                ;;
+            --winshare*)
+                sharedFolderInWindows=$(echo $i | sed "s/--winshare=\(.*\)/\1/")
+                echo "sharedFolderInWindows=$sharedFolderInWindows"
+               ;;
+            --winuser*)
+                winuser=$(echo $i | sed "s/--winuser=\(.*\)/\1/")
+                echo "winuser=$winuser"
+               ;;
+            --linuxshare*) 
+                defaultSharedFolder=$(echo $i | sed "s/--linuxshare=\(.*\)/\1/")
+                echo "defaultSharedFolder=$defaultSharedFolder"
+                ;;
+            *) echo "others";;
+        esac
+    done
+}

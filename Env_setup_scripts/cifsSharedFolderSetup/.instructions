@@ -1,0 +1,15 @@
+Entrypoint directory: 
+    All scripts under this directory and sub-directories should be run from this directory. All the script-paths are relative to this directory.
+    To use these scripts in any other bash script do a 'cd' to this directory first in a sub-shell, e.g., (cd root_dir && ./xyz.sh)
+
+Entry script:
+    ./.setup: call this for full setup
+    ./cifs_sharing_mount.sh: call this to mount share (link available: cmount)
+    ./cifs_sharing_unmount.sh: call this to unmount share (link available: cumount)
+
+Commands:
+    .commands: lists all exported commands.
+
+How to use?
+1. cmount : Check with 'cmount --help'
+2. cumount: Check with 'cumount --help'

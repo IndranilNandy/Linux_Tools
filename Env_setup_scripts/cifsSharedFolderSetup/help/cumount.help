@@ -1,0 +1,18 @@
+Description:
+    Unmount a directory shared from a Windows system on another directory on this Linux system
+
+Usage:
+    cumount [winpc=<windows_pc_name>][winshare=<windows_shared_folder_path>]
+    cumount :   this unmounts the default "winshare"; 
+                if the same "winshare" is mounted on multiple directories in Linux system, each of those will be unmounted by each execution of cumount.
+
+Defaults:
+    winpc="DESKTOP-F3I6O06"
+    winshare="Shared_with_VMs"
+
+Examples:
+    cumount
+    cmount winpc="DESKTOP-F3I6O06" winshare="Shared_with_VMs"
+
+Note:
+    After unmounting the directory, the empty shared directory on the Linux system still stays there. If you want to delete it, you've to do it manually.

@@ -1,6 +1,11 @@
 #!/bin/bash
 
-curDir=$(dirname "$(tracelink "$(which cmount)")")
+if [[ -z $(which cumount) ]]; then
+    curDir=$(pwd)
+else
+    curDir=$(dirname "$(tracelink "$(which cumount)")")
+fi
+
 (( "$#" == 1 )) && [[ "$1" == "--help" ]] && cat $curDir/help/cumount.help && exit 0
 
 . $curDir/lib/cifs_sharing_commons.lib

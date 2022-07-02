@@ -1,0 +1,24 @@
+Description:
+    Traces down a symbolic link to its original script
+
+Usage:
+    tracelink <linkname>
+        If <linkname> is a valid link name(absolute/relative), it'll return the original source path of that link.
+        If <linkname> is any path (valid/invalid) to a file/directory, it'll return the same path.
+        Otherwise it'll show error.
+        Use this within a bash script to find the source path of that script, if that script is referred to by a symbolic link. Use as "tracelink ${0}" or "tracelink ${SOURCE_BASH}"
+    tracelink
+        Takes ${BASH_SOURCE} as the default argement.
+    tracelink --help
+        Shows the help contents.
+
+Defaults:
+    winpc="DESKTOP-F3I6O06"
+    winshare="Shared_with_VMs"
+    winuser="indranil nandy"
+    linuxshare="$HOME/SharedFromWindows"
+
+Examples:
+    cmount
+    cmount winpc="DESKTOP-F3I6O06" winuser="indranil nandy" winshare="Shared_with_VMs" linuxshare="$HOME/SharedFromWindows"
+    cmount linuxshare="$HOME/SharedFromWindows"

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+./cifsutils_installer.sh

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+./xrdp_server_installer.sh

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo -e "\n[Dev_tools_setup_scripts] $(pwd)"
+echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT | bash)" | bash
+echo

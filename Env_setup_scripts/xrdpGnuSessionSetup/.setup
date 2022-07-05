@@ -1,11 +1,23 @@
 #!/bin/bash
 
+#Check if all prerequisites are installed, and install the missing ones
+prereq --install ".prereq"
+
+# Exit if still missing any prerequisite
+[[ $(prereq --missing ".prereq") ]] && echo "One or more prerequisites are still missing. Exiting." && exit 0
+
+# Check if it is already installed
+[[ -n $(which setXrdpGnuSession) ]] && echo "[xrdpGnuSessionSetup] Already installed. Exiting." && exit 0
+
 # Enable execute permission on all shell scripts
 find . -name "*.sh" | xargs -n1 chmod +x
+
+echo "[xrdpGnuSessionSetup] Setup process started."
+
+echo -e "Changing to full Gnome session..."
+./xrdp_gnome_session_setup.sh
 
 yes | sudo ln -i -s $(pwd)/xrdp_gnome_session_setup.sh $MYCOMMANDSREPO/setXrdpGnuSession && echo -e "\nCreated symbolink link [setXrdpGnuSession] in $MYCOMMANDSREPO"
 yes | sudo ln -i -s $(pwd)/.revert $MYCOMMANDSREPO/revert2XrdpSession && echo -e "\nCreated symbolink link [revert2XrdpSession] in $MYCOMMANDSREPO"
 
-echo -e "Changing to full Gnome session..."
-./xrdp_gnome_session_setup.sh
 # sudo reboot

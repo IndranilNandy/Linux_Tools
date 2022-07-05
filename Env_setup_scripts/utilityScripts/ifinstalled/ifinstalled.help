@@ -1,0 +1,31 @@
+Description:
+    Checks if the given tool is installed in the system.
+
+Usage:
+    ifinstalled <TOOLNAME>
+    ifinstalled [options]
+    [options]: [ --list | --apt | --link | --help ]
+    -----------------------------------------------------------
+    ifinstalled <TOOLNAME>
+        Checks if <TOOLNAME> is either installed through apt package manager or is symbolic-linked.
+    
+    ifinstalled --list
+        Lists all the tools installed with apt package manager and all the custom links available.
+
+    ifinstalled --apt
+        Lists all the tools installed with apt package manager only.
+
+    ifinstalled --link
+        Lists all the custom links available.
+
+    ifinstalled --help
+    ifinstalled
+        Shows the help contents.
+
+Examples:
+    ifinstalled <TOOLNAME>
+    ifinstalled --list
+    ifinstalled --apt
+    ifinstalled --link
+    ifinstalled --help
+    ifinstalled

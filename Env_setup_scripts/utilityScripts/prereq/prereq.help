@@ -1,0 +1,26 @@
+Description:
+    Checks if all the prerequisites (installers) in the given prereq file are satisfied (installed).
+
+Usage:
+    prereq [options] FILE
+    [options]: [ --missing | --missingcount | --list | --help ]
+    -----------------------------------------------------------
+    prereq --missing FILE
+        Shows the list of all missing prerequisites.
+    
+    prereq --missingcount FILE
+        Gives the count of all missing prerequisites.
+
+    prereq --list FILE
+        Shows the list of all required prerequisites.
+
+    prereq --help
+    prereq
+        Shows the help contents.
+
+Examples:
+    prereq --missing FILE
+    prereq --missingcount FILE
+    prereq --list FILE
+    prereq --help
+    prereq

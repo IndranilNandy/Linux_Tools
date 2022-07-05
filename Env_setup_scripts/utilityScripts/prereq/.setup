@@ -1,0 +1,24 @@
+#!/bin/bash
+
+missing_prereqs() {
+    prereqfile=${1}
+
+    missing=$(
+        cat $prereqfile | 
+    xargs -I XYZ echo "[[ ! \$(apt --installed list 2> /dev/null | grep XYZ) && ! \$(which XYZ) ]] && echo 'XYZ'" | 
+    bash
+    )
+
+    echo "$missing"
+}
+
+# Install missing prerequisites
+export ToolsDir="$HOME/MyTools/Linux_Tools"
+file=$(pwd)/.prereq
+missing_prereqs $file | xargs -I FILE find "$ToolsDir" -name FILE | xargs -I INPUT echo "(cd INPUT && pwd && find . -name .setup | bash)" | bash
+
+# Exit if still missing any prerequisite
+# export -f missing_prereqs
+[[ $(missing_prereqs $file) ]] && echo "One or more prerequisites are still missing. Exiting." && exit 0
+
+yes | sudo ln -i -s $(pwd)/prereq.sh $MYCOMMANDSREPO/prereq

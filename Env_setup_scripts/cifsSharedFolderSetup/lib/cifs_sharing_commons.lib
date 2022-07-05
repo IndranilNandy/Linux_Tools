@@ -16,13 +16,14 @@ if_package_missing() {
 
     missing=$(
         cat $prereqfile | 
-    xargs -I XYZ echo "apt --installed list 2> /dev/null | grep XYZ |  wc -l" | 
+    xargs -I XYZ echo "[[ ! \$(apt --installed list 2> /dev/null | grep XYZ) && ! \$(which XYZ) ]] && echo 'missing XYZ' |  wc -l" | 
     bash | 
     xargs -I ABC echo "test ABC -gt 0; echo \$?" | 
     bash | 
     grep 1 | 
     wc -l
     )
+
     echo "missing package = $missing"
     return $missing
 }

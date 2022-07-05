@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Intentionally leaving prereq-check. 
+# Reason 1: Many of the other tools, includeing prereq have dependency on this. So, it will create circular dependency while checking for prereq using 'prereq' command
+# Reason 2: As of now, it doesn't really have a dependency on any other tool in our repo.
+
+yes | sudo ln -i -s $(pwd)/tracelink.sh $MYCOMMANDSREPO/tracelink

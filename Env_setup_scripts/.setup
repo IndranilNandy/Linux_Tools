@@ -1,5 +1,5 @@
-# #!/bin/bash
+#!/bin/bash
 
-echo -e "\n[utilityScripts] $(pwd)"
+echo -e "\n[Env_setup_scripts] $(pwd)"
 echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT | bash)" | bash
 echo

@@ -4,9 +4,38 @@ commandsRepoRoot="/usr/local/bin/mycommands"
 
 create_mycommandsrepo() {
     sudo mkdir $commandsRepoRoot
-    echo "export PATH=$PATH:$commandsRepoRoot" >> ~/.bashrc
-    echo "export MYCOMMANDSREPO=$commandsRepoRoot" >> ~/.bashrc
+    expPath="export PATH=$PATH:$commandsRepoRoot"
+    expRoot="export MYCOMMANDSREPO=$commandsRepoRoot"
+
+    [[ $(cat ~/.bashrc | grep "$commandsRepoRoot") ]] || echo "$expPath" >> ~/.bashrc
+    [[ $(cat ~/.bashrc | grep "$expRoot") ]] || echo "$expRoot" >> ~/.bashrc
     . ~/.bashrc
 }
 
 [[ -d $commandsRepoRoot ]] || ( echo "mycommands repo doesn't exist. creating now..."; create_mycommandsrepo )
+
+echo -e "\n[Linux_Tools] $(pwd)"
+
+missing_prereqs() {
+    prereqfile=${1}
+
+    missing=$(
+        cat $prereqfile | 
+    xargs -I XYZ echo "[[ ! \$(apt --installed list 2> /dev/null | grep XYZ) && ! \$(which XYZ) ]] && echo 'XYZ'" | 
+    bash
+    )
+
+    echo "$missing"
+}
+
+# Install missing prerequisites
+export ToolsDir="$HOME/MyTools/Linux_Tools"
+file=$(pwd)/.inittools
+missing_prereqs $file | xargs -I FILE find "$ToolsDir" -name FILE | xargs -I INPUT echo "(cd INPUT && find . -name .setup | bash)" | bash
+
+# Exit if still missing any prerequisite
+# export -f missing_prereqs
+[[ $(missing_prereqs $file) ]] && echo "One or more prerequisites are still missing. Exiting." && exit 0
+
+echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | grep Env_setup_scripts | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT | bash)" | bash
+echo

@@ -4,4 +4,8 @@
 # Reason 1: Many of the other tools, includeing prereq have dependency on this. So, it will create circular dependency while checking for prereq using 'prereq' command
 # Reason 2: As of now, it doesn't really have a dependency on any other tool in our repo.
 
+# Check if already installed
+[[ $(which tracelink) ]] && echo "[tracelink] Already installed. Exiting..." && exit 0
+echo "[tracelink] Setup process started."
+
 yes | sudo ln -i -s $(pwd)/tracelink.sh $MYCOMMANDSREPO/tracelink

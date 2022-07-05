@@ -15,10 +15,15 @@ missing_prereqs() {
 # Install missing prerequisites
 export ToolsDir="$HOME/MyTools/Linux_Tools"
 file=$(pwd)/.prereq
-missing_prereqs $file | xargs -I FILE find "$ToolsDir" -name FILE | xargs -I INPUT echo "(cd INPUT && pwd && find . -name .setup | bash)" | bash
+missing_prereqs $file | xargs -I FILE find "$ToolsDir" -name FILE | xargs -I INPUT echo "(cd INPUT && find . -name .setup | bash)" | bash
 
 # Exit if still missing any prerequisite
 # export -f missing_prereqs
 [[ $(missing_prereqs $file) ]] && echo "One or more prerequisites are still missing. Exiting." && exit 0
+
+# Check if already installed
+[[ $(which prereq) ]] && echo "[prereq] Already installed. Exiting..." && exit 0
+
+echo "[prereq] Setup process started."
 
 yes | sudo ln -i -s $(pwd)/prereq.sh $MYCOMMANDSREPO/prereq

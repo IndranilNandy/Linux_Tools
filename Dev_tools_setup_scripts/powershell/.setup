@@ -1,3 +1,14 @@
 #!/bin/bash
 
+#Check if all prerequisites are installed, and install the missing ones
+prereq --install ".prereq"
+
+# Exit if still missing any prerequisite
+[[ $(prereq --missing ".prereq") ]] && echo "One or more prerequisites are still missing. Exiting." && exit 0
+
+# Check if it is already installed
+[[ -n $(which pwsh) ]] && echo "[powershell] Already installed. Exiting." && exit 0
+
+echo "[powershell] Setup process started."
+
 ./powershell_installer.sh

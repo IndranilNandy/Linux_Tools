@@ -28,6 +28,11 @@ missing_prereqs() {
     echo "$missing"
 }
 
+# Enable execution permission on all shell scripts
+find . -name "*.sh" | xargs -n1 chmod +x
+# Enable execution permission on all .setup
+find . -name ".setup" | xargs -n1 chmod +x
+
 # Install missing prerequisites
 export ToolsDir="$HOME/MyTools/Linux_Tools"
 file=$(pwd)/.inittools
@@ -36,11 +41,6 @@ missing_prereqs $file | xargs -I FILE find "$ToolsDir" -name FILE | xargs -I INP
 # Exit if still missing any prerequisite
 # export -f missing_prereqs
 [[ $(missing_prereqs $file) ]] && echo "One or more prerequisites are still missing. Exiting." && exit 0
-
-# Enable execution permission on all shell scripts
-find . -name "*.sh" | xargs -n1 chmod +x
-# Enable execution permission on all .setup
-find . -name ".setup" | xargs -n1 chmod +x
 
 echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | grep -v exclude | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT | bash)" | bash
 echo

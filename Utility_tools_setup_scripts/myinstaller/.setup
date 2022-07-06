@@ -11,6 +11,6 @@ prereq --install ".prereq"
 
 echo "[myinstaller] Setup process started."
 
-./myinstaller.sh
+./myinstaller.sh --install --FULL
 sudo ln -s -i $(pwd)/myinstaller.sh $MYCOMMANDSREPO/myinstaller
 

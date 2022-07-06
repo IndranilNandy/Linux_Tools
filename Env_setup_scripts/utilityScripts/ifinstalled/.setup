@@ -11,5 +11,5 @@ prereq --install ".prereq"
 
 echo "[ifinstalled] Setup process started."
 
-./ifinstalled.sh
+# ./ifinstalled.sh
 sudo ln -s -i $(pwd)/ifinstalled.sh $MYCOMMANDSREPO/ifinstalled

@@ -5,7 +5,6 @@ if [[ -z $(which ifinstalled) ]]; then
 else
     curDir=$(dirname "$(tracelink "$(which ifinstalled)")")
 fi
-curDir=$(pwd)
 
 case ${1} in
     --list)

@@ -1,2 +1,4 @@
 tracelink
 prereq
+ifinstalled
+myinstaller

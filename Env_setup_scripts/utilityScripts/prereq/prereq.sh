@@ -22,6 +22,7 @@ case ${1} in
     --install)
         export ToolsDir="$HOME/MyTools/Linux_Tools"
         missing_prereqs ${2} | xargs -I FILE find "$ToolsDir" -name FILE | xargs -I INPUT echo "(cd INPUT && pwd && find . -name .setup | bash)" | bash
+        missing_prereqs ${2} | xargs -I TOOL myinstaller --install TOOL
         ;;
     --missing)
         missing_prereqs ${2}

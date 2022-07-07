@@ -7,12 +7,12 @@ prereq --install ".prereq"
 [[ $(prereq --missing ".prereq") ]] && echo "One or more prerequisites are still missing. Exiting." && exit 0
 
 # Check if it is already installed
-[[ -n $(which git) ]] && echo "[git] Already installed. Exiting." && exit 0
+# Intentionally skipping the following check, since the batch installation script should anyway preceed with git installation.
+# DO NOT REMOVE THE FOLLOWING LINE PERMANENTLY
+# [[ -n $(which git) ]] && echo "[git] Already installed. Exiting." && exit 0
 
 echo "[git] Setup process started."
 
-# Enable execute permission on all shell scripts
-find . -name "*.sh" | xargs -n1 chmod +x
 ./git_installer.sh
 
 symlink=setgittool

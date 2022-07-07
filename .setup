@@ -12,7 +12,12 @@ create_mycommandsrepo() {
     . ~/.bashrc
 }
 
-[[ -d $commandsRepoRoot ]] || ( echo "mycommands repo doesn't exist. creating now..."; create_mycommandsrepo )
+if [[ ! -d $commandsRepoRoot ]]; then
+	echo "mycommands repo doesn't exist. creating now..."; 
+	create_mycommandsrepo
+	export PATH=$PATH:$commandsRepoRoot
+	export MYCOMMANDSREPO=$commandsRepoRoot
+fi
 
 echo -e "\n[Linux_Tools] $(pwd)"
 

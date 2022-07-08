@@ -10,7 +10,15 @@ prereq --install ".prereq"
 replacement='GRUB_CMDLINE_LINUX_DEFAULT="quiet splash video=hyperv_fb:1920x1080"';
 [[ $(sudo cat "/etc/default/grub" | grep "$replacement") ]] && echo -e "${GREEN}[display] Already configured. Exiting.${RESET}" && exit 0
 
-echo -e "${YELLOW}[display] Setup process started.${RESET}"
+echo -e "${YELLOW}[Configuring...]${RESET}"
 
+echo -e "${YELLOW}[display] Setup process started.${RESET}"
 ./display_settings_configurer.sh
 echo -e "${GREEN}[display] Setup finished.${GREEN}"
+
+echo -e "${YELLOW}[autologin] Setup process started.${RESET}"
+./autologin_configurer.sh
+echo -e "${GREEN}[autologin] Setup finished.${GREEN}"
+
+echo -e "${YELLOW}[Configured.]${RESET}"
+

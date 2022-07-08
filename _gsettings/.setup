@@ -5,11 +5,11 @@ cat .gsettings | grep -v "^#" | xargs -I X echo "gsettings set X" | bash
 
 export curFavApps=$(gsettings get org.gnome.shell favorite-apps | sed s/.$//)
 # cat .favApps | xargs -I X echo "[[ \$(echo $curFavApps | grep X) ]] || curFavApps=\"\$curFavApps, X\"" | bash
+
 for v in $(cat .favApps | xargs -I X echo X)
 do
     [[ $(echo "$curFavApps" | grep $v) ]] || curFavApps="$curFavApps, '$v'"
 done
-# curFavApps="$curFavApps]"
-# echo "final: $curFavApps"
+
 gsettings set org.gnome.shell favorite-apps "$curFavApps]"
 echo -e "${BLUE}${BOLD}Finished GSETTINGS configuration.${RESET}"

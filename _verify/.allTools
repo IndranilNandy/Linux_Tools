@@ -19,4 +19,6 @@ p4merge:p4merge
 wine:wine
 winmerge:winmerge
 xrdp:xrdp
+gnome-shell-extensions
+gnome-tweaks
 

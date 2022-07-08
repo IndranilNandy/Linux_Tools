@@ -12,7 +12,7 @@ prereq --install ".prereq"
 [[ -n $(which git) ]] && echo -e "${GREEN}[git] Already installed. Exiting.${RESET}" 
 # && exit 0
 
-echo "${YELLOW}[git] Setup process started.${RESET}"
+echo -e "${YELLOW}[git] Setup process started.${RESET}"
 
 ./git_installer.sh
 

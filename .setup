@@ -54,6 +54,6 @@ missing_prereqs $file | xargs -I FILE find "$ToolsDir" -name FILE | xargs -I INP
 echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | egrep -v "exclude|_gsettings" | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT | bash)" | bash
 echo
 (cd ./_gsettings; ./.setup)
-(cd ./_verify; ./.verify)
+(cd ./_verify; chmod +x .verify; ./.verify)
 
 echo -e "${CYAN}FULL SETUP COMPLETED${RESET}"

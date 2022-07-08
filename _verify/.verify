@@ -25,4 +25,4 @@ do
     fi
 done
 
-echo -e "${BLUE}${BOLD}Verifying completed${RESET}"
+echo -e "${BLUE}${BOLD}Verification completed${RESET}"

@@ -18,4 +18,4 @@ echo "${YELLOW}[git] Setup process started.${RESET}"
 
 symlink=setgittool
 yes | sudo ln -i -s $(pwd)/configurer/genericDiffAndMergeToolConfigurer/setgittool $MYCOMMANDSREPO/$symlink && echo -e "\nCreated symbolink link [$symlink] in $MYCOMMANDSREPO"
-echo "${GREEN}[git] Setup finished.${RESET}"
+echo -e "${GREEN}[git] Setup finished.${RESET}"

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# sed 's/.*:\(.*\)/\1/' .allTools | xargs -I X echo "[[ "\$\(ifinstalled X\)" ]] && echo "X: yes"" | bash
+echo -e "${BLUE}${BOLD}Verifying installation${RESET}"
+for x in $(cat .allTools)
+do
+    # echo $x
+    cmd=$(echo "$x" | sed 's/.*:\(.*\)/\1/')
+    tool=$(echo "$x" | sed 's/\(.*\):.*/\1/')
+    if [[ $(ifinstalled $cmd) ]]; then
+        echo "$tool:installed"
+    else
+        case $cmd in
+            winmerge)
+                if [[ -e $HOME/'.wine/drive_c/Program Files/WinMerge/WinMergeU.exe' ]]; then
+                    echo "$tool:installed"
+                else 
+                    echo "$tool:NOT installed"
+                fi
+                ;;
+            *)
+                echo "$tool:NOT installed"
+                ;;
+        esac
+    fi
+done
+
+echo -e "${BLUE}${BOLD}Verifying completed${RESET}"

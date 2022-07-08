@@ -1,0 +1,9 @@
+# Change to dark theme
+# https://fostips.com/light-dark-command-ubuntu-22-04/
+org.gnome.desktop.interface color-scheme 'prefer-dark'
+
+# https://linuxconfig.org/how-to-customize-dock-panel-on-ubuntu-20-04-focal-fossa-linux
+org.gnome.shell.extensions.dash-to-dock dock-position LEFT
+org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 24
+org.gnome.shell.extensions.dash-to-dock extend-height false
+# org.gnome.shell.extensions.dash-to-dock unity-backlit-items true

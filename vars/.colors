@@ -1,0 +1,16 @@
+# All codes here-- https://dev.to/ifenna__/adding-colors-to-bash-scripts-48g4
+
+export RED="\e[31m"
+export GREEN="\e[32m"
+export YELLOW="\e[33m"
+export BLUE="\e[34m"
+export MAGENTA="\e[35m"
+export CYAN="\e[36m"
+export WHITE="\e[97m"
+
+export RESET="\e[0m"
+export BOLD="\e[1m"
+export FAINT="\e[2m"
+export ITALICS="\e[3m"
+export UNDERLINED="\e[4m"
+

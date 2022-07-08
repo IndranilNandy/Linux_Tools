@@ -4,11 +4,12 @@
 prereq --install ".prereq"
 
 # Exit if still missing any prerequisite
-[[ $(prereq --missing ".prereq") ]] && echo "One or more prerequisites are still missing. Exiting." && exit 0
+[[ $(prereq --missing ".prereq") ]] && echo -e "${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
 
 # Check if it is already installed
-[[ -n $(which wine) ]] && echo "[wine] Already installed. Exiting." && exit 0
+[[ -n $(which wine) ]] && echo -e "${GREEN}[wine] Already installed. Exiting.${RESET}" && exit 0
 
-echo "[wine] Setup process started."
+echo -e "${YELLOW}[wine] Setup process started.${RESET}"
 
 ./wine_installer.sh
+echo -e "${GREEN}[wine] Setup finished.${RESET}"

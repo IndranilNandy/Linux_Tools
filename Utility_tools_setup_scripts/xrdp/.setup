@@ -4,11 +4,12 @@
 prereq --install ".prereq"
 
 # Exit if still missing any prerequisite
-[[ $(prereq --missing ".prereq") ]] && echo "One or more prerequisites are still missing. Exiting." && exit 0
+[[ $(prereq --missing ".prereq") ]] && echo -e "${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
 
 # Check if it is already installed
-[[ -n $(which xrdp) ]] && echo "[xrdp] Already installed. Exiting." && exit 0
+[[ -n $(which xrdp) ]] && echo -e "${GREEN}[xrdp] Already installed. Exiting.${RESET}" && exit 0
 
-echo "[xrdp] Setup process started."
+echo -e "${YELLOW}[xrdp] Setup process started.${RESET}"
 
 ./xrdp_server_installer.sh
+echo -e "${GREEN}[xrdp] Setup finished.${RESET}"

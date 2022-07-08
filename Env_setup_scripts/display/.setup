@@ -4,12 +4,13 @@
 prereq --install ".prereq"
 
 # Exit if still missing any prerequisite
-[[ $(prereq --missing ".prereq") ]] && echo "One or more prerequisites are still missing. Exiting." && exit 0
+[[ $(prereq --missing ".prereq") ]] && echo -e "${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
 
 # Check if it is already installed
 replacement='GRUB_CMDLINE_LINUX_DEFAULT="quiet splash video=hyperv_fb:1920x1080"';
-[[ $(sudo cat "/etc/default/grub" | grep "$replacement") ]] && echo "[display] Already configured. Exiting..." && exit 0
+[[ $(sudo cat "/etc/default/grub" | grep "$replacement") ]] && echo -e "${GREEN}[display] Already configured. Exiting.${RESET}" && exit 0
 
-echo "[display] Setup process started."
+echo -e "${YELLOW}[display] Setup process started.${GREEN}"
 
 ./display_settings_configurer.sh
+echo -e "${GREEN}[display] Setup finished.${GREEN}"

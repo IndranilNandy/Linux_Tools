@@ -4,15 +4,16 @@
 prereq --install ".prereq"
 
 # Exit if still missing any prerequisite
-[[ $(prereq --missing ".prereq") ]] && echo "One or more prerequisites are still missing. Exiting." && exit 0
+[[ $(prereq --missing ".prereq") ]] && echo -e "${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
 
 # Check if it is already installed
-[[ -n $(which code) ]] && echo "[vscode] Already installed. Exiting." && exit 0
+[[ -n $(which code) ]] && echo -e "${GREEN}[vscode] Already installed. Exiting.${RESET}" && exit 0
 
-echo "[vscode] Setup process started."
+echo -e "${YELLOW}[vscode] Setup process started.${RESET}"
 
 # Enable execute permission on all shell scripts
 find . -name "*.sh" | xargs -n1 chmod +x
 ./vscode_installer.sh
 
 yes | sudo ln -s -i $(pwd)/extensions/refresh_extension_list.sh $MYCOMMANDSREPO/code-ext
+echo -e "${GREEN}[vscode] Setup finished.${RESET}"

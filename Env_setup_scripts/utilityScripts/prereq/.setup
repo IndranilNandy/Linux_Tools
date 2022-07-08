@@ -19,11 +19,12 @@ missing_prereqs $file | xargs -I FILE find "$ToolsDir" -name FILE | xargs -I INP
 
 # Exit if still missing any prerequisite
 # export -f missing_prereqs
-[[ $(missing_prereqs $file) ]] && echo "One or more prerequisites are still missing. Exiting." && exit 0
+[[ $(missing_prereqs $file) ]] && echo -e "${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
 
 # Check if already installed
-[[ $(which prereq) ]] && echo "[prereq] Already installed. Exiting..." && exit 0
+[[ $(which prereq) ]] && echo -e "${GREEN}[prereq] Already installed. Exiting.${RESET}" && exit 0
 
-echo "[prereq] Setup process started."
+echo -e "${YELLOW}[prereq] Setup process started.${RESET}"
 
 yes | sudo ln -i -s $(pwd)/prereq.sh $MYCOMMANDSREPO/prereq
+echo -e "${GREEN}[prereq] Setup finished.${RESET}"

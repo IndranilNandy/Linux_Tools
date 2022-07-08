@@ -4,11 +4,12 @@
 prereq --install ".prereq"
 
 # Exit if still missing any prerequisite
-[[ $(prereq --missing ".prereq") ]] && echo "One or more prerequisites are still missing. Exiting." && exit 0
+[[ $(prereq --missing ".prereq") ]] && echo -e "${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
 
 # Check if it is already installed
-[[ -n $(ifinstalled google-chrome-stable) ]] && echo "[google-chrome-stable] Already installed. Exiting." && exit 0
+[[ -n $(ifinstalled google-chrome-stable) ]] && echo -e "${GREEN}[google-chrome-stable] Already installed. Exiting.${RESET}" && exit 0
 
-echo "[google-chrome-stable] Setup process started."
+echo -e "${YELLOW}[google-chrome-stable] Setup process started.${RESET}"
 
 ./chrome_installer.sh
+echo -e "${GREEN}[google-chrome-stable] Setup finished.${RESET}"

@@ -4,16 +4,18 @@
 prereq --install ".prereq"
 
 # Exit if still missing any prerequisite
-[[ $(prereq --missing ".prereq") ]] && echo "One or more prerequisites are still missing. Exiting." && exit 0
+[[ $(prereq --missing ".prereq") ]] && echo -e"${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
 
 # Check if it is already installed
 # Intentionally skipping the following check, since the batch installation script should anyway preceed with git installation.
 # DO NOT REMOVE THE FOLLOWING LINE PERMANENTLY
-# [[ -n $(which git) ]] && echo "[git] Already installed. Exiting." && exit 0
+[[ -n $(which git) ]] && echo -e "${GREEN}[git] Already installed. Exiting.${RESET}" 
+# && exit 0
 
-echo "[git] Setup process started."
+echo "${YELLOW}[git] Setup process started.${RESET}"
 
 ./git_installer.sh
 
 symlink=setgittool
 yes | sudo ln -i -s $(pwd)/configurer/genericDiffAndMergeToolConfigurer/setgittool $MYCOMMANDSREPO/$symlink && echo -e "\nCreated symbolink link [$symlink] in $MYCOMMANDSREPO"
+echo "${GREEN}[git] Setup finished.${RESET}"

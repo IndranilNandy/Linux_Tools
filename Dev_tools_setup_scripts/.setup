@@ -1,5 +1,6 @@
 #!/bin/bash
 
-echo -e "\n[Dev_tools_setup_scripts] $(pwd)"
+echo -e "\n${YELLOW}${BOLD}[Dev_tools_setup_scripts] [$(pwd)] Starting setup.${RESET}"
 echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT | bash)" | bash
+echo -e "\n${GREEN}${BOLD}[Dev_tools_setup_scripts] [$(pwd)] Setup completed.${RESET}"
 echo

@@ -19,7 +19,11 @@ if [[ ! -d $commandsRepoRoot ]]; then
 	export MYCOMMANDSREPO=$commandsRepoRoot
 fi
 
-echo -e "\n[Linux_Tools] $(pwd)"
+# cat ./vars/.colors | xargs -I X echo "export X" | bash
+chmod +x ./vars/.colors
+. ./vars/.colors
+
+echo -e "\n${MAGENTA}[Linux_Tools] $(pwd)${RESET}"
 
 missing_prereqs() {
     prereqfile=${1}
@@ -45,7 +49,8 @@ missing_prereqs $file | xargs -I FILE find "$ToolsDir" -name FILE | xargs -I INP
 
 # Exit if still missing any prerequisite
 # export -f missing_prereqs
-[[ $(missing_prereqs $file) ]] && echo "One or more prerequisites are still missing. Exiting." && exit 0
+[[ $(missing_prereqs $file) ]] && echo -e "${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
 
 echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | grep -v exclude | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT | bash)" | bash
 echo
+echo -e "${CYAN}FULL SETUP COMPLETED${RESET}"

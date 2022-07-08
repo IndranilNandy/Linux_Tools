@@ -16,11 +16,9 @@ case ${1} in
         sudo apt update
         case ${2} in
             --FULL)
-                echo "ALL"
                 cat $fullList | xargs -I X echo "[[ \$(ifinstalled X) ]] || ( echo "Installing X" && ( yes | sudo apt install X ) && ( [[ \$(cat $localList | grep X) ]] || echo X >> $localList ) )" | bash
                 ;;
             --LOCAL)
-                # echo "ALL"
                 # cat $localList | xargs -I X echo "[[ \$(ifinstalled X) ]] || ( echo "Installing X" && ( yes | sudo apt install X ) )" | bash
                 [[ ${3} ]] && cat ${3} | xargs -I X echo "[[ \$(ifinstalled X) ]] || \
                         ( echo "Installing X" && \
@@ -32,7 +30,6 @@ case ${1} in
                     | bash
                 ;;
             *)
-                echo ${2}
                 echo "[[ \$(ifinstalled ${2}) ]] || \
                         ( echo "Installing ${2}" && \
                             ( yes | sudo apt install ${2}  && \
@@ -47,14 +44,12 @@ case ${1} in
     --uninstall)
         case ${2} in
             --FULL)
-                echo "ALL"
                 cat $localList | xargs -I X echo "[[ \$(ifinstalled X) ]] && ( echo "Uninstalling X" && ( yes | sudo apt remove X ) && sed -i /^X$/d $localList )" | bash
                 ;;
             --LOCAL)
                 [[ ${3} ]] && cat ${3} | xargs -I X echo "[[ \$(ifinstalled X) ]] && ( echo "Uninstalling X" && ( yes | sudo apt remove X ) && sed -i /^X$/d $localList )" | bash
                 ;;
             *)
-                echo ${2}
                 echo "[[ \$(ifinstalled ${2}) ]] && ( echo "Uninstalling ${2}" && ( yes | sudo apt remove ${2} ) && sed -i /^${2}$/d $localList )" | bash
                 ;;
         esac

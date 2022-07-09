@@ -6,7 +6,8 @@ org.gnome.desktop.interface color-scheme 'prefer-dark'
 org.gnome.shell.extensions.dash-to-dock dock-position LEFT
 org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 24
 org.gnome.shell.extensions.dash-to-dock extend-height false
-# org.gnome.shell.extensions.dash-to-dock unity-backlit-items true
+org.gnome.shell.extensions.dash-to-dock unity-backlit-items false
+org.gnome.shell.extensions.dash-to-dock click-action minimize
 
 org.gnome.desktop.screensaver ubuntu-lock-on-suspend false
 org.gnome.desktop.screensaver logout-enabled false

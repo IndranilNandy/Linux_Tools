@@ -25,6 +25,9 @@ chmod +x ./vars/.colors
 
 echo -e "\n${MAGENTA}[Linux_Tools] $(pwd)${RESET}"
 
+# Installing moreutils explicitly before anything since all other modules need it
+sudo apt list --installed | grep moreutils || (yes | sudo apt install moreutils)
+
 missing_prereqs() {
     prereqfile=${1}
 

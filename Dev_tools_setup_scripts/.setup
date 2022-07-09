@@ -1,6 +1,6 @@
 #!/bin/bash
 
 echo -e "\n${YELLOW}${BOLD}[Dev_tools_setup_scripts] [$(pwd)] Starting setup.${RESET}"
-echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | xargs -I INPUT echo -e "(cd \$(dirname INPUT) && echo -e \\n{\\nINPUT\\n} >> .logs 2>> .errors | bash)" | bash
+echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | xargs -I INPUT echo -e "(cd \$(dirname INPUT) && echo -e \\n{\\nINPUT\\n} >> >(ts '[%Y-%m-%d %H:%M:%S]' > .logs) 2>> >(ts '[%Y-%m-%d %H:%M:%S]' > .errors) | bash)" | bash
 echo -e "\n${GREEN}${BOLD}[Dev_tools_setup_scripts] [$(pwd)] Setup completed.${RESET}"
 echo

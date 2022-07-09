@@ -1,6 +1,6 @@
 #!/bin/bash
 
 echo -e "\n${YELLOW}${BOLD}[Utility_tools_setup_scripts] [$(pwd)] Starting setup.${RESET}"
-echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT | bash)" | bash
+echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | xargs -I INPUT echo -e "(cd \$(dirname INPUT) && echo -e \\n{\\nINPUT\\n} >> .logs 2>> .errors | bash)" | bash
 echo -e "\n${GREEN}${BOLD}[Utility_tools_setup_scripts] [$(pwd)] Setup completed.${RESET}"
 echo

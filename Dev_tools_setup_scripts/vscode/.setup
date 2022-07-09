@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Insert entry of this tool in .allTools. This is to be used in the verification stage post setup.
+grep -q "vscode:" ../../_verify/.allTools || echo "vscode:code" >>../../_verify/.allTools
+
 #Check if all prerequisites are installed, and install the missing ones
 prereq --install ".prereq"
 

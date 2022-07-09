@@ -7,16 +7,16 @@ create_mycommandsrepo() {
     expPath="export PATH=$PATH:$commandsRepoRoot"
     expRoot="export MYCOMMANDSREPO=$commandsRepoRoot"
 
-    [[ $(cat ~/.bashrc | grep "$commandsRepoRoot") ]] || echo "$expPath" >> ~/.bashrc
-    [[ $(cat ~/.bashrc | grep "$expRoot") ]] || echo "$expRoot" >> ~/.bashrc
+    [[ $(cat ~/.bashrc | grep "$commandsRepoRoot") ]] || echo "$expPath" >>~/.bashrc
+    [[ $(cat ~/.bashrc | grep "$expRoot") ]] || echo "$expRoot" >>~/.bashrc
     . ~/.bashrc
 }
 
 if [[ ! -d $commandsRepoRoot ]]; then
-	echo "mycommands repo doesn't exist. creating now..."; 
-	create_mycommandsrepo
-	export PATH=$PATH:$commandsRepoRoot
-	export MYCOMMANDSREPO=$commandsRepoRoot
+    echo "mycommands repo doesn't exist. creating now..."
+    create_mycommandsrepo
+    export PATH=$PATH:$commandsRepoRoot
+    export MYCOMMANDSREPO=$commandsRepoRoot
 fi
 
 # cat ./vars/.colors | xargs -I X echo "export X" | bash
@@ -29,9 +29,9 @@ missing_prereqs() {
     prereqfile=${1}
 
     missing=$(
-        cat $prereqfile | 
-    xargs -I XYZ echo "[[ ! \$(apt --installed list 2> /dev/null | grep XYZ) && ! \$(which XYZ) ]] && echo 'XYZ'" | 
-    bash
+        cat $prereqfile |
+            xargs -I XYZ echo "[[ ! \$(apt --installed list 2> /dev/null | grep XYZ) && ! \$(which XYZ) ]] && echo 'XYZ'" |
+            bash
     )
 
     echo "$missing"
@@ -51,9 +51,16 @@ missing_prereqs $file | xargs -I FILE find "$ToolsDir" -name FILE | xargs -I INP
 # export -f missing_prereqs
 [[ $(missing_prereqs $file) ]] && echo -e "${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
 
-echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | egrep -v "exclude|_gsettings" | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT | bash)" | bash
+echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | grep -E -v "exclude|_gsettings" | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT | bash)" | bash
 echo
-(cd ./_gsettings; ./.setup)
-(cd ./_verify; chmod +x .verify; ./.verify)
+(
+    cd ./_gsettings
+    ./.setup
+)
+(
+    cd ./_verify
+    chmod +x .verify
+    ./.verify
+)
 
 echo -e "${CYAN}FULL SETUP COMPLETED${RESET}"

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Insert entry of this tool in .allTools. This is to be used in the verification stage post setup.
+grep -q "xrdpGnome:" ../../_verify/.allTools || echo "xrdpGnome:setXrdpGnuSession" >>../../_verify/.allTools
+
 #Check if all prerequisites are installed, and install the missing ones
 prereq --install ".prereq"
 
@@ -22,4 +25,3 @@ yes | sudo ln -i -s $(pwd)/.revert $MYCOMMANDSREPO/revert2XrdpSession && echo -e
 
 # sudo reboot
 echo -e "${GREEN}[xrdpGnuSessionSetup] Setup finished.${RESET}"
-

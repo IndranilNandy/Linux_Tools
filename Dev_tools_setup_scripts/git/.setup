@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Insert entry of this tool in .allTools. This is to be used in the verification stage post setup.
+grep -q "git:" ../../_verify/.allTools || echo "git:git" >>../../_verify/.allTools
+
 #Check if all prerequisites are installed, and install the missing ones
 prereq --install ".prereq"
 
@@ -7,14 +10,16 @@ prereq --install ".prereq"
 [[ $(prereq --missing ".prereq") ]] && echo -e"${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
 
 # Check if it is already installed
-# Intentionally skipping the following check, since the batch installation script should anyway preceed with git installation.
-# DO NOT REMOVE THE FOLLOWING LINE PERMANENTLY
-[[ -n $(which git) ]] && echo -e "${GREEN}[git] Already installed. Exiting.${RESET}" 
-# && exit 0
-
-echo -e "${YELLOW}[git] Setup process started.${RESET}"
-
-./git_installer.sh
+if [[ -n $(which git) ]]; then
+    echo -e "${GREEN}[git] Already installed. Exiting.${RESET}"
+    echo "Checking if configured already"
+    [[ $(which setgittool) ]] || ./configurer/git_configurer.sh
+    ifinstalled gcmcore || ./gcm_installer.sh
+    echo "Git configuration finished"
+else
+    echo -e "${YELLOW}[git] Setup process started.${RESET}"
+    ./git_installer.sh
+fi
 
 symlink=setgittool
 yes | sudo ln -i -s $(pwd)/configurer/genericDiffAndMergeToolConfigurer/setgittool $MYCOMMANDSREPO/$symlink && echo -e "\nCreated symbolink link [$symlink] in $MYCOMMANDSREPO"

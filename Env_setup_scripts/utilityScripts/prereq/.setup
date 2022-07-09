@@ -1,12 +1,15 @@
 #!/bin/bash
 
+# Insert entry of this tool in .allTools. This is to be used in the verification stage post setup.
+grep -q "prereq:" ../../../_verify/.allTools || echo "prereq:prereq" >>../../../_verify/.allTools
+
 missing_prereqs() {
     prereqfile=${1}
 
     missing=$(
-        cat $prereqfile | 
-    xargs -I XYZ echo "[[ ! \$(apt --installed list 2> /dev/null | grep XYZ) && ! \$(which XYZ) ]] && echo 'XYZ'" | 
-    bash
+        cat $prereqfile |
+            xargs -I XYZ echo "[[ ! \$(apt --installed list 2> /dev/null | grep XYZ) && ! \$(which XYZ) ]] && echo 'XYZ'" |
+            bash
     )
 
     echo "$missing"

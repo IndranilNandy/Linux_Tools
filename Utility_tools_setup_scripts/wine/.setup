@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Insert entry of this tool in .allTools. This is to be used in the verification stage post setup.
+grep -q "wine:" ../../_verify/.allTools || echo "wine:wine" >>../../_verify/.allTools
+
 #Check if all prerequisites are installed, and install the missing ones
 prereq --install ".prereq"
 

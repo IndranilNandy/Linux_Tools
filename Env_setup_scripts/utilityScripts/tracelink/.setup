@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# Intentionally leaving prereq-check. 
+# Insert entry of this tool in .allTools. This is to be used in the verification stage post setup.
+grep -q "tracelink:" ../../../_verify/.allTools || echo "tracelink:tracelink" >>../../../_verify/.allTools
+
+# Intentionally leaving prereq-check.
 # Reason 1: Many of the other tools, includeing prereq have dependency on this. So, it will create circular dependency while checking for prereq using 'prereq' command
 # Reason 2: As of now, it doesn't really have a dependency on any other tool in our repo.
 

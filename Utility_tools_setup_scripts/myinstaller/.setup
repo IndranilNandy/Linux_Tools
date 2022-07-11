@@ -10,7 +10,7 @@ prereq --install ".prereq"
 xargs -I X echo "grep -q X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <.localAptPkgTools | bash
 
 # Check if it is already installed
-[[ -n $(which myinstaller) ]] && echo -e "${GREEN}[myinstaller] Already installed. Exiting.${RESET}" && exit 0
+[[ -n $(which myinstaller) ]] && echo -e "\n${GREEN}[myinstaller] Already installed. Exiting.${RESET}" && exit 0
 
 echo -e "${YELLOW}[myinstaller] Setup process started.${RESET}"
 

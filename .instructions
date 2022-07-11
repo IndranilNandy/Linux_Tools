@@ -4,3 +4,10 @@ Entrypoint directory:
 Entry script:
     ./.setup: setup PATH and other env variables
               invoke full installation and configuration script
+
+Arguments:
+    --type=[min|default|dev|full]
+        min < default < dev < full
+    --log-target=[term|file]
+        term: terminal - this is default
+        file: logs and errors to .logs and .errors respectively

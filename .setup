@@ -54,7 +54,7 @@ missing_prereqs $file | xargs -I FILE find "$ToolsDir" -name FILE | xargs -I INP
 # export -f missing_prereqs
 [[ $(missing_prereqs $file) ]] && echo -e "${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
 
-echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | grep -E -v "exclude|_gsettings" | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT | bash)" | bash
+echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | grep -E -v "exclude|_gsettings" | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT "$*" | bash)" | bash
 echo
 (
     cd ./_gsettings

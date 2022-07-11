@@ -10,7 +10,7 @@ prereq --install ".prereq"
 [[ $(prereq --missing ".prereq") ]] && echo -e "${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
 
 # Check if it is already installed
-[[ -n $(which ifinstalled) ]] && echo -e "${GREEN}[ifinstalled] Already installed. Exiting.${RESET}" && exit 0
+[[ -n $(which ifinstalled) ]] && echo -e "\n${GREEN}[ifinstalled] Already installed. Exiting.${RESET}" && exit 0
 
 echo -e "${YELLOW}[ifinstalled] Setup process started.${RESET}"
 

@@ -11,7 +11,7 @@ echo -e "${YELLOW}[Configuring...]${RESET}"
 # Check if display is already configured
 replacement='GRUB_CMDLINE_LINUX_DEFAULT="quiet splash video=hyperv_fb:1920x1080"'
 if [[ $(sudo cat "/etc/default/grub" | grep "$replacement") ]]; then
-    echo -e "${GREEN}[display] Already configured. Exiting.${RESET}"
+    echo -e "\n${GREEN}[display] Already configured. Exiting.${RESET}"
 else
     echo -e "${YELLOW}[display] Setup process started.${RESET}"
     ./display_settings_configurer.sh

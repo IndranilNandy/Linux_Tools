@@ -7,5 +7,7 @@ gnome-software
 meld
 gnome-shell-extensions
 gnome-tweaks
-
-
+apt-file
+net-tools
+openssh-server
+ubuntu-restricted-extras

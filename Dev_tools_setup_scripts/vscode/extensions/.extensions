@@ -54,3 +54,9 @@ vscjava.vscode-gradle
 vscjava.vscode-spring-boot-dashboard
 
 vscjava.vscode-spring-initializr
+
+eamodio.gitlens
+
+ms-vscode-remote.remote-containers
+
+naco-siren.gradle-language

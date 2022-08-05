@@ -14,5 +14,6 @@ prereq --install ".prereq"
 
 echo -e "${YELLOW}[docker] Setup process started.${RESET}"
 
-./docker_installer.sh
+# ./docker_installer.sh
+./docker_installer_using_repo.sh
 echo -e "${GREEN}[docker] Setup finished.${RESET}"

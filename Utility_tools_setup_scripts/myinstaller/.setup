@@ -8,6 +8,7 @@ prereq --install ".prereq"
 
 # Putting all tools again, if missed during post installation last time
 xargs -I X echo "grep -q X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <.localAptPkgTools | bash
+xargs -I X echo "grep -q X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <.fullAptPkgTools | bash
 
 # Check if it is already installed
 [[ -n $(which myinstaller) ]] && echo -e "\n${GREEN}[myinstaller] Already installed. Exiting.${RESET}" && exit 0

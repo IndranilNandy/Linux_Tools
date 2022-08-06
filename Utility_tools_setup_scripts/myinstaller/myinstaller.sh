@@ -69,3 +69,5 @@ case ${1} in
     cat $curDir/myinstaller.help
     ;;
 esac
+
+xargs -I X echo "grep -q X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <.fullAptPkgTools | bash

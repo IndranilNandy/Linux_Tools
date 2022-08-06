@@ -20,6 +20,6 @@ sudo apt-get update
 yes | sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 sudo usermod -aG docker ${USER}
-echo "su - ${USER}"
+# echo "su - ${USER}"
 su - ${USER}
 id -nG

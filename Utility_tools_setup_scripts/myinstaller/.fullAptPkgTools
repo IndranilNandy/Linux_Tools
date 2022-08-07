@@ -10,6 +10,6 @@ gnome-tweaks
 apt-file
 net-tools
 openssh-server
-ubuntu-restricted-extras
 timeshift
 openjdk-18-jdk
+conky-all

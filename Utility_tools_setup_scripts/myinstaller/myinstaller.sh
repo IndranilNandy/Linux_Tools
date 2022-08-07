@@ -70,4 +70,4 @@ case ${1} in
     ;;
 esac
 
-xargs -I X echo "grep -q X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <.fullAptPkgTools | bash
+xargs -I X echo "grep -q X  ../../_verify/.allTools || ( echo X >> $localList && echo \"X:X\" >> ../../_verify/.allTools )" < $fullList | bash

@@ -13,3 +13,5 @@ openssh-server
 timeshift
 openjdk-18-jdk
 conky-all
+gitk
+git-gui

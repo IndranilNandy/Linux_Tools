@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#Check if all prerequisites are installed, and install the missing ones
+prereq --install ".prereq"
+
+# Exit if still missing any prerequisite
+[[ $(prereq --missing ".prereq") ]] && echo -e "${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
+
+echo -e "${YELLOW}[Started fetching all repositories]${RESET}"
+
+# # Check if display is already configured
+# replacement='GRUB_CMDLINE_LINUX_DEFAULT="quiet splash video=hyperv_fb:1920x1080"'
+# if [[ $(sudo cat "/etc/default/grub" | grep "$replacement") ]]; then
+#     echo -e "\n${GREEN}[display] Already configured. Exiting.${RESET}"
+# else
+#     echo -e "${YELLOW}[display] Setup process started.${RESET}"
+#     ./display_settings_configurer.sh
+#     echo -e "${GREEN}[display] Setup finished.${GREEN}"
+# fi
+
+# # Check if autologin is already configured
+# replacement="AutomaticLogin = $(whoami)"
+# if [[ $(sudo cat "/etc/gdm3/custom.conf" | grep "$replacement") ]]; then
+#     echo -e "${GREEN}[autologin] Already configured. Exiting.${RESET}"
+# else
+#     echo -e "${YELLOW}[autologin] Setup process started.${RESET}"
+#     ./autologin_configurer.sh
+#     echo -e "${GREEN}[autologin] Setup finished.${GREEN}"
+# fi
+
+./repo_fetch.sh
+echo -e "${YELLOW}[Completed fetching all repositories.]${RESET}"

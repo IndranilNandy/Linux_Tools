@@ -1,0 +1,2 @@
+--all:  [Optional] List all available patches on top of last commit id, in decreasing timestamp for the current branch 
+--branch=<branch_name>:   List all available patches on top of last commit id, in decreasing timestamp for the specified branch

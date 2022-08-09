@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
-. ../../.systemConfig
-# . ./config/.localConfig
+if [[ -L $(which wsd) ]]; then
+    curDir="$(dirname "$(tracelink wsd)")"
+else
+    curDir="$(pwd)"
+fi
+
+. "$curDir"/../../.systemConfig
 
 process() {
     remote_repo=${1}
@@ -21,7 +26,7 @@ process() {
         last_commit_id=$(git log --max-count=1 | grep commit | cut -d' ' -f2)
         timeNowSecondsEpoch=$(date +%s)
 
-        echo "$timeNowSecondsEpoch":"$last_commit_id":"$(date --date=@"$timeNowSecondsEpoch")" | tee "$dest_branch"/.commitTracker >/dev/null
+        echo "$timeNowSecondsEpoch"-"$last_commit_id"-"$(date --date=@"$timeNowSecondsEpoch")" | tee >>"$dest_branch"/.commitTracker 2>/dev/null
 
         # FInd the target DEST path -- diffBackupRootDir/hostname/remoteRepoName/currentBranch/lastCommitId/
         dest="$dest_branch"/"$last_commit_id"
@@ -32,9 +37,9 @@ process() {
 
         # Concat untracked files and git diff, and calculate sha1 checksum (REPOSHA)
         reposha=$(git diff | cat - "$dest"/.tmp | sha1sum | cut -d' ' -f1)
-
+        echo "last_commit_id=$last_commit_id    reposha=$reposha"
         # Create .changeTracker file in DEST, tracking repo status changes with respect to timestamp. Entry format>> timestamp:REPOSHA:ReadableDate
-        echo "$timeNowSecondsEpoch":"$reposha":"$(date --date=@"$timeNowSecondsEpoch")" | tee "$dest"/.changeTracker >/dev/null
+        echo "$timeNowSecondsEpoch"-"$reposha"-"$(date --date=@"$timeNowSecondsEpoch")" | tee >>"$dest"/.changeTracker 2>/dev/null
 
         dest_sha="$dest"/"$reposha"
 
@@ -45,6 +50,9 @@ process() {
         mkdir -p "$dest_sha"/untracked
 
         # Put 'git diff' patch in DEST_SHA
+        # NOTE: ISSUE FOUND WHEN YOU DELETE THE WHOLE LOCAL WORKSPACE AND RE-CLONE AGAIN AND DO THE SAME CHANGE. TAKE A DIFF-BACKUP. THE NEWLY CREATED .PATCH FILE WILL HAVE DIFFERENT NAME, THOUGH THE CONTENT WILL REMAIN SAME.
+        # THIS HAPPENS BECUASE $DESH_SHA DOESN'T EXIST AND THE PATCH FILE IS CREATED WITH CURRENT TIMESTAMP. HENCE ANYWAYS IT IS CREATED. THOUGH IT SHOULDN'T CREATE ANY PROBLEM, JUST ONE UNNECCESSARY FILE WILL BE CREATED AFTER EACH WORKSPACE DELETION.
+
         git diff | tee "$dest_sha"/"$timeNowSecondsEpoch".patch >/dev/null
 
         # Copy all the untracked files in DEST_SHA/untracked/
@@ -62,7 +70,9 @@ process() {
 
 echo -e "${BLUE}${BOLD}\nBacking up repo-diff started${RESET}"
 echo -e "\nLocal Backup location: $workspace_backup_local\nRemote Backup location: $workspace_backup_remote"
-for x in $(cat ./config/.allRepoConfig); do
+repoConfig="$curDir"/config/.allRepoConfig
+
+for x in $(cat "$repoConfig"); do
     repo=$(echo "$x" | sed 's/\(.*\)#.*#.*/\1/')
     remote_repo=$(echo "$repo" | sed "s/.*\/$repo_username\/\(.*\)\.git/\1/")
 

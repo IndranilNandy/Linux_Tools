@@ -1,0 +1,1 @@
+--all:  Create backup of 'git diff' + untracked files for all repositories specified in allRepoConfig

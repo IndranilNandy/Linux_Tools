@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
 . ../../.systemConfig
-. ./config/.localConfig
+# . ./config/.localConfig
 
 echo -e "${BLUE}${BOLD}Fetching all repositories${RESET}"
 for x in $(cat ./config/.allRepoConfig); do
     # echo $x
-    repo=$(echo "$x" | sed 's/\(.*\)#.*#.*/\1/')
+    remoterepo=$(echo "$x" | sed 's/\(.*\)#.*#.*/\1/')
     branch=$(echo "$x" | sed 's/.*#\(.*\)#.*/\1/')
-    dir=$(echo "$x" | sed 's/.*#.*#\(.*\)/\1/')
+    localrepo=$(echo "$x" | sed 's/.*#.*#\(.*\)/\1/')
 
-    echo $repo $branch $dir
-    git clone -b "$branch" "$repo" "$userroot"/"$reporoot"/"$dir" 2>./tmp || [[ $(cat ./tmp | grep 'already exists') ]] && echo "Repo already exists" || echo "Error: $(cat ./tmp)"
+    echo -e "\nRepo: $remoterepo\nBranch: $branch\nWorkspace: $user_root/$repo_root/$localrepo\n"
+    git clone -b "$branch" "$remoterepo" "$user_root"/"$repo_root"/"$localrepo" 2>./tmp || ([[ $(cat ./tmp | grep 'already exists') ]] && echo "Repo already exists" || echo "Error: $(cat ./tmp)")
 done
 
 [[ -e ./tmp ]] && rm ./tmp

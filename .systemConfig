@@ -1,1 +1,9 @@
-userroot="$HOME/DEV"
+#!/bin/bash
+
+repo_root="GIT-REPOS"
+repo_username="IndranilNandy"
+repo_provider="https://github.com"
+
+user_root="$HOME/DEV"
+workspace_backup_local="$HOME/DEV/git_diff_backup"
+workspace_backup_remote="$HOME/thinclient_drives/Y:/Workspace_backups"

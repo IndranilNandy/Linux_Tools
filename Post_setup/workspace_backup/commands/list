@@ -1,2 +1,4 @@
---all:  [Optional] List all available patches on top of last commit id, in decreasing timestamp for the current branch 
---branch=<branch_name>:   List all available patches on top of last commit id, in decreasing timestamp for the specified branch
+list: [Optional] List all available patches on top of last commit id, in decreasing timestamp for the current branch
+list --repo=repo_name: List all available patches on top of last commit id, in decreasing timestamp for the specified repo
+list --branch=branch_name: List all available patches on top of last commit id, in decreasing timestamp for the specified branch
+list --branch=branch_name --repo=repo_name: List all available patches on top of last commit id, in decreasing timestamp for the specified repo and branch

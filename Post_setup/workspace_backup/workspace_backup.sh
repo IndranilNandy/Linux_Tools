@@ -12,7 +12,8 @@ process() {
     remote_repo=${1}
     local_repo=${2}
     branch=${3}
-
+    refvar=${4}
+    echo "Ref:$refvar"
     (
         # Move to local git repo
         cd "$user_devroot"/"$repo_root"/"$local_repo"
@@ -24,7 +25,20 @@ process() {
         # Find the target DESTDIFF path -- DESTDATA/diff
         # Find the target DESTUNTRACKED path -- DESTDATA/untracked
         dest_repo="$workspace_backup_local"/"$(hostname)"/"$remote_repo"
-        dest_branch="$dest_repo"/branches/"$cur_branch"
+        dest_reflocal="$dest_repo"/refLocal
+        dest_refRemote="$dest_repo"/refRemote
+
+        if [[ $refvar = 'local' ]]; then
+            head='HEAD'
+            dest_branch="$dest_reflocal"/branches/"$cur_branch"
+        else
+            remote_node=$(git remote show)
+            tracked_br=$(git remote show $remote_node | grep "pushes to" | grep $cur_branch | grep -oP '(?<=pushes to\s)\S+')
+            echo "tracked branch=$tracked_br"
+            head=$remote_node/$tracked_br
+            dest_branch="$dest_refRemote"/branches/"$head"
+        fi
+
         dest_data="$dest_repo"/data
         dest_diff="$dest_data"/diff
         dest_untracked="$dest_data"/untracked
@@ -35,7 +49,10 @@ process() {
         mkdir -p $dest_untracked
 
         # Create a file .commitTracker in DESTBRANCH, tracking commit-id changes with respect to timestamp. Entry format>> lastCommitId-timestamp-ReadableDate
-        last_commit_id=$(git log --max-count=1 | grep commit | cut -d' ' -f2)
+        # last_commit_id=$(git log --max-count=1 | grep commit | cut -d' ' -f2)
+
+        last_commit_id=$(git log $head --max-count=1 | grep commit | cut -d' ' -f2)
+
         timeNowSecondsEpoch=$(date +%s)
 
         echo $last_commit_id"-""$timeNowSecondsEpoch"-"$(date --date=@"$timeNowSecondsEpoch")" | tee >>"$dest_branch"/.commitTracker 2>/dev/null
@@ -48,7 +65,7 @@ process() {
         git ls-files -o --exclude-standard | tee "$dest"/.tmp >/dev/null
 
         # Concat untracked files and git diff, and calculate sha1 checksum (REPOSHA)
-        reposha=$(git diff | cat - "$dest"/.tmp | sha1sum | cut -d' ' -f1)
+        reposha=$(git diff $head | cat - "$dest"/.tmp | sha1sum | cut -d' ' -f1)
         echo "last_commit_id=$last_commit_id    reposha=$reposha"
 
         # Create .changeTracker file in DEST, tracking repo status changes with respect to timestamp. Entry format>> REPOSHA-timestamp-ReadableDate
@@ -68,10 +85,10 @@ process() {
         # NOTE: ISSUE FOUND WHEN YOU DELETE THE WHOLE LOCAL WORKSPACE AND RE-CLONE AGAIN AND DO THE SAME CHANGE. TAKE A DIFF-BACKUP. THE NEWLY CREATED .PATCH FILE WILL HAVE DIFFERENT NAME, THOUGH THE CONTENT WILL REMAIN SAME.
         # THIS HAPPENS BECUASE $DESH_SHA DOESN'T EXIST AND THE PATCH FILE IS CREATED WITH CURRENT TIMESTAMP. HENCE ANYWAYS IT IS CREATED. THOUGH IT SHOULDN'T CREATE ANY PROBLEM, JUST ONE UNNECCESSARY FILE WILL BE CREATED AFTER EACH WORKSPACE DELETION.
 
-        diffsha=$(git diff | sha1sum | cut -d' ' -f1)
-        git diff | tee "$dest_diff"/"$diffsha".patch >/dev/null
+        diffsha=$(git diff $head | sha1sum | cut -d' ' -f1)
+        git diff $head | tee "$dest_diff"/"$diffsha".patch >/dev/null
 
-        touch "$dest_sha"/"$timeNowSecondsEpoch".patch
+        # touch "$dest_sha"/"$timeNowSecondsEpoch".patch
         yes | ln -s -i "$dest_diff"/"$diffsha".patch "$dest_sha"/"$timeNowSecondsEpoch".patch
 
         # Windows doesn't support Linux symlinks. Hence, creating alternatives for windows.
@@ -99,7 +116,7 @@ process() {
         # Copy localcopy of all workspaces into a remote host
         # Here we are using the host machine of this VM connected by XRDP
         # TODO: Change this copy implementation later (scp/rsync etc) and remember linux symlinks aren't supported in windows
-        cp -r "$workspace_backup_local" "$workspace_backup_remote"/
+        cp -r "$workspace_backup_local" "$workspace_backup_remote"/ 2>/dev/null
     )
 
 }
@@ -107,6 +124,19 @@ process() {
 echo -e "${BLUE}${BOLD}\nBacking up repo-diff started${RESET}"
 echo -e "\nLocal Backup location: $workspace_backup_local\nRemote Backup location: $workspace_backup_remote"
 repoConfig="$curDir"/config/.allRepoConfig
+
+ref=
+for arg in "$@"; do
+    case $arg in
+    --refLocal)
+        ref="local"
+        ;;
+    --refRemote)
+        ref="remote"
+        ;;
+    *) ;;
+    esac
+done
 
 for x in $(cat "$repoConfig"); do
     repo=$(echo "$x" | sed 's/\(.*\)#.*#.*/\1/')
@@ -116,7 +146,13 @@ for x in $(cat "$repoConfig"); do
     local_repo=$(echo "$x" | sed 's/.*#.*#\(.*\)/\1/')
 
     echo -e "\nRepo: $repo\nBranch: $branch\nWorkspace: $user_devroot/$repo_root/$local_repo\n"
-    process $remote_repo $local_repo $branch
+
+    if [[ -n "$ref" ]]; then
+        process $remote_repo $local_repo $branch $ref
+    else
+        process $remote_repo $local_repo $branch "local"
+        process $remote_repo $local_repo $branch "remote"
+    fi
 
 done
 

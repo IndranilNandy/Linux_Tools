@@ -1,1 +1,3 @@
---all:  Create backup of 'git diff' + untracked files for all repositories specified in allRepoConfig
+backup:  Create backup of 'git diff' + untracked files for all repositories specified in allRepoConfig with respect to both the last commit in local repo and remote repo.
+backup --refRemote:  Create backup of 'git diff' + untracked files for all repositories specified in allRepoConfig with respect to the last commit in remote repo.
+backup --refLocal:  Create backup of 'git diff' + untracked files for all repositories specified in allRepoConfig with respect to the last commit in local repo.

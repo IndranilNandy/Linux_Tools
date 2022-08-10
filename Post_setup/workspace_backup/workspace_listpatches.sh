@@ -64,6 +64,7 @@ export workspace_backup_local
 
 allRepo=1
 allBranch=1
+ref=
 
 for arg in "$@"; do
     case $arg in
@@ -74,6 +75,12 @@ for arg in "$@"; do
     --branch=*)
         sBranch=$(echo $arg | sed "s/--branch=\(.*\)/\1/")
         allBranch=0
+        ;;
+    --refLocal)
+        ref='local'
+        ;;
+    --refRemote)
+        ref='remote'
         ;;
     *) ;;
     esac

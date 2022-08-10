@@ -18,6 +18,9 @@ backup)
 list)
     "$curDir"/workspace_listpatches.sh "$@"
     ;;
+restore)
+    "$curDir"/workspace_restore.sh "$@"
+    ;;
 *)
     echo "--help"
     ;;

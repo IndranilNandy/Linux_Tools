@@ -34,11 +34,11 @@ process() {
         mkdir -p $dest_diff
         mkdir -p $dest_untracked
 
-        # Create a file .commitTracker in DESTBRANCH, tracking commit-id changes with respect to timestamp. Entry format>> timestamp:lastCommitId:ReadableDate
+        # Create a file .commitTracker in DESTBRANCH, tracking commit-id changes with respect to timestamp. Entry format>> lastCommitId-timestamp-ReadableDate
         last_commit_id=$(git log --max-count=1 | grep commit | cut -d' ' -f2)
         timeNowSecondsEpoch=$(date +%s)
 
-        echo "$timeNowSecondsEpoch"-"$last_commit_id"-"$(date --date=@"$timeNowSecondsEpoch")" | tee >>"$dest_branch"/.commitTracker 2>/dev/null
+        echo $last_commit_id"-""$timeNowSecondsEpoch"-"$(date --date=@"$timeNowSecondsEpoch")" | tee >>"$dest_branch"/.commitTracker 2>/dev/null
 
         # Find the target DEST path -- diffBackupRootDir/hostname/remoteRepoName/currentBranch/lastCommitId/
         dest="$dest_branch"/"$last_commit_id"
@@ -51,8 +51,8 @@ process() {
         reposha=$(git diff | cat - "$dest"/.tmp | sha1sum | cut -d' ' -f1)
         echo "last_commit_id=$last_commit_id    reposha=$reposha"
 
-        # Create .changeTracker file in DEST, tracking repo status changes with respect to timestamp. Entry format>> timestamp:REPOSHA:ReadableDate
-        echo "$timeNowSecondsEpoch"-"$reposha"-"$(date --date=@"$timeNowSecondsEpoch")" | tee >>"$dest"/.changeTracker 2>/dev/null
+        # Create .changeTracker file in DEST, tracking repo status changes with respect to timestamp. Entry format>> REPOSHA-timestamp-ReadableDate
+        echo "$reposha"-"$timeNowSecondsEpoch"-"$(date --date=@"$timeNowSecondsEpoch")" | tee >>"$dest"/.changeTracker 2>/dev/null
 
         dest_sha="$dest"/"$reposha"
 

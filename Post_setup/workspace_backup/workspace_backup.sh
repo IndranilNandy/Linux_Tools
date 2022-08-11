@@ -11,8 +11,8 @@ fi
 process() {
     remote_repo=${1}
     local_repo=${2}
-    branch=${3}
-    refvar=${4}
+    # branch=${3}
+    refvar=${3}
     echo -e "\nRef:$refvar"
     (
         # Move to local git repo
@@ -82,7 +82,7 @@ process() {
         dest_sha="$dest"/"$reposha"
 
         # If a directory with same REPOSHA id (DEST_SHA) exists, then there is no new change. So don't persist the changes, but update the .changeTracker file with last update-probe stat (timestamp:REPOSHA)
-        [[ -d "$dest_sha" ]] && rm -rf "$dest"/.tmp && echo -e "Current checksum matches with the last checksum.No new change accumulated. Keeping entry of this probe in .changeTracker.\nDone and exiting." && exit 0
+        [[ -d "$dest_sha" ]] && rm -rf "$dest"/.tmp && echo -e "Current checksum matches with the last checksum.No new change accumulated. Keeping entry of this probe in .changeTracker.\nDone and exiting." && return
         mkdir -p "$dest_sha"
 
         # DEST_SHA (REPOSHA) should contain two symlinks pointing to the actual diff patch and a folder containing all untracked files
@@ -150,7 +150,7 @@ for x in $(cat "$repoConfig"); do
     repo=$(echo "$x" | sed 's/\(.*\)#.*#.*/\1/')
     remote_repo=$(echo "$repo" | sed "s/.*\/$repo_username\/\(.*\)\.git/\1/")
 
-    branch=$(echo "$x" | sed 's/.*#\(.*\)#.*/\1/')
+    # branch=$(echo "$x" | sed 's/.*#\(.*\)#.*/\1/')
     local_repo=$(echo "$x" | sed 's/.*#.*#\(.*\)/\1/')
 
     # echo -e "\nRepo: $repo\nBranch: $branch\nWorkspace: $user_devroot/$repo_root/$local_repo\n"
@@ -159,10 +159,10 @@ for x in $(cat "$repoConfig"); do
     echo -e "-----------------------------------------------------------------"
 
     if [[ -n "$ref" ]]; then
-        process $remote_repo $local_repo $branch $ref
+        process $remote_repo $local_repo $ref
     else
-        process $remote_repo $local_repo $branch "local"
-        process $remote_repo $local_repo $branch "remote"
+        process $remote_repo $local_repo "local"
+        process $remote_repo $local_repo "remote"
     fi
 
 done

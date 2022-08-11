@@ -36,6 +36,13 @@ process() {
             tracked_br=$(git remote show $remote_node | grep "pushes to" | grep $cur_branch | grep -oP '(?<=pushes to\s)\S+')
             echo "tracked branch=$tracked_br"
             head=$remote_node/$tracked_br
+
+        # NOTE: TODO: Check the following logic if it is correct. This is needed when to upstream branch is set to push the changes in the current branch.
+        # Hence, the above check doesn't work. We mainly intend "to find the last commit id pushed to any remote branch, and find a diff from that"
+            if [[ -z "$tracked_br" ]]; then
+                head=$(git show-branch -a | sed "0,/^.*$cur_branch/d" | grep "$remote_node" | head -n1 | sed "s#.*\[\(.*\)\].*#\1#g")
+                echo "changed head = $head"
+            fi
             dest_branch="$dest_refRemote"/branches/"$head"
         fi
 

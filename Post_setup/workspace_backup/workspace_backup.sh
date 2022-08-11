@@ -9,11 +9,10 @@ fi
 . "$curDir"/../../.systemConfig
 
 process() {
-    remote_repo=${1}
-    local_repo=${2}
-    # branch=${3}
-    refvar=${3}
+    local_repo=${1}
+    refvar=${2}
     echo -e "\nRef:$refvar"
+
     (
         # Move to local git repo
         cd "$user_devroot"/"$repo_root"/"$local_repo"
@@ -25,7 +24,7 @@ process() {
         # Find the target DESTDATA path -- DESTBRANCH/data
         # Find the target DESTDIFF path -- DESTDATA/diff
         # Find the target DESTUNTRACKED path -- DESTDATA/untracked
-        dest_repo="$workspace_backup_local"/"$(hostname)"/"$remote_repo"
+        dest_repo="$workspace_backup_local"/"$(hostname)"/"$local_repo"
         dest_reflocal="$dest_repo"/refLocal
         dest_refRemote="$dest_repo"/refRemote
 
@@ -131,7 +130,6 @@ process() {
 
 echo -e "${BLUE}${BOLD}\nBacking up repo-diff started${RESET}"
 echo -e "\nLocal Backup location: $workspace_backup_local\nRemote Backup location: $workspace_backup_remote"
-repoConfig="$curDir"/config/.allRepoConfig
 
 ref=
 for arg in "$@"; do
@@ -146,25 +144,25 @@ for arg in "$@"; do
     esac
 done
 
-for x in $(cat "$repoConfig"); do
-    repo=$(echo "$x" | sed 's/\(.*\)#.*#.*/\1/')
-    remote_repo=$(echo "$repo" | sed "s/.*\/$repo_username\/\(.*\)\.git/\1/")
+processWS() {
+    wsConfig="$curDir"/config/.wsConfig
 
-    # branch=$(echo "$x" | sed 's/.*#\(.*\)#.*/\1/')
-    local_repo=$(echo "$x" | sed 's/.*#.*#\(.*\)/\1/')
+    for wsPath in $(cat "$wsConfig"); do
+        ws=$(basename $wsPath)
 
-    # echo -e "\nRepo: $repo\nBranch: $branch\nWorkspace: $user_devroot/$repo_root/$local_repo\n"
-    echo -e "\n-----------------------------------------------------------------"
-    echo -e "Repo: $repo\nWorkspace: $user_devroot/$repo_root/$local_repo"
-    echo -e "-----------------------------------------------------------------"
+        echo -e "\n-----------------------------------------------------------------"
+        echo -e "Workspace: $wsPath"
+        echo -e "-----------------------------------------------------------------"
 
-    if [[ -n "$ref" ]]; then
-        process $remote_repo $local_repo $ref
-    else
-        process $remote_repo $local_repo "local"
-        process $remote_repo $local_repo "remote"
-    fi
+        if [[ -n "$ref" ]]; then
+            process $ws $ref
+        else
+            process $ws "local"
+            process $ws "remote"
+        fi
+    done
+}
 
-done
+processWS
 
 echo -e "${BLUE}${BOLD}\nBacking up repo-diff completed${RESET}"

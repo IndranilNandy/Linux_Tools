@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Yet to resolve disconnectivity issue when hyper-v changes the vm ip, but due to the vm being set with static ip, there is no-network issue. Hence, not applying this configuration as of now.
+exit 0
+
 ippattern='IPADDR'
 ipaddr=$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
 

@@ -12,18 +12,54 @@ process_branch_request() {
     remote_repo=${1}
     cur_branch=${2}
 
-    echo -e "Current branch: $cur_branch"
-    echo -e "List of available patches:"
+    echo -e "\nCurrent branch: $cur_branch"
 
     # Find latest commit id
     last_commit_id=$(git log $cur_branch --max-count=1 | grep commit | cut -d' ' -f2)
 
     # Find the path for this commit id and locate .changeTracker
-    dest_commit_id="$workspace_backup_local"/"$(hostname)"/"$remote_repo"/branches/"$cur_branch"/"$last_commit_id"
+    dest_commit_id="$workspace_backup_local"/"$(hostname)"/"$remote_repo"/refLocal/branches/"$cur_branch"/"$last_commit_id"
 
-    [[ ! -e "$dest_commit_id"/.changeTracker ]] && echo -e "No backup done till now" && exit 0
-    cat "$dest_commit_id"/.changeTracker | cut -d'-' -f1 | uniq | xargs -I X echo "cat "$dest_commit_id"/.changeTracker | grep X | tail -n1" | bash
+    if [[ -e "$dest_commit_id"/.changeTracker ]]; then
+        echo -e "\nRef: local"
+        echo -e "List of available Delta-Id:"
+        cat "$dest_commit_id"/.changeTracker | cut -d'-' -f1 | uniq | xargs -I X echo "cat "$dest_commit_id"/.changeTracker | grep X | tail -n1" | bash
+    else
+        echo -e "\nRef: local"
+        echo -e "No backup done till now"
+    fi
+    
+    # [[ ! -e "$dest_commit_id"/.changeTracker ]] && echo -e "No backup done till now" && return
+    # echo -e "Ref: local"
+    # cat "$dest_commit_id"/.changeTracker | cut -d'-' -f1 | uniq | xargs -I X echo "cat "$dest_commit_id"/.changeTracker | grep X | tail -n1" | bash
 
+    # For remote
+    remote_node=$(git remote show)
+    tracked_br=$(git remote show $remote_node | grep "pushes to" | grep $cur_branch | grep -oP '(?<=pushes to\s)\S+')
+    # echo "tracked branch=$tracked_br"
+    head=$remote_node/$tracked_br
+
+    # NOTE: TODO: Check the following logic if it is correct. This is needed when to upstream branch is set to push the changes in the current branch.
+    # Hence, the above check doesn't work. We mainly intend "to find the last commit id pushed to any remote branch, and find a diff from that"
+    if [[ -z "$tracked_br" ]]; then
+        head=$(git show-branch -a | sed "0,/^.*$cur_branch/d" | grep "$remote_node" | head -n1 | sed "s#.*\[\(.*\)\].*#\1#g")
+        # echo "changed head = $head"
+    fi
+    last_commit_id_remote=$(git show "$head" | grep commit | cut -d' ' -f2)
+    dest_commit_id_remote="$workspace_backup_local"/"$(hostname)"/"$remote_repo"/refRemote/branches/"$head"/"$last_commit_id_remote"
+    # echo "dest_commit_id_remote = $dest_commit_id_remote"
+
+    if [[ -e "$dest_commit_id_remote"/.changeTracker ]]; then
+        echo -e "\nRef: remote"
+        echo -e "List of available Delta-Id:"
+        cat "$dest_commit_id_remote"/.changeTracker | cut -d'-' -f1 | uniq | xargs -I X echo "cat "$dest_commit_id_remote"/.changeTracker | grep X | tail -n1" | bash
+    else
+        echo -e "\nRef: local"
+        echo -e "No backup done till now"
+    fi
+    
+    # echo -e "Ref: remote"
+    # cat "$dest_commit_id_remote"/.changeTracker | cut -d'-' -f1 | uniq | xargs -I X echo "cat "$dest_commit_id_remote"/.changeTracker | grep X | tail -n1" | bash
 }
 
 process_repo_request() {
@@ -53,7 +89,10 @@ process_all_repo() {
 
         local_repo=$(echo "$x" | sed 's/.*#.*#\(.*\)/\1/')
 
-        echo -e "\nRepo: $repo\nWorkspace: $user_devroot/$repo_root/$local_repo\n"
+        echo -e "\n-----------------------------------------------------------------"
+        echo -e "Repo: $repo\nWorkspace: $user_devroot/$repo_root/$local_repo"
+        echo -e "-----------------------------------------------------------------"
+    
         process_repo_request $remote_repo $local_repo $cur_branch
 
     done

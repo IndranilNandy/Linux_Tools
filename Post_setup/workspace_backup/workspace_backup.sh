@@ -13,11 +13,12 @@ process() {
     local_repo=${2}
     branch=${3}
     refvar=${4}
-    echo "Ref:$refvar"
+    echo -e "\nRef:$refvar"
     (
         # Move to local git repo
         cd "$user_devroot"/"$repo_root"/"$local_repo"
         cur_branch=$(git branch --show-current)
+        echo -e "Current Branch: $cur_branch"
 
         # Find the target DESTREPO path -- diffBackupRootDir/hostname/remoteRepoName
         # Find the target DESTBRANCH path -- DESTBRANCH/branches/currentBranch
@@ -34,14 +35,14 @@ process() {
         else
             remote_node=$(git remote show)
             tracked_br=$(git remote show $remote_node | grep "pushes to" | grep $cur_branch | grep -oP '(?<=pushes to\s)\S+')
-            echo "tracked branch=$tracked_br"
+            # echo "tracked branch=$tracked_br"
             head=$remote_node/$tracked_br
 
         # NOTE: TODO: Check the following logic if it is correct. This is needed when to upstream branch is set to push the changes in the current branch.
         # Hence, the above check doesn't work. We mainly intend "to find the last commit id pushed to any remote branch, and find a diff from that"
             if [[ -z "$tracked_br" ]]; then
                 head=$(git show-branch -a | sed "0,/^.*$cur_branch/d" | grep "$remote_node" | head -n1 | sed "s#.*\[\(.*\)\].*#\1#g")
-                echo "changed head = $head"
+                # echo "changed head = $head"
             fi
             dest_branch="$dest_refRemote"/branches/"$head"
         fi
@@ -73,7 +74,7 @@ process() {
 
         # Concat untracked files and git diff, and calculate sha1 checksum (REPOSHA)
         reposha=$(git diff $head | cat - "$dest"/.tmp | sha1sum | cut -d' ' -f1)
-        echo "last_commit_id=$last_commit_id    reposha=$reposha"
+        # echo "last_commit_id=$last_commit_id    reposha=$reposha"
 
         # Create .changeTracker file in DEST, tracking repo status changes with respect to timestamp. Entry format>> REPOSHA-timestamp-ReadableDate
         echo "$reposha"-"$timeNowSecondsEpoch"-"$(date --date=@"$timeNowSecondsEpoch")" | tee >>"$dest"/.changeTracker 2>/dev/null
@@ -152,7 +153,10 @@ for x in $(cat "$repoConfig"); do
     branch=$(echo "$x" | sed 's/.*#\(.*\)#.*/\1/')
     local_repo=$(echo "$x" | sed 's/.*#.*#\(.*\)/\1/')
 
-    echo -e "\nRepo: $repo\nBranch: $branch\nWorkspace: $user_devroot/$repo_root/$local_repo\n"
+    # echo -e "\nRepo: $repo\nBranch: $branch\nWorkspace: $user_devroot/$repo_root/$local_repo\n"
+    echo -e "\n-----------------------------------------------------------------"
+    echo -e "Repo: $repo\nWorkspace: $user_devroot/$repo_root/$local_repo"
+    echo -e "-----------------------------------------------------------------"
 
     if [[ -n "$ref" ]]; then
         process $remote_repo $local_repo $branch $ref

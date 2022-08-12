@@ -1,4 +1,6 @@
-list: [Optional] List all available patches on top of last commit id, in decreasing timestamp for the current branch
-list --repo=repo_name: List all available patches on top of last commit id, in decreasing timestamp for the specified repo
-list --branch=branch_name: List all available patches on top of last commit id, in decreasing timestamp for the specified branch
-list --branch=branch_name --repo=repo_name: List all available patches on top of last commit id, in decreasing timestamp for the specified repo and branch
+list: List all available patches on top of last commit id, in increasing timestamp.
+list [--repo=repo_name] [--branch=branch_name] [--refLocal/--refRemote]: 
+    List all available patches or DeltaIds based on the last commit on that branch (--refLocal) or on the remote tracked branch (--refRemote) or if still not tracked, 
+    then based on the last commit pushed to any remote branch (--refRemote)
+    All options are optional, of course. If not specified then all repos/branches/refs will be shown
+

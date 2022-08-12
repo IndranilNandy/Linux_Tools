@@ -46,7 +46,7 @@ process_branch_request() {
         fi
         last_commit_id_remote=$(git show "$head" 2> /dev/null | grep commit | cut -d' ' -f2)
         [[ -z $last_commit_id_remote ]] && return
-        dest_commit_id_remote="$workspace_backup_local"/"$(hostname)"/"$local_repo"/refRemote/branches/"$head"/"$last_commit_id_remote"
+        dest_commit_id_remote="$workspace_backup_local"/"$(hostname)"/"$local_repo"/refRemote/branches/"$cur_branch"/"$last_commit_id_remote"
 
         if [[ -e "$dest_commit_id_remote"/.changeTracker ]]; then
             echo -e "\nRef: remote\tBranch:$cur_branch"
@@ -101,8 +101,8 @@ ref=
 
 for arg in "$@"; do
     case $arg in
-    --repo=*)
-        sRepo=$(echo $arg | sed "s/--repo=\(.*\)/\1/")
+    --ws=*)
+        sRepo=$(echo $arg | sed "s/--ws=\(.*\)/\1/")
         allRepo=0
         ;;
     --branch=*)

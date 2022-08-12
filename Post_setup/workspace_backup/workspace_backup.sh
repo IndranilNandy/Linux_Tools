@@ -46,7 +46,7 @@ process() {
                 head=$(git show-branch -a | sed "0,/^.*$cur_branch/d" | grep "$remote_node" | head -n1 | sed "s#.*\[\(.*\)\].*#\1#g")
                 # echo "changed head = $head"
             fi
-            dest_branch="$dest_refRemote"/branches/"$head"
+            dest_branch="$dest_refRemote"/branches/"$cur_branch"
         fi
 
         dest_data="$dest_repo"/data

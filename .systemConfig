@@ -7,3 +7,5 @@ repo_provider="https://github.com"
 user_devroot="$HOME/DEV"
 workspace_backup_local="$HOME/DEV/git_diff_backup"
 workspace_backup_remote="$HOME/thinclient_drives/Y:/Workspace_backups"
+
+workspace_restore_root="$HOME/DEV/WorkspaceDelta/RestoreSpace"

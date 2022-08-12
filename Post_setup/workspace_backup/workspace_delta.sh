@@ -21,6 +21,12 @@ list)
 restore)
     "$curDir"/workspace_restore.sh "$@"
     ;;
+sync)
+    "$curDir"/workspace_syncpoints.sh "$@"
+    ;;
+# restore)
+#     "$curDir"/workspace_restore.sh "$@"
+#     ;;
 *)
     echo "--help"
     ;;

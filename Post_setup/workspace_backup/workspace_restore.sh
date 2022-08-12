@@ -13,14 +13,18 @@ if_branch_exists() {
     git branch | grep " $branch$" > /dev/null
 }
 
-reset_and_reset_@commitid() {
+update_status_@commitid() {
     source_wsPath=${1}
+    # ws=${1}
     source_branch=${2}
     cid=${3}
 
-    deltaIdList_local="$(pwd)/wsdData/.deltaIDs_local"
-    deltaIdList_remote="$(pwd)/wsdData/.deltaIDs_remote"
-    status="$(pwd)/wsdData/.status"
+    ws=$(basename "$source_wsPath")
+    restore_ws="$workspace_restore_root"/"$ws"
+
+    deltaIdList_local="$restore_ws"/rsConfig/.deltaIDs_local
+    deltaIdList_remote="$restore_ws"/rsConfig/.deltaIDs_remote
+    status="$restore_ws"/rsConfig/.status
 
     echo -e "\ncommit id = $cid"
 
@@ -44,33 +48,41 @@ restore_ws_from_local() {
     echo "ws: $source_ws"
     echo "abc:$workspace_restore_root"
     echo "source: $source_wsPath"
+    echo "restore: $workspace_restore_root"
     mkdir -p $workspace_restore_root
     
     sudo cp -r "$source_wsPath" "$workspace_restore_root"/
     ws=$(basename "$source_wsPath")
+    echo "source: $source_wsPath"
 
+    restore_ws="$workspace_restore_root"/"$ws"
+    commitIdList="$restore_ws"/rsConfig/.commitIDs
     (
-        restore_ws="$workspace_restore_root"/"$ws"
         cd "$restore_ws"
         if_branch_exists $source_branch || echo "Try a clone from remote repository!"
-        mkdir -p "$restore_ws"/wsdData
+        mkdir -p "$restore_ws"/rsConfig
         pwd
-        commitIdList="$(pwd)/wsdData/.commitIDs"
-        status="$(pwd)/wsdData/.status"
-        echo "commitID:_:deltaID:_" > $status
+        commitIdList="$(pwd)/rsConfig/.commitIDs"
 
         git log $source_branch --max-count=10 2> /dev/null | grep commit | cut -d' ' -f2 > "$commitIdList"
-        cat "$commitIdList"
-
-        # cid="6c521935c6c87323227f5a3b5de130cd856fe2fe"
-        # did=$(wsd sync --ws="$source_ws" --branch=$source_branch --commit="$cid" --refLocal --short)
-        # echo -e "cid = $cid\tdid = $did"
-        # ls "$workspace_backup_local"/"$(hostname)"/"$source_ws"/refLocal/branches/"$source_branch"/"$cid"/"$did"
-        # code .
-        cid=$(cat "$commitIdList" | head -n1)
-        sed -i "s/\(commitID:\).*\(:deltaID:.*\)/\1$cid\2/g" $status
-        reset_and_reset_@commitid $source_ws $source_branch $(cat "$commitIdList" | head -n1)
     )
+    cat "$commitIdList"
+
+    status="$restore_ws"/rsConfig/.status
+    echo "commitID:_:deltaID:_" > $status
+
+    cid=$(cat "$commitIdList" | head -n1)
+    sed -i "s/\(commitID:\).*\(:deltaID:.*\)/\1$cid\2/g" $status
+    update_status_@commitid $source_ws $source_branch $(cat "$commitIdList" | head -n1)
+
+    gl_rsconfig_loc="$workspace_restore_root"/rsConfig
+    mkdir -p "$gl_rsconfig_loc"
+
+    openRS="$gl_rsconfig_loc"/.openRestorespaces
+    [[ -e $openRS ]] || touch $openRS
+    echo "source here: $source_wsPath"
+    [[ $(grep -q $source_wsPath $openRS) ]] || echo "$source_wsPath" >> $openRS
+
 
 }
 pShort=0

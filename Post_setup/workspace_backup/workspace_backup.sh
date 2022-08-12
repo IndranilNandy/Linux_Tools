@@ -14,8 +14,11 @@ process() {
     echo -e "\nRef:$refvar"
 
     (
+        local_ws="$user_devroot"/"$repo_root"/"$local_repo"
+        [[ ! -d $local_ws ]] && return
+
         # Move to local git repo
-        cd "$user_devroot"/"$repo_root"/"$local_repo"
+        cd $local_ws
         cur_branch=$(git branch --show-current)
         echo -e "Current Branch: $cur_branch"
 

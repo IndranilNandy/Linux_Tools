@@ -28,4 +28,7 @@ else
     echo -e "${GREEN}[autologin] Setup finished.${GREEN}"
 fi
 
+# Configure JAVA_HOME and PATH
+./java_configuration.sh
+
 echo -e "${YELLOW}[Configured.]${RESET}"

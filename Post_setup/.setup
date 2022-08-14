@@ -1,6 +1,6 @@
 #!/bin/bash
 
 (
-    cd ./git_repos
+    cd ./workspace_backup
     ./.setup
 )

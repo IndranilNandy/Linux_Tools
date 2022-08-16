@@ -42,6 +42,7 @@ process() {
 
         # NOTE: TODO: Check the following logic if it is correct. This is needed when to upstream branch is set to push the changes in the current branch.
         # Hence, the above check doesn't work. We mainly intend "to find the last commit id pushed to any remote branch, and find a diff from that"
+        # TODO: IMPORTANT: scenario: checkout new branch br1 from c. Do 2 changes. Commit (only). Another change. Now take backup. now refRemote is coming wrt origin/HEAD, but there is origin/c which is already pushed to remote. Check with gitk. Though the ultimate diff would be working after applying patch.
             if [[ -z "$tracked_br" ]]; then
                 head=$(git show-branch -a | sed "0,/^.*$cur_branch/d" | grep "$remote_node" | head -n1 | sed "s#.*\[\(.*\)\].*#\1#g")
                 # echo "changed head = $head"

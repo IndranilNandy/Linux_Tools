@@ -10,7 +10,35 @@ fi
 
 if_branch_exists() {
     branch=${1}
-    git branch | grep " $branch$" > /dev/null
+    git branch | grep " $branch$" >/dev/null
+}
+
+applyPatch() {
+    source_wsPath=${1}
+
+    ws=$(basename "$source_wsPath")
+    restore_ws="$workspace_restore_root"/"$ws"
+
+    deltaIdList_local="$restore_ws"/rsConfig/.deltaIDs_local
+    deltaIdList_remote="$restore_ws"/rsConfig/.deltaIDs_remote
+    status="$restore_ws"/rsConfig/.status
+
+    target_commitID=$(sed "s/commitID:\(.*\):deltaID.*/\1/" "$status")
+    target_deltaID=$(sed "s/.*deltaID:\(.*\):branch:.*/\1/" "$status")
+    target_branch=$(sed "s/.*:branch:\(.*\)/\1/" "$status")
+    local_patch_file_dir="$workspace_backup_local"/"$(hostname)"/"$ws"/refLocal/branches/"$target_branch"/"$target_commitID"/"$target_deltaID"
+    remote_patch_file_dir="$workspace_backup_local"/"$(hostname)"/"$ws"/refRemote/branches/"$target_branch"/"$target_commitID"/"$target_deltaID"
+    local_patch_file=$(ls -1 "$local_patch_file_dir" | grep -E *.patch | grep -E -v windows)
+    echo "$local_patch_file"
+
+    (
+        cd "$restore_ws"
+        echo $PWD | grep -q "$workspace_restore_root" || return
+        echo $PWD
+        git reset --hard "$target_commitID"
+        git apply < "$local_patch_file_dir"/"$local_patch_file"
+
+    )
 }
 
 update_status_@commitid() {
@@ -28,30 +56,30 @@ update_status_@commitid() {
 
     echo -e "\ncommit id = $cid"
 
-    wsd sync --ws="$source_ws" --branch=$source_branch --commit="$cid" --refLocal --short > "$deltaIdList_local"
+    wsd sync --ws="$ws" --branch=$source_branch --commit="$cid" --refLocal --short >"$deltaIdList_local"
     echo -e "Local deltaIDs"
     cat "$deltaIdList_local"
 
     did=$(cat "$deltaIdList_local" | head -n1)
-    sed -i "s/\(.*:deltaID:\).*/\1$did/g" $status
+    sed -i "s/\(.*:deltaID:\).*\(:branch:.*\)/\1$did\2/g" $status
 
-    wsd sync --ws="$source_ws" --branch=$source_branch --commit="$cid" --refRemote --short > "$deltaIdList_remote"
+    wsd sync --ws="$ws" --branch=$source_branch --commit="$cid" --refRemote --short >"$deltaIdList_remote"
     echo -e "Remote deltaIDs"
-    cat "$deltaIdList_remote"    
+    cat "$deltaIdList_remote"
 
 }
 restore_ws_from_local() {
     source_wsPath=${1}
     source_branch=${2}
 
-    source_ws=$(basename $source_wsPath)
-    echo "ws: $source_ws"
     echo "abc:$workspace_restore_root"
     echo "source: $source_wsPath"
     echo "restore: $workspace_restore_root"
     mkdir -p $workspace_restore_root
-    
-    sudo cp -r "$source_wsPath" "$workspace_restore_root"/
+
+    # sudo cp -r "$source_wsPath" "$workspace_restore_root"/
+    cp -r "$source_wsPath" "$workspace_restore_root"/
+
     ws=$(basename "$source_wsPath")
     echo "source: $source_wsPath"
 
@@ -59,21 +87,22 @@ restore_ws_from_local() {
     commitIdList="$restore_ws"/rsConfig/.commitIDs
     (
         cd "$restore_ws"
+        git branch
         if_branch_exists $source_branch || echo "Try a clone from remote repository!"
         mkdir -p "$restore_ws"/rsConfig
         pwd
         commitIdList="$(pwd)/rsConfig/.commitIDs"
 
-        git log $source_branch --max-count=10 2> /dev/null | grep commit | cut -d' ' -f2 > "$commitIdList"
+        git log $source_branch --max-count=10 2>/dev/null | grep commit | cut -d' ' -f2 >"$commitIdList"
     )
     cat "$commitIdList"
 
     status="$restore_ws"/rsConfig/.status
-    echo "commitID:_:deltaID:_" > $status
+    echo "commitID:_:deltaID:_:branch:_" >$status
 
     cid=$(cat "$commitIdList" | head -n1)
-    sed -i "s/\(commitID:\).*\(:deltaID:.*\)/\1$cid\2/g" $status
-    update_status_@commitid $source_ws $source_branch $(cat "$commitIdList" | head -n1)
+    sed -i "s/\(commitID:\).*\(:deltaID:.*:branch:\)\(.*\)/\1$cid\2$source_branch/g" $status
+    update_status_@commitid $source_wsPath $source_branch $(cat "$commitIdList" | head -n1)
 
     gl_rsconfig_loc="$workspace_restore_root"/rsConfig
     mkdir -p "$gl_rsconfig_loc"
@@ -81,9 +110,9 @@ restore_ws_from_local() {
     openRS="$gl_rsconfig_loc"/.openRestorespaces
     [[ -e $openRS ]] || touch $openRS
     echo "source here: $source_wsPath"
-    [[ $(grep -q $source_wsPath $openRS) ]] || echo "$source_wsPath" >> $openRS
+    [[ $(grep -q $source_wsPath $openRS) ]] || echo "$source_wsPath" >>$openRS
 
-
+    applyPatch $source_wsPath
 }
 pShort=0
 for arg in "$@"; do
@@ -109,8 +138,19 @@ for arg in "$@"; do
     --short)
         pShort=1
         ;;
-    *) ;;
+    --d+)
+        echo "here d+: $arg"
+        ;;
+    --d-)
+        echo "here d+: $arg"
+        ;;
+    --c+)
+        echo "here d+: $arg"
+        ;;
+    --c-)
+        echo "here d+: $arg"
+        ;;
     esac
 done
 
-restore_ws_from_local $wsPath $pBranch 
+restore_ws_from_local $wsPath $pBranch

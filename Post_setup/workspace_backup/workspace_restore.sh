@@ -13,6 +13,33 @@ if_branch_exists() {
     git branch | grep " $branch$" >/dev/null
 }
 
+setToPrevDeltaId() {
+    gl_rsconfig_loc="$workspace_restore_root"/rsConfig
+    openRS="$gl_rsconfig_loc"/.openRestorespaces
+    src_wsPath=$(cat $openRS)
+
+    ws=$(basename "$src_wsPath")
+    restore_ws="$workspace_restore_root"/"$ws"
+
+    deltaIdList_local="$restore_ws"/rsConfig/.deltaIDs_local
+    deltaIdList_remote="$restore_ws"/rsConfig/.deltaIDs_remote
+    status="$restore_ws"/rsConfig/.status
+
+    target_commitID=$(sed "s/commitID:\(.*\):deltaID.*/\1/" "$status")
+    cur_deltaID=$(sed "s/.*deltaID:\(.*\):branch:.*/\1/" "$status")
+    target_branch=$(sed "s/.*:branch:\(.*\)/\1/" "$status")
+
+    local_patch_file_dir="$workspace_backup_local"/"$(hostname)"/"$ws"/refLocal/branches/"$target_branch"/"$target_commitID"/"$target_deltaID"
+    remote_patch_file_dir="$workspace_backup_local"/"$(hostname)"/"$ws"/refRemote/branches/"$target_branch"/"$target_commitID"/"$target_deltaID"
+    local_patch_file=$(ls -1 "$local_patch_file_dir" | grep -E *.patch | grep -E -v windows)
+    changeTrackerFile="$workspace_backup_local"/"$(hostname)"/"$ws"/refLocal/branches/"$target_branch"/"$target_commitID"/".changeTracker"
+    deltaID_list=$(cat "$changeTrackerFile")
+    cat "$changeTrackerFile" | sed "0,/$cur_deltaID/d" 
+    cat $changeTrackerFile
+
+    wsd sync --ws=$src_wsPath --branch=$target_branch --commit=$target_commitID --refLocal
+}
+
 applyPatch() {
     source_wsPath=${1}
 
@@ -26,6 +53,7 @@ applyPatch() {
     target_commitID=$(sed "s/commitID:\(.*\):deltaID.*/\1/" "$status")
     target_deltaID=$(sed "s/.*deltaID:\(.*\):branch:.*/\1/" "$status")
     target_branch=$(sed "s/.*:branch:\(.*\)/\1/" "$status")
+
     local_patch_file_dir="$workspace_backup_local"/"$(hostname)"/"$ws"/refLocal/branches/"$target_branch"/"$target_commitID"/"$target_deltaID"
     remote_patch_file_dir="$workspace_backup_local"/"$(hostname)"/"$ws"/refRemote/branches/"$target_branch"/"$target_commitID"/"$target_deltaID"
     local_patch_file=$(ls -1 "$local_patch_file_dir" | grep -E *.patch | grep -E -v windows)
@@ -110,13 +138,17 @@ restore_ws_from_local() {
     openRS="$gl_rsconfig_loc"/.openRestorespaces
     [[ -e $openRS ]] || touch $openRS
     echo "source here: $source_wsPath"
-    [[ $(grep -q $source_wsPath $openRS) ]] || echo "$source_wsPath" >>$openRS
+    grep -q $source_wsPath $openRS || echo "$source_wsPath" >>$openRS
 
+    code -n "$restore_ws"
     applyPatch $source_wsPath
 }
 pShort=0
 for arg in "$@"; do
     case $arg in
+    # restore)
+    #     restore_ws_from_local $wsPath $pBranch
+    # ;;
     --ws=*)
         pWS=$(echo $arg | sed "s/--ws=\(.*\)/\1/")
         ;;
@@ -143,6 +175,7 @@ for arg in "$@"; do
         ;;
     --d-)
         echo "here d+: $arg"
+        setToPrevDeltaId
         ;;
     --c+)
         echo "here d+: $arg"
@@ -153,4 +186,4 @@ for arg in "$@"; do
     esac
 done
 
-restore_ws_from_local $wsPath $pBranch
+# restore_ws_from_local $wsPath $pBranch

@@ -16,3 +16,4 @@ installer() {
 # https://github.com/Mirantis/cri-dockerd/releases/tag/v0.2.5
 
 (ifinstalled cri-dockerd && echo "cri-dockerd already installed") || installer
+./container_runtime_prereq.sh

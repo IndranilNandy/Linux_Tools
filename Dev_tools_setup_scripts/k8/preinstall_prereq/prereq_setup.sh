@@ -5,11 +5,11 @@ get_mac() {
 }
 
 verify_unique_mac() {
-    get_mac
+    echo MAC addr: $(get_mac)
 }
 
 verify_unique_product_uuid() {
-    sudo cat /sys/class/dmi/id/product_uuid
+    echo Product_uuid: $(sudo cat /sys/class/dmi/id/product_uuid)
 }
 
 if_port_unavailable() {
@@ -18,7 +18,7 @@ if_port_unavailable() {
 
 # https://kubernetes.io/docs/reference/ports-and-protocols/#control-plane
 control_plane_ports() {
-    cp_ports=(6443 2379 2380 10250 10259 10257 3389)
+    cp_ports=(6443 2379 2380 10250 10259 10257)
 
     for p in "${cp_ports[@]}"; do
         # echo "$p"
@@ -41,9 +41,31 @@ check_ports() {
     read -n 1 -p "If it is Control plane [c] or Worker node [w] - " type
     echo -e
 
-    [[ "$type" == "c" ]] && control_plane_ports
-    [[ "$type" == "w" ]] && worker_node_ports
+    # [[ "$type" == "c" ]] && control_plane_ports
+    # worker_node_ports
 
+    if [[ "$type" == "c" ]]; then
+        control_plane_ports
+    else
+        worker_node_ports
+    fi
+}
+
+if_swap_on() {
+    cat /proc/swaps | grep -q swap
+}
+
+disable_swap_for_session() {
+    echo -e "Disabling swap for this session"
+    sudo swapoff -a
+}
+
+disable_swap_permanently() {
+    sudo sed -i '/ swap / s/^/#/' /etc/fstab
+}
+disable_swap() {
+    # if_swap_on && disable_swap_for_session
+    if_swap_on && disable_swap_permanently
 }
 
 # Verify unique mac and product_uuid accross all nodes
@@ -57,3 +79,7 @@ verify_unique_product_uuid || exit 1
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#check-required-ports
 
 check_ports || exit 1
+
+# Disable SWAP
+# https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#before-you-begin
+disable_swap

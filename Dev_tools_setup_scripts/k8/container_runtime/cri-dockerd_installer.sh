@@ -15,5 +15,4 @@ installer() {
 # https://www.mirantis.com/blog/how-to-install-cri-dockerd-and-migrate-nodes-from-dockershim
 # https://github.com/Mirantis/cri-dockerd/releases/tag/v0.2.5
 
-(ifinstalled cri-dockerd && echo "cri-dockerd already installed") || installer
-# ./container_runtime_prereq.sh
+(ifinstalled cri-dockerd && echo "cri-dockerd already installed") || installer || exit 1

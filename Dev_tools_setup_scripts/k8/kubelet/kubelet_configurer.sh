@@ -7,4 +7,4 @@ configure_kubelet_cgroup_driver() {
     return 0
 }
 
-configure_kubelet_cgroup_driver
+configure_kubelet_cgroup_driver || exit 1

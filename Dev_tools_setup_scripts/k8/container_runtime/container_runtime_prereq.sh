@@ -11,6 +11,7 @@ check_iptables_entries() {
     sysctl net.bridge.bridge-nf-call-ip6tables | grep "= 1$" || return 1
     sysctl net.ipv4.ip_forward | grep "= 1$" || return 1
 }
+
 config_sysctl() {
     check_iptables_entries && return 0
 
@@ -38,7 +39,7 @@ check_cgroup_driver() {
     docker info | grep "Cgroup Driver" | grep systemd || return 1
 }
 
-load_br_netfilter
-config_sysctl
+load_br_netfilter || exit 1
+config_sysctl || exit 1
 # check_cgroup_driver || echo "Docker is not configured to use systemd as cgroup driver. FAILED!!"
 check_cgroup_driver || exit 1

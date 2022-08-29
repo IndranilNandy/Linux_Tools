@@ -44,7 +44,7 @@ check_ports() {
     # [[ "$type" == "c" ]] && control_plane_ports
     # worker_node_ports
 
-    if [[ "$type" == "c" ]]; then
+    if [[ $(echo "$type" | tr [:upper:] [:lower:]) == "c" ]]; then
         control_plane_ports
     else
         worker_node_ports

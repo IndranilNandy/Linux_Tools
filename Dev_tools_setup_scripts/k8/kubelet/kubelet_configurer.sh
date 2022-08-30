@@ -7,4 +7,5 @@ configure_kubelet_cgroup_driver() {
     return 0
 }
 
-configure_kubelet_cgroup_driver || exit 1
+! configure_kubelet_cgroup_driver && echo -e "[KUBELET] FAILED!! Kubelet cgroup driver configuration failed" && exit 1
+exit 0

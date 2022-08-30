@@ -15,4 +15,5 @@ installer() {
 # https://www.mirantis.com/blog/how-to-install-cri-dockerd-and-migrate-nodes-from-dockershim
 # https://github.com/Mirantis/cri-dockerd/releases/tag/v0.2.5
 
-(ifinstalled cri-dockerd && echo "cri-dockerd already installed") || installer || exit 1
+! (ifinstalled cri-dockerd && echo "cri-dockerd already installed") && ! installer && echo -e "[Container Runtime] FAILED!! cri-dockerd installer failed" && exit 1
+exit 0

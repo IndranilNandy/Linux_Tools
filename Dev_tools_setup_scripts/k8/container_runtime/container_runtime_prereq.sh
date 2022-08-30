@@ -39,7 +39,8 @@ check_cgroup_driver() {
     docker info | grep "Cgroup Driver" | grep systemd || return 1
 }
 
-load_br_netfilter || exit 1
-config_sysctl || exit 1
+! load_br_netfilter && echo -e "[Container Runtime] FAILED!! br_netfilter not loaded" && exit 1
+! config_sysctl && echo -e "[Container Runtime] FAILED!! Issue with iptables" && exit 1
 # check_cgroup_driver || echo "Docker is not configured to use systemd as cgroup driver. FAILED!!"
-check_cgroup_driver || exit 1
+! check_cgroup_driver && echo -e "[Container Runtime] FAILED!! Docker cgroup driver not set to systemd" && exit 1
+exit 0

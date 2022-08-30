@@ -30,4 +30,5 @@ grep -q "source <(kubectl completion bash)" ~/.bashrc || enable_autocompletion
 # Install kubectl convert plugin
 # https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-kubectl-convert-plugin
 
-kubectl convert --help || install_convert
+! (kubectl convert --help) && ! install_convert && echo -e "[KUBECTL] Warning! Kubectl convert plugin installation failed"
+exit 0

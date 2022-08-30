@@ -72,14 +72,16 @@ disable_swap() {
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#verify-mac-address
 # TODO: Current implementation doesn't check for uniqueness across all nodes, it just fetchces information. This check has to be done in future
 
-verify_unique_mac || exit 1
-verify_unique_product_uuid || exit 1
+! verify_unique_mac && echo "PREREQ FAILED!! No unique MAC" && exit 1
+! verify_unique_product_uuid && echo "PREREQ FAILED!! No unique product uuid" &&  exit 1
 
 # Check required ports
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#check-required-ports
 
-check_ports || exit 1
+! check_ports && echo "PREREQ FAILED!! Ports being used" &&  exit 1
 
 # Disable SWAP
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#before-you-begin
 disable_swap
+
+exit 0

@@ -18,4 +18,5 @@ installer() {
 }
 
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl
-ifinstalled kubeadm || installer || exit 1
+! (ifinstalled kubeadm) && ! installer && echo -e "[KUBEADM] FAILED!! Kubeadm installation failed" && exit 1
+exit 0

@@ -26,7 +26,7 @@ clean_CNI_config() {
 cleanup() {
     drain_nodes
 
-    yes | sudo kubeadm reset
+    yes | sudo kubeadm reset --cri-socket=unix:///var/run/cri-dockerd.sock
     reset_tables
 
     delete_nodes

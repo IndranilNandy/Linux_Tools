@@ -41,14 +41,14 @@ container_runtime_setup
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl
 kubectl_setup
 kubelet_setup
-kubeadm_setup
+kubeadm_setup $nodetype $cniplugin
 
 # https://www.weave.works/docs/net/latest/kubernetes/kube-addon/#-installation
 # https://projectcalico.docs.tigera.io/getting-started/kubernetes/quickstart
 pod_networking_setup $nodetype $cniplugin
 
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#control-plane-node-isolation
-controlplane_config
+[[ "$nodetype" == "control" ]] && controlplane_config
 
 [[ $(cat STATUS) == "0" ]] || echo "CLUSTER NOT INITIALIZED!"
 

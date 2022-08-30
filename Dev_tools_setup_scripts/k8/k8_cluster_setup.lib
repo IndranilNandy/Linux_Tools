@@ -19,7 +19,7 @@ kubelet_setup() {
 }
 
 kubeadm_setup() {
-    [[ $(cat STATUS) == "1" ]] || (cd kubeadm && ./kubeadm_installer.sh && ./kubeadm_initializer.sh || echo 1 >../STATUS)
+    [[ $(cat STATUS) == "1" ]] || (cd kubeadm && ./kubeadm_installer.sh && ./kubeadm_initializer.sh $* || echo 1 >../STATUS)
     echo e: $(cat STATUS)
 }
 

@@ -21,7 +21,6 @@ control_plane_ports() {
     cp_ports=(6443 2379 2380 10250 10259 10257)
 
     for p in "${cp_ports[@]}"; do
-        # echo "$p"
         if_port_unavailable "$p" && echo -e "Port $p not available. Reassign ports. Exiting" && return 1
     done
     return 0
@@ -31,20 +30,13 @@ control_plane_ports() {
 worker_node_ports() {
     worker_ports=(10250 {30000..32767})
     for p in "${worker_ports[@]}"; do
-        # echo "$p"
         if_port_unavailable "$p" && echo -e "Port $p not available. Reassign ports. Exiting" && return 1
     done
     return 0
 }
 
 check_ports() {
-    read -n 1 -p "If it is Control plane [c] or Worker node [w] - " type
-    echo -e
-
-    # [[ "$type" == "c" ]] && control_plane_ports
-    # worker_node_ports
-
-    if [[ $(echo "$type" | tr [:upper:] [:lower:]) == "c" ]]; then
+    if [[ "${1}" == "control" ]]; then
         control_plane_ports
     else
         worker_node_ports
@@ -78,7 +70,7 @@ disable_swap() {
 # Check required ports
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#check-required-ports
 
-! check_ports && echo "PREREQ FAILED!! Ports being used" &&  exit 1
+! check_ports ${1} && echo "PREREQ FAILED!! Ports being used" &&  exit 1
 
 # Disable SWAP
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#before-you-begin

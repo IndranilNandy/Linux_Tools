@@ -1,0 +1,46 @@
+prereq_setup() {
+    [[ $(cat STATUS) == "1" ]] || (cd preinstall_prereq && ./prereq_setup.sh ${1} || echo 1 >../STATUS)
+    echo a: $(cat STATUS)
+}
+
+container_runtime_setup() {
+    [[ $(cat STATUS) == "1" ]] || (cd container_runtime && ./container_runtime_setup.sh || echo 1 >../STATUS)
+    echo b: $(cat STATUS)
+}
+
+kubectl_setup() {
+    [[ $(cat STATUS) == "1" ]] || (cd kubectl && ./kubectl_installer.sh || echo 1 >../STATUS)
+    echo c: $(cat STATUS)
+}
+
+kubelet_setup() {
+    [[ $(cat STATUS) == "1" ]] || (cd kubelet && ./kubelet_installer.sh || echo 1 >../STATUS)
+    echo d: $(cat STATUS)
+}
+
+kubeadm_setup() {
+    [[ $(cat STATUS) == "1" ]] || (cd kubeadm && ./kubeadm_installer.sh && ./kubeadm_initializer.sh || echo 1 >../STATUS)
+    echo e: $(cat STATUS)
+}
+
+weavenet_setup() {
+    [[ $(cat STATUS) == "1" ]] || (cd pod_networking/weavenet && ./weavenet_installer.sh || echo 1 >../STATUS)
+    echo f: $(cat STATUS)
+}
+
+calico_setup() {
+    [[ $(cat STATUS) == "1" ]] || (cd pod_networking/calico && ./calico_installer.sh || echo 1 >../STATUS)
+    echo f: $(cat STATUS)
+}
+
+pod_networking_setup() {
+    [[ "${1}" == "worker" ]] && echo -e "[POD NETWORKING] Not needed to install on worker nodes" && return 0
+    [[ "${2}" == "weavenet" ]] && weavenet_setup
+    [[ "${2}" == "calico" ]] && calico_setup
+}
+
+controlplane_config() {
+    [[ $(cat STATUS) == "1" ]] || (./controlplane_configurer.sh || echo 1 >../STATUS)
+    echo g: $(cat STATUS)
+}
+

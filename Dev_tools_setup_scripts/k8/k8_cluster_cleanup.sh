@@ -17,6 +17,12 @@ delete_nodes() {
     # TODO: implement later
     # kubectl delete node <node name>
 }
+
+clean_CNI_config() {
+    sudo rm -rf /etc/cni/net.d || return 1
+    return 0
+}
+
 cleanup() {
     drain_nodes
 
@@ -24,6 +30,7 @@ cleanup() {
     reset_tables
 
     delete_nodes
+    clean_CNI_config || echo -e "[CLEANUP] Failed to clean CNI configuration. This may lead to other issues. You may try to clean /etc/cni/net.d manually"
 }
 
 # Cleanup the cluster

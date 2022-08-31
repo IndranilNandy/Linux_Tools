@@ -1,0 +1,5 @@
+#!/bin/bash
+
+(cd control-plane && ./controlplane_setup.sh || echo -e "[CONTROLPLANE] Setup failed in control plane")
+
+# (cd worker-node && ./worker_setup.sh || echo -e "[WORKER] Setup failed in worker node")

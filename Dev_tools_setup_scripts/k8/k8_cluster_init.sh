@@ -50,6 +50,9 @@ pod_networking_setup $nodetype $cniplugin
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#control-plane-node-isolation
 [[ "$nodetype" == "control" ]] && controlplane_config
 
+# https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#join-nodes
+[[ "$nodetype" == "worker" ]] && join_worker
+
 ret=$(cat STATUS)
 rm STATUS
 

@@ -57,7 +57,6 @@ disable_swap_permanently() {
 }
 
 disable_swap() {
-    return 1
     if_swap_on && disable_swap_permanently
     if_swap_on && disable_swap_for_session
     if_swap_on && return 1 || echo -e "SWAP disabled."

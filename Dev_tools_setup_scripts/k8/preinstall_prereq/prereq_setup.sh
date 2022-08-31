@@ -64,9 +64,9 @@ disable_swap() {
 }
 
 check_min_cpucores_availability() {
-    cores_available=$(cat /proc/cpuinfo | grep "cpu cores" | sed "s/.*: \(.\)/\1/")
+    cores_available=$(cat /proc/cpuinfo | grep "cpu cores" | head -n1 | sed "s/.*: \(.\)/\1/")
     min_cores_required=2
-    [[ "$min_cores_required" -le "$cores_available " ]] || return 1
+    [[ "$min_cores_required" -le "$cores_available" ]] || return 1
     return 0
 }
 

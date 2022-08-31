@@ -40,7 +40,7 @@ pod_networking_setup() {
 }
 
 controlplane_config() {
-    [[ $(cat STATUS) == "1" ]] || (./controlplane_configurer.sh || echo 1 >./STATUS)
+    [[ $(cat STATUS) == "1" ]] || (./control-plane/controlplane_configurer.sh || echo 1 >./STATUS)
     echo g: $(cat STATUS)
 }
 

@@ -1,0 +1,2 @@
+controlplane: k8-controlplanenode
+workers:    k8-worker1 k8-worker2

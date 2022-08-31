@@ -1,7 +1,11 @@
 #!/bin/bash
 
-(./control-plane/controlplane_setup.sh || echo -e "[CONTROLPLANE] Setup failed in control plane")
+node_c=$(cat ./config/.clusterconfig | grep "controlplane:" | sed "s/controlplane: *\(.*\)/\1/" | tr " *" "\n" | xargs -I X echo X)
+(./control-plane/controlplane_setup.sh "$node_c" || echo -e "[CONTROLPLANE] Setup failed in control plane")
 
-(./worker-node/worker_setup.sh || echo -e "[WORKER] Setup failed in worker node")
+node_ws=$(cat ./config/.clusterconfig | grep "workers:" | sed "s/workers: *\(.*\)/\1/" | tr " *" "\n" | xargs -I X echo X)
+for w in $node_ws; do
+    (./worker-node/worker_setup.sh "$w" || echo -e "[WORKER] Setup failed in worker node")
+done
 
 rm -rf ./credentials

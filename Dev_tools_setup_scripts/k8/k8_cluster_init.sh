@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-. ./k8_cluster_setup.lib
+. ./lib/k8_cluster_setup.lib
 
 nodetype=d
 cniplugin=d

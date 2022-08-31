@@ -34,7 +34,7 @@ calico_setup() {
 }
 
 pod_networking_setup() {
-    [[ "${1}" == "worker" ]] && echo -e "[POD NETWORKING] Not needed to install on worker nodes" && return 0
+    [[ "${1}" == "worker" ]] && echo -e "[POD NETWORKING] No need to install on worker nodes" && return 0
     [[ "${2}" == "weavenet" ]] && weavenet_setup
     [[ "${2}" == "calico" ]] && calico_setup
 }

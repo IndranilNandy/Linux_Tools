@@ -27,7 +27,7 @@ case ${1} in
 esac
 
 [[ "$nodetype" == "d" ]] && echo -e "Invalid nodetype! Nodetype should be either control or worker" && exit 1
-[[ "$cniplugin" == "d" ]] && echo -e "Invalid CNI plugin! CNI plugins supported are: [weavenet, calico]" && exit 1
+[[ "$nodetype" == "control" ]] && [[ "$cniplugin" == "d" ]] && echo -e "Invalid CNI plugin! CNI plugins supported are: [weavenet, calico]" && exit 1
 
 echo 0 >STATUS
 echo s: $(cat STATUS)

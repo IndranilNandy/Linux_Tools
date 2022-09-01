@@ -15,6 +15,7 @@ verify_pod_network() {
 
 # https://projectcalico.docs.tigera.io/getting-started/kubernetes/quickstart
 ! install_calico && echo -e "[CALICO] FAILED!! Calico installation failed" && exit 1
-! verify_pod_network && echo -e "[CALICO] FAILED!! Calico pod network not working. You may increase waiting time for verification"
+echo -e "Run 'watch kubectl get pods -n calico-system' to verify if all the pods are running. It may take some time."
+# ! verify_pod_network && echo -e "[CALICO] FAILED!! Calico pod network not working. You may increase waiting time for verification"
 
 exit 0

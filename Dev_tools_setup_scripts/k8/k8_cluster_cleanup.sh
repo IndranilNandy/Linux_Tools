@@ -12,7 +12,7 @@ drain_node() {
     #     # sshpass -p "$passwd"
     #     ! kubectl drain "$w" --delete-emptydir-data --force --ignore-daemonsets && echo -e "[PREREQ] Failed to drain worker nodes" && return 1
     # done
-    exit 0
+    return 0
 }
 
 reset_tables() {
@@ -53,22 +53,23 @@ if [[ $(hostname) == "$node_c" ]]; then
 
     node_ws=$(cat ./config/.clusterconfig | grep "workers:" | sed "s/workers: *\(.*\)/\1/" | tr " *" "\n" | xargs -I X echo X)
     for w in $node_ws; do
-        echo -e
+        #echo -e
         read -p "Want to tear down worker node $w [y] or [n]" ans
         if [[ $(echo $ans | tr [:upper:] [:lower:]) == "y" ]]; then
             drain_node "$w" || echo -e "[TEARDOWN] Failed to drain worker node $w. Still proceeding with deleting node"
-            delete node "$w" || echo -e "[TEARDOWN] Failed to delete worker node $w. Still proceeding with kubeadm reset"
+            delete_node "$w" || echo -e "[TEARDOWN] Failed to delete worker node $w. Still proceeding with kubeadm reset"
             (./worker-node/worker_tear.sh "$w" || echo -e "[TEARDOWN] Failed to reset kubeadm in worker node $w. Proceeding with next worker node if available.")
         fi
     done
 
-    echo -e
+    #echo -e
     read -p "Want to tear down the control plane [y] or [n]" ans
     if [[ $(echo $ans | tr [:upper:] [:lower:]) == "n" ]]; then
         echo -e "[TEARDOWN] Not tearing down control plane"
         exit 0
     fi
 fi
+
 echo -e "Cleaning up $(hostname)"
 cleanup
 echo "Worker-node: $(hostname)"

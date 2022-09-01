@@ -41,6 +41,7 @@ check_ports() {
     else
         worker_node_ports
     fi
+    return 0
 }
 
 if_swap_on() {

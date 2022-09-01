@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo -e "[CLUSTER TEARDOWN] Starting to tear down cluster"
 nodec=$(cat ./config/.clusterconfig | grep "controlplane:" | sed "s/controlplane: *\(.*\)/\1/" | tr " *" "\n" | xargs -I X echo X)
 
-(./control-plane/controlplane_tear.sh "$nodec" || echo -e "[CONTROLPLANE] Setup failed in control plane")
+(./control-plane/controlplane_tear.sh "$nodec" || echo -e "[CLUSTER TEARDOWN] Tearing down cluster faced issues. See log for details")

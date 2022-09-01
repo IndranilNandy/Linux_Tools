@@ -32,6 +32,7 @@ EOF
 
     # Apply sysctl params without reboot
     sudo sysctl --system
+    return 0
 }
 
 # Assumption: Docker used as container runtime

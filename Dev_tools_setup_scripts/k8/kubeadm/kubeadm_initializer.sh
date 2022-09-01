@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 initialize_controlplane() {
-    echo "Initialize control plane node here with ${1}"
+    echo "[KUBEADM] Initializing kubeadm on control plane node with pod network: ${1}"
 
     # This is for Weavenet
     [[ "${1}" == "weavenet" ]] && sudo kubeadm init --pod-network-cidr=10.10.0.0/16 --cri-socket=unix:///var/run/cri-dockerd.sock && echo "weavenet" && return 0
@@ -19,7 +19,8 @@ access_kubeconfig() {
 }
 
 initialize_workernode() {
-    echo "Initialize worker node here"
+    # echo "Initialize worker node here"
+    echo -e
 }
 
 init_cluster() {
@@ -34,5 +35,5 @@ init_cluster() {
 
 }
 
-! init_cluster $* && echo "[KUBEADM]FAILED!! Kubeadm cluster initialization failed. Cluster may already be initialized" && exit 1
+! init_cluster $* && echo "[KUBEADM] FAILED!! Kubeadm cluster initialization failed. Cluster may already be initialized" && exit 1
 exit 0

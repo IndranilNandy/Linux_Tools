@@ -56,7 +56,8 @@ pod_networking_setup $nodetype $cniplugin
 ret=$(cat STATUS)
 rm STATUS
 
-! [[ "$ret" == "0" ]] && echo -e "CLUSTER NOT INITIALIZED!" && exit 1
+! [[ "$ret" == "0" ]] && echo -e "[CLUSTER INITIALIZATION] FAILED on $(hostname)!" && exit 1
+echo -e "[CLUSTER INITIALIZATION] Finished on $(hostname)"
 exit 0
 
 

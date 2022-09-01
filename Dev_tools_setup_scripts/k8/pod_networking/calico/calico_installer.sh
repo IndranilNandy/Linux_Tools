@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-install_calico() {
-    kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/tigera-operator.yaml
-    kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/custom-resources.yaml
+configure_with_calico() {
+    kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/tigera-operator.yaml || return 1
+    kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/custom-resources.yaml || return 1
     return 0
 }
 
@@ -14,8 +14,9 @@ verify_pod_network() {
 }
 
 # https://projectcalico.docs.tigera.io/getting-started/kubernetes/quickstart
-! install_calico && echo -e "[CALICO] FAILED!! Calico installation failed" && exit 1
-echo -e "Run 'watch kubectl get pods -n calico-system' to verify if all the pods are running. It may take some time."
-# ! verify_pod_network && echo -e "[CALICO] FAILED!! Calico pod network not working. You may increase waiting time for verification"
+! configure_with_calico && echo -e "[CALICO CONFIGURATION] FAILED!! Configuration with Calico failed" && exit 1
+echo -e "[CALICO CONFIGURATION] Run 'watch kubectl get pods -n calico-system' to verify if all the pods are running. It may take some time."
+
+# ! verify_pod_network && echo -e "[CALICO CONFIGURATION] FAILED!! Calico pod network not working. You may increase waiting time for verification"
 
 exit 0

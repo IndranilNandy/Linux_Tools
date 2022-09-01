@@ -21,6 +21,7 @@ install_convert() {
         kubectl convert --help
     )
     rm -rf tmp
+    return 0
 }
 
 # Enable kubectl autocompletion

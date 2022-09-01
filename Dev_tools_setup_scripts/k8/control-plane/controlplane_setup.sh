@@ -6,7 +6,6 @@ cnode="${1}"
 echo -e "\nSETUP WILL NOW INITIALIZE CONTROL PLANE: $cnode"
 
 . ./lib/credentials.lib ${1}
-# sshpass -p "$passwd" ssh indranilnandy@"$cnode" ls || exit 1
 
 ! sshpass -p "$passwd" scp -o 'StrictHostKeyChecking no' -r ~/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8 indranilnandy@"$cnode":~ && echo -e "[CONTROLPLANE] Failed to copy codebase" && exit 1
 ! sshpass -p "$passwd" ssh -o 'StrictHostKeyChecking no' -t indranilnandy@"$cnode" "cd ~/k8; bash --login ./k8_cluster_init.sh" --node=control --cni=calico && echo -e "[CONTROLPLANE] FAILED!! Setup NOT completed in control plane" && exit 1

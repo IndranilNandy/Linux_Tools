@@ -1,0 +1,5 @@
+#!/bin/bash
+
+nodec=$(cat ./config/.clusterconfig | grep "controlplane:" | sed "s/controlplane: *\(.*\)/\1/" | tr " *" "\n" | xargs -I X echo X)
+
+(./control-plane/controlplane_tear.sh "$nodec" || echo -e "[CONTROLPLANE] Setup failed in control plane")

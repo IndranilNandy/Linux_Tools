@@ -1,4 +1,1 @@
---------ROLE:   List of machines-------
-controlplane:   k8-controlplanenode
-workers:        k8-worker1 k8-worker2
-clients:        indranil-vm-2
+/home/indranil/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8/config/defaults/.clusterconfigdefault

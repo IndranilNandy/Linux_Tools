@@ -6,7 +6,7 @@ node_c=$(cat ./config/.clusterconfig | grep "controlplane:" | sed "s/controlplan
 
 node_ws=$(cat ./config/.clusterconfig | grep "workers:" | sed "s/workers: *\(.*\)/\1/" | tr " *" "\n" | xargs -I X echo X)
 for w in $node_ws; do
-    (./worker-node/worker_setup.sh "$w" || echo -e "[WORKER] Setup failed in worker node $node_ws")
+    (./worker-node/worker_setup.sh "$w" || echo -e "[WORKER] Setup failed in worker node $w")
 done
 
 rm -rf ./credentials

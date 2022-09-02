@@ -1,36 +1,36 @@
 prereq_setup() {
     [[ $(cat STATUS) == "1" ]] || (./preinstall_prereq/prereq_setup.sh ${1} || echo 1 >./STATUS)
-    echo a: $(cat STATUS)
+    echo -e "[STATUS] after 'prereq_setup' $(cat STATUS)"
 }
 
 container_runtime_setup() {
     [[ $(cat STATUS) == "1" ]] || (./container_runtime/container_runtime_setup.sh || echo 1 >./STATUS)
-    echo b: $(cat STATUS)
+    echo -e "[STATUS] after 'container_runtime_setup' $(cat STATUS)"
 }
 
 kubectl_setup() {
     [[ $(cat STATUS) == "1" ]] || (./kubectl/kubectl_installer.sh || echo 1 >./STATUS)
-    echo c: $(cat STATUS)
+    echo -e "[STATUS] after 'kubectl_setup' $(cat STATUS)"
 }
 
 kubelet_setup() {
     [[ $(cat STATUS) == "1" ]] || (./kubelet/kubelet_installer.sh || echo 1 >./STATUS)
-    echo d: $(cat STATUS)
+    echo -e "[STATUS] after 'kubelet_setup' $(cat STATUS)"
 }
 
 kubeadm_setup() {
     [[ $(cat STATUS) == "1" ]] || (./kubeadm/kubeadm_installer.sh && ./kubeadm/kubeadm_initializer.sh $* || echo 1 >./STATUS)
-    echo e: $(cat STATUS)
+    echo -e "[STATUS] after 'kubeadm_setup' $(cat STATUS)"
 }
 
 weavenet_setup() {
     [[ $(cat STATUS) == "1" ]] || (./pod_networking/weavenet/weavenet_installer.sh || echo 1 >./STATUS)
-    echo f: $(cat STATUS)
+    echo -e "[STATUS] after 'weavenet_setup' $(cat STATUS)"
 }
 
 calico_setup() {
     [[ $(cat STATUS) == "1" ]] || (./pod_networking/calico/calico_installer.sh || echo 1 >./STATUS)
-    echo f: $(cat STATUS)
+    echo -e "[STATUS] after 'calico_setup' $(cat STATUS)"
 }
 
 pod_networking_setup() {
@@ -41,11 +41,11 @@ pod_networking_setup() {
 
 controlplane_config() {
     [[ $(cat STATUS) == "1" ]] || (./control-plane/controlplane_configurer.sh || echo 1 >./STATUS)
-    echo g: $(cat STATUS)
+    echo -e "[STATUS] after 'controlplane_config' $(cat STATUS)"
 }
 
 join_worker() {
     [[ $(cat STATUS) == "1" ]] || (./worker-node/join_cluster.sh || echo 1 >./STATUS)
-    echo h: $(cat STATUS)
+    echo -e "[STATUS] after 'join_worker' $(cat STATUS)"
 }
 

@@ -65,8 +65,7 @@ teardown_cluster() {
             fi
         done
 
-        #echo -e
-        echo -e "[TEAR CONTROLPLANE] Finished iterating over all worker nodes [drain -> delete -> kubeadm reset]. Next turn for control plane $node_c"
+        echo -e "\n[TEAR CONTROLPLANE] Finished iterating over all worker nodes [drain -> delete -> kubeadm reset]. Next turn for control plane $node_c"
 
         read -p "Want to tear down the control plane [y] or [n]" ans
         if [[ $(echo $ans | tr [:upper:] [:lower:]) == "n" ]]; then

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+client_node="${1}"
+
+echo -e "\n[CLIENT CONFIGURATION] SETUP WILL NOW CONFIGURE CLIENT NODE: $client_node"
+
+. ./lib/credentials.lib ${1}
+
+user=$(cat ./config/.machineconfig | grep -i "$client_node:" | sed "s/$client_node: *\(.*\)/\1/I" | tr " *" "\n" | xargs -I X echo X)
+
+! sshpass -p "$passwd" scp -o 'StrictHostKeyChecking no' -r ~/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8 "$user"@"$client_node":~ && echo -e "[CLIENT CONFIGURATION] Failed to copy codebase to client node $client_node" && exit 1
+! sshpass -p "$passwd" ssh -o 'StrictHostKeyChecking no' -t "$user"@"$client_node" "cd ~/k8; bash --login ./clients/client_configurer.sh" && echo -e "[CLIENT CONFIGURATION] FAILED!! Configuration NOT completed in clien node $client_node" && exit 1
+
+exit 0

@@ -5,7 +5,7 @@ init_cluster_config() {
     machcf=$(pwd)/config/defaults/.machineconfigdefault
 
     for arg in "$@"; do
-    echo here
+    #echo here
         case $arg in
         --clusterconfig=*)
             cluscf=$(echo "$arg" | sed "s/--clusterconfig=\(.*\)/\1/")
@@ -28,7 +28,9 @@ init_cluster_config() {
 init_controlplane() {
     node_c=$(cat ./config/.clusterconfig | grep "controlplane:" | sed "s/controlplane: *\(.*\)/\1/" | tr " *" "\n" | xargs -I X echo X)
 
-    (./control-plane/controlplane_setup.sh "$node_c" || echo -e "[CONTROLPLANE] Setup failed in control plane $node_c")
+    # (./control-plane/controlplane_setup.sh "$node_c" || echo -e "[CONTROLPLANE] Setup failed in control plane $node_c")
+    ! ./control-plane/controlplane_setup.sh "$node_c" && echo -e "[CONTROLPLANE] Setup failed in control plane $node_c" && exit 1
+
 }
 
 init_workers() {
@@ -48,7 +50,7 @@ init_clients() {
 }
 
 init_cluster_config "$@"
-init_controlplane
-init_workers
+# init_controlplane
+# init_workers
 init_clients
 

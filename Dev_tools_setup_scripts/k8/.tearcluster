@@ -1,5 +1,31 @@
 #!/bin/bash
 
+init_cluster_config() {
+    cluscf=$(pwd)/config/defaults/.clusterconfigdefault
+    machcf=$(pwd)/config/defaults/.machineconfigdefault
+
+    for arg in "$@"; do
+        case $arg in
+        --clusterconfig=*)
+            cluscf=$(echo "$arg" | sed "s/--clusterconfig=\(.*\)/\1/")
+            ;;
+        --machineconfig=*)
+            machcf=$(echo "$arg" | sed "s/--machineconfig=\(.*\)/\1/")
+            ;;
+        *) ;;
+        esac
+    done
+
+    echo -e "Cluster configuration file: $cluscf"
+    echo -e "Machines configuration file: $machcf"
+    echo -e
+
+    yes | sudo ln -s -i "$cluscf" $(pwd)/config/.clusterconfig 2> /dev/null
+    yes | sudo ln -s -i "$machcf" $(pwd)/config/.machineconfig 2> /dev/null
+}
+
+init_cluster_config "$@"
+
 echo -e "[CLUSTER TEARDOWN] Starting to tear down cluster"
 nodec=$(cat ./config/.clusterconfig | grep "controlplane:" | sed "s/controlplane: *\(.*\)/\1/" | tr " *" "\n" | xargs -I X echo X)
 

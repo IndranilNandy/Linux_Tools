@@ -45,7 +45,7 @@ check_ports() {
 }
 
 if_swap_on() {
-    cat /proc/swaps | grep -q swap
+    cat /proc/swaps | grep swap
 }
 
 disable_swap_for_session() {
@@ -71,8 +71,16 @@ check_min_cpucores_availability() {
     return 0
 }
 
+check_ram_availability() {
+    total_mem=$(grep MemTotal /proc/meminfo | sed "s/MemTotal: *\([0-9]*\) kB/\1/")
+    echo -e "Total RAM available: $total_mem"
+    [[ "$total_mem" -ge 1700000 ]] || return 1
+    return 0
+}
+
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#before-you-begin
 ! check_min_cpucores_availability && echo -e "[PREREQ] FAILED!! Not enough cpu core available. Min required 2" && exit 1
+! check_ram_availability && echo -e "[PREREQ] FAILED!! Not enough RAM available. Min required 1700 MB" && exit 1
 
 # Verify unique mac and product_uuid accross all nodes
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#verify-mac-address

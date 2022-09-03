@@ -1,5 +1,10 @@
 #!/bin/bash
 
+check_path() {
+    path=./config/userdefined/"${1}"
+    [[ -d "$path" ]] && [[ -e "$path"/.clusterconfig ]] && [[ -e "$path"/.machineconfig ]] || return 1
+}
+
 init_cluster_config() {
     cluscf=$(pwd)/config/defaults/.clusterconfigdefault
     machcf=$(pwd)/config/defaults/.machineconfigdefault
@@ -11,6 +16,12 @@ init_cluster_config() {
             ;;
         --machineconfig=*)
             machcf=$(echo "$arg" | sed "s/--machineconfig=\(.*\)/\1/")
+            ;;
+        --configdir=*)
+            dir=$(echo "$arg" | sed "s/--configdir=\(.*\)/\1/")
+            ! check_path "$dir" && return 1
+            cluscf=$(pwd)/config/userdefined/"$dir"/.clusterconfig
+            machcf=$(pwd)/config/userdefined/"$dir"/.machineconfig
             ;;
         *) ;;
         esac
@@ -24,7 +35,7 @@ init_cluster_config() {
     yes | sudo ln -s -i "$machcf" $(pwd)/config/.machineconfig 2> /dev/null
 }
 
-init_cluster_config "$@"
+! init_cluster_config "$@" && echo -e "[CLUSTER TEARDOWN] Invalid cluster configuration information!" && exit 1
 
 echo -e "[CLUSTER TEARDOWN] Starting to tear down cluster"
 nodec=$(cat ./config/.clusterconfig | grep "controlplane:" | sed "s/controlplane: *\(.*\)/\1/" | tr " *" "\n" | xargs -I X echo X)

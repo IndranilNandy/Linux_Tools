@@ -1,17 +1,27 @@
 #!/bin/bash
 
+check_path() {
+    path=./config/userdefined/"${1}"
+    [[ -d "$path" ]] && [[ -e "$path"/.clusterconfig ]] && [[ -e "$path"/.machineconfig ]] || return 1
+}
+
 init_cluster_config() {
     cluscf=$(pwd)/config/defaults/.clusterconfigdefault
     machcf=$(pwd)/config/defaults/.machineconfigdefault
 
     for arg in "$@"; do
-    #echo here
         case $arg in
         --clusterconfig=*)
             cluscf=$(echo "$arg" | sed "s/--clusterconfig=\(.*\)/\1/")
             ;;
         --machineconfig=*)
             machcf=$(echo "$arg" | sed "s/--machineconfig=\(.*\)/\1/")
+            ;;
+        --configdir=*)
+            dir=$(echo "$arg" | sed "s/--configdir=\(.*\)/\1/")
+            ! check_path "$dir" && return 1
+            cluscf=$(pwd)/config/userdefined/"$dir"/.clusterconfig
+            machcf=$(pwd)/config/userdefined/"$dir"/.machineconfig
             ;;
         *) ;;
         esac
@@ -21,14 +31,13 @@ init_cluster_config() {
     echo -e "Machines configuration file: $machcf"
     echo -e
 
-    yes | sudo ln -s -i "$cluscf" $(pwd)/config/.clusterconfig 2> /dev/null
-    yes | sudo ln -s -i "$machcf" $(pwd)/config/.machineconfig 2> /dev/null
+    yes | sudo ln -s -i "$cluscf" $(pwd)/config/.clusterconfig 2>/dev/null
+    yes | sudo ln -s -i "$machcf" $(pwd)/config/.machineconfig 2>/dev/null
 }
 
 init_controlplane() {
     node_c=$(cat ./config/.clusterconfig | grep "controlplane:" | sed "s/controlplane: *\(.*\)/\1/" | tr " *" "\n" | xargs -I X echo X)
 
-    # (./control-plane/controlplane_setup.sh "$node_c" || echo -e "[CONTROLPLANE] Setup failed in control plane $node_c")
     ! ./control-plane/controlplane_setup.sh "$node_c" && echo -e "[CONTROLPLANE] Setup failed in control plane $node_c" && exit 1
 
 }
@@ -49,8 +58,7 @@ init_clients() {
     done
 }
 
-init_cluster_config "$@"
-# init_controlplane
-# init_workers
+! init_cluster_config "$@" && echo -e "[SETUP] Invalid cluster configuration information!" && exit 1
+init_controlplane
+init_workers
 init_clients
-

@@ -4,6 +4,7 @@
 installationType="(min|default)"
 loggingDest="/dev/stdout"
 errorDest="/dev/stdout"
+cust_setup_def="No custom setup defined"
 
 set_instType() {
     case ${1} in
@@ -52,6 +53,11 @@ for arg in "$@"; do
         set_logDest $(echo $arg | sed "s/--log-target=\(.*\)/\1/")
         ;;
 
+    --custom-setup=*)
+        #options file, term
+        cust_setup_def=$(cat ../Custom_setup_definitions/.$(echo $arg | sed "s/--custom-setup=\(.*\)/\1/"))
+        ;;
+
     *)
         echo "invalid arguments" && exit 1
         ;;
@@ -68,6 +74,7 @@ export errorDest
 echo -e "\n${YELLOW}${BOLD}[Utility_tools_setup_scripts] [$(pwd)] Starting setup.${RESET}"
 # echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | xargs -I INPUT echo -e "(cd \$(dirname INPUT) && echo -e \\n{\\nINPUT\\n} >> .logs 2>> .errors | bash)" | bash
 # echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | xargs -I INPUT echo -e "(cd \$(dirname INPUT) && echo -e \\n{\\nINPUT\\n} >> >(ts '[%Y-%m-%d %H:%M:%S]' >> .logs) 2>> >(ts '[%Y-%m-%d %H:%M:%S]' >> .errors) | bash)" | bash
-echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | filter_tools $installationType | xargs -I INPUT echo -e "(cd \$(dirname INPUT) && echo -e \"\\n{\\nINPUT\\n} >> >(ts '[%Y-%m-%d %H:%M:%S]' >> "$loggingDest") 2>> >(ts '[%Y-%m-%d %H:%M:%S]' >> "$errorDest")\" | bash)" | bash
+echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | grep -E -v "$cust_setup_def" | filter_tools $installationType | xargs -I INPUT echo -e "(cd \$(dirname INPUT) && echo -e \"\\n{\\nINPUT\\n} >> >(ts '[%Y-%m-%d %H:%M:%S]' >> "$loggingDest") 2>> >(ts '[%Y-%m-%d %H:%M:%S]' >> "$errorDest")\" | bash)" | bash
+
 echo -e "\n${GREEN}${BOLD}[Utility_tools_setup_scripts] [$(pwd)] Setup completed.${RESET}"
 echo

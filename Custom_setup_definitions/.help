@@ -1,0 +1,13 @@
+For any custom setup, create a directroy 'customsetup' (say) under Custom_setup_definitions.
+Create two files under that directory with names '.customsetup' and '.customsetup-aptpkgtools'
+
+.customsetup -> contains all the packages to be excluded from installation, separated by |
+.customsetup-aptpkgtools -> contains all packages to be installed by apt
+
+Sample run command, of root .setup file would be like this-
+./.setup --type=dev --log-target=file --custom-setup=server-minimal
+
+Available options for command line parameters:
+    type:           min|default|dev|full
+    log-target:     file|term
+    custom-setup:   server-minimal

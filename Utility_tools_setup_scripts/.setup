@@ -41,6 +41,9 @@ set_logDest() {
     esac
 }
 
+# This is a hack used to support custom-setup type for a minimal server etc. In future, you may think to refactor the code.
+yes | sudo ln -s -i myinstaller/fullAptPkgTools myinstaller/.fullAptPkgTools
+
 for arg in "$@"; do
     case $arg in
     --type=*)
@@ -54,8 +57,9 @@ for arg in "$@"; do
         ;;
 
     --custom-setup=*)
-        #options file, term
-        cust_setup_def=$(cat ../Custom_setup_definitions/.$(echo $arg | sed "s/--custom-setup=\(.*\)/\1/"))
+        path=$(echo $arg | sed "s/--custom-setup=\(.*\)/\1/")
+        cust_setup_def=$(cat ../Custom_setup_definitions/$path/.$path)
+        yes | sudo ln -s -i $(pwd)/../Custom_setup_definitions/$path/.$path-aptpkgtools myinstaller/.fullAptPkgTools
         ;;
 
     *)

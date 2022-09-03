@@ -1,0 +1,10 @@
+moreutils
+cifs-utils
+nmap
+apt-file
+net-tools
+openssh-server
+openjdk-18-jdk
+gitk
+sshpass
+netcat

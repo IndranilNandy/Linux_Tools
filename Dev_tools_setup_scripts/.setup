@@ -54,8 +54,8 @@ for arg in "$@"; do
         ;;
 
     --custom-setup=*)
-        #options file, term
-        cust_setup_def=$(cat ../Custom_setup_definitions/.$(echo $arg | sed "s/--custom-setup=\(.*\)/\1/"))
+        path=$(echo $arg | sed "s/--custom-setup=\(.*\)/\1/")
+        cust_setup_def=$(cat ../Custom_setup_definitions/$path/.$path)
         ;;
 
     *)

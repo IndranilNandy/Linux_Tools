@@ -16,3 +16,4 @@ conky-all
 gitk
 git-gui
 sshpass
+netcat

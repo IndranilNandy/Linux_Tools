@@ -55,7 +55,7 @@ for arg in "$@"; do
 
     --custom-setup=*)
         path=$(echo $arg | sed "s/--custom-setup=\(.*\)/\1/")
-        cust_setup_def=$(cat ../Custom_setup_definitions/$path/.$path)
+        [[ -n "$path" ]] && cust_setup_def=$(cat ../Custom_setup_definitions/$path/.$path)
         ;;
 
     *)

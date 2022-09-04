@@ -58,8 +58,8 @@ for arg in "$@"; do
 
     --custom-setup=*)
         path=$(echo $arg | sed "s/--custom-setup=\(.*\)/\1/")
-        cust_setup_def=$(cat ../Custom_setup_definitions/$path/.$path)
-        yes | sudo ln -s -i $(pwd)/../Custom_setup_definitions/$path/.$path-aptpkgtools myinstaller/.fullAptPkgTools
+        [[ -n "$path" ]] && cust_setup_def=$(cat ../Custom_setup_definitions/$path/.$path)
+        [[ -z "$path" ]] || yes | sudo ln -s -i $(pwd)/../Custom_setup_definitions/$path/.$path-aptpkgtools myinstaller/.fullAptPkgTools
         ;;
 
     *)

@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+execute_with_cred() {
+    failure=0
+    cred_placeholder="${2}"
+    host_placeholder="${3}"
+
+    while :; do
+        read -p "Enter user@hostname: " userhost
+        read -p "Password for $userhost: " -s cred
+        echo -e
+
+        (echo "${1}" | sed "s/\(.*\)\$"$cred_placeholder"\(.*\)\$"$host_placeholder"\(.*\)/\1"$cred"\2"$userhost"\3/" | bash) && break || ((failure++))
+
+        if [[ $failure -ge 3 ]]; then
+            break
+        fi
+
+        echo -e
+        echo "Try#$failure"
+    done
+    failure=0
+}
+
+execute_script_with_cred() {
+    cred_placeholder="${2}"
+    host_placeholder="${3}"
+
+    cp -p ${1} temp.sh
+    sed -i -e "s/\(.*\)ssh\(.*\)/\1sshpass -p \"\$$cred_placeholder\" ssh\2/" \
+            -e "s/\(.*\)scp\(.*\)/\1sshpass -p \"\$$cred_placeholder\" scp\2/" \
+            temp.sh
+
+    while :; do
+        read -p "Enter user@hostname: " userhost
+        read -p "Password for $userhost: " -s cred
+        echo -e
+
+        ./temp.sh "$userhost" "$cred" && break
+        read -p "Do you accept [a] the run or rerun [r]? " ans
+        [[ $(echo $ans | tr [:upper:] [:lower:]) == "a" ]] && break
+    done
+    rm temp.sh
+}

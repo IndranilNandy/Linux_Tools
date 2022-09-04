@@ -1,0 +1,26 @@
+#!/bin/bash
+
+userhost="${1}"
+cred="${2}"
+
+read -p "Ensure that ~/MyTools/ doesn't exist in the remote machine. Do you want to proceed? [y] or [n] " ans
+[[ "$(echo $ans | tr [:upper:] [:lower:])" == "n" ]] && exit 0
+
+echo -e "Copying codebase to ""$userhost"
+scp -r ~/MyTools "$userhost":~ || exit 1
+
+echo -e "Running setup script..."
+
+read -p "type=? (min|default|dev|full) [default type: dev]" inst
+read -p "log-target=? (term|file) [default log: term]" log
+read -p "custom-setup=? (server-minimal [default custom-setup: server-minimal])" cust
+
+inst || inst=dev
+log || log=term
+cust || cust=server-minimal
+
+echo -e "./.setup --type=$inst --log-target=$log --custom-setup=$cust"
+ssh -t "$userhost" "cd ~/MyTools/Linux_Tools/; bash --login ./.setup --type=$type --log-target=$log --custom-setup=$cust"
+
+exit 0
+

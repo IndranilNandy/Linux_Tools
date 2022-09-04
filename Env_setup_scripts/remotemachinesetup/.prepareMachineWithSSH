@@ -1,0 +1,5 @@
+#!/bin/bash
+
+. ./lib/.withCred
+
+execute_script_with_cred "./.withSSH" cred userhost

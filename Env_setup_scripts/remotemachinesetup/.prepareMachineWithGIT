@@ -1,0 +1,25 @@
+#!/bin/bash
+
+yes | sudo apt update
+yes | sudo apt upgrade
+yes | sudo apt install git
+
+echo -e "Downloading the setup script..."
+# git clone -b dev https://github.com/IndranilNandy/Linux_Tools.git ~/MyTools/Linux_Tools
+
+cd ~/MyTools/Linux_Tools
+git checkout dev
+chmod +x .setup
+
+echo -e "Running setup script..."
+
+read -p "type=? (min|default|dev|full) [default type: dev]" inst
+read -p "log-target=? (term|file) [default log: term]" log
+read -p "custom-setup=? (server-minimal [default custom-setup: server-minimal])" cust
+
+inst || inst=dev
+log || log=term
+cust || cust=
+
+echo -e "./.setup --type=$inst --log-target=$log --custom-setup=$cust"
+ ./.setup --type=$type --log-target=$log --custom-setup=$cust

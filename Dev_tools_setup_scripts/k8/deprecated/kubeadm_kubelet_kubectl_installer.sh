@@ -19,5 +19,5 @@ installer() {
 
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl
 (ifinstalled kubeadm && ifinstalled kubelet && ifinstalled kubectl) || installer
-./kubectl_configurer.sh
-./kubelet_configurer.sh
+./components/kubectl_configurer.sh
+./components/kubelet_configurer.sh

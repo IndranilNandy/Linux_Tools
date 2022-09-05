@@ -38,14 +38,14 @@ init_cluster_config() {
 init_controlplane() {
     node_c=$(cat ./config/.clusterconfig | grep "controlplane:" | sed "s/controlplane: *\(.*\)/\1/" | tr " *" "\n" | xargs -I X echo X)
 
-    ! ./control-plane/controlplane_setup.sh "$node_c" && echo -e "[CONTROLPLANE] Setup failed in control plane $node_c" && exit 1
+    ! ./nodes/control-plane/controlplane_setup.sh "$node_c" && echo -e "[CONTROLPLANE] Setup failed in control plane $node_c" && exit 1
 
 }
 
 init_workers() {
     node_ws=$(cat ./config/.clusterconfig | grep "workers:" | sed "s/workers: *\(.*\)/\1/" | tr " *" "\n" | xargs -I X echo X)
     for w in $node_ws; do
-        (./worker-node/worker_setup.sh "$w" || echo -e "[WORKER] Setup failed in worker node $w")
+        (./nodes/worker-node/worker_setup.sh "$w" || echo -e "[WORKER] Setup failed in worker node $w")
     done
 
     rm -rf ./credentials
@@ -54,7 +54,7 @@ init_workers() {
 init_clients() {
     clients=$(cat ./config/.clusterconfig | grep "clients:" | sed "s/clients: *\(.*\)/\1/" | tr " *" "\n" | xargs -I X echo X)
     for c in $clients; do
-        (./clients/client_setup.sh "$c" || echo -e "[CLIENTS] Setup failed in client node $c")
+        (./nodes/clients/client_setup.sh "$c" || echo -e "[CLIENTS] Setup failed in client node $c")
     done
 }
 

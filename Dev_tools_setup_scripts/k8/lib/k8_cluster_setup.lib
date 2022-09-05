@@ -7,48 +7,48 @@ prereq_setup() {
 }
 
 container_runtime_setup() {
-    #[[ $(cat STATUS) == "1" ]] || (./container_runtime/container_runtime_setup.sh || echo 1 >./STATUS)
-    ! ./container_runtime/container_runtime_setup.sh && echo -e "[container_runtime_setup] Failed!" && return 1
+    #[[ $(cat STATUS) == "1" ]] || (./components/container_runtime/container_runtime_setup.sh || echo 1 >./STATUS)
+    ! ./components/container_runtime/container_runtime_setup.sh && echo -e "[container_runtime_setup] Failed!" && return 1
 
     echo -e "[STATUS] after 'container_runtime_setup' $(cat STATUS)"
     return 0
 }
 
 kubectl_setup() {
-    #[[ $(cat STATUS) == "1" ]] || (./kubectl/kubectl_installer.sh || echo 1 >./STATUS)
-    ! ./kubectl/kubectl_installer.sh && echo -e "[kubectl_setup] Failed!" && return 1
+    #[[ $(cat STATUS) == "1" ]] || (./components/kubectl/kubectl_installer.sh || echo 1 >./STATUS)
+    ! ./components/kubectl/kubectl_installer.sh && echo -e "[kubectl_setup] Failed!" && return 1
 
     echo -e "[STATUS] after 'kubectl_setup' $(cat STATUS)"
     return 0
 }
 
 kubelet_setup() {
-    #[[ $(cat STATUS) == "1" ]] || (./kubelet/kubelet_installer.sh || echo 1 >./STATUS)
-    ! ./kubelet/kubelet_installer.sh && echo -e "[kubelet_setup] Failed!" && return 1
+    #[[ $(cat STATUS) == "1" ]] || (./components/kubelet/kubelet_installer.sh || echo 1 >./STATUS)
+    ! ./components/kubelet/kubelet_installer.sh && echo -e "[kubelet_setup] Failed!" && return 1
 
     echo -e "[STATUS] after 'kubelet_setup' $(cat STATUS)"
     return 0
 }
 
 kubeadm_setup() {
-    #[[ $(cat STATUS) == "1" ]] || (./kubeadm/kubeadm_installer.sh && ./kubeadm/kubeadm_initializer.sh $* || echo 1 >./STATUS)
-    ! (./kubeadm/kubeadm_installer.sh && ./kubeadm/kubeadm_initializer.sh $*) && echo -e "[kubeadm_setup] Failed!" && return 1
+    #[[ $(cat STATUS) == "1" ]] || (./components/kubeadm/kubeadm_installer.sh && ./components/kubeadm/kubeadm_initializer.sh $* || echo 1 >./STATUS)
+    ! (./components/kubeadm/kubeadm_installer.sh && ./components/kubeadm/kubeadm_initializer.sh $*) && echo -e "[kubeadm_setup] Failed!" && return 1
 
     echo -e "[STATUS] after 'kubeadm_setup' $(cat STATUS)"
     return 0
 }
 
 weavenet_setup() {
-#    [[ $(cat STATUS) == "1" ]] || (./pod_networking/weavenet/weavenet_installer.sh || echo 1 >./STATUS)
-    ! ./pod_networking/weavenet/weavenet_installer.sh && echo -e "[weavenet_setup] Failed!" && return 1
+#    [[ $(cat STATUS) == "1" ]] || (./components/pod_networking/weavenet/weavenet_installer.sh || echo 1 >./STATUS)
+    ! ./components/pod_networking/weavenet/weavenet_installer.sh && echo -e "[weavenet_setup] Failed!" && return 1
 
     echo -e "[STATUS] after 'weavenet_setup' $(cat STATUS)"
     return 0
 }
 
 calico_setup() {
-#    [[ $(cat STATUS) == "1" ]] || (./pod_networking/calico/calico_installer.sh || echo 1 >./STATUS)
-    ! ./pod_networking/calico/calico_installer.sh && echo -e "[calico_setup] Failed!" && return 1
+#    [[ $(cat STATUS) == "1" ]] || (./components/pod_networking/calico/calico_installer.sh || echo 1 >./STATUS)
+    ! ./components/pod_networking/calico/calico_installer.sh && echo -e "[calico_setup] Failed!" && return 1
 
     echo -e "[STATUS] after 'calico_setup' $(cat STATUS)"
     return 0
@@ -62,16 +62,16 @@ pod_networking_setup() {
 }
 
 controlplane_config() {
-#    [[ $(cat STATUS) == "1" ]] || (./control-plane/controlplane_configurer.sh || echo 1 >./STATUS)
-    ! ./control-plane/controlplane_configurer.sh && echo -e "[controlplane_config] Failed!" && return 1
+#    [[ $(cat STATUS) == "1" ]] || (./nodes/control-plane/controlplane_configurer.sh || echo 1 >./STATUS)
+    ! ./nodes/control-plane/controlplane_configurer.sh && echo -e "[controlplane_config] Failed!" && return 1
 
     echo -e "[STATUS] after 'controlplane_config' $(cat STATUS)"
     return 0
 }
 
 join_worker() {
-#    [[ $(cat STATUS) == "1" ]] || (./worker-node/join_cluster.sh || echo 1 >./STATUS)
-    ! ./worker-node/join_cluster.sh && echo -e "[join_worker] Failed!" && return 1
+#    [[ $(cat STATUS) == "1" ]] || (./nodes/worker-node/join_cluster.sh || echo 1 >./STATUS)
+    ! ./nodes/worker-node/join_cluster.sh && echo -e "[join_worker] Failed!" && return 1
 
     echo -e "[STATUS] after 'join_worker' $(cat STATUS)"
     return 0

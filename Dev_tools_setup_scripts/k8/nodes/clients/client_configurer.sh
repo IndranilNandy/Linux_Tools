@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # kubectl setup
-! ./kubectl/kubectl_installer.sh && echo -e "[CLIENT CONFIGURATION] Issue with kubectl installation" && exit 1
+! ./components/kubectl/kubectl_installer.sh && echo -e "[CLIENT CONFIGURATION] Issue with kubectl installation" && exit 1
 
 node_c=$(cat ./config/.clusterconfig | grep "controlplane:" | sed "s/controlplane: *\(.*\)/\1/" | tr " *" "\n" | xargs -I X echo X)
 user_c=$(cat ./config/.machineconfig | grep -i "$node_c:" | sed "s/$node_c: *\(.*\)/\1/I" | tr " *" "\n" | xargs -I X echo X)

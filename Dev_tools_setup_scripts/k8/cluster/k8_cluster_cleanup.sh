@@ -61,7 +61,7 @@ teardown_cluster() {
             if [[ $(echo $ans | tr [:upper:] [:lower:]) == "y" ]]; then
                 drain_node "$w" || echo -e "[TEAR CONTROLPLANE] Failed to drain worker node $w. Still proceeding with deleting node"
                 delete_node "$w" || echo -e "[TEAR CONTROLPLANE] Failed to delete worker node $w. Still proceeding with kubeadm reset"
-                (./worker-node/worker_tear.sh "$w" || echo -e "[TEARDOWN] Failed to reset kubeadm in worker node $w. Proceeding with next worker node if available.")
+                (./nodes/worker-node/worker_tear.sh "$w" || echo -e "[TEARDOWN] Failed to reset kubeadm in worker node $w. Proceeding with next worker node if available.")
             fi
         done
 

@@ -8,4 +8,4 @@ installer() {
 }
 
 (ifinstalled kubectl && echo "kubectl already installed") || installer
-./kubectl_configurer.sh
+./components/kubectl_configurer.sh

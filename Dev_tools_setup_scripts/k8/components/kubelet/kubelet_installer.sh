@@ -19,5 +19,5 @@ installer() {
 
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl
 ! (which kubelet) && ! installer && echo -e "[KUBELET] FAILED!! Kubelet installation failed" && exit 1
-! ./kubelet/kubelet_configurer.sh && echo -e "[KUBELET] FAILED!! Kubelet configuration failed" && exit 1
+! ./components/kubelet/kubelet_configurer.sh && echo -e "[KUBELET] FAILED!! Kubelet configuration failed" && exit 1
 exit 0

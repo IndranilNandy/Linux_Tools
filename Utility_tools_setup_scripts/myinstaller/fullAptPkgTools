@@ -17,3 +17,4 @@ gitk
 git-gui
 sshpass
 netcat
+bash-completion

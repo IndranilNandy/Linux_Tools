@@ -18,3 +18,4 @@ git-gui
 sshpass
 netcat
 bash-completion
+iputils-ping

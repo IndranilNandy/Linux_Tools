@@ -9,3 +9,4 @@ gitk
 sshpass
 netcat
 bash-completion
+iputils-ping

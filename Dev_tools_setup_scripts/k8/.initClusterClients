@@ -1,0 +1,46 @@
+#!/bin/bash
+
+check_path() {
+    path=./config/userdefined/"${1}"
+    [[ -d "$path" ]] && [[ -e "$path"/.clusterconfig ]] && [[ -e "$path"/.machineconfig ]] || return 1
+}
+
+init_cluster_config() {
+    cluscf=$(pwd)/config/defaults/.clusterconfigdefault
+    machcf=$(pwd)/config/defaults/.machineconfigdefault
+
+    for arg in "$@"; do
+        case $arg in
+        --clusterconfig=*)
+            cluscf=$(echo "$arg" | sed "s/--clusterconfig=\(.*\)/\1/")
+            ;;
+        --machineconfig=*)
+            machcf=$(echo "$arg" | sed "s/--machineconfig=\(.*\)/\1/")
+            ;;
+        --configdir=*)
+            dir=$(echo "$arg" | sed "s/--configdir=\(.*\)/\1/")
+            ! check_path "$dir" && return 1
+            cluscf=$(pwd)/config/userdefined/"$dir"/.clusterconfig
+            machcf=$(pwd)/config/userdefined/"$dir"/.machineconfig
+            ;;
+        *) ;;
+        esac
+    done
+
+    echo -e "Cluster configuration file: $cluscf"
+    echo -e "Machines configuration file: $machcf"
+    echo -e
+
+    yes | sudo ln -s -i "$cluscf" $(pwd)/config/.clusterconfig 2>/dev/null
+    yes | sudo ln -s -i "$machcf" $(pwd)/config/.machineconfig 2>/dev/null
+}
+
+init_clients() {
+    clients=$(cat ./config/.clusterconfig | grep "clients:" | sed "s/clients: *\(.*\)/\1/" | tr " *" "\n" | xargs -I X echo X)
+    for c in $clients; do
+        (./nodes/clients/client_setup.sh "$c" || echo -e "[CLIENTS] Setup failed in client node $c")
+    done
+}
+
+! init_cluster_config "$@" && echo -e "[SETUP] Invalid cluster configuration information!" && exit 1
+init_clients

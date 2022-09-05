@@ -3,28 +3,40 @@ Entrypoint directory:
     To use these scripts in any other bash script do a 'cd' to this directory first in a sub-shell, e.g., (cd root_dir && ./xyz.sh)
 
 Entry script:
-    ./.setup: call this for full cluster setup (including all components installation if missing)
-    ./tearcluster: tear down the cluster
+    ./.initCluster: call this for full cluster setup (including all components installation if missing). This does a setup on control plane, worker nodes and client nodes
+    ./tearCluster: tear down the cluster
+    ./initClusterClients: call this to do setup only on client nodes to access the cluster control node. If you've called ./.initCluster then automatically client nodes are configured.
 
 How to use?
-1. ./.setup:
-    ./.setup --configdir=[ClusterConfigFolder]
+1. ./.initCluster:
+    ./.initCluster --configdir=[ClusterConfigFolder]
     ClusterConfigFolder directory must be created in ./config/userdefined, and it should contain files named .clusterconfig and .machineconfig
     If ClusterConfigFolder isn't provided, then the defaults would be taken. Default configuration is in ./config/defaults
-    e.g. ./.setup --configdir=Cluster_1
+    e.g. ./.initCluster --configdir=Cluster_1
 
     Alternatively, you can run as - 
-    ./.setup --clusterconfig=[clusterconfigFile] --machineconfig=[machineconfigFile]
+    ./.initCluster --clusterconfig=[clusterconfigFile] --machineconfig=[machineconfigFile]
     Both clusterconfigFile and machineconfigFile should have full absolute path mentioned.
-    e.g. ./.setup --clusterconfig=$HOME/MyConfigs/clusterConf1 --machineconfig=$HOME/MyConfigs/machineConf1
+    e.g. ./.initCluster --clusterconfig=$HOME/MyConfigs/clusterConf1 --machineconfig=$HOME/MyConfigs/machineConf1
 
-2. ./.tearcluster:
-    ./.tearcluster --configdir=[ClusterConfigFolder]
+2. ./.tearCluster:
+    ./.tearCluster --configdir=[ClusterConfigFolder]
     ClusterConfigFolder directory must be created in ./config/userdefined, and it should contain files named .clusterconfig and .machineconfig
     If ClusterConfigFolder isn't provided, then the defaults would be taken. Default configuration is in ./config/defaults
     e.g. ./.tearcluster --configdir=Cluster_1
 
     Alternatively, you can run as - 
-    ./.tearcluster --clusterconfig=[clusterconfigFile] --machineconfig=[machineconfigFile]
+    ./.tearCluster --clusterconfig=[clusterconfigFile] --machineconfig=[machineconfigFile]
     Both clusterconfigFile and machineconfigFile should have full absolute path mentioned.
     e.g. ./.tearcluster --clusterconfig=$HOME/MyConfigs/clusterConf1 --machineconfig=$HOME/MyConfigs/machineConf1
+
+3. ./.initClusterClients:
+    ./.initClusterClients --configdir=[ClusterConfigFolder]
+    ClusterConfigFolder directory must be created in ./config/userdefined, and it should contain files named .clusterconfig and .machineconfig
+    If ClusterConfigFolder isn't provided, then the defaults would be taken. Default configuration is in ./config/defaults
+    e.g. ./.initClusterClients --configdir=Cluster_1
+
+    Alternatively, you can run as - 
+    ./.initClusterClients --clusterconfig=[clusterconfigFile] --machineconfig=[machineconfigFile]
+    Both clusterconfigFile and machineconfigFile should have full absolute path mentioned.
+    e.g. ./.initClusterClients --clusterconfig=$HOME/MyConfigs/clusterConf1 --machineconfig=$HOME/MyConfigs/machineConf1

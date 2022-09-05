@@ -3,5 +3,9 @@ Entrypoint directory:
     To use these scripts in any other bash script do a 'cd' to this directory first in a sub-shell, e.g., (cd root_dir && ./xyz.sh)
 
 Entry script:
-    1.  ./.prepareMachineWithSSH: call this to setup a remote machine using SSH
-    2.  ./.prepareMachineWithGIT: call this to setup a remote machine using GIT
+    1.  ./.withSSH: call this to setup a remote machine using SSH
+    2.  ./.withGIT: call this to setup a remote machine using GIT
+
+Deprecated
+    1.  ./.prepareMachineWithSSH
+    2.  ./lib/.withCred

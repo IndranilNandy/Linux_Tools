@@ -1,13 +1,17 @@
 #!/bin/bash
 
-userhost="${1}"
-cred="${2}"
+# userhost="${1}"
+# cred="${2}"
+
+. ./lib/loadCred.sh
+
+[[ -z "$cred" ]] && exit 1
 
 read -p "Ensure that ~/MyTools/ doesn't exist in the remote machine. Do you want to proceed? [y] or [n] " ans
 [[ "$(echo $ans | tr [:upper:] [:lower:])" == "n" ]] && exit 0
 
 echo -e "Copying codebase to ""$userhost"
-scp -r ~/MyTools "$userhost":~ || exit 1
+sshpass -p "$cred" scp -r ~/MyTools "$userhost":~ && echo "Codebase copied."
 
 echo -e "Running setup script..."
 

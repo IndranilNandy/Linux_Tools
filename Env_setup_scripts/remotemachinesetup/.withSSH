@@ -24,7 +24,7 @@ log || log=term
 cust || cust=server-minimal
 
 echo -e "./.setup --type=$inst --log-target=$log --custom-setup=$cust"
-ssh -t "$userhost" "cd ~/MyTools/Linux_Tools/; bash --login ./.setup --type=$type --log-target=$log --custom-setup=$cust"
+sshpass -p "$cred" ssh -t "$userhost" "cd ~/MyTools/Linux_Tools/; bash --login ./.setup --type=$inst --log-target=$log --custom-setup=$cust"
 
 exit 0
 

@@ -4,13 +4,12 @@
 cnode="${1}"
 
 echo -e "\nSETUP WILL NOW INITIALIZE CONTROL PLANE: $cnode"
-
-. ./lib/credentials.lib ${1}
-
 user=$(cat ./config/.machineconfig | grep -i "$cnode:" | sed "s/$cnode: *\(.*\)/\1/I" | tr " *" "\n" | xargs -I X echo X)
 
+. ./lib/loadCred.lib "$user" "$cnode"
+
 ! sshpass -p "$passwd" scp -o 'StrictHostKeyChecking no' -r ~/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8 "$user"@"$cnode":~ && echo -e "[CONTROLPLANE] Failed to copy codebase to control plane $cnode" && exit 1
-! sshpass -p "$passwd" ssh -o 'StrictHostKeyChecking no' -t "$user"@"$cnode" "cd ~/k8; bash --login ./k8_cluster_init.sh" --node=control --cni=calico && echo -e "[CONTROLPLANE] FAILED!! Setup NOT completed in control plane $cnode" && exit 1
+! sshpass -p "$passwd" ssh -o 'StrictHostKeyChecking no' -t "$user"@"$cnode" "cd ~/k8; bash --login ./cluster/k8_cluster_init.sh" --node=control --cni=calico && echo -e "[CONTROLPLANE] FAILED!! Setup NOT completed in control plane $cnode" && exit 1
 
 echo -e "[CONTROLPLANE] Setup completed in control plane. Now fetching token and ca-cert-hash"
 mkdir ./credentials

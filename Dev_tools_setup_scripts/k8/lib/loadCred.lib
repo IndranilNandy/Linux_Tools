@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+userhost="${1}"@"${2}"
+passwd=
+failure=0
+while :; do
+    # read -p "Enter user@hostname: " userhost
+    read -p "Password for $userhost: " -s passwd
+    echo -e
+
+    sshpass -p $passwd ssh -o 'StrictHostKeyChecking no' -t "$userhost" "hostname" && break || ((failure++))
+
+    [[ "$failure" -ge 3 ]] && userhost= && passwd= && break
+    echo -e "Try#$failure"
+done

@@ -70,4 +70,4 @@ case ${1} in
     ;;
 esac
 
-xargs -I X echo "grep -q X  ../../_verify/.allTools || ( echo X >> $localList && echo \"X:X\" >> ../../_verify/.allTools )" < $fullList | bash
+xargs -I X echo "grep -q X  $curDir/../../_verify/.allTools || ( echo X >> $localList && echo \"X:X\" >> $curDir/../../_verify/.allTools )" < $fullList | bash

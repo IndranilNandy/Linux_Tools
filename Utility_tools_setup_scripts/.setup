@@ -80,5 +80,7 @@ echo -e "\n${YELLOW}${BOLD}[Utility_tools_setup_scripts] [$(pwd)] Starting setup
 # echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | xargs -I INPUT echo -e "(cd \$(dirname INPUT) && echo -e \\n{\\nINPUT\\n} >> >(ts '[%Y-%m-%d %H:%M:%S]' >> .logs) 2>> >(ts '[%Y-%m-%d %H:%M:%S]' >> .errors) | bash)" | bash
 echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | grep -E -v "$cust_setup_def" | filter_tools $installationType | xargs -I INPUT echo -e "(cd \$(dirname INPUT) && echo -e \"\\n{\\nINPUT\\n} >> >(ts '[%Y-%m-%d %H:%M:%S]' >> "$loggingDest") 2>> >(ts '[%Y-%m-%d %H:%M:%S]' >> "$errorDest")\" | bash)" | bash
 
+# Reverting back to pointing fullAptPkgTools
+yes | sudo ln -s -i fullAptPkgTools .fullAptPkgTools
 echo -e "\n${GREEN}${BOLD}[Utility_tools_setup_scripts] [$(pwd)] Setup completed.${RESET}"
 echo

@@ -22,3 +22,4 @@ iputils-ping
 bind9-utils
 dnsutils
 yamllint
+jq

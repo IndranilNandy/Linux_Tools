@@ -1,0 +1,4 @@
+k=kubectl
+kg=kubectl get
+kgn=kubectl get nodes
+kgp=kubectl get pods

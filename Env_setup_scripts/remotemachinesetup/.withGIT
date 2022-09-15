@@ -5,7 +5,7 @@ yes | sudo apt upgrade
 yes | sudo apt install git
 
 echo -e "Downloading the setup script..."
-# git clone -b dev https://github.com/IndranilNandy/Linux_Tools.git ~/MyTools/Linux_Tools
+git clone -b dev https://github.com/IndranilNandy/Linux_Tools.git ~/MyTools/Linux_Tools
 
 cd ~/MyTools/Linux_Tools
 git checkout dev

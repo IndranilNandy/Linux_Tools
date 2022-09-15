@@ -1,0 +1,26 @@
+Description:
+    List and update all user defined aliases.
+
+Usage:
+    myalias --list
+        List all user defined aliases.
+    myalias --list=<command>
+        List all user defined aliases for <command>.
+    myalias --set
+        List only the names of all user defined aliases.
+    myalias --edit
+        Open all alias-files to enable the user to edit them for addition/deletion/update.
+    myalias --help
+        Help content of myalias.
+    myalias <user_defined_alias>
+        Add <user_defined_alias> to the list of user defined aliases in .aliases/.genericaliases file.
+  
+Examples:
+    myalias --list
+    myalias --list=kubectl
+    myalias --set
+    myalias --edit
+    myalias --help
+    myalias dp=docker ps
+
+

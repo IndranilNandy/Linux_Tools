@@ -21,8 +21,9 @@ update_completealias() {
 
     [[ $(cat "$configloader_src/.complete_alias" | grep "myalias.sh") ]] && echo -e ".complete_alias already updated." && return 0
 
+    # If you wan't to add all aliases then only the last statement is enough
     cat <<EOF >>"$configloader_src/.complete_alias"
-for item in \$(/home/indranil/MyTools/Linux_Tools/Env_setup_scripts/configuration/alias_configurer/myalias.sh --set); do
+for item in \$(\$HOME/MyTools/Linux_Tools/Env_setup_scripts/configuration/alias_configurer/myalias.sh --set); do
 complete -F _complete_alias "\$item"
 done
 

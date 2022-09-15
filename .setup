@@ -14,7 +14,7 @@ create_mycommandsrepo() {
 
     expPath="export PATH=$PATH:$commandsRepoRoot"
     expRoot="export MYCOMMANDSREPO=$commandsRepoRoot"
-    pattern="export PATH="
+    pattern="alias alert="
     loaderincluder="source $envloader"
 
     [[ $(cat "$envloader" | grep "$commandsRepoRoot") ]] || echo "$expPath" >>"$envloader"

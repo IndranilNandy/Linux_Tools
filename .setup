@@ -1,14 +1,27 @@
 #!/bin/bash
 
 commandsRepoRoot="/usr/local/bin/mycommands"
+configloader_src="$HOME/.myconfig/.configloader"
+envloader="$configloader_src"/.envloader
+create_envstore() {
+    [[ -d "$configloader_src" ]] || mkdir -p "$configloader_src"
+    touch "$envloader"
+}
 
 create_mycommandsrepo() {
-    sudo mkdir $commandsRepoRoot
+    create_envstore
+    [[ -d "$commandsRepoRoot" ]] || sudo mkdir $commandsRepoRoot
+
     expPath="export PATH=$PATH:$commandsRepoRoot"
     expRoot="export MYCOMMANDSREPO=$commandsRepoRoot"
+    pattern="export PATH="
+    loaderincluder="source $envloader"
 
-    [[ $(cat ~/.bashrc | grep "$commandsRepoRoot") ]] || echo "$expPath" >>~/.bashrc
-    [[ $(cat ~/.bashrc | grep "$expRoot") ]] || echo "$expRoot" >>~/.bashrc
+    [[ $(cat "$envloader" | grep "$commandsRepoRoot") ]] || echo "$expPath" >>"$envloader"
+    [[ $(cat "$envloader" | grep "$expRoot") ]] || echo "$expRoot" >>"$envloader"
+
+    [[ $(cat ~/.bashrc | grep "$loaderincluder") ]] || sudo sed -i "/^$pattern/ s#\(.*\)#\1\n$loaderincluder#" ~/.bashrc
+
     . ~/.bashrc
 }
 

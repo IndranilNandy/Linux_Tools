@@ -5,18 +5,29 @@ if [[ -z $(which myalias) ]]; then
 else
     curDir=$(dirname "$(tracelink "$(which myalias)")")
 fi
-# curDir="/home/indranil/MyTools/Linux_Tools/Env_setup_scripts/configuration/alias_configurer"
 
-# cat "$curDir"/.aliases/.genericaliases | grep "$*" || echo $* >>"$curDir"/.aliases/.genericaliases && echo -e "Before using this alias, open a new window"
+aliasfiles() {
+    ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X cat "$curDir"/.aliases/X
+}
 
 case ${1} in
---list)
-    echo "list"
-    ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X cat "$curDir"/.aliases/X
+--list*)
+    param=$(echo ${1} | sed "s/--list\(.*\)/\1/")
+
+    if [[ -z "$param" ]]; then
+        aliasfiles
+    else
+        aliasfiles | grep "$param"
+    fi
     ;;
 --set)
-    echo "set"
-    ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X cat "$curDir"/.aliases/X | sed "s/\(.*\)=.*/\1/"
+    aliasfiles | sed "s/\(.*\)=.*/\1/"
+    ;;
+--edit)
+    ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X echo "editor $curDir/.aliases/X &" | bash
+    ;;
+--help)
+    cat "$curDir"/help/myalias.help
     ;;
 *)
     cat "$curDir"/.aliases/.genericaliases | grep "$*" || echo $* >>"$curDir"/.aliases/.genericaliases && echo -e "Before using this alias, open a new window"

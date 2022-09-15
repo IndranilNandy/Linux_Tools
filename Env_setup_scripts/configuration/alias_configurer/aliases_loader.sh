@@ -6,9 +6,7 @@ else
     curDir=$(dirname "$(tracelink "$(which myalias)")")
 fi
 
-# curDir="/home/indranil/MyTools/Linux_Tools/Env_setup_scripts/configuration/alias_configurer"
-
-list=$(ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X cat "$curDir"/.aliases/X)
+list=$(ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X cat "$curDir"/.aliases/X | grep -E -v "^$") 
 
 mapfile -t CommandsList <<< "$list"
 for item in "${CommandsList[@]}"; do

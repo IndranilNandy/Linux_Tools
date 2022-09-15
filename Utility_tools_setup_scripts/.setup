@@ -42,7 +42,7 @@ set_logDest() {
 }
 
 # This is a hack used to support custom-setup type for a minimal server etc. In future, you may think to refactor the code.
-yes | sudo ln -s -i myinstaller/fullAptPkgTools myinstaller/.fullAptPkgTools
+yes | sudo ln -s -i $(pwd)/myinstaller/fullAptPkgTools myinstaller/.fullAptPkgTools
 
 for arg in "$@"; do
     case $arg in

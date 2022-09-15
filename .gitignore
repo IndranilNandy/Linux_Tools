@@ -29,3 +29,4 @@
 
 # generated list of locally installed tools through myinstaller
 .localAptPkgTools
+.fullAptPkgTools

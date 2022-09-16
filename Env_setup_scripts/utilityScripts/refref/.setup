@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Insert entry of this tool in .allTools. This is to be used in the verification stage post setup.
-grep -q "createref:" ../../../_verify/.allTools || echo "createref:createref" >>../../../_verify/.allTools
+grep -q "refref:" ../../../_verify/.allTools || echo "refref:refref" >>../../../_verify/.allTools
 
 #Check if all prerequisites are installed, and install the missing ones
 prereq --install ".prereq"
@@ -10,8 +10,8 @@ prereq --install ".prereq"
 [[ $(prereq --missing ".prereq") ]] && echo -e "${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
 
 # Check if it is already installed
-[[ -n $(which createref) ]] && echo -e "\n${GREEN}[createref] Already installed. Exiting.${RESET}" && exit 0
+[[ -n $(which refref) ]] && echo -e "\n${GREEN}[refref] Already installed. Exiting.${RESET}" && exit 0
 
-echo -e "${YELLOW}[createref] Setup process started.${RESET}"
-sudo ln -s -i $(pwd)/createref.sh $MYCOMMANDSREPO/createref
-echo -e "${GREEN}[createref] Setup finished.${RESET}"
+echo -e "${YELLOW}[refref] Setup process started.${RESET}"
+yes | sudo ln -s -i $(pwd)/reflist_configurer.sh $MYCOMMANDSREPO/refref
+echo -e "${GREEN}[refref] Setup finished.${RESET}"

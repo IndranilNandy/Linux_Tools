@@ -1,0 +1,12 @@
+Description:
+    Update myscriptrefs with symlinks to newly created script refs in refloader.
+
+Usage:
+    refref
+        Update myscriptrefs with symlinks to newly created script refs in refloader.
+    refref --help
+        Shows help contents.
+
+Examples:
+    refref
+    refref --help

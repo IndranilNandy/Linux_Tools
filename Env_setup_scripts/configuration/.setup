@@ -32,8 +32,13 @@ fi
 ./java_configuration.sh
 
 # Configure all custom defined aliases
-echo -e "${YELLOW}[alias configuration] Setup process started.${RESET}"
+echo -e "${YELLOW}[myalias] Setup process started.${RESET}"
 (cd alias_configurer && ./aliaslist_configurer.sh)
-echo -e "${GREEN}[alias configuration] Setup finished.${GREEN}"
+echo -e "${GREEN}[myalias] Setup finished.${GREEN}"
+
+# Configure .refloader
+echo -e "${YELLOW}[refloader] Setup process started.${RESET}"
+(cd ref_configurer && ./reflist_configurer.sh)
+echo -e "${GREEN}[refloader] Setup finished.${GREEN}"
 
 echo -e "${YELLOW}[Configured.]${RESET}"

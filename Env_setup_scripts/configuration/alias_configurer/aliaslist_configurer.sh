@@ -3,23 +3,23 @@
 . .config
 
 create_configstore() {
-    [[ -d "$configloader_src" ]] || mkdir -p "$configloader_src"
-
-    yes | sudo ln -s -i $(pwd)/aliases_loader.sh "$configloader_src"/"$aliasloader"
+    ([[ -d "$configloader_src" ]] && echo -e "[myalias] .configloader already exists") || (mkdir -p "$configloader_src" && echo -e "[myalias] .configloader created")
+    [[ -L "$configloader_src"/"$aliasloader" ]] && echo -e "[myalias] .aliasloader already exists" && return 0
+    yes | sudo ln -s -i $(pwd)/aliases_loader.sh "$configloader_src"/"$aliasloader" && echo -e "[myalias] .aliasloader created"
 }
 
 add_aliasloader_to_bashrc() {
     aliasloaderfile="$configloader_src"/"$aliasloader"
 
-    [[ $(cat "$envloader" | grep "$aliasloaderfile") ]] || echo "source $aliasloaderfile" >>"$envloader"
-    . ~/.bashrc
+    [[ $(cat "$envloader" | grep "$aliasloaderfile") ]] || echo "[[ -L $aliasloaderfile ]] && source $aliasloaderfile" >>"$envloader"
+    # . ~/.bashrc
 }
 
 update_completealias() {
-    cp "$completealias_src"/complete_alias "$configloader_src"/.complete_alias
-    [[ $(cat "$HOME"/.bash_completion | grep "source $configloader_src/.complete_alias") ]] || echo "source $configloader_src/.complete_alias" >>~/.bash_completion
+    [[ -e "$configloader_src"/.complete_alias ]] || cp "$completealias_src"/complete_alias "$configloader_src"/.complete_alias
+    [[ $(cat "$HOME"/.bash_completion | grep "source $configloader_src/.complete_alias") ]] || echo "[[ -f $configloader_src/.complete_alias ]] && source $configloader_src/.complete_alias" >>~/.bash_completion
 
-    [[ $(cat "$configloader_src/.complete_alias" | grep "myalias.sh") ]] && echo -e ".complete_alias already updated." && return 0
+    [[ $(cat "$configloader_src/.complete_alias" | grep "myalias.sh") ]] && echo -e "[myalias] .complete_alias already updated." && return 0
 
     # If you wan't to add all aliases then only the last statement is enough
     cat <<EOF >>"$configloader_src/.complete_alias"
@@ -32,7 +32,7 @@ EOF
 }
 
 download_completealias() {
-    [[ -d "$completealias_src" ]] && return 0
+    [[ -d "$completealias_src" ]] && echo -e "[myalias] completealias repo already downloaded" && return 0
 
     git clone "$completealias_url" "$completealias_src"
 
@@ -43,7 +43,7 @@ add_aliasloader_to_bashrc
 download_completealias
 update_completealias
 
-yes | sudo ln -s -i $(pwd)/myalias.sh $MYCOMMANDSREPO/myalias
 . ~/.bashrc
 
-echo "$aliasloaderfile"
+[[ -L "$MYCOMMANDSREPO/myalias" ]] && echo -e "[myalias] myalias already exists" && exit 0
+yes | sudo ln -s -i $(pwd)/myalias.sh $MYCOMMANDSREPO/myalias

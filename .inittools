@@ -2,3 +2,4 @@ tracelink
 prereq
 ifinstalled
 myinstaller
+createref

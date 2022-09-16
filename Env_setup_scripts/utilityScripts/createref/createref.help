@@ -1,0 +1,12 @@
+Description:
+    Create a script reference of the given script passed as argument in the refloader directory. Any script having reference in the refloader directory, can be directly executed from this directory.
+
+Usage:
+    createref <scriptname> <scriptpath>
+        create a reference of scriptpath/scriptname file in refloader directory.
+    createref --help
+        Shows help contents.
+
+Examples:
+    createref .initCluster "$HOME/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8"
+    createref --help

@@ -53,7 +53,7 @@ create_mycommandsrepo() {
 if [[ ! -d $commandsRepoRoot ]]; then
     echo "mycommands repo doesn't exist. creating now..."
     create_symlinksrepo
-    export PATH=$PATH:$commandsRepoRoot
+    export PATH=$PATH:$commandsRepoRoot:$scriptRefsRoot
     export MYCOMMANDSREPO=$commandsRepoRoot
     export MYSCRIPTREFS=$scriptRefsRoot
 fi

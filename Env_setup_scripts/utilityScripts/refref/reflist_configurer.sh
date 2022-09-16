@@ -16,5 +16,31 @@ create_symlinks() {
     ls -a1 "$refloader" | grep -E -v "\.$|\.\.$" | xargs -I X echo "yes | sudo ln -s -i $refloader/X $scriptRefsRoot/X" | bash
 }
 
-[[ ${1} == "--help" ]] && cat "$curDir"/refref.help && exit 0
-create_symlinks
+help() {
+    cat "$curDir"/refref.help
+}
+
+create_refs() {
+    cat "$curDir"/.refconfig | xargs -I X echo "createref X" | bash
+}
+
+(("$#" == 0)) && help && exit 0
+
+case ${1} in
+--sym)
+    create_symlinks
+    ;;
+--ref)
+    create_refs
+    ;;
+--sync)
+    create_refs
+    create_symlinks
+    ;;
+--help)
+    help
+    ;;
+*)
+    help
+    ;;
+esac

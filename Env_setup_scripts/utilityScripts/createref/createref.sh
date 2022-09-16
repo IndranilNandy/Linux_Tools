@@ -23,7 +23,7 @@ scriptpath=${2}
 cat << EOF > "$refloader"/"$scriptname"
 #!/bin/bash
 
-cd "$scriptpath" && ./$scriptname \$*
+cd "$scriptpath" && chmod +x $scriptname && ./$scriptname \$*
 EOF
 
 chmod +x "$refloader"/"$scriptname"

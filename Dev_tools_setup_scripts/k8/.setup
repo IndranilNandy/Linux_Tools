@@ -1,0 +1,4 @@
+#!/bin/bash
+
+createref .initCluster $(pwd)
+createref .tearCluster $(pwd)

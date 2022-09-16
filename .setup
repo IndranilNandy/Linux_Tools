@@ -1,13 +1,38 @@
 #!/bin/bash
 
 commandsRepoRoot="/usr/local/bin/mycommands"
+scriptRefsRoot="/usr/local/bin/myscriptrefs"
 configloader_src="$HOME/.myconfig/.configloader"
 envloader="$configloader_src"/.envloader
+refloader="$configloader_src"/.refloader
+
 create_envstore() {
     [[ -d "$configloader_src" ]] || mkdir -p "$configloader_src"
-    touch "$envloader"
+    [[ -e "$envloader" ]] || touch "$envloader"
+
+    [[ -d "$refloader" ]] ||  mkdir -p "$refloader"
 }
 
+create_symlinksrepo() {
+    create_envstore
+    [[ -d "$commandsRepoRoot" ]] || sudo mkdir $commandsRepoRoot
+    [[ -d "$scriptRefsRoot" ]] || sudo mkdir $scriptRefsRoot
+
+    expPath="export PATH=$PATH:$commandsRepoRoot:$scriptRefsRoot"
+    expCmdRoot="export MYCOMMANDSREPO=$commandsRepoRoot"
+    expRefsRoot="export MYSCRIPTREFS=$scriptRefsRoot"
+
+    pattern="alias alert="
+    loaderincluder="source $envloader"
+
+    [[ $(cat "$envloader" | grep "$commandsRepoRoot") ]] || echo "$expPath" >>"$envloader"
+    [[ $(cat "$envloader" | grep "$expCmdRoot") ]] || echo "$expCmdRoot" >>"$envloader"
+    [[ $(cat "$envloader" | grep "$expRefsRoot") ]] || echo "$expRefsRoot" >>"$envloader"
+
+    [[ $(cat ~/.bashrc | grep "$loaderincluder") ]] || sudo sed -i "/^$pattern/ s#\(.*\)#\1\n$loaderincluder#" ~/.bashrc
+
+    . ~/.bashrc
+}
 create_mycommandsrepo() {
     create_envstore
     [[ -d "$commandsRepoRoot" ]] || sudo mkdir $commandsRepoRoot
@@ -27,9 +52,10 @@ create_mycommandsrepo() {
 
 if [[ ! -d $commandsRepoRoot ]]; then
     echo "mycommands repo doesn't exist. creating now..."
-    create_mycommandsrepo
+    create_symlinksrepo
     export PATH=$PATH:$commandsRepoRoot
     export MYCOMMANDSREPO=$commandsRepoRoot
+    export MYSCRIPTREFS=$scriptRefsRoot
 fi
 
 # cat ./vars/.colors | xargs -I X echo "export X" | bash

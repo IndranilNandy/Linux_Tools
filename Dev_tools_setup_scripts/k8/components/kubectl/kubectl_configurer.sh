@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
+configloader_src="$HOME/.myconfig/.configloader"
+envloader="$configloader_src"/.envloader
+kubecomplete='source <(kubectl completion bash)
+'
 # Enable kubectl autocompletion
 enable_autocompletion() {
-    echo 'source <(kubectl completion bash)' >>~/.bashrc
+    echo "$kubecomplete" >>"$envloader"
 }
 
 # Install kubectl convert plugin
@@ -26,7 +30,7 @@ install_convert() {
 
 # Enable kubectl autocompletion
 # https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#enable-shell-autocompletion
-grep -q "source <(kubectl completion bash)" ~/.bashrc || enable_autocompletion
+grep -q "$kubecomplete" "$envloader" || enable_autocompletion
 
 # Install kubectl convert plugin
 # https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-kubectl-convert-plugin

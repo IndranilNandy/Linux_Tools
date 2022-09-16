@@ -1,0 +1,7 @@
+# Aliases for GIT command
+
+gs=git status
+gps=git push
+gpl=git pull
+gc=git commit
+ga=git add

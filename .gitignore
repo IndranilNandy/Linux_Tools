@@ -32,5 +32,6 @@
 
 # Runtime created symlinks
 .fullAptPkgTools
-config/.clusterconfig
-config/.machineconfig
+Dev_tools_setup_scripts/k8/config/.clusterconfig
+Dev_tools_setup_scripts/k8/config/.machineconfig
+

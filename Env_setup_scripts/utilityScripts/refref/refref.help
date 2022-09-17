@@ -9,6 +9,11 @@ Description:
     1. Update myscriptrefs with symlinks to newly created script refs in refloader.
     2. Update refloader with new script refs corresponding to new script-command entries in .refconfig
 
+How to add a new entry?
+    1. Run 'refref --config' -> add new entry
+    2. Run 'refref --sync' -> this adds ref in refloader and symlink in myscriptrefs
+    3. Run 'myalias --config' -> run this to add a myalias
+
 Usage:
     refref --sym
         Update myscriptrefs with symlinks to newly created script refs in refloader.

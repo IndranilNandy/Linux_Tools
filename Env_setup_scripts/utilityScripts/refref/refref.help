@@ -12,6 +12,8 @@ Usage:
         Update refloader with new script refs corresponding to new script-command entries in .refconfig
     refref --sync
         Equivalent to first running 'refref --ref' (update all the script refs) followed by 'refref --sym' (update all symlinks in myscriptrefs)
+    refref --config
+        Add new entry to .refconfig to create new script refs for any script-command
     refref
     refref --help
         Shows help contents.
@@ -20,5 +22,6 @@ Examples:
     refref --sym
     refref --ref
     refref --sync
+    refref --config
     refref
     refref --help

@@ -24,6 +24,12 @@ create_refs() {
     cat "$curDir"/.refconfig | xargs -I X echo "createref X" | bash
 }
 
+open_config() {
+    editor "$curDir"/.refconfig &
+    echo -e "Run 'refref --sync' after adding any new entry to .refconfig\nThis will first create a new entry in $HOME/.myconfig/.configloader/.refloader, then it'll create a symlink in /usr/local/bin/myscriptrefs"
+    echo -e "Want to create a new myalias for this entry? Next, run 'myalias --config'"
+}
+
 (("$#" == 0)) && help && exit 0
 
 case ${1} in
@@ -36,6 +42,9 @@ case ${1} in
 --sync)
     create_refs
     create_symlinks
+    ;;
+--config)
+    open_config
     ;;
 --help)
     help

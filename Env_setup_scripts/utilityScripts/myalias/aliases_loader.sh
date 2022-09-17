@@ -10,11 +10,12 @@ list=$(ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X cat "$curD
 
 mapfile -t CommandsList <<<"$list"
 for item in "${CommandsList[@]}"; do
-    # echo "alias ${item}"
-    alias=$(echo "${item}" | sed "s/ *\(.*\)=.*/\1/")
+    alias=$(echo "${item}" | sed "s/ *\([^=]*\)=.*/\1/")
+    command=$(echo "${item}" | sed "s/[^=]*= *\(.*\)/\1/")
+    # echo -e "alias=$alias command=$command"
     
     if [[ -z $(which ${alias}) ]]; then
-        alias "${item}"
+        alias "${alias}=echo ${alias}=${command}; ${command}"
     else
         echo -e "[ERROR] Cannot set alias ${item}. $(which ${alias}) already exists"
     fi

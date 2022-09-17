@@ -14,7 +14,7 @@ scriptname=${1}
 scriptpath=${2}
 
 create_refs() {
-    [[ -e "$refloader"/"$scriptname" ]] && echo -e "Reference already exists" && exit 0
+    [[ -e "$refloader"/"$scriptname" ]] && echo -e "[$scriptname] Reference already exists" && exit 0
 
     cat <<EOF >"$refloader"/"$scriptname"
 #!/bin/bash

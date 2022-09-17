@@ -1,6 +1,14 @@
 Description:
     List and update all user defined aliases.
 
+    .aliases    - contains all .*aliases files containing all defined myaliases
+
+How to add a new entry?
+    1. Run 'myalias --config' 
+                                -> it opens all .*aliases files in your editor 
+                                -> either create a new entry in one of these files, 
+                                -> or create a new file and entry in it
+
 Usage:
     myalias --list
         List all user defined aliases.
@@ -8,8 +16,9 @@ Usage:
         List all user defined aliases for <command>.
     myalias --set
         List only the names of all user defined aliases.
-    myalias --edit
+    myalias --config
         Open all alias-files to enable the user to edit them for addition/deletion/update.
+    myalias
     myalias --help
         Help content of myalias.
     myalias <user_defined_alias>
@@ -19,7 +28,8 @@ Examples:
     myalias --list
     myalias --list=kubectl
     myalias --set
-    myalias --edit
+    myalias --config
+    myalias
     myalias --help
     myalias dp=docker ps
 

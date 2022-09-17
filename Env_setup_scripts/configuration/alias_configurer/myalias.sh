@@ -23,10 +23,13 @@ case ${1} in
 --set)
     aliasfiles | sed "s/\(.*\)=.*/\1/"
     ;;
---edit)
+--config)
     ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X echo "editor $curDir/.aliases/X &" | bash
     ;;
 --help)
+    cat "$curDir"/help/myalias.help
+    ;;
+'')
     cat "$curDir"/help/myalias.help
     ;;
 *)

@@ -2,3 +2,12 @@
 
 ic1=.initCluster --configdir=Cluster_1
 ic2=.initCluster --configdir=Cluster_2
+ic3=.initCluster --configdir=Cluster_3
+
+tc1=.tearCluster --configdir=Cluster_1
+tc2=.tearCluster --configdir=Cluster_2
+tc3=.tearCluster --configdir=Cluster_3
+
+icc1=.initClusterClients --configdir=Cluster_1
+icc2=.initClusterClients --configdir=Cluster_2
+icc3=.initClusterClients --configdir=Cluster_3

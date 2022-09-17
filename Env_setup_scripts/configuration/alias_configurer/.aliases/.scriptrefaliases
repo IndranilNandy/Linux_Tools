@@ -1,4 +1,4 @@
-# Aliases to my script refs in refloader
+# Aliases to my SCRIPT REFs in refloader
 
 ic1=.initCluster --configdir=Cluster_1
 ic2=.initCluster --configdir=Cluster_2

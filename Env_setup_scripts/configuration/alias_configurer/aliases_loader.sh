@@ -10,8 +10,8 @@ list=$(ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X cat "$curD
 
 mapfile -t CommandsList <<<"$list"
 for item in "${CommandsList[@]}"; do
-    echo "alias ${item}"
+    # echo "alias ${item}"
     alias "${item}"
 done
 
-echo -e "aliases loaded"
+# echo -e "aliases loaded"

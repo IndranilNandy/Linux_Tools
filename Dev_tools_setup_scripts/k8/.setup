@@ -2,8 +2,8 @@
 
 echo -e "${YELLOW}[k8] Setup process started.${RESET}"
 
-createref .initCluster $(pwd)
-createref .tearCluster $(pwd)
-refref
+# createref .initCluster $(pwd)
+# createref .tearCluster $(pwd)
+# refref
 
 echo -e "${GREEN}[k8] Setup finished.${RESET}"

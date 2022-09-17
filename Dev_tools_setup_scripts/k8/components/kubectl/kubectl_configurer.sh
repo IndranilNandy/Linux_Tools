@@ -2,8 +2,7 @@
 
 configloader_src="$HOME/.myconfig/.configloader"
 envloader="$configloader_src"/.envloader
-kubecomplete='source <(kubectl completion bash)
-'
+kubecomplete='source <(kubectl completion bash)'
 # Enable kubectl autocompletion
 enable_autocompletion() {
     echo "$kubecomplete" >>"$envloader"

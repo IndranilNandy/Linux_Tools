@@ -17,5 +17,6 @@ echo "user_l: $user_l"
 # Copy to client machines .kube/config
 # Ref. https://stackoverflow.com/questions/40447295/how-to-configure-kubectl-with-cluster-information-from-a-conf-file
 
-cp ~/admin.conf ~/.kube/config
+[[ -d "$HOME/.kube" ]] || mkdir "$HOME/.kube"
+cp "$HOME/admin.conf" "$HOME/.kube/config"
 kubectl get nodes --all-namespaces

@@ -29,4 +29,8 @@
 
 # generated list of locally installed tools through myinstaller
 .localAptPkgTools
+
+# Runtime created symlinks
 .fullAptPkgTools
+config/.clusterconfig
+config/.machineconfig

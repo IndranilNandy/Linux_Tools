@@ -31,10 +31,10 @@ fi
 # Configure JAVA_HOME and PATH
 ./java_configuration.sh
 
-# Configure all custom defined aliases
-echo -e "${YELLOW}[myalias] Setup process started.${RESET}"
-# (cd alias_configurer && ./aliaslist_configurer.sh)
-./aliaslist_configurer.sh
-echo -e "${GREEN}[myalias] Setup finished.${GREEN}"
+# # Configure all custom defined aliases
+# echo -e "${YELLOW}[myalias] Setup process started.${RESET}"
+# # (cd alias_configurer && ./aliaslist_configurer.sh)
+# ./aliaslist_configurer.sh
+# echo -e "${GREEN}[myalias] Setup finished.${GREEN}"
 
 echo -e "${YELLOW}[Configured.]${RESET}"

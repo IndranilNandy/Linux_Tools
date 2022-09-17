@@ -11,5 +11,11 @@ list=$(ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X cat "$curD
 mapfile -t CommandsList <<<"$list"
 for item in "${CommandsList[@]}"; do
     # echo "alias ${item}"
-    alias "${item}"
+    alias=$(echo "${item}" | sed "s/ *\(.*\)=.*/\1/")
+    
+    if [[ -z $(which ${alias}) ]]; then
+        alias "${item}"
+    else
+        echo -e "[ERROR] Cannot set alias ${item}. $(which ${alias}) already exists"
+    fi
 done

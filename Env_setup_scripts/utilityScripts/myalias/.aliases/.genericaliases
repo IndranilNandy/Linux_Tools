@@ -1,0 +1,8 @@
+# Aliases for GENERIC commands
+
+c=clear
+sctl=systemctl
+
+p+x=find . -name "*.sh" -exec chmod +x {} \;
+p-x=find . -name "*.sh" -exec chmod -x {} \;
+p=find . -name "*.sh" -exec ls -alut {} \;

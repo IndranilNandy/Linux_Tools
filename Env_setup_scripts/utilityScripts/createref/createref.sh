@@ -10,20 +10,33 @@ config_src="$HOME/.myconfig"
 configloader_src="$config_src"/.configloader
 refloader="$configloader_src"/.refloader
 
-if [[ "${1}" == "--help" ]]; then
-    cat "$curDir"/createref.help
-    exit 0
-fi
-
 scriptname=${1}
 scriptpath=${2}
 
-[[ -e "$refloader"/"$scriptname" ]] && echo -e "Reference already exists" && exit 0
+create_refs() {
+    [[ -e "$refloader"/"$scriptname" ]] && echo -e "Reference already exists" && exit 0
 
-cat << EOF > "$refloader"/"$scriptname"
+    cat <<EOF >"$refloader"/"$scriptname"
 #!/bin/bash
 
 (cd "$scriptpath" && chmod +x $scriptname && ./$scriptname \$*)
 EOF
 
-chmod +x "$refloader"/"$scriptname"
+    chmod +x "$refloader"/"$scriptname"
+}
+
+help() {
+    cat "$curDir"/createref.help
+}
+
+case ${1} in
+--help)
+    help
+    ;;
+'')
+    help
+    ;;
+*)
+    create_refs
+    ;;
+esac

@@ -1,12 +1,19 @@
 Description:
     Create a script reference of the given script passed as argument in the refloader directory. Any script having reference in the refloader directory, can be directly executed from this directory.
 
+    $HOME/.myconfig/.configloader/.reflaoder    - contains all the script references to various Linux_Tools setup scripts. These are one-liners executing those referred scripts in corresponding script-directories.
+
 Usage:
     createref <scriptname> <scriptpath>
-        create a reference of scriptpath/scriptname file in refloader directory.
+        create a reference of scriptname in refloader directory.
+        <scriptpath>: script-command
+        <scriptpath>: absolue path of script-location
     createref --help
+    createref
         Shows help contents.
 
 Examples:
     createref .initCluster "$HOME/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8"
     createref --help
+    createref
+    

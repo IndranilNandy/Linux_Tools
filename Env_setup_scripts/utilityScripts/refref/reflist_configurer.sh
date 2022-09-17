@@ -30,8 +30,6 @@ open_config() {
     echo -e "Want to create a new myalias for this entry? Next, run 'myalias --config'"
 }
 
-(("$#" == 0)) && help && exit 0
-
 case ${1} in
 --sym)
     create_symlinks

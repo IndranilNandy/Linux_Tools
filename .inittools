@@ -3,3 +3,4 @@ prereq
 ifinstalled
 myinstaller
 createref
+myalias

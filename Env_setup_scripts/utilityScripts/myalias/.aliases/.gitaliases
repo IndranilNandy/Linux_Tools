@@ -1,8 +1,13 @@
 # Aliases for GIT commands
 
 gst=git status
-gps=git push
-gpl=git pull
+# gps=git push
+# gpl=git pull
 gc=git commit
 ga=git add
+gr=git rm
 gl=git log
+gd=git difftool
+gh=git help
+gha=git help -a
+ghg=git help -g

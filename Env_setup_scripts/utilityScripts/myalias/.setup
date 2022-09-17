@@ -14,4 +14,5 @@ prereq --install ".prereq"
 
 echo -e "${YELLOW}[myalias] Setup process started.${RESET}"
 yes | sudo ln -s -i $(pwd)/myalias.sh $MYCOMMANDSREPO/myalias
+./aliaslist_configurer.sh
 echo -e "${GREEN}[myalias] Setup finished.${RESET}"

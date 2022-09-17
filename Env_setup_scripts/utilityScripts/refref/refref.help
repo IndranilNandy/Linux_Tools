@@ -1,7 +1,11 @@
 Description:
     [ Reference to script references ]
-    $HOME/.myconfig/.configloader/.reflaoder - contains all the script references to various Linux_Tools setup scripts. These are one-liners executing those referred scripts in corresponding script-directories.
-    /usr/local/bin/myscriptrefs - contains all the symlinks to the script references in the aforementioned directory (.reflaoder).
+    
+    $HOME/.myconfig/.configloader/.reflaoder    - contains all the script references to various Linux_Tools setup scripts. These are one-liners executing those referred scripts in corresponding script-directories.
+    /usr/local/bin/myscriptrefs                 - contains all the symlinks to the script references in the aforementioned directory (.reflaoder).
+    .refconfig                                  - list of original script commands for which refs to be created.
+                                                  [Format] <script-command> <absolue path of script-location>
+
     1. Update myscriptrefs with symlinks to newly created script refs in refloader.
     2. Update refloader with new script refs corresponding to new script-command entries in .refconfig
 

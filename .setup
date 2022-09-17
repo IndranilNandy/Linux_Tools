@@ -33,22 +33,6 @@ create_symlinksrepo() {
 
     . ~/.bashrc
 }
-create_mycommandsrepo() {
-    create_envstore
-    [[ -d "$commandsRepoRoot" ]] || sudo mkdir $commandsRepoRoot
-
-    expPath="export PATH=$PATH:$commandsRepoRoot"
-    expRoot="export MYCOMMANDSREPO=$commandsRepoRoot"
-    pattern="alias alert="
-    loaderincluder="source $envloader"
-
-    [[ $(cat "$envloader" | grep "$commandsRepoRoot") ]] || echo "$expPath" >>"$envloader"
-    [[ $(cat "$envloader" | grep "$expRoot") ]] || echo "$expRoot" >>"$envloader"
-
-    [[ $(cat ~/.bashrc | grep "$loaderincluder") ]] || sudo sed -i "/^$pattern/ s#\(.*\)#\1\n$loaderincluder#" ~/.bashrc
-
-    . ~/.bashrc
-}
 
 if [[ ! -d $commandsRepoRoot ]]; then
     echo "mycommands repo doesn't exist. creating now..."

@@ -1,6 +1,6 @@
 # Aliases for GIT commands
 
-gs=git status
+gst=git status
 gps=git push
 gpl=git pull
 gc=git commit

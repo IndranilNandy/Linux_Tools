@@ -14,4 +14,8 @@ prereq --install ".prereq"
 
 echo -e "${YELLOW}[refref] Setup process started.${RESET}"
 yes | sudo ln -s -i $(pwd)/reflist_configurer.sh $MYCOMMANDSREPO/refref
+
+echo -e "[scriptrefs] Updating all script refs and corresponding symlinks"
+refref --sync && echo -e "[scriptrefs] Done"
+
 echo -e "${GREEN}[refref] Setup finished.${RESET}"

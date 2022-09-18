@@ -2,7 +2,12 @@
 
 c=clear
 sctl=systemctl
+ls1=ls -alut
 
 p+x=find . -name "*.sh" -exec chmod +x {} \;
 p-x=find . -name "*.sh" -exec chmod -x {} \;
 p=find . -name "*.sh" -exec ls -alut {} \;
+
+ccom=cd /usr/local/bin/mycommands
+cref= cd /usr/local/bin/myscriptrefs
+ctool=cd $HOME/MyTools/Linux_Tools

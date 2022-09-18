@@ -19,4 +19,8 @@ find . -name "*.sh" | xargs -n1 chmod +x
 ./vscode_installer.sh
 
 yes | sudo ln -s -i $(pwd)/extensions/refresh_extension_list.sh $MYCOMMANDSREPO/code-ext
+
+compl_expr="complete -W \"--refresh --update --list --help\" code-ext"
+[[ $(cat "$ENVLOADER"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$ENVLOADER"
+
 echo -e "${GREEN}[vscode] Setup finished.${RESET}"

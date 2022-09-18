@@ -23,4 +23,8 @@ fi
 
 symlink=setgittool
 yes | sudo ln -i -s $(pwd)/configurer/genericDiffAndMergeToolConfigurer/setgittool $MYCOMMANDSREPO/$symlink && echo -e "\nCreated symbolink link [$symlink] in $MYCOMMANDSREPO"
+
+compl_expr="complete -W \"--help\" setgittool"
+[[ $(cat "$ENVLOADER"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$ENVLOADER"
+
 echo -e "${GREEN}[git] Setup finished.${RESET}"

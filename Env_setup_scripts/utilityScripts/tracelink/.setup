@@ -12,4 +12,8 @@ grep -q "tracelink:" ../../../_verify/.allTools || echo "tracelink:tracelink" >>
 echo -e "${YELLOW}[tracelink] Setup process started.${RESET}"
 
 yes | sudo ln -i -s $(pwd)/tracelink.sh $MYCOMMANDSREPO/tracelink
+
+compl_expr="complete -W \"--help\" tracelink"
+[[ $(cat "$ENVLOADER"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$ENVLOADER"
+
 echo -e "${GREEN}[tracelink] Setup finished.${RESET}"

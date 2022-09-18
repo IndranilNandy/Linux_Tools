@@ -16,4 +16,8 @@ echo -e "${YELLOW}[ifinstalled] Setup process started.${RESET}"
 
 # ./ifinstalled.sh
 sudo ln -s -i $(pwd)/ifinstalled.sh $MYCOMMANDSREPO/ifinstalled
+
+compl_expr="complete -W \"--list --apt --link --help\" ifinstalled"
+[[ $(cat "$ENVLOADER"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$ENVLOADER"
+
 echo -e "${GREEN}[ifinstalled] Setup finished.${RESET}"

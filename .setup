@@ -21,6 +21,7 @@ create_symlinksrepo() {
     expPath="export PATH=$PATH:$commandsRepoRoot:$scriptRefsRoot"
     expCmdRoot="export MYCOMMANDSREPO=$commandsRepoRoot"
     expRefsRoot="export MYSCRIPTREFS=$scriptRefsRoot"
+    expEnvLoader="export ENVLOADER=$envloader"
 
     pattern="alias alert="
     loaderincluder="[[ -e $envloader ]] \&\& source $envloader"
@@ -28,6 +29,7 @@ create_symlinksrepo() {
     [[ $(cat "$envloader" | grep "$commandsRepoRoot") ]] || echo "$expPath" >>"$envloader"
     [[ $(cat "$envloader" | grep "$expCmdRoot") ]] || echo "$expCmdRoot" >>"$envloader"
     [[ $(cat "$envloader" | grep "$expRefsRoot") ]] || echo "$expRefsRoot" >>"$envloader"
+    [[ $(cat "$envloader" | grep "$expEnvLoader") ]] || echo "$expEnvLoader" >>"$envloader"
 
     [[ $(cat ~/.bashrc | grep "$loaderincluder") ]] || sudo sed -i "/^$pattern/ s#\(.*\)#\1\n$loaderincluder#" ~/.bashrc
 
@@ -40,6 +42,7 @@ if [[ ! -d $commandsRepoRoot ]]; then
     export PATH=$PATH:$commandsRepoRoot:$scriptRefsRoot
     export MYCOMMANDSREPO=$commandsRepoRoot
     export MYSCRIPTREFS=$scriptRefsRoot
+    export ENVLOADER=$envloader
 fi
 
 # cat ./vars/.colors | xargs -I X echo "export X" | bash

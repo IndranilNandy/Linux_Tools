@@ -2,14 +2,6 @@
 
 . .config
 
-# configloader_src="$HOME"/.myconfig/.configloader
-# aliasloader="$configloader_src"/.aliasloader
-
-# completealias_url="https://github.com/cykerway/complete-alias.git"
-# completealias_src="$HOME"/.myconfig/complete_alias
-
-# envloader="$configloader_src"/.envloader
-
 create_configstore() {
     ([[ -d "$configloader_src" ]] && echo -e "[myalias config] .configloader already exists") || (mkdir -p "$configloader_src" && echo -e "[myalias config] .configloader created")
     [[ -L "$aliasloader" ]] && echo -e "[myalias config] .aliasloader already exists" && return 0

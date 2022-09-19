@@ -1,0 +1,13 @@
+-W "--list --missing --missingcount --help" prereq
+-W "--help" tracelink
+-W "--config --help" mycompl
+-W "--list --apt --link --help" ifinstalled
+-W "--install --uninstall --list --help --FULL --LOCAL" myinstaller
+-W "--help" createref
+-W "--list --set --config --help" myalias
+-W "--sym --ref --sync --config --help" refref
+-W "--help" setgittool
+-W "--help" cmount
+-W "--help" cumount
+-W "--help" setXrdpGnuSession
+-W "--help" revert2XrdpSession

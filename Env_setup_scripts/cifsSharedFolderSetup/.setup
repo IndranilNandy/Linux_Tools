@@ -19,9 +19,7 @@ echo -e "${YELLOW}[cifsSharedFolderSetup] Setup process started.${RESET}"
 yes | sudo ln -s -i $(pwd)/cifs_sharing_mount.sh $MYCOMMANDSREPO/cmount
 yes | sudo ln -s -i $(pwd)/cifs_sharing_unmount.sh $MYCOMMANDSREPO/cumount
 
-compl_expr="complete -W \"--help\" cmount"
-[[ $(cat "$MYCONFIGLOADER/.envloader"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$MYCONFIGLOADER/.envloader"
+mycompl -W \"--help\" cmount
+mycompl -W \"--help\" cumount
 
-compl_expr="complete -W \"--help\" cumount"
-[[ $(cat "$MYCONFIGLOADER/.envloader"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$MYCONFIGLOADER/.envloader"
 echo -e "${GREEN}[cifsSharedFolderSetup] Setup finished.${RESET}"

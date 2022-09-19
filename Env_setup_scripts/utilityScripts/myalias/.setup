@@ -16,7 +16,6 @@ echo -e "${YELLOW}[myalias] Setup process started.${RESET}"
 yes | sudo ln -s -i $(pwd)/myalias.sh $MYCOMMANDSREPO/myalias
 ./aliaslist_configurer.sh
 
-compl_expr="complete -W \"--list --set --config --help\" myalias"
-[[ $(cat "$MYCONFIGLOADER/.envloader"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$MYCONFIGLOADER/.envloader"
+mycompl -W \"--list --set --config --help\" myalias
 
 echo -e "${GREEN}[myalias] Setup finished.${RESET}"

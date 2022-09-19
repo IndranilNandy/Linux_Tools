@@ -1,0 +1,25 @@
+Description:
+    Provide simple tab completion (list of options/arguments).
+    To see example run 'mycompl --config'
+
+    .completions    - contains all .*completions files containing all defined completions
+
+How to add a new entry?
+    1. Run 'mycompl --config' 
+                                -> it opens all .*completions files in your editor 
+                                -> either create a new entry in one of these files, 
+                                -> or create a new file and entry in it
+
+Usage:
+    mycompl --config
+        Open all completions-files to enable the user to edit them for addition/deletion/update.
+    mycompl <tab_completion_logic>
+    mycompl --help
+        Help content of mycompl.
+  
+Examples:
+    mycompl --config
+    mycompl -W \"--list --missing --missingcount --help\" prereq
+    mycompl --help
+
+

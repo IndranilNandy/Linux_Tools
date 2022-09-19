@@ -15,7 +15,6 @@ prereq --install ".prereq"
 echo -e "${YELLOW}[createref] Setup process started.${RESET}"
 sudo ln -s -i $(pwd)/createref.sh $MYCOMMANDSREPO/createref
 
-compl_expr="complete -W \"--help\" createref"
-[[ $(cat "$MYCONFIGLOADER/.envloader"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$MYCONFIGLOADER/.envloader"
+mycompl -W \"--help\" createref
 
 echo -e "${GREEN}[createref] Setup finished.${RESET}"

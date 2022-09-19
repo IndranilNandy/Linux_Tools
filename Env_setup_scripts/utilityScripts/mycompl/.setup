@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Insert entry of this tool in .allTools. This is to be used in the verification stage post setup.
+grep -q "mycompl:" ../../../_verify/.allTools || echo "mycompl:mycompl" >>../../../_verify/.allTools
+
+#Check if all prerequisites are installed, and install the missing ones
+prereq --install ".prereq"
+
+# Exit if still missing any prerequisite
+[[ $(prereq --missing ".prereq") ]] && echo -e "${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
+
+# Check if it is already installed
+[[ -n $(which mycompl) ]] && echo -e "\n${GREEN}[mycompl] Already installed. Exiting.${RESET}" && exit 0
+
+echo -e "${YELLOW}[mycompl] Setup process started.${RESET}"
+yes | sudo ln -s -i $(pwd)/mycompl.sh $MYCOMMANDSREPO/mycompl
+./mycompl_configurer.sh
+
+# compl_expr="complete -W \"--list --set --config --help\" mycompl"
+# [[ $(cat "$MYCONFIGLOADER/.envloader"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$MYCONFIGLOADER/.envloader"
+
+echo -e "${GREEN}[mycompl] Setup finished.${RESET}"

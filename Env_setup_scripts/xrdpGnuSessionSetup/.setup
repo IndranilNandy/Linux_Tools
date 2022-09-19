@@ -23,11 +23,8 @@ echo -e "Changing to full Gnome session..."
 yes | sudo ln -i -s $(pwd)/xrdp_gnome_session_setup.sh $MYCOMMANDSREPO/setXrdpGnuSession && echo -e "\nCreated symbolink link [setXrdpGnuSession] in $MYCOMMANDSREPO"
 yes | sudo ln -i -s $(pwd)/.revert $MYCOMMANDSREPO/revert2XrdpSession && echo -e "\nCreated symbolink link [revert2XrdpSession] in $MYCOMMANDSREPO"
 
-compl_expr="complete -W \"--help\" setXrdpGnuSession"
-[[ $(cat "$MYCONFIGLOADER/.envloader"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$MYCONFIGLOADER/.envloader"
-
-compl_expr="complete -W \"--help\" revert2XrdpSession"
-[[ $(cat "$MYCONFIGLOADER/.envloader"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$MYCONFIGLOADER/.envloader"
+mycompl -W \"--help\" setXrdpGnuSession
+mycompl -W \"--help\" revert2XrdpSession
 
 # sudo reboot
 echo -e "${GREEN}[xrdpGnuSessionSetup] Setup finished.${RESET}"

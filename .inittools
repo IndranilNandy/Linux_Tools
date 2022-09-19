@@ -1,5 +1,6 @@
 tracelink
 prereq
+mycompl
 ifinstalled
 myinstaller
 createref

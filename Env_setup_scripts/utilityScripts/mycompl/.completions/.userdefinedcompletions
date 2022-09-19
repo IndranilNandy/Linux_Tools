@@ -1,0 +1,3 @@
+-W "--clusterconfig= --machineconfig= --configdir=" .initCluster
+-W "--clusterconfig= --machineconfig= --configdir=" .initClusterClients
+-W "--clusterconfig= --machineconfig= --configdir=" .tearCluster

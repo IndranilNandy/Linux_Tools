@@ -31,7 +31,4 @@ echo -e "${YELLOW}[prereq] Setup process started.${RESET}"
 
 yes | sudo ln -i -s $(pwd)/prereq.sh $MYCOMMANDSREPO/prereq
 
-compl_expr="complete -W \"--list --missing --missingcount --help\" prereq"
-[[ $(cat "$MYCONFIGLOADER/.envloader"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$MYCONFIGLOADER/.envloader"
-
 echo -e "${GREEN}[prereq] Setup finished.${RESET}"

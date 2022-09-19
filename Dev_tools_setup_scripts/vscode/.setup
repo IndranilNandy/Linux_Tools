@@ -21,6 +21,6 @@ find . -name "*.sh" | xargs -n1 chmod +x
 yes | sudo ln -s -i $(pwd)/extensions/refresh_extension_list.sh $MYCOMMANDSREPO/code-ext
 
 compl_expr="complete -W \"--refresh --update --list --help\" code-ext"
-[[ $(cat "$ENVLOADER"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$ENVLOADER"
+[[ $(cat "$MYCONFIGLOADER/.envloader"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$MYCONFIGLOADER/.envloader"
 
 echo -e "${GREEN}[vscode] Setup finished.${RESET}"

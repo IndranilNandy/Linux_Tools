@@ -20,8 +20,8 @@ yes | sudo ln -s -i $(pwd)/cifs_sharing_mount.sh $MYCOMMANDSREPO/cmount
 yes | sudo ln -s -i $(pwd)/cifs_sharing_unmount.sh $MYCOMMANDSREPO/cumount
 
 compl_expr="complete -W \"--help\" cmount"
-[[ $(cat "$ENVLOADER"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$ENVLOADER"
+[[ $(cat "$MYCONFIGLOADER/.envloader"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$MYCONFIGLOADER/.envloader"
 
 compl_expr="complete -W \"--help\" cumount"
-[[ $(cat "$ENVLOADER"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$ENVLOADER"
+[[ $(cat "$MYCONFIGLOADER/.envloader"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$MYCONFIGLOADER/.envloader"
 echo -e "${GREEN}[cifsSharedFolderSetup] Setup finished.${RESET}"

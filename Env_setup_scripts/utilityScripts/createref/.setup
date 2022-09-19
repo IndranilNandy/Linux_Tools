@@ -16,6 +16,6 @@ echo -e "${YELLOW}[createref] Setup process started.${RESET}"
 sudo ln -s -i $(pwd)/createref.sh $MYCOMMANDSREPO/createref
 
 compl_expr="complete -W \"--help\" createref"
-[[ $(cat "$ENVLOADER"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$ENVLOADER"
+[[ $(cat "$MYCONFIGLOADER/.envloader"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$MYCONFIGLOADER/.envloader"
 
 echo -e "${GREEN}[createref] Setup finished.${RESET}"

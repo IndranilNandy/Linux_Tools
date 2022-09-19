@@ -20,6 +20,6 @@ echo -e "${YELLOW}[myinstaller] Setup process started.${RESET}"
 sudo ln -s -i $(pwd)/myinstaller.sh $MYCOMMANDSREPO/myinstaller
 
 compl_expr="complete -W \"--install --uninstall --list --help --FULL --LOCAL\" myinstaller"
-[[ $(cat "$ENVLOADER"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$ENVLOADER"
+[[ $(cat "$MYCONFIGLOADER/.envloader"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$MYCONFIGLOADER/.envloader"
 
 echo -e "${GREEN}[myinstaller] Setup finished.${RESET}"

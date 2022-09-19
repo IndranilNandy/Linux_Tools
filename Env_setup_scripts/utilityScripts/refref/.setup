@@ -19,6 +19,6 @@ echo -e "[scriptrefs] Updating all script refs and corresponding symlinks"
 refref --sync && echo -e "[scriptrefs] Done"
 
 compl_expr="complete -W \"--sym --ref --sync --config --help\" refref"
-[[ $(cat "$ENVLOADER"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$ENVLOADER"
+[[ $(cat "$MYCONFIGLOADER/.envloader"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$MYCONFIGLOADER/.envloader"
 
 echo -e "${GREEN}[refref] Setup finished.${RESET}"

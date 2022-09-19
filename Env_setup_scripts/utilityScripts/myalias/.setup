@@ -17,6 +17,6 @@ yes | sudo ln -s -i $(pwd)/myalias.sh $MYCOMMANDSREPO/myalias
 ./aliaslist_configurer.sh
 
 compl_expr="complete -W \"--list --set --config --help\" myalias"
-[[ $(cat "$ENVLOADER"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$ENVLOADER"
+[[ $(cat "$MYCONFIGLOADER/.envloader"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$MYCONFIGLOADER/.envloader"
 
 echo -e "${GREEN}[myalias] Setup finished.${RESET}"

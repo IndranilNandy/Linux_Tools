@@ -24,10 +24,10 @@ yes | sudo ln -i -s $(pwd)/xrdp_gnome_session_setup.sh $MYCOMMANDSREPO/setXrdpGn
 yes | sudo ln -i -s $(pwd)/.revert $MYCOMMANDSREPO/revert2XrdpSession && echo -e "\nCreated symbolink link [revert2XrdpSession] in $MYCOMMANDSREPO"
 
 compl_expr="complete -W \"--help\" setXrdpGnuSession"
-[[ $(cat "$ENVLOADER"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$ENVLOADER"
+[[ $(cat "$MYCONFIGLOADER/.envloader"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$MYCONFIGLOADER/.envloader"
 
 compl_expr="complete -W \"--help\" revert2XrdpSession"
-[[ $(cat "$ENVLOADER"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$ENVLOADER"
+[[ $(cat "$MYCONFIGLOADER/.envloader"| grep "$compl_expr") ]] || echo "$compl_expr" >> "$MYCONFIGLOADER/.envloader"
 
 # sudo reboot
 echo -e "${GREEN}[xrdpGnuSessionSetup] Setup finished.${RESET}"

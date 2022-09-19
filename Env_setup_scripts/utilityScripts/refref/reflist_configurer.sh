@@ -31,6 +31,11 @@ open_config() {
 }
 
 case ${1} in
+--create)
+    shift
+    createref "$@"
+    create_symlinks
+    ;;
 --sym)
     create_symlinks
     ;;

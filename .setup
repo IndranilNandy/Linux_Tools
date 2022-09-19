@@ -54,4 +54,6 @@ echo
     ./.setup
 )
 
+# mycompl -W \"--type= --log-target= --custom-setup=\" .setup
+
 echo -e "${CYAN}FULL SETUP COMPLETED${RESET}"

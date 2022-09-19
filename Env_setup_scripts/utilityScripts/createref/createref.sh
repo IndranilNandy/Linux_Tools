@@ -12,17 +12,22 @@ refloader="$configloader_src"/.refloader
 
 scriptname=${1}
 scriptpath=${2}
+refname=${3}
+
+if [[ -z "$refname" ]]; then
+    refname="$scriptname"
+fi
 
 create_refs() {
-    [[ -e "$refloader"/"$scriptname" ]] && echo -e "[$scriptname] Reference already exists" && exit 0
+    [[ -e "$refloader"/"$refname" ]] && echo -e "[$refname] Reference already exists" && exit 0
 
-    cat <<EOF >"$refloader"/"$scriptname"
+    cat <<EOF >"$refloader"/"$refname"
 #!/bin/bash
 
 (cd "$scriptpath" && chmod +x $scriptname && ./$scriptname \$*)
 EOF
 
-    chmod +x "$refloader"/"$scriptname"
+    chmod +x "$refloader"/"$refname"
 }
 
 help() {

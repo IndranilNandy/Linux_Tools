@@ -17,7 +17,7 @@ create_symlinks() {
 }
 
 help() {
-    cat "$curDir"/refref.help
+    cat "$curDir"/help/refref.help
 }
 
 create_refs() {

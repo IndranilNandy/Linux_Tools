@@ -1,5 +1,7 @@
 Description:
     Create a script reference of the given script passed as argument in the refloader directory. Any script having reference in the refloader directory, can be directly executed from this directory.
+    Equivalent to 'refref --create'
+    Advised to use 'refref --create' instead
 
     $HOME/.myconfig/.configloader/.reflaoder    - contains all the script references to various Linux_Tools setup scripts. These are one-liners executing those referred scripts in corresponding script-directories.
 

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+functestHi() {
+    echo "Hi this is a test function"
+}

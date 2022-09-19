@@ -3,8 +3,7 @@
 javahome=$(update-alternatives --list java | grep "java-18-openjdk-amd64" | head -n1 | sed "s#\(.*\)/bin/java#\1#")
 path="$javahome/bin"
 
-configloader_src="$HOME/.myconfig/.configloader"
-envloader="$configloader_src"/.envloader
+envloader="$MYCONFIGLOADER"/.envloader
 
 expHome="export JAVA_HOME=$javahome"
 expPath="export PATH=$PATH:$path"

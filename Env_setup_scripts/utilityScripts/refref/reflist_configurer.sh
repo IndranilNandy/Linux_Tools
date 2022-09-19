@@ -9,8 +9,7 @@ fi
 config_src="$HOME/.myconfig"
 scriptRefsRoot="/usr/local/bin/myscriptrefs"
 
-configloader_src="$config_src"/.configloader
-refloader="$configloader_src"/.refloader
+refloader="$MYCONFIGLOADER"/.refloader
 
 create_symlinks() {
     ls -a1 "$refloader" | grep -E -v "\.$|\.\.$" | xargs -I X echo "yes | sudo ln -s -i $refloader/X $scriptRefsRoot/X" | bash

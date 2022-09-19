@@ -7,8 +7,7 @@ else
 fi
 
 config_src="$HOME/.myconfig"
-configloader_src="$config_src"/.configloader
-refloader="$configloader_src"/.refloader
+refloader="$MYCONFIGLOADER"/.refloader
 
 scriptname=${1}
 scriptpath=${2}

@@ -11,3 +11,4 @@
 -W "--help" cumount
 -W "--help" setXrdpGnuSession
 -W "--help" revert2XrdpSession
+-W "--create --sym --ref --sync --config --help" refref

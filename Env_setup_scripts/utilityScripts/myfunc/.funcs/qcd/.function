@@ -1,0 +1,25 @@
+#!/bin/bash
+
+declare -A mydirs
+
+buildqcdmap() {
+    if [[ -z $(which myfunc) ]]; then
+        curDir=$(pwd)
+    else
+        curDir=$(dirname "$(tracelink "$(which myfunc)")")
+    fi
+
+    for line in $(cat "$curDir"/.funcs/qcd/.mappings | xargs -I X echo X); do
+        cdir=$(echo "$line" | cut -d':' -f1)
+        target=$(echo "$line" | cut -d':' -f2)
+        mydirs["$cdir"]="$target"
+    done
+    mycompl -W '"'"${!mydirs[@]}"'"' qcd
+}
+
+qcd() {
+    [[ -z ${mydirs[${1}]} ]] && buildqcdmap
+    eval "cd ${mydirs[${1}]}"
+}
+
+buildqcdmap

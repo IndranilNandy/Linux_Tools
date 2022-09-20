@@ -12,3 +12,5 @@
 -W "--help" setXrdpGnuSession
 -W "--help" revert2XrdpSession
 -W "--create --sym --ref --sync --config --help" refref
+-W "--list --set --config --help" myfunc
+-W "envtools k8 docker utiltools myscripts mycommands myconfig devtools tools" qcd

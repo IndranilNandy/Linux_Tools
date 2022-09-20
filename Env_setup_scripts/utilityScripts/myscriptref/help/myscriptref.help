@@ -12,45 +12,45 @@ Description:
 How to add a new entry?
     Option 1:
     [MANUAL] This would save the entry in .refconfig to be used in any other system setup.
-    1. Run 'refref --config' -> add new entry
-    2. Run 'refref --sync' -> this adds ref in refloader and symlink in myscriptrefs
+    1. Run 'myscriptref --config' -> add new entry
+    2. Run 'myscriptref --sync' -> this adds ref in refloader and symlink in myscriptrefs
     3. Run 'mycompl --config' or 'mycompl <tab_completion_logic>' to add tab-completion
     4. Run 'myalias --config' -> run this to add a myalias if you may want
 
     Option 2:
     [PROGRAMMATIC] This would directly add script ref to refloader, on entry is saved in .refconfig. This mainly to be used in any script which is always run as part of the system setup.
-    1. Run 'refref --create' -> add script ref to refloader.
-    2. This will automatically call 'refref --sym' to create symlinks. So no need to run any other command manually.
+    1. Run 'myscriptref --create' -> add script ref to refloader.
+    2. This will automatically call 'myscriptref --sym' to create symlinks. So no need to run any other command manually.
     3. Run 'mycompl --config' or 'mycompl <tab_completion_logic>' to add tab-completion
     4. Run 'myalias --config' -> run this to add a myalias if you may want
 
 Usage:
-    refref --create
+    myscriptref --create
         Add new script refs to refloader directly. 
         NOTE: it doesn't keep any entry in .refconfig (i.e., is NOT saved to be used in any other setup), and this is the difference with --config option.
         Hence, it is not advised to run it manually. Though, this can be used in any other script in a programmatic way (to make it available like default commands), which will always run as part of a system setup script, so that the refs are automatically added to the refloader in any fresh setup.
-    refref --sym
+    myscriptref --sym
         Update myscriptrefs with symlinks to newly created script refs in refloader.
-        NOTE: Not needed for end user generally. Used in scripts. You would use 'refref --sync' after adding any script ref.
-    refref --ref
+        NOTE: Not needed for end user generally. Used in scripts. You would use 'myscriptref --sync' after adding any script ref.
+    myscriptref --ref
         Update refloader with new script refs corresponding to new script-command entries in .refconfig
-        NOTE: Not needed for end user generally. Used in scripts. You would use 'refref --sync' after adding any script ref.
-    refref --sync
-        Equivalent to first running 'refref --ref' (update all the script refs) followed by 'refref --sym' (update all symlinks in myscriptrefs)
-    refref --config
+        NOTE: Not needed for end user generally. Used in scripts. You would use 'myscriptref --sync' after adding any script ref.
+    myscriptref --sync
+        Equivalent to first running 'myscriptref --ref' (update all the script refs) followed by 'myscriptref --sym' (update all symlinks in myscriptrefs)
+    myscriptref --config
         Add new entry to .refconfig to create new script refs for any script-command.
         NOTE: This always ensures that the entry is saved in the .refconfig for future system setups, and this is the diffrence with --create option.
-        Hence, to create random/arbitrary script refs manually, it is always advised to first save it in .refconfig, using 'refref --config' first. After this, run 'refref --sync'
-    refref
-    refref --help
+        Hence, to create random/arbitrary script refs manually, it is always advised to first save it in .refconfig, using 'myscriptref --config' first. After this, run 'myscriptref --sync'
+    myscriptref
+    myscriptref --help
         Shows help contents.
 
 Examples:
-    refref --create .setup $HOME/MyTools/Linux_Tools setup-full
-    refref --create .initCluster "$HOME/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8"
-    refref --sym
-    refref --ref
-    refref --sync
-    refref --config
-    refref
-    refref --help
+    myscriptref --create .setup $HOME/MyTools/Linux_Tools setup-full
+    myscriptref --create .initCluster "$HOME/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8"
+    myscriptref --sym
+    myscriptref --ref
+    myscriptref --sync
+    myscriptref --config
+    myscriptref
+    myscriptref --help

@@ -14,7 +14,7 @@ buildqcdmap() {
         target=$(echo "$line" | cut -d':' -f2)
         mydirs["$cdir"]="$target"
     done
-    mycompl -W '"'"${!mydirs[@]}"'"' qcd
+    mycompl -W '"'"${!mydirs[@]}" --list --config --help'"' qcd
 }
 
 qcd() {

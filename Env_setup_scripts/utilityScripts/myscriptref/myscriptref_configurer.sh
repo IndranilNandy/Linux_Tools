@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-if [[ -z $(which refref) ]]; then
+if [[ -z $(which myscriptref) ]]; then
     curDir=$(pwd)
 else
-    curDir=$(dirname "$(tracelink "$(which refref)")")
+    curDir=$(dirname "$(tracelink "$(which myscriptref)")")
 fi
 
 config_src="$HOME/.myconfig"
@@ -16,7 +16,7 @@ create_symlinks() {
 }
 
 help() {
-    cat "$curDir"/help/refref.help
+    cat "$curDir"/help/myscriptref.help
 }
 
 create_refs() {
@@ -25,7 +25,7 @@ create_refs() {
 
 open_config() {
     editor "$curDir"/.refconfig &
-    echo -e "Run 'refref --sync' after adding any new entry to .refconfig\nThis will first create a new entry in $HOME/.myconfig/.configloader/.refloader, then it'll create a symlink in /usr/local/bin/myscriptrefs"
+    echo -e "Run 'myscriptref --sync' after adding any new entry to .refconfig\nThis will first create a new entry in $HOME/.myconfig/.configloader/.refloader, then it'll create a symlink in /usr/local/bin/myscriptrefs"
     echo -e "Want to create a new myalias for this entry? Next, run 'myalias --config'"
 }
 

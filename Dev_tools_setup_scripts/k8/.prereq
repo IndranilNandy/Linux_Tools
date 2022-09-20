@@ -2,4 +2,4 @@ prereq
 bash-completion
 docker
 createref
-refref
+myscriptref

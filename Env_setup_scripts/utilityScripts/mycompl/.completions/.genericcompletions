@@ -5,12 +5,12 @@
 -W "--install --uninstall --list --help --FULL --LOCAL" myinstaller
 -W "--help" createref
 -W "--list --set --config --help" myalias
--W "--sym --ref --sync --config --help" refref
+-W "--sym --ref --sync --config --help" myscriptref
 -W "--help" setgittool
 -W "--help" cmount
 -W "--help" cumount
 -W "--help" setXrdpGnuSession
 -W "--help" revert2XrdpSession
--W "--create --sym --ref --sync --config --help" refref
--W "envtools k8 docker utiltools myscripts mycommands myconfig devtools tools" qcd
+-W "--create --sym --ref --sync --config --help" myscriptref
 -W "--list --config --help" myfunc
+-W "envtools k8 docker utiltools myscripts mycommands myconfig devtools tools --list --config --help" qcd

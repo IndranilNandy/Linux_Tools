@@ -11,7 +11,7 @@
 -W "--help" cumount
 -W "--help" setXrdpGnuSession
 -W "--help" revert2XrdpSession
--W "--create --sym --ref --sync --config --help" myscriptref
 -W "--list --config --help" myfunc
--W "envtools k8 docker utiltools myscripts mycommands myconfig devtools tools --list --config --help" qcd
 -W "--refresh --update --list --help" code-ext
+-W "dev_tools_setup_scripts utility_tools_setup_scripts env_setup_scripts k8 myscriptrefs docker mycommands myconfig linux_tools --list --config --help" qcd
+-W "--create --sym --ref --sync --config --list --help" myscriptref

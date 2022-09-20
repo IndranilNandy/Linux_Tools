@@ -48,6 +48,9 @@ case ${1} in
 --config)
     open_config
     ;;
+--list)
+    cat "$curDir"/.refconfig
+    ;;
 --help)
     help
     ;;

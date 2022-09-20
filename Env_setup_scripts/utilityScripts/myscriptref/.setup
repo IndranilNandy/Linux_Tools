@@ -18,6 +18,6 @@ yes | sudo ln -s -i $(pwd)/myscriptref_configurer.sh $MYCOMMANDSREPO/myscriptref
 echo -e "[scriptrefs] Updating all script refs and corresponding symlinks"
 myscriptref --sync && echo -e "[scriptrefs] Done"
 
-mycompl -W \"--create --sym --ref --sync --config --help\" myscriptref
+mycompl -W \"--create --sym --ref --sync --config --list --help\" myscriptref
 
 echo -e "${GREEN}[myscriptref] Setup finished.${RESET}"

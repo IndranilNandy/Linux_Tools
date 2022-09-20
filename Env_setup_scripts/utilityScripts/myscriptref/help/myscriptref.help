@@ -41,6 +41,8 @@ Usage:
         Add new entry to .refconfig to create new script refs for any script-command.
         NOTE: This always ensures that the entry is saved in the .refconfig for future system setups, and this is the diffrence with --create option.
         Hence, to create random/arbitrary script refs manually, it is always advised to first save it in .refconfig, using 'myscriptref --config' first. After this, run 'myscriptref --sync'
+    myscriptref --list
+        List all script references
     myscriptref
     myscriptref --help
         Shows help contents.
@@ -52,5 +54,6 @@ Examples:
     myscriptref --ref
     myscriptref --sync
     myscriptref --config
+    myscriptref --list
     myscriptref
     myscriptref --help

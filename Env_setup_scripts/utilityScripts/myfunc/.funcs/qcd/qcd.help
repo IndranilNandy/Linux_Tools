@@ -1,0 +1,24 @@
+Description:
+    Quick 'cd'.
+
+    .mappings   - contains all mappings.
+    format      - <tarnet_name>:<original_path>
+
+How to add a new entry?
+    [MANUAL]
+    Run 'qcd --config' 
+
+Usage:
+    qcd --list
+        List all user defined paths.
+    qcd --config
+        [MANUAL] Add entry to .mappings.
+    qcd
+    qcd --help
+        Help content of qcd.
+  
+Examples:
+    qcd --list
+    qcd --config
+    qcd
+    qcd --help

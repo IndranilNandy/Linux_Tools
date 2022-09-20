@@ -12,7 +12,8 @@ help() {
 
 case ${1} in
 --list)
-    echo "$curDir"/.funcs/* | xargs -n1 | sed "s#.*\.funcs/\(.*\)#\1#"
+    # echo "$curDir"/.funcs/* | xargs -n1 | sed "s#.*\.funcs/\(.*\)#\1#"
+    echo "$curDir"/.funcs/*/.list | xargs -n1 | xargs -I X cat X
     ;;
 --config)
     echo "$curDir"/.funcs/**/.* | xargs -n1 echo | grep -E "\.function$" | xargs -I X echo "editor X &" | bash

@@ -15,3 +15,4 @@
 -W "--refresh --update --list --help" code-ext
 -W "dev_tools_setup_scripts utility_tools_setup_scripts env_setup_scripts k8 myscriptrefs docker mycommands myconfig linux_tools --list --config --help" qcd
 -W "--create --sym --ref --sync --config --list --help" myscriptref
+-W "dev_tools_setup_scripts utility_tools_setup_scripts env_setup_scripts k8 myscriptrefs docker mycommands myconfig linux_tools --list --config --help" qcode

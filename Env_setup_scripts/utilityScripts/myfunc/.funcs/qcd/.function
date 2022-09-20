@@ -15,6 +15,7 @@ buildqcdmap() {
         mydirs["$cdir"]="$target"
     done
     mycompl -W '"'"${!mydirs[@]}" --list --config --help'"' qcd
+    mycompl -W '"'"${!mydirs[@]}" --list --config --help'"' qcode
 }
 
 qcd() {
@@ -40,6 +41,33 @@ qcd() {
     *)
         [[ -z ${mydirs[${1}]} ]] && buildqcdmap
         eval "cd ${mydirs[${1}]}"
+        ;;
+    esac
+}
+
+qcode() {
+
+    if [[ -z $(which myfunc) ]]; then
+        curDir=$(pwd)
+    else
+        curDir=$(dirname "$(tracelink "$(which myfunc)")")
+    fi
+
+    case ${1} in
+    --list)
+        cat "$curDir"/.funcs/qcd/.mappings
+        ;;
+    --config)
+        editor "$curDir"/.funcs/qcd/.mappings
+        ;;
+    --help)
+        cat "$curDir"/.funcs/qcd/qcode.help
+        ;;
+    '')
+        cat "$curDir"/.funcs/qcd/qcode.help
+        ;;
+    *)
+        (qcd "${1}" && code .)
         ;;
     esac
 }

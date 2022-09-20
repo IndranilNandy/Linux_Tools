@@ -1,0 +1,24 @@
+Description:
+    Quick open code (vscode) workspace.
+
+    .mappings   - contains all mappings.
+    format      - <tarnet_name>:<original_path>
+
+How to add a new entry?
+    [MANUAL]
+    Run 'qcode --config' 
+
+Usage:
+    qcode --list
+        List all user defined paths.
+    qcode --config
+        [MANUAL] Add entry to .mappings.
+    qcode
+    qcode --help
+        Help content of qcd.
+  
+Examples:
+    qcode --list
+    qcode --config
+    qcode
+    qcode --help

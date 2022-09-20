@@ -16,6 +16,6 @@ echo -e "${YELLOW}[myfunc] Setup process started.${RESET}"
 yes | sudo ln -s -i $(pwd)/myfunc.sh $MYCOMMANDSREPO/myfunc
 ./myfunc_configurer.sh
 
-mycompl -W \"--list --set --config --help\" myfunc
+mycompl -W \"--list --config --help\" myfunc
 
 echo -e "${GREEN}[myfunc] Setup finished.${RESET}"

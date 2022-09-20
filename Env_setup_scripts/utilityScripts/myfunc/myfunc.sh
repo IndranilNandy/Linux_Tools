@@ -11,9 +11,11 @@ help() {
 }
 
 case ${1} in
+--list)
+    echo "$curDir"/.funcs/* | xargs -n1 | sed "s#.*\.funcs/\(.*\)#\1#"
+    ;;
 --config)
-    # ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X echo "editor $curDir/.aliases/X &" | bash
-    echo "$curDir"/.funcs/**/.* | xargs -n1 echo | grep -E "\.function$" | xargs -I X echo "editor $curDir/.aliases/X &" | bash
+    echo "$curDir"/.funcs/**/.* | xargs -n1 echo | grep -E "\.function$" | xargs -I X echo "editor X &" | bash
     ;;
 --help)
     help

@@ -1,41 +1,29 @@
 Description:
-    List and update all user defined aliases.
+    Adds user defined functions to global scope.
 
-    .aliases    - contains all .*aliases files containing all defined myaliases
+    .funcs    - contains all .function files containing definitions for user-defined functions
 
 How to add a new entry?
     [MANUAL]
-    Run 'myalias --config' 
-                                -> it opens all .*aliases files in your editor 
-                                -> either create a new entry in one of these files, 
-                                -> or create a new file and entry in it
-    OR,
-    [PROGRAMMATIC]
-    Run 'myalias <user_defined_alias>
-                                -> it adds an entry to .genericaliases
+    Run 'myfunc --config' 
+                                -> it opens all .function files in your editor 
+                                -> either, you may create a new .function file under directory xyz where your function name is xyz (this is naming convention, not mandatory)
+                                -> or, define your function in any existing .function 
+                                -> DO NOT FORGET to call mycompl for tab-completion
 
 Usage:
-    myalias --list
-        List all user defined aliases.
-    myalias --list=<command>
-        List all user defined aliases for <command>.
-    myalias --set
-        List only the names of all user defined aliases.
-    myalias --config
-        [MANUAL] Open all alias-files to enable the user to edit them for addition/deletion/update.
-    myalias
-    myalias --help
-        Help content of myalias.
-    myalias <user_defined_alias>
-        [PROGRAMMATIC] Add <user_defined_alias> to the list of user defined aliases in .aliases/.genericaliases file.
+    myfunc --list
+        List all user defined functions.
+    myfunc --config
+        [MANUAL] Open all .function files to enable the user to edit them for addition/deletion/update of user-defined functions.
+    myfunc
+    myfunc --help
+        Help content of myfunc.
   
 Examples:
-    myalias --list
-    myalias --list=kubectl
-    myalias --set
-    myalias --config
-    myalias
-    myalias --help
-    myalias dp=docker ps
+    myfunc --list
+    myfunc --config
+    myfunc
+    myfunc --help
 
 

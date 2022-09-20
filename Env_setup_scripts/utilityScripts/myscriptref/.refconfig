@@ -2,4 +2,5 @@
 .tearCluster $HOME/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8
 .initClusterClients $HOME/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8
 
-.setup $HOME/MyTools/Linux_Tools setup-full
+.setup $HOME/MyTools/Linux_Tools tools-setup
+.softclean $HOME/MyTools/Linux_Tools tools-softclean

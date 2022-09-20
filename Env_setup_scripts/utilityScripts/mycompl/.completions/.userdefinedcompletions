@@ -2,4 +2,4 @@
 -W "--clusterconfig= --machineconfig= --configdir=" .initClusterClients
 -W "--clusterconfig= --machineconfig= --configdir=" .tearCluster
 
--W "--type= --log-target= --custom-setup=" setup-full
+-W "--type= --log-target= --custom-setup=" tools-setup

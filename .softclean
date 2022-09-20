@@ -1,0 +1,25 @@
+#!/bin/bash
+
+delete_symlinks() {
+    sudo rm -rf $MYCOMMANDSREPO
+    sudo rm -rf $MYSCRIPTREFS
+}
+
+backup_configstore() {
+    mv "$MYCONFIGSTORE" "$MYCONFIGSTORE-$(date +%s)"
+}
+
+echo -e "[SOFTCLEAN] This will only do a soft clean of the setup.\n \
+Following will be removed:\n \
+1. config store - $HOME/.myconfig\n \
+2. all user defined symlink stores in /usr/local/bin\n \
+\nNo package will be uninstalled.\nOnly the user defined environment will be cleaned. You would no longer be able to use the following user defined artifacts, along with all the user-defined symbolic links.\n \
+1. myalias\n \
+2. myscriptref\n \
+3. myfunc\n \
+4. mycompl\n"
+
+delete_symlinks
+backup_configstore
+
+echo -e "[SOFTCLEAN] Done."

@@ -2,8 +2,10 @@ Entrypoint directory:
     Only run .initgitconfig script from here.
 
 Entry script:
-    ./.setup: setup PATH and other env variables
-              invoke full installation and configuration script
+    ./.setup:       setup PATH and other env variables
+                    invoke full installation and configuration script
+    ./.softclean:   soft cleans the setup, no package will be removed
+                    only the user defined environment will be cleaned.
 
 Arguments:
     --type=[min|default|dev|full]
@@ -11,3 +13,5 @@ Arguments:
     --log-target=[term|file]
         term: terminal - this is default
         file: logs and errors to .logs and .errors respectively
+    --custom-setup=[server-minimal]
+        server-minimal: used for minimal installation, mainly for servers

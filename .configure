@@ -2,7 +2,8 @@
 
 commandsRepoRoot="/usr/local/bin/mycommands"
 scriptRefsRoot="/usr/local/bin/myscriptrefs"
-configloader_src="$HOME/.myconfig/.configloader"
+configstore="$HOME/.myconfig"
+configloader_src="$configstore/.configloader"
 envloader="$configloader_src"/.envloader
 refloader="$configloader_src"/.refloader
 
@@ -22,6 +23,7 @@ create_symlinksrepo() {
     expCmdRoot="export MYCOMMANDSREPO=$commandsRepoRoot"
     expRefsRoot="export MYSCRIPTREFS=$scriptRefsRoot"
     expConfigLoader="export MYCONFIGLOADER=$configloader_src"
+    expConfigStore="export MYCONFIGSTORE=$configstore"
 
     pattern="alias alert="
     loaderincluder="[[ -e $envloader ]] \&\& source $envloader"
@@ -30,7 +32,7 @@ create_symlinksrepo() {
     [[ $(cat "$envloader" | grep "$expCmdRoot") ]] || echo "$expCmdRoot" >>"$envloader"
     [[ $(cat "$envloader" | grep "$expRefsRoot") ]] || echo "$expRefsRoot" >>"$envloader"
     [[ $(cat "$envloader" | grep "$expConfigLoader") ]] || echo "$expConfigLoader" >>"$envloader"
-
+    [[ $(cat "$envloader" | grep "$expConfigStore") ]] || echo "$expConfigStore" >>"$envloader"
 
     [[ $(cat ~/.bashrc | grep "$loaderincluder") ]] || sudo sed -i "/^$pattern/ s#\(.*\)#\1\n$loaderincluder#" ~/.bashrc
 
@@ -44,4 +46,5 @@ if [[ ! -d $commandsRepoRoot ]]; then
     export MYCOMMANDSREPO=$commandsRepoRoot
     export MYSCRIPTREFS=$scriptRefsRoot
     export MYCONFIGLOADER=$configloader_src
+    export MYCONFIGSTORE=$configstore
 fi

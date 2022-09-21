@@ -1,6 +1,7 @@
 # Aliases for K8 commands
 
 k=kubectl
+
 kg=kubectl get
 kgn=kubectl get nodes
 kgp=kubectl get pods

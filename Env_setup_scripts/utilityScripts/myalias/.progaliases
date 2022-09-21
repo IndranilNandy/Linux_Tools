@@ -1,0 +1,2 @@
+.gitaliases:complete -o bashdefault -o default -o nospace -F __git_wrap__git_main
+.k8aliases:complete -o default -F __start_kubectl

@@ -25,7 +25,7 @@ case ${1} in
     fi
     ;;
 --set)
-    aliasfiles | sed "s/\(.*\)=.*/\1/"
+    aliasfiles | grep -E -v " *#" | sed "s/\(.*\)=.*/\1/"
     ;;
 --config)
     ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X echo "editor $curDir/.aliases/X &" | bash

@@ -1,4 +1,5 @@
 # Aliases for DOCKER commands
 
+d=docker
 dp=docker ps
 dph=docker ps --help

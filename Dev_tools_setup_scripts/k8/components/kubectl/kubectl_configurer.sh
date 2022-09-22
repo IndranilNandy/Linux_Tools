@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-envloader="$MYCONFIGLOADER"/.envloader
+# Need to fix this later; $MYCONFIGLOADER isn't loading
+# envloader="$MYCONFIGLOADER"/.envloader
+envloader="$HOME"/.myconfig/.configloader/.envloader
 kubecomplete='source <(kubectl completion bash)'
 # Enable kubectl autocompletion
 enable_autocompletion() {

@@ -10,7 +10,7 @@ create_configstore() {
 }
 
 add_complloader_to_bashrc() {
-    [[ $(cat "$envloader" | grep -v "^#" | grep "$complloader") ]] || echo "[[ -e $complloader ]] && source $complloader" >>"$envloader"
+    [[ $(cat "$envloader" | grep -v "^#" | grep "$complloader") ]] || echo "[[ -L $complloader ]] && source $complloader" >>"$envloader"
 }
 
 create_configstore

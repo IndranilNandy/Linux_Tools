@@ -9,8 +9,9 @@ load_alias_completions() {
         >"$prog_alias_compl_loader"
     fi
 
-    for item in $(ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | grep -v -Fx -f <(cat "$curDir"/.progaliases | grep -v -E " *#" | cut -d':' -f1) | xargs -I X cat "$curDir"/.aliases/X | grep -E -v " *#" | sed "s/\(.*\)=.*/\1/"); do
-        [[ $(cat "$gen_alias_compl_loader" | grep -E -v " *#" | grep -F -- "$item") ]] || echo "complete -F _complete_alias -- $item" >>"$gen_alias_compl_loader"
+    for item in $(ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | grep -v -Fx -f <(cat "$curDir"/.progaliases | grep -v -E " *#" | cut -d':' -f1) | xargs -I X cat "$curDir"/.aliases/X | grep -E -v " *#" | sed "s/\([^=]*\)=.*/\1/"); do
+        # [[ $(cat "$gen_alias_compl_loader" | grep -E -v " *#" | cut -f5- -d' '| grep -Fx -- "$item") ]] || echo "complete -F _complete_alias -- $item" >>"$gen_alias_compl_loader"
+        [[ $(cat "$gen_alias_compl_loader" | grep -E -v " *#" | awk '{print $NF}' | grep -Fx -- "$item") ]] || echo "complete -F _complete_alias -- $item" >>"$gen_alias_compl_loader"
     done
 
     while read -r line; do
@@ -20,7 +21,8 @@ load_alias_completions() {
         while read -r item; do
             item=$(echo $item | sed "s/\(.*\)=.*/\1/")
 
-            [[ $(cat "$prog_alias_compl_loader" | grep -E -v " *#" | grep -E -- " $item$") ]] || echo "$com -- $item" >>"$prog_alias_compl_loader"
+            # [[ $(cat "$prog_alias_compl_loader" | grep -E -v " *#" | grep -E -- " $item$") ]] || echo "$com -- $item" >>"$prog_alias_compl_loader"
+            [[ $(cat "$prog_alias_compl_loader" | grep -E -v " *#" | awk '{print $NF}' | grep -Fx -- "$item") ]] || echo "$com -- $item" >>"$prog_alias_compl_loader"
         done < <(cat "$pfile" | grep -E -v "^$" | grep -E -v " *#")
 
     done < <(cat "$curDir"/.progaliases | grep -E -v "^$" | grep -E -v " *#")

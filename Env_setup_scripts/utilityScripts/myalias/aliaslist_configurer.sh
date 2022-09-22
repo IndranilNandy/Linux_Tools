@@ -6,6 +6,8 @@ else
     curDir=$(dirname "$(tracelink "$(which myalias)")")
 fi
 
+. "$curDir"/utility_functions.sh
+
 aliasloader="$MYCONFIGLOADER"/.aliasloader
 gen_alias_compl_loader="$MYCONFIGLOADER"/.generic_alias_completion_loader
 prog_alias_compl_loader="$MYCONFIGLOADER"/.program_alias_completion_loader
@@ -62,50 +64,10 @@ update_completealias() {
     # EOF
 }
 
-update_alias_compl_loader() {
-    for item in $(ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | grep -v -Fx -f <(cat "$curDir"/.progaliases | grep -v -E " *#" | cut -d':' -f1) | xargs -I X cat "$curDir"/.aliases/X | grep -E -v " *#" | sed "s/\(.*\)=.*/\1/"); do
-        [[ $(cat "$gen_alias_compl_loader" | grep -E -v " *#" | grep -E -- "$item") ]] || echo "complete -F _complete_alias -- $item" >>"$gen_alias_compl_loader"
-    done
-
-    # for item in $(ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | grep -f "$curDir"/.progaliases | xargs -I X cat "$curDir"/.aliases/X | grep -E -v " *#" | sed "s/\(.*\)=.*/\1/"); do
-    #     [[ $(cat "$prog_alias_compl_loader" | grep -E -v " *#" | grep -E -- "$item") ]] || echo "complete -F _complete_alias -- $item" >> "$prog_alias_compl_loader"
-    # done
-
-    # for line in $(cat "$curDir"/.progaliases | xargs -I X echo X); do
-    #     echo line="$line"
-    #     pfile="$curDir"/.aliases/$(echo "$line" | cut -f1 -d':')
-    #     com=$(echo "$line" | cut -f2 -d':')
-    #     cat "$pfile"
-
-    #     for item in $(cat $pfile); do
-    #         [[ $(cat "$prog_alias_compl_loader" | grep -E -v " *#" | grep -E -- "$item") ]] || echo "$com -- $item" >>"$prog_alias_compl_loader"
-    #     done
-
-    #     complete | grep -E " $aliasfile$"
-    # done
-
-    while read -r line; do
-        # echo -e "$line\n"
-        pfile="$curDir"/.aliases/$(echo "$line" | cut -f1 -d':')
-        com=$(echo "$line" | cut -f2 -d':')
-        # cat "$pfile"
-
-        # for item in $(cat $pfile); do
-        #     [[ $(cat "$prog_alias_compl_loader" | grep -E -v " *#" | grep -E -- "$item") ]] || echo "$com -- $item" >>"$prog_alias_compl_loader"
-        # done
-        while read -r item; do
-            [[ -n $(echo "$item" | grep -E -v "^$" | grep -E -v " *#") ]] && [[ -z $(cat "$prog_alias_compl_loader" | grep -E -v " *#" | grep -E -- "$item") ]] && echo "$com -- $(echo $item | sed "s/\(.*\)=.*/\1/")" >>"$prog_alias_compl_loader"
-        done <"$pfile"
-
-        # complete | grep -E " $aliasfile$"
-    done < <(cat "$curDir"/.progaliases | grep -E -v " *#")
-
-}
-
 create_configstore
 add_aliasloader_to_bashrc
 download_completealias
 update_completealias
-update_alias_compl_loader
+load_alias_completions
 
 . ~/.bashrc

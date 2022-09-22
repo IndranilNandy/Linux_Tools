@@ -2,6 +2,8 @@ Description:
     List and update all user defined aliases.
 
     .aliases    - contains all .*aliases files containing all defined myaliases
+    .generic_alias_completion_loader    - contains conpletioner entry for generic command aliases
+    .program_alias_completion_loader    - contains conpletioner entry for specific program command aliases (e.g. k8)
 
 How to add a new entry?
     [MANUAL]
@@ -23,6 +25,8 @@ Usage:
         List only the names of all user defined aliases.
     myalias --config
         [MANUAL] Open all alias-files to enable the user to edit them for addition/deletion/update.
+    myalias --prune
+        Need to call this anytime after deleting any alias entry so that it deletes (prune) corresponding entry in completioner loader files
     myalias
     myalias --help
         Help content of myalias.

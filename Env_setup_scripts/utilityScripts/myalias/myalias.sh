@@ -6,6 +6,8 @@ else
     curDir=$(dirname "$(tracelink "$(which myalias)")")
 fi
 
+. "$curDir"/utility_functions.sh
+
 aliasfiles() {
     ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X cat "$curDir"/.aliases/X
 }
@@ -29,6 +31,9 @@ case ${1} in
     ;;
 --config)
     ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X echo "editor $curDir/.aliases/X &" | bash
+    ;;
+--prune)
+    load_alias_completions 1
     ;;
 --help)
     help

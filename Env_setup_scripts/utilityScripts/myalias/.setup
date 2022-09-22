@@ -16,6 +16,6 @@ echo -e "${YELLOW}[myalias] Setup process started.${RESET}"
 yes | sudo ln -s -i $(pwd)/myalias.sh $MYCOMMANDSREPO/myalias
 ./aliaslist_configurer.sh
 
-mycompl -W \"--list --set --config --help\" myalias
+mycompl -W \"--list --set --config --prune --help\" myalias
 
 echo -e "${GREEN}[myalias] Setup finished.${RESET}"

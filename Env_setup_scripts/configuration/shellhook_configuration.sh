@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[[ -f $MYCONFIGLOADER/.bash-preexec.sh ]] && echo -e "[shellhook] Alread exists" && exit 0
+[[ -f $MYCONFIGLOADER/.bash-preexec.sh ]] && echo -e "[shellhook] Already exists" && exit 0
 
 # Pull down our file from GitHub and write it to your home directory as a hidden file.
 curl https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh -o "$MYCONFIGLOADER"/.bash-preexec.sh

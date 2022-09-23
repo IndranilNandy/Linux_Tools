@@ -1,0 +1,13 @@
+Description:
+    Toggles MYHISTORYSTATUS.
+    When MYHISTORYSTATUS is turned on, all executed commands are added to history in the form of <cd executing_dir && command>
+
+Usage:
+    myhistory
+        toggles MYHISTORYSTATUS value between 0 and 1
+    myhistory --help
+        Help content of myhistory.
+  
+Examples:
+    myhistory
+    myhistory --help

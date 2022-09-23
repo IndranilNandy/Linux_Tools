@@ -37,4 +37,7 @@ fi
 # ./aliaslist_configurer.sh
 # echo -e "${GREEN}[myalias] Setup finished.${GREEN}"
 
+# Shellhook configuration
+./shellhook_configuration.sh
+
 echo -e "${YELLOW}[Configured.]${RESET}"

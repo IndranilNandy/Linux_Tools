@@ -1,0 +1,30 @@
+#!/bin/bash
+
+export MYHISTORYSTATUS=0
+add_to_myhistory() {
+    [[ "$MYHISTORYSTATUS" == "1" ]] || return 0
+    [[ $(echo "$*" | grep $(pwd)) ]] || history -s "cd $(pwd) && $*"
+}
+
+myhistory() {
+    if [[ -z $(which myfunc) ]]; then
+        curDir=$(pwd)
+    else
+        curDir=$(dirname "$(tracelink "$(which myfunc)")")
+    fi
+
+    case ${1} in
+    --help)
+        cat "$curDir"/.funcs/myhistory/myhistory.help
+        ;;
+    *)
+        if [[ "$MYHISTORYSTATUS" == "0" ]]; then
+            MYHISTORYSTATUS=1 && echo -e "MYHISTORYSTATUS is turned on"
+        else
+            MYHISTORYSTATUS=0 && echo -e "MYHISTORYSTATUS is turned off"
+        fi
+        ;;
+    esac
+}
+
+preexec_functions+=(add_to_myhistory)

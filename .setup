@@ -31,6 +31,9 @@ find . -name ".setup" | xargs -n1 chmod +x
 # Install missing prerequisites
 export ToolsDir="$HOME/MyTools/Linux_Tools"
 file=$(pwd)/.inittools
+
+# hack needed for custom-setup for myinstaller
+./.hack "$@"
 missing_prereqs $file | xargs -I FILE find "$ToolsDir" -name FILE | xargs -I INPUT echo "(cd INPUT && find . -name .setup | bash)" | bash
 
 # Exit if still missing any prerequisite

@@ -3,11 +3,17 @@ Description:
     When MYHISTORYSTATUS is turned on, all executed commands are added to history in the form of <cd executing_dir && command>
 
 Usage:
+    myhistory --on/--off
+        set MYHISTORYSTATUS value to 0 or 1
+    myhistory --status
+        shows MYHISTORYSTATUS value status
     myhistory
-        toggles MYHISTORYSTATUS value between 0 and 1
     myhistory --help
         Help content of myhistory.
   
 Examples:
+    myhistory --on
+    myhistory --off
+    myhistory --status
     myhistory
     myhistory --help

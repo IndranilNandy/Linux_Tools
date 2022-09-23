@@ -14,17 +14,28 @@ myhistory() {
     fi
 
     case ${1} in
+    --on)
+        MYHISTORYSTATUS=1
+        echo -e "MYHISTORYSTATUS is turned on"
+        ;;
+    --off)
+        MYHISTORYSTATUS=0
+        echo -e "MYHISTORYSTATUS is turned off"
+        ;;
+    --status)
+        echo -e "[myhistory] MYHISTORYSTATUS=$MYHISTORYSTATUS"
+        ;;
     --help)
         cat "$curDir"/.funcs/myhistory/myhistory.help
         ;;
+    '')
+        cat "$curDir"/.funcs/myhistory/myhistory.help
+        ;;
     *)
-        if [[ "$MYHISTORYSTATUS" == "0" ]]; then
-            MYHISTORYSTATUS=1 && echo -e "MYHISTORYSTATUS is turned on"
-        else
-            MYHISTORYSTATUS=0 && echo -e "MYHISTORYSTATUS is turned off"
-        fi
+        cat "$curDir"/.funcs/myhistory/myhistory.help
         ;;
     esac
 }
 
 preexec_functions+=(add_to_myhistory)
+mycompl -W '"'--on --off --status --help'"' myhistory

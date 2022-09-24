@@ -1,27 +1,27 @@
 Description:
-    Quick 'cd'.
+    Quick open Nautilus file browser with the arg path.
 
     .mappings   - contains all mappings.
     format      - <tarnet_name>:<original_path>
 
 How to add a new entry?
     [MANUAL]
-    Run 'qcd --config' 
+    Run 'qn --config' 
 
 Usage:
-    qcd <dir>
-        cd to the directory mapped by dir.
-    qcd --list
+    qn <list of dirs>
+        Open all dirs in Nautilus.
+    qn --list
         List all user defined paths.
-    qcd --config
+    qn --config
         [MANUAL] Add entry to .mappings.
-    qcd
-    qcd --help
+    qn
+    qn --help
         Help content of qcd.
   
 Examples:
-    qcd k8
-    qcd --list
-    qcd --config
-    qcd
-    qcd --help
+    qn linux_tools k8
+    qn --list
+    qn --config
+    qn
+    qn --help

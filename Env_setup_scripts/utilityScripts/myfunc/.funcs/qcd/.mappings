@@ -3,7 +3,9 @@ myscriptrefs:/usr/local/bin/myscriptrefs
 linux_tools:$HOME/MyTools/Linux_Tools
 dev_tools_setup_scripts:$HOME/MyTools/Linux_Tools/Dev_tools_setup_scripts
 env_setup_scripts:$HOME/MyTools/Linux_Tools/Env_setup_scripts
+k8:$HOME/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8
 utility_tools_setup_scripts:$HOME/MyTools/Linux_Tools/Utility_tools_setup_scripts
 docker:/var/lib/docker
 myconfig:$HOME/.myconfig
-k8:$HOME/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8
+configloader:$HOME/.myconfig/.configloader
+windowshare:$HOME/SharedFromWindows

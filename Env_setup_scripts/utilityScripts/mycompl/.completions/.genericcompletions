@@ -17,3 +17,8 @@
 -W "dev_tools_setup_scripts utility_tools_setup_scripts env_setup_scripts k8 myscriptrefs docker mycommands myconfig linux_tools --list --config --help" qcode
 -W "--list --set --config --prune --help" myalias
 -W "--on --off --status --help" myhistory
+-W "dev_tools_setup_scripts utility_tools_setup_scripts env_setup_scripts k8 configloader myscriptrefs docker mycommands myconfig linux_tools --list --config --help" qcd
+-W "dev_tools_setup_scripts utility_tools_setup_scripts env_setup_scripts k8 configloader myscriptrefs docker mycommands myconfig linux_tools --list --config --help" qcode
+-W "dev_tools_setup_scripts utility_tools_setup_scripts env_setup_scripts k8 configloader windowshare myscriptrefs docker mycommands myconfig linux_tools --list --config --help" qcd
+-W "dev_tools_setup_scripts utility_tools_setup_scripts env_setup_scripts k8 configloader windowshare myscriptrefs docker mycommands myconfig linux_tools --list --config --help" qcode
+-W "dev_tools_setup_scripts utility_tools_setup_scripts env_setup_scripts k8 configloader windowshare myscriptrefs docker mycommands myconfig linux_tools --list --config --help" qn

@@ -9,6 +9,8 @@ How to add a new entry?
     Run 'qcode --config' 
 
 Usage:
+    qcode <workspace>
+        Open the workspace in vscode.
     qcode --list
         List all user defined paths.
     qcode --config
@@ -18,6 +20,7 @@ Usage:
         Help content of qcd.
   
 Examples:
+    qcode linux_tools
     qcode --list
     qcode --config
     qcode

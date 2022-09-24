@@ -4,3 +4,6 @@
 
 .setup $HOME/MyTools/Linux_Tools tools-setup
 .softclean $HOME/MyTools/Linux_Tools tools-softclean
+
+.withGIT $HOME/MyTools/Linux_Tools/Env_setup_scripts/remotemachinesetup
+.withSSH $HOME/MyTools/Linux_Tools/Env_setup_scripts/remotemachinesetup

@@ -11,6 +11,13 @@ do
         echo "$tool:installed"
     else
         case $cmd in
+            sdk)
+                if [[ -n $(sdk version 2> /dev/null) ]]; then
+                    echo "$tool:installed"
+                else
+                    echo "$tool:NOT installed"
+                fi
+                ;;
             winmerge)
                 if [[ -e $HOME/'.wine/drive_c/Program Files/WinMerge/WinMergeU.exe' ]]; then
                     echo "$tool:installed"

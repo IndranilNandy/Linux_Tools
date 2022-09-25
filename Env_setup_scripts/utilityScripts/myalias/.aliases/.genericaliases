@@ -2,7 +2,7 @@
 
 c=clear
 sctl=systemctl
-ls1=ls -alut
+lsa=ls -alut
 
 p+x=find . -name "*.sh" -exec chmod +x {} \;
 p-x=find . -name "*.sh" -exec chmod -x {} \;

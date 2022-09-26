@@ -10,7 +10,11 @@ prereq --install ".prereq"
 [[ $(prereq --missing ".prereq") ]] && echo -e "${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
 
 # Check if it is already installed
-sdk version && echo -e "\n${GREEN}[sdkman] Already installed. Exiting.${RESET}" && exit 0
+verification_script=' source ~/.bashrc; \
+sdk version >> /dev/null 2>&1 || exit 1; \
+exit 0 '
+
+bash --init-file <(echo "$verification_script;") && echo -e "\n${GREEN}[sdkman] Already installed. Exiting.${RESET}" && exit 0
 
 echo -e "${YELLOW}[sdkman] Setup process started.${RESET}"
 

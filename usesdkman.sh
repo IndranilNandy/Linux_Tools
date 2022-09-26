@@ -65,16 +65,27 @@ for arg in "$@"; do
 done
 
 filter_tools() {
-    xargs -I X echo "grep -E -q \"\$(basename \$(dirname X)).*${1}.*\" ./install.config && echo X" | bash
+    # xargs -I X echo "grep -E -q \"\$(basename \$(dirname X)).*${1}.*\" ./install.config && echo X" | bash
+    xargs -I X echo "grep -E -q \"\$(basename \$(dirname X)).*${1}.*\" $(echo $(pwd)/**/install.config) && echo X" | bash
 }
 
 export loggingDest
 export errorDest
 
-sdkpkgs=$(pwd)/../.sdkmanpkgs
+echo -e "\n${YELLOW}${BOLD}[Using SDKMAN installer] [$(pwd)] Starting setup.${RESET}"
 
-echo -e "\n${YELLOW}${BOLD}[Dev_tools_setup_scripts] [$(pwd)] Starting setup.${RESET}"
-echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | grep -E -v "$cust_setup_def" | grep -E -v -f "$sdkpkgs" | filter_tools $installationType | xargs -I INPUT echo -e "(cd \$(dirname INPUT) && echo -e \"\\n{\\nINPUT\\n} >> >(ts '[%Y-%m-%d %H:%M:%S]' >> "$loggingDest") 2>> >(ts '[%Y-%m-%d %H:%M:%S]' >> "$errorDest")\" | bash)" | bash
+sdkpkgs=$(pwd)/.sdkmanpkgs
+ex_dir=$(pwd)
 
-echo -e "\n${GREEN}${BOLD}[Dev_tools_setup_scripts] [$(pwd)] Setup completed.${RESET}"
+for pkg in $(echo $(pwd)/**/**/.* | xargs -n1 echo | grep '\.setup' | grep -E -v "$cust_setup_def" | grep -E -f "$sdkpkgs" | filter_tools \$installationType | xargs -I X echo X); do
+    cd $(dirname "$pkg")
+    # TODO: 2>> >(ts '[%Y-%m-%d %H:%M:%S]' >> \"\$errorDest\"
+    exp=" $pkg >> >(ts '[%Y-%m-%d %H:%M:%S]' >> \"\$loggingDest\");"
+    bash --init-file <(echo -e "$exp exit;")
+    cd "$ex_dir"
+done
+
+
+
+echo -e "\n${GREEN}${BOLD}[Using SDKMAN installer] [$(pwd)] Setup completed.${RESET}"
 echo

@@ -75,10 +75,12 @@ filter_tools() {
 export loggingDest
 export errorDest
 
+sdkpkgs=$(pwd)/../.sdkmanpkgs
+
 echo -e "\n${YELLOW}${BOLD}[Utility_tools_setup_scripts] [$(pwd)] Starting setup.${RESET}"
 # echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | xargs -I INPUT echo -e "(cd \$(dirname INPUT) && echo -e \\n{\\nINPUT\\n} >> .logs 2>> .errors | bash)" | bash
 # echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | xargs -I INPUT echo -e "(cd \$(dirname INPUT) && echo -e \\n{\\nINPUT\\n} >> >(ts '[%Y-%m-%d %H:%M:%S]' >> .logs) 2>> >(ts '[%Y-%m-%d %H:%M:%S]' >> .errors) | bash)" | bash
-echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | grep -E -v "$cust_setup_def" | filter_tools $installationType | xargs -I INPUT echo -e "(cd \$(dirname INPUT) && echo -e \"\\n{\\nINPUT\\n} >> >(ts '[%Y-%m-%d %H:%M:%S]' >> "$loggingDest") 2>> >(ts '[%Y-%m-%d %H:%M:%S]' >> "$errorDest")\" | bash)" | bash
+echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | grep -E -v "$cust_setup_def" | grep -E -v -f "$sdkpkgs" | filter_tools $installationType | xargs -I INPUT echo -e "(cd \$(dirname INPUT) && echo -e \"\\n{\\nINPUT\\n} >> >(ts '[%Y-%m-%d %H:%M:%S]' >> "$loggingDest") 2>> >(ts '[%Y-%m-%d %H:%M:%S]' >> "$errorDest")\" | bash)" | bash
 
 # Reverting back to pointing fullAptPkgTools
 yes | sudo ln -s -i fullAptPkgTools .fullAptPkgTools

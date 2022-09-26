@@ -43,6 +43,9 @@ missing_prereqs $file | xargs -I FILE find "$ToolsDir" -name FILE | xargs -I INP
 echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | grep -E -v "exclude|_gsettings|Post_setup" | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT "$*" | bash)" | bash
 echo
 
+# Install packages through sdkman
+./usesdkman.sh
+
 (
     cd ./_gsettings
     ./.setup

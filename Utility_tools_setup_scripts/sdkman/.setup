@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Insert entry of this tool in .allTools. This is to be used in the verification stage post setup.
-grep -q "sdk:" ../../_verify/.allTools || echo "sdk:sdk" >>../../_verify/.allTools
+grep -q "sdkman:" ../../_verify/.allTools || echo "sdkman:sdk" >>../../_verify/.allTools
 
 #Check if all prerequisites are installed, and install the missing ones
 prereq --install ".prereq"

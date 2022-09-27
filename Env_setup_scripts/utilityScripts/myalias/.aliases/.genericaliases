@@ -13,3 +13,6 @@ cref= cd /usr/local/bin/myscriptrefs
 ctool=cd $HOME/MyTools/Linux_Tools
 
 s=shutdown now
+
+listjava=sdk list java | grep "installed"
+listgradle=sdk list gradle | grep "\*" | grep -v "installed"

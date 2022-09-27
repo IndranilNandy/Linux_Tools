@@ -41,7 +41,19 @@ qcd() {
         ;;
     *)
         [[ -z ${mydirs[${1}]} ]] && buildqcdmap
+        
+        if [[ -z ${mydirs[${1}]} ]]; then
+            (( "$#" < 2 )) && echo -e "Missing dir-target parameter" && return 1
+            target="${2}"
+            [[ "$target" == "." ]] && target=$(pwd)
+            [[ $(echo "$target" | grep -F "/home/") ]] && target=$(echo "$target" | sed "s#/[^/]*/[^/]*\(/.*\)#\$HOME\1#")
+
+            echo -e "${1}:$target" >> "$curDir"/.funcs/qcd/.mappings
+            mydirs["${1}"]="$target"
+        else
+        (( "$#" == 2 )) && echo -e "dir-alias already exists. Ignoring dir-target."
         eval "cd ${mydirs[${1}]}"
+        fi
         ;;
     esac
 }

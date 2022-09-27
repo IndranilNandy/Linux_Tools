@@ -9,3 +9,4 @@ docker:/var/lib/docker
 myconfig:$HOME/.myconfig
 configloader:$HOME/.myconfig/.configloader
 windowshare:$HOME/SharedFromWindows
+bin:/usr/local/bin

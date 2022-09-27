@@ -9,8 +9,12 @@ How to add a new entry?
     Run 'qcd --config' 
 
 Usage:
-    qcd <dir>
-        cd to the directory mapped by dir.
+    qcd <dir-alias> <dir-target>
+        Creates new entry with dir-alias targeting a directory dir-target, if dir-alias doesn't exist.
+        if dir-target is ".", then target directory will be the current directory.
+        if dir-alias already exists, dir-target will be ignored.
+    qcd <dir-alias>
+        cd to the directory mapped by dir-alias.
     qcd --list
         List all user defined paths.
     qcd --config
@@ -20,6 +24,8 @@ Usage:
         Help content of qcd.
   
 Examples:
+    qcd k8 /home/indranilnandy/MyTools/kubernetes
+    qcd k8 .
     qcd k8
     qcd --list
     qcd --config

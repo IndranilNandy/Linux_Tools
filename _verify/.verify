@@ -11,6 +11,10 @@ for x in $(cat .allTools); do
         echo "$tool:installed"
     else
         case $cmd in
+        java)
+            # TODO: HARDCODED path needs to be changed
+            "$HOME"/MyTools/Linux_Tools/Dev_tools_setup_scripts/jdk/.check_installation.sh && -e "$tool:installed" || echo -e "$tool:NOT installed"
+            ;;
         gradle)
             which gradle > /dev/null && echo -e "$tool:installed" || echo -e "$tool:NOT installed"
             ;;

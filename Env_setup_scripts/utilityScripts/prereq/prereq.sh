@@ -22,6 +22,17 @@ exit 0 '
     done
 }
 
+# For packages in .exceptionlist we cannot use subshell, these packages only work in interactive terminal which can be simulated with bash --init-file
+install_from_exceptionlist() {
+    pkg=${1}
+
+    ex_dir=$(pwd)
+    cd "$pkg"
+    exp=" $pkg/.setup"
+    bash --init-file <(echo -e "$exp; exit;")
+    cd "$ex_dir"
+}
+
 missing_prereqs() {
     prereqfile=${1}
     process_exceptionlist "$prereqfile"
@@ -35,11 +46,16 @@ missing_prereqs() {
     echo "$missing"
 }
 
+export -f install_from_exceptionlist
+
 case ${1} in
 --install)
     export ToolsDir="$HOME/MyTools/Linux_Tools"
-    missing_prereqs ${2} | xargs -I FILE find "$ToolsDir" -name FILE | xargs -I INPUT echo "(cd INPUT && pwd && find . -name .setup | bash)" | bash
-    missing_prereqs ${2} | xargs -I TOOL myinstaller --install TOOL
+    missing_prereqs ${2} | grep -v -f "$helpDir"/.exceptionlist | xargs -I FILE find "$ToolsDir" -name FILE | xargs -I INPUT echo "(cd INPUT && pwd && find . -name .setup | bash)" | bash
+    missing_prereqs ${2} | grep -v -f "$helpDir"/.exceptionlist | xargs -I TOOL myinstaller --install TOOL
+    for exc_pkg in $(missing_prereqs ${2} | grep -f "$helpDir"/.exceptionlist | xargs -I FILE find "$ToolsDir" -name FILE); do
+        install_from_exceptionlist "$exc_pkg"
+    done
     ;;
 --missing)
     missing_prereqs ${2}

@@ -3,8 +3,6 @@
 # Insert entry of this tool in .allTools. This is to be used in the verification stage post setup.
 grep -q "gradle:" ../../_verify/.allTools || echo "gradle:gradle" >>../../_verify/.allTools
 
-# prereq --missing ".prereq"
-
 #Check if all prerequisites are installed, and install the missing ones
 prereq --install ".prereq"
 

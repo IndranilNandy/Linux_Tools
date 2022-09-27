@@ -6,10 +6,14 @@ for x in $(cat .allTools); do
     # echo $x
     cmd=$(echo "$x" | sed 's/.*:\(.*\)/\1/')
     tool=$(echo "$x" | sed 's/\(.*\):.*/\1/')
+
     if [[ $(ifinstalled $cmd) ]]; then
         echo "$tool:installed"
     else
         case $cmd in
+        gradle)
+            which gradle > /dev/null && echo -e "$tool:installed" || echo -e "$tool:NOT installed"
+            ;;
         sdk)
             echo "$tool:[check manually] run 'sdk version'"
             # if [[ -n $(sdk version 2>/dev/null) ]]; then

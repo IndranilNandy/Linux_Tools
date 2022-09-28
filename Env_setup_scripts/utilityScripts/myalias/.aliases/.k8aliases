@@ -3,5 +3,27 @@
 k=kubectl
 
 kg=kubectl get
-kgn=kubectl get nodes
-kgp=kubectl get pods
+kgw=kubectl get -o wide
+kgy=kubectl get -o yaml
+
+kd=kubectl describe
+
+ka=kubectl apply
+kaf=kubectl apply -f
+
+kc=kubectl create
+kcf=kubectl create -f
+
+kgn=kubectl get node
+kgwn=kubectl get -o wide node
+kgyn=kubectl get -o yaml node
+
+kdn=kubectl describe node
+
+
+kgp=kubectl get pod
+kgwp=kubectl get -o wide pod
+kgyp=kubectl get -o yaml pod
+
+kdp=kubectl describe pod
+

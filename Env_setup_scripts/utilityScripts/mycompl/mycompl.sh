@@ -21,6 +21,12 @@ case ${1} in
     help
     ;;
 *)
-    [[ $(cat "$curDir"/.completions/.genericcompletions | grep -v "^#" | grep -- "$*" ) ]] || echo "$*" >> "$curDir"/.completions/.genericcompletions
+    [[ $(cat "$curDir"/.completions/.genericcompletions | grep -v "^#" | grep -- "$*" ) ]] && exit 0
+
+    p=$(echo "$*" | awk '{ print $NF }')
+    # Prune outdated existing entry
+    [[ $(cat "$curDir"/.completions/.genericcompletions | grep -v "^#" | grep -- " $p$" ) ]] && sed -i "/ $p$/d" "$curDir"/.completions/.genericcompletions
+    
+    echo "$*" >> "$curDir"/.completions/.genericcompletions
     ;;
 esac

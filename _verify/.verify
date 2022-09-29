@@ -19,12 +19,7 @@ for x in $(cat .allTools); do
             which gradle > /dev/null && echo -e "$tool:installed" || echo -e "$tool:NOT installed"
             ;;
         sdk)
-            echo "$tool:[check manually] run 'sdk version'"
-            # if [[ -n $(sdk version 2>/dev/null) ]]; then
-            #     echo "$tool:installed"
-            # else
-            #     echo "$tool:NOT installed"
-            # fi
+            bash --init-file <(echo -e "source ~/.bashrc; sdk version > /dev/null 2>&1 || exit 1; exit 0;") && echo -e "$tool:installed" || echo -e "$tool:NOT installed"
             ;;
         winmerge)
             if [[ -e $HOME/'.wine/drive_c/Program Files/WinMerge/WinMergeU.exe' ]]; then

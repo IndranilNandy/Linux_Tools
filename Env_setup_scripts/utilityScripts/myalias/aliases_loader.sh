@@ -17,7 +17,7 @@ for item in "${CommandsList[@]}"; do
     # echo -e "alias=$alias command=$command"
 
     if [[ -z $(which ${alias}) ]]; then
-        alias "${alias}=echo ${alias}=${command}; ${command}"
+        alias "${alias}=echo -e \"\e[33m\e[1m${alias}=${command}\e[0m\n\"; ${command}"
     else
         echo -e "[ERROR] Cannot set alias ${item}. $(which ${alias}) already exists"
     fi

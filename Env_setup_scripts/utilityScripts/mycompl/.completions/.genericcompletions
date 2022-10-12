@@ -4,7 +4,6 @@
 -W "--list --apt --link --help" ifinstalled
 -W "--install --uninstall --list --help --FULL --LOCAL" myinstaller
 -W "--help" createref
--W "--sym --ref --sync --config --help" myscriptref
 -W "--help" setgittool
 -W "--help" cmount
 -W "--help" cumount
@@ -12,9 +11,10 @@
 -W "--help" revert2XrdpSession
 -W "--list --config --help" myfunc
 -W "--refresh --update --list --help" code-ext
--W "--create --sym --ref --sync --config --list --help" myscriptref
 -W "--list --set --config --prune --help" myalias
 -W "--on --off --status --help" myhistory
 -W "dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts k8 configloader windowshare myscriptrefs docker bin mycommands myconfig linux_tools --list --config --help" qcd
 -W "dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts k8 configloader windowshare myscriptrefs docker bin mycommands myconfig linux_tools --list --config --help" qcode
 -W "dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts k8 configloader windowshare myscriptrefs docker bin mycommands myconfig linux_tools --list --config --help" qn
+-W "server client --setup --uninstall --config --refresh --help" mynfs
+-W "--create --sym --ref --sync --config --list --help" myscriptref

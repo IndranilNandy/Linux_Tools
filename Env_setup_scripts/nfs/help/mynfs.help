@@ -1,0 +1,70 @@
+Description:
+    Does setup and configuration for NFS sharing for both server and client.
+    Ref. https://ubuntu.com/server/docs/service-nfs
+
+    $HOME/MyTools/Linux_Tools/Env_setup_scripts/nfs/server  - location for server-setup config
+    $HOME/MyTools/Linux_Tools/Env_setup_scripts/nfs/client  - location for client-setup config
+
+    server/.commons         - contains sharing-settings which is common across all server nodes
+    client/.commons         - contains sharing-settings which is common across all client nodes
+
+    server/hostname-ip      - contains sharing-settings which is specific to the current server node
+    client/hostname-ip      - contains sharing-settings which is specific to the current client node
+ 
+    1. Setup installers for server/client
+    2. Next, setup sharing configuration for server/client
+
+How to do NFS sharing setup for server/client?
+    Server:
+    1. Run 'mynfs server --setup'.
+
+    Client:
+    1. Run 'mynfs client --setup'.
+
+How to add a new entry in sharing config?
+    Server:
+    1. Run 'mynfs server --config'.
+    2. If it is a common sharing settings for all server nodes, then add entry to .commons
+    3. If it is only for this specific node, create a file named <hostname-ip> under server (like the existing sample file) and add entry to that file.
+    4. Run 'mynfs server --refresh' to affect the changes.
+
+    Client:
+    1. Run 'mynfs client --config'.
+    2. If it is a common sharing settings for all client nodes, then add entry to .commons
+    3. If it is only for this specific node, create a file named <hostname-ip> under client (like the existing sample file) and add entry to that file.
+    4. Run 'mynfs client --refresh' to affect the changes.
+
+How to uninstall for server/client?
+    Server:
+    1. Run 'mynfs server --uninstall'.
+
+    Client:
+    1. Run 'mynfs client --uninstall'.
+
+Usage:
+    mynfs server --setup
+    mynfs client --setup
+        Does NFS sharing setup for server/client.
+    mynfs server --config
+    mynfs client --config
+        Opens all the config files for server/client in editor. 
+        DO NOT forget to run 'mynfs server --refresh' or 'mynfs client --refresh' after updating the config file.
+    mynfs server --refresh
+    mynfs client --refresh
+        Updates the config changes.
+    mynfs server --uninstall
+    mynfs client --uninstall
+        Completes uninstallation for server/client.
+    mynfs --help
+        Shows help contents.
+
+Examples:
+    mynfs server --setup
+    mynfs client --setup
+    mynfs server --config
+    mynfs client --config
+    mynfs server --refresh
+    mynfs client --refresh
+    mynfs server --uninstall
+    mynfs client --uninstall
+    mynfs --help

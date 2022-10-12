@@ -1,0 +1,3 @@
+ubuntudevbox:/nfsroot   /opt/nfsmounts/root
+ubuntudevbox:/home      /opt/nfsmounts/home
+ubuntudevbox:/test1     /opt/nfsmounts/test1

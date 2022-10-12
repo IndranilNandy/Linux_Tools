@@ -1,11 +1,9 @@
 # Aliases for K8 commands
+##############################
 
 k=kubectl
 
 kg=kubectl get
-kgw=kubectl get -o wide
-kgy=kubectl get -o yaml
-
 kd=kubectl describe
 
 ka=kubectl apply
@@ -14,16 +12,32 @@ kaf=kubectl apply -f
 kc=kubectl create
 kcf=kubectl create -f
 
+ke=kubectl edit
+###############################
+
 kgn=kubectl get node
-kgwn=kubectl get -o wide node
-kgyn=kubectl get -o yaml node
+kgnw=kubectl get node -o wide
+kgny=kubectl get node -o yaml
 
 kdn=kubectl describe node
-
+###############################
 
 kgp=kubectl get pod
-kgwp=kubectl get -o wide pod
-kgyp=kubectl get -o yaml pod
+kgpw=kubectl get pod -o wide
+kgpy=kubectl get pod-o yaml
 
 kdp=kubectl describe pod
+###############################
+
+kgns=kubectl get namespace
+kgnsw=kubectl get namespace -o wide
+kgnsy=kubectl get namespace -o yaml
+###############################
+
+kgrc=kubectl get rc
+kgrcw=kubectl get rc -o wide
+kgrcy=kubectl get rc -o yaml
+
+kdrc=kubectl describe rc
+
 

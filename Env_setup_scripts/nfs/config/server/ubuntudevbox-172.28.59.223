@@ -1,0 +1,1 @@
+/test2      serv-worker1(rw,sync,no_subtree_check) serv-worker2(rw,sync,no_subtree_check)

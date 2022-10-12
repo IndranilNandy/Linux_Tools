@@ -15,7 +15,8 @@ server)
     --config)
         echo -e "[NFS][server] Configure /etc/.exports"
         echo -e "Run with --refresh option after updating the configuration"
-        editor ./config/server/.exports
+        editor ./config/server/.commons
+        editor ./config/server/"$(hostname)-$(hostname -I | awk '{ print $1 }')"
         ;;
     --refresh)
         echo -e "[NFS][server] Rrefresh configuration changes in /etc/.exports"

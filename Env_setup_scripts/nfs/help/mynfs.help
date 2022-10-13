@@ -21,7 +21,7 @@ How to do NFS sharing setup for server/client?
     Client:
     1. Run 'mynfs client --setup'.
 
-How to add a new entry in sharing config?
+How to add a new entry in sharing-config?
     Server:
     1. Run 'mynfs server --config'.
     2. If it is a common sharing settings for all server nodes, then add entry to .commons
@@ -33,6 +33,14 @@ How to add a new entry in sharing config?
     2. If it is a common sharing settings for all client nodes, then add entry to .commons
     3. If it is only for this specific node, create a file named <hostname-ip> under client (like the existing sample file) and add entry to that file.
     4. Run 'mynfs client --refresh' to affect the changes.
+
+How to delete an entry from sharing-config?
+    Server:
+    1. First remove the entry from corresponing config file under server.
+    2. Next, run 'mynfs server --prune' to prune the deleted entries from /etc/.exports
+
+    Client:
+    1. Simply remove the entry from corresponing config file under client.
 
 How to uninstall for server/client?
     Server:
@@ -52,6 +60,8 @@ Usage:
     mynfs server --refresh
     mynfs client --refresh
         Updates the config changes.
+    mynfs server --prune
+        Prunes the deleted configurations from /etc/.exports. No need for a corresponing command for client, only removal from config file is enough.
     mynfs server --uninstall
     mynfs client --uninstall
         Completes uninstallation for server/client.
@@ -65,6 +75,7 @@ Examples:
     mynfs client --config
     mynfs server --refresh
     mynfs client --refresh
+    mynfs server --prune
     mynfs server --uninstall
     mynfs client --uninstall
     mynfs --help

@@ -16,5 +16,5 @@
 -W "dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts k8 configloader windowshare myscriptrefs docker bin mycommands myconfig linux_tools --list --config --help" qcd
 -W "dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts k8 configloader windowshare myscriptrefs docker bin mycommands myconfig linux_tools --list --config --help" qcode
 -W "dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts k8 configloader windowshare myscriptrefs docker bin mycommands myconfig linux_tools --list --config --help" qn
--W "server client --setup --uninstall --config --refresh --help" mynfs
 -W "--create --sym --ref --sync --config --list --help" myscriptref
+-W "server client --setup --uninstall --config --refresh --prune --help" mynfs

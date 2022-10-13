@@ -18,6 +18,11 @@ server)
         echo -e "[NFS][server] Rrefresh configuration changes in /etc/.exports"
         (cd server && ./nfs_serverside_configurer.sh)
         ;;
+    --prune)
+        echo -e "[NFS][server] Pruning deleted configurations from /etc/.exports"
+        sudo cp /etc/exports-backup /etc/exports
+        (cd server && ./nfs_serverside_configurer.sh)
+        ;;
     --uninstall)
         echo -e "[NFS][server] uninstallation"
         (cd server && ./nfs_serverside_uninstaller.sh)

@@ -20,6 +20,6 @@ read -p "Setup for NFS server or client? [server] or [client] or any other key t
 echo -e "Skipping NFS setup. Use 'mynfs' command to do the setup later.\nFor more, see 'mynfs --help'"
 
 myscriptref --create nfs_setup.sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/nfs mynfs
-mycompl -W \"server client --setup --uninstall --config --refresh --help\" mynfs
+mycompl -W \"server client --setup --uninstall --config --refresh --prune --help\" mynfs
 
 echo -e "${GREEN}[NFS] Setup finished.${RESET}"

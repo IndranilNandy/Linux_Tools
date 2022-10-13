@@ -23,10 +23,32 @@ update_alias_completions_list() {
     done < <(cat "$curDir"/.progaliases | grep -E -v "^$" | grep -E -v " *#")
 }
 
+update_alias_file() {
+    aliasloader="$MYCONFIGLOADER"/.aliasloader
+    list=$(ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X cat "$curDir"/.aliases/X | grep -E -v "^$|#.*")
+
+    mapfile -t CommandsList <<<"$list"
+    for item in "${CommandsList[@]}"; do
+        alias=$(echo "${item}" | sed "s/ *\([^=]*\)=.*/\1/")
+        command=$(echo "${item}" | sed "s/[^=]*= *\(.*\)/\1/")
+        # echo -e "alias=$alias command=$command"
+
+        alias_command="alias ${alias}='echo -e \"\\\e[33m\\\e[1m${alias}=${command}\\\e[0m\\\n\"; ${command}'"
+        grep -q "alias ${alias}=" "$aliasloader" || echo "$alias_command" >>"$aliasloader"
+    done
+}
+
 reset_completions_list() {
     gen_alias_compl_loader="$MYCONFIGLOADER"/.generic_alias_completion_loader
     prog_alias_compl_loader="$MYCONFIGLOADER"/.program_alias_completion_loader
 
     >"$gen_alias_compl_loader"
     >"$prog_alias_compl_loader"
+    echo -e "reset compl"
+}
+
+reset_alias_file() {
+    aliasloader="$MYCONFIGLOADER"/.aliasloader
+    >"$aliasloader"
+    echo -e "reset alias file"
 }

@@ -34,10 +34,28 @@ case ${1} in
     echo -e "Run 'myalias --refresh' to affect alias-update on completions list"
     ;;
 --prune)
-    reset_completions_list
-    update_alias_completions_list
+    case ${2} in
+    --compl)
+        reset_completions_list
+        update_alias_completions_list
+        ;;
+    --alias)
+        reset_alias_file
+        update_alias_file
+        ;;
+    '')
+        echo "reset everything"
+        reset_alias_file
+        reset_completions_list
+        update_alias_file
+        update_alias_completions_list
+        ;;
+    *)
+        echo -e "check command with myalias --help"
+    esac
     ;;
 --refresh)
+    update_alias_file
     update_alias_completions_list
     ;;
 --help)
@@ -51,6 +69,7 @@ case ${1} in
         help && exit 0
     fi
     cat "$curDir"/.aliases/.genericaliases | grep "$*" || echo $* >>"$curDir"/.aliases/.genericaliases && echo -e "Before using this alias, open a new window"
+    update_alias_file
     update_alias_completions_list
     ;;
 esac

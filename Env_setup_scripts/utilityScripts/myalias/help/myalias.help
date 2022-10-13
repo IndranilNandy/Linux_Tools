@@ -1,7 +1,8 @@
 Description:
     List and update all user defined aliases.
 
-    .aliases    - contains all .*aliases files containing all defined myaliases
+    .aliases                            - contains all .*aliases files containing all defined myaliases
+    $MYCONFIGLOADER/.aliasloader        - contains all the alias definitions for .bashrc
     .generic_alias_completion_loader    - contains conpletioner entry for generic command aliases
     .program_alias_completion_loader    - contains conpletioner entry for specific program command aliases (e.g. k8)
 
@@ -19,6 +20,10 @@ How to add a new entry?
                                 -> it adds an entry to .genericaliases
     No need to run 'myalias --refresh', since it is called implicitly
 
+How to delete an alias entry?
+    1. First, remove it from corresponding alias-file in .aliases
+    2. Next, run 'myalias --prune' which will remove it from both the aliasloader ('myalias --prune --alias') and completion loader file ('myalias --prune --compl').
+
 Usage:
     myalias --list
         List all user defined aliases.
@@ -29,7 +34,11 @@ Usage:
     myalias --config
         [MANUAL] Open all alias-files to enable the user to edit them for addition/deletion/update.
     myalias --prune
-        Need to call this anytime after deleting any alias entry so that it deletes (prune) corresponding entry in completioner loader files
+        Need to call this anytime after deleting any alias entry so that it deletes (prune) corresponding entry in aliasloader and completioner loader files
+    myalias --prune --alias
+        Need to call this anytime after deleting any alias entry so that it deletes (prune) corresponding entry in aliasloader only
+    myalias --prune --compl
+        Need to call this anytime after deleting any alias entry so that it deletes (prune) corresponding entry in completioner loader file only
     myalias --refresh
         This affects the update on the completions list.
     myalias
@@ -44,6 +53,8 @@ Examples:
     myalias --set
     myalias --config
     myalias --prune
+    myalias --prune --alias
+    myalias --prune --compl
     myalias --refresh
     myalias
     myalias --help

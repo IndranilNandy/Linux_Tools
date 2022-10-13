@@ -22,13 +22,11 @@ create_configstore() {
 
     [[ -e "$gen_alias_compl_loader" ]] || touch "$gen_alias_compl_loader"
     [[ -e "$prog_alias_compl_loader" ]] || touch "$prog_alias_compl_loader"
-
-    [[ -L "$aliasloader" ]] && echo -e "[myalias config] .aliasloader already exists" && return 0
-    yes | sudo ln -s -i $(dirname $(tracelink myalias))/aliases_loader.sh "$aliasloader" && echo -e "[myalias config] .aliasloader created"
+    [[ -e "$aliasloader" ]] || touch "$aliasloader"
 }
 
 add_aliasloader_to_bashrc() {
-    [[ $(cat "$envloader" | grep "$aliasloader") ]] || echo "[[ -L $aliasloader ]] && source $aliasloader" >>"$envloader"
+    [[ $(cat "$envloader" | grep "$aliasloader") ]] || echo "[[ -e $aliasloader ]] && source $aliasloader" >>"$envloader"
     # . ~/.bashrc
 }
 
@@ -68,6 +66,7 @@ create_configstore
 add_aliasloader_to_bashrc
 download_completealias
 update_completealias
+update_alias_file
 update_alias_completions_list
 
 . ~/.bashrc

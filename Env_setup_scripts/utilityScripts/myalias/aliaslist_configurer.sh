@@ -68,6 +68,6 @@ create_configstore
 add_aliasloader_to_bashrc
 download_completealias
 update_completealias
-load_alias_completions
+update_alias_completions_list
 
 . ~/.bashrc

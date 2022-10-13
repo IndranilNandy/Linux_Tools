@@ -7,14 +7,17 @@ Description:
 
 How to add a new entry?
     [MANUAL]
-    Run 'myalias --config' 
+    1. Run 'myalias --config' 
                                 -> it opens all .*aliases files in your editor 
                                 -> either create a new entry in one of these files, 
                                 -> or create a new file and entry in it
+    2. Run 'myalias --refresh'
+                                -> this affects the update on the completions list
     OR,
     [PROGRAMMATIC]
     Run 'myalias <user_defined_alias>
                                 -> it adds an entry to .genericaliases
+    No need to run 'myalias --refresh', since it is called implicitly
 
 Usage:
     myalias --list
@@ -27,6 +30,8 @@ Usage:
         [MANUAL] Open all alias-files to enable the user to edit them for addition/deletion/update.
     myalias --prune
         Need to call this anytime after deleting any alias entry so that it deletes (prune) corresponding entry in completioner loader files
+    myalias --refresh
+        This affects the update on the completions list.
     myalias
     myalias --help
         Help content of myalias.
@@ -38,6 +43,8 @@ Examples:
     myalias --list=kubectl
     myalias --set
     myalias --config
+    myalias --prune
+    myalias --refresh
     myalias
     myalias --help
     myalias dp=docker ps

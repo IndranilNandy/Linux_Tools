@@ -23,4 +23,5 @@ for item in "${CommandsList[@]}"; do
     fi
 done
 
-load_alias_completions
+# This no longer needed, as after adding any alias entry, --refresh option automatically updates the completions list
+# load_alias_completions

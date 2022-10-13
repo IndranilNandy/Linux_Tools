@@ -31,9 +31,14 @@ case ${1} in
     ;;
 --config)
     ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X echo "editor $curDir/.aliases/X &" | bash
+    echo -e "Run 'myalias --refresh' to affect alias-update on completions list"
     ;;
 --prune)
-    load_alias_completions 1
+    reset_completions_list
+    update_alias_completions_list
+    ;;
+--refresh)
+    update_alias_completions_list
     ;;
 --help)
     help
@@ -46,5 +51,6 @@ case ${1} in
         help && exit 0
     fi
     cat "$curDir"/.aliases/.genericaliases | grep "$*" || echo $* >>"$curDir"/.aliases/.genericaliases && echo -e "Before using this alias, open a new window"
+    update_alias_completions_list
     ;;
 esac

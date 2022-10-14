@@ -16,6 +16,8 @@ help() {
     cat "$curDir"/help/myalias.help
 }
 
+# TODO: After adding or deleting any entry and doing a refres (--refresh), still I need to open a new terminal to affect the changes. 
+# Sourcing .bashrc on terminal works, but here I sourced .bashrc and still it is not working. Need to look into this later.
 case ${1} in
 --list*)
     param=$(echo ${1} | sed "s/--list\(.*\)/\1/")
@@ -33,30 +35,24 @@ case ${1} in
     ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X echo "editor $curDir/.aliases/X &" | bash
     echo -e "Run 'myalias --refresh' to affect alias-update on completions list"
     ;;
---prune)
+--refresh)
     case ${2} in
     --compl)
         reset_completions_list
         update_alias_completions_list
+        source ~/.bashrc
         ;;
     --alias)
         reset_alias_file
         update_alias_file
+        source ~/.bashrc
         ;;
     '')
-        echo "reset everything"
-        reset_alias_file
-        reset_completions_list
-        update_alias_file
-        update_alias_completions_list
+        reset_alias_file && reset_completions_list && update_alias_file && update_alias_completions_list && source ~/.bashrc
         ;;
     *)
         echo -e "check command with myalias --help"
     esac
-    ;;
---refresh)
-    update_alias_file
-    update_alias_completions_list
     ;;
 --help)
     help
@@ -71,5 +67,6 @@ case ${1} in
     cat "$curDir"/.aliases/.genericaliases | grep "$*" || echo $* >>"$curDir"/.aliases/.genericaliases && echo -e "Before using this alias, open a new window"
     update_alias_file
     update_alias_completions_list
+    source ~/.bashrc
     ;;
 esac

@@ -13,7 +13,7 @@ How to add a new entry?
                                 -> either create a new entry in one of these files, 
                                 -> or create a new file and entry in it
     2. Run 'myalias --refresh'
-                                -> this affects the update on the completions list
+                                -> this affects the update on the aliasloader and completions list
     OR,
     [PROGRAMMATIC]
     Run 'myalias <user_defined_alias>
@@ -22,7 +22,7 @@ How to add a new entry?
 
 How to delete an alias entry?
     1. First, remove it from corresponding alias-file in .aliases
-    2. Next, run 'myalias --prune' which will remove it from both the aliasloader ('myalias --prune --alias') and completion loader file ('myalias --prune --compl').
+    2. Next, run 'myalias --refresh' which will remove it from both the aliasloader ('myalias --prune --alias') and completion loader file ('myalias --prune --compl').
 
 Usage:
     myalias --list
@@ -33,14 +33,12 @@ Usage:
         List only the names of all user defined aliases.
     myalias --config
         [MANUAL] Open all alias-files to enable the user to edit them for addition/deletion/update.
-    myalias --prune
-        Need to call this anytime after deleting any alias entry so that it deletes (prune) corresponding entry in aliasloader and completioner loader files
-    myalias --prune --alias
-        Need to call this anytime after deleting any alias entry so that it deletes (prune) corresponding entry in aliasloader only
-    myalias --prune --compl
-        Need to call this anytime after deleting any alias entry so that it deletes (prune) corresponding entry in completioner loader file only
     myalias --refresh
-        This affects the update on the completions list.
+        Need to call this anytime after adding/deleting any alias entry so that it adds/deletes corresponding entry in aliasloader and completioner loader files
+    myalias --refresh --alias
+        Need to call this anytime after adding/deleting any alias entry so that it adds/deletes corresponding entry in aliasloader only
+    myalias --refresh --compl
+        Need to call this anytime after adding/deleting any alias entry so that it adds/deletes corresponding entry in completioner loader file only
     myalias
     myalias --help
         Help content of myalias.
@@ -52,10 +50,9 @@ Examples:
     myalias --list=kubectl
     myalias --set
     myalias --config
-    myalias --prune
-    myalias --prune --alias
-    myalias --prune --compl
     myalias --refresh
+    myalias --refresh --alias
+    myalias --refresh --compl
     myalias
     myalias --help
     myalias dp=docker ps

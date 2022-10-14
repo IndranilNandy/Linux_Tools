@@ -39,5 +39,24 @@ kgrcw=kubectl get rc -o wide
 kgrcy=kubectl get rc -o yaml
 
 kdrc=kubectl describe rc
+###############################
 
+kgrs=kubectl get rs
+kgrsw=kubectl get rs -o wide
+kgrsy=kubectl get rs -o yaml
 
+kdrs=kubectl describe rs
+###############################
+
+kgpv=kubectl get pv
+kgpvw=kubectl get pv -o wide
+kgpvy=kubectl get pv -o yaml
+
+kdpv=kubectl describe pv
+###############################
+
+kgpvc=kubectl get pvc
+kgpvcw=kubectl get pvc -o wide
+kgpvcy=kubectl get pvc -o yaml
+
+kdpvc=kubectl describe pvc

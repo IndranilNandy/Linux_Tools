@@ -44,11 +44,9 @@ reset_completions_list() {
 
     >"$gen_alias_compl_loader"
     >"$prog_alias_compl_loader"
-    echo -e "reset compl"
 }
 
 reset_alias_file() {
     aliasloader="$MYCONFIGLOADER"/.aliasloader
     >"$aliasloader"
-    echo -e "reset alias file"
 }

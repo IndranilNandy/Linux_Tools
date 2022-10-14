@@ -6,7 +6,8 @@ Description:
 
 How to add a new entry?
     [MANUAL]
-    Run 'qcode --config' 
+    1. Run 'qcode --config' 
+    2. Next, run 'qcode --refresh' to update tab-completions
 
 Usage:
     qcode <workspace>
@@ -15,6 +16,8 @@ Usage:
         List all user defined paths.
     qcode --config
         [MANUAL] Add entry to .mappings.
+    qcode --refresh
+        Update tab-completions for new enries.
     qcode
     qcode --help
         Help content of qcd.
@@ -23,5 +26,6 @@ Examples:
     qcode linux_tools
     qcode --list
     qcode --config
+    qcode --refresh
     qcode
     qcode --help

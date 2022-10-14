@@ -3,9 +3,10 @@
 declare -A mydirs
 
 update_tab_completions() {
-    mycompl -W '"'"${!mydirs[@]}" --list --config --help'"' qcd
-    mycompl -W '"'"${!mydirs[@]}" --list --config --help'"' qcode
-    mycompl -W '"'"${!mydirs[@]}" --list --config --help'"' qn
+    mycompl -W '"'"${!mydirs[@]}" --list --config --refresh --help'"' qcd
+    mycompl -W '"'"${!mydirs[@]}" --list --config --refresh --help'"' qcode
+    mycompl -W '"'"${!mydirs[@]}" --list --config --refresh --help'"' qn
+    source ~/.bashrc
 }
 
 buildqcdmap() {
@@ -15,6 +16,7 @@ buildqcdmap() {
         curDir=$(dirname "$(tracelink "$(which myfunc)")")
     fi
 
+    mydirs=()
     for line in $(cat "$curDir"/.funcs/qcd/.mappings | xargs -I X echo X); do
         cdir=$(echo "$line" | cut -d':' -f1)
         target=$(echo "$line" | cut -d':' -f2)
@@ -24,11 +26,14 @@ buildqcdmap() {
 }
 
 qcd() {
+
     if [[ -z $(which myfunc) ]]; then
         curDir=$(pwd)
     else
         curDir=$(dirname "$(tracelink "$(which myfunc)")")
     fi
+
+    buildqcdmap
 
     case ${1} in
     --list)
@@ -36,6 +41,10 @@ qcd() {
         ;;
     --config)
         editor "$curDir"/.funcs/qcd/.mappings
+        echo -e "Run 'qcd --refresh' to enable tab-completions for this entry"
+        ;;
+    --refresh)
+        update_tab_completions
         ;;
     --help)
         cat "$curDir"/.funcs/qcd/qcd.help
@@ -44,8 +53,9 @@ qcd() {
         cat "$curDir"/.funcs/qcd/qcd.help
         ;;
     *)
+
         # REMEMBER: Don't call "source ~/.bashrc" inside buildqcdmap and after update_tabcompletions -> it'll be recursive
-        [[ -z ${mydirs[${1}]} ]] && buildqcdmap && source ~/.bashrc
+        # [[ -z ${mydirs[${1}]} ]] && buildqcdmap && source ~/.bashrc
 
         if [[ -z ${mydirs[${1}]} ]]; then
             (("$#" < 2)) && echo -e "Missing dir-target parameter" && return 1
@@ -55,10 +65,18 @@ qcd() {
 
             echo -e "${1}:$target" >>"$curDir"/.funcs/qcd/.mappings
             mydirs["${1}"]="$target"
-            update_tab_completions && source ~/.bashrc
+            # update_tab_completions && source ~/.bashrc
+            update_tab_completions
         else
             (("$#" == 2)) && echo -e "dir-alias already exists. Ignoring dir-target."
-            eval "cd ${mydirs[${1}]}"
+            if [[ ${2} == "--sudo" ]]; then
+                # This still doesn't work, since this turns to root-user, and the .bashrc for the login user isn't executed
+                targetDir="${mydirs[${1}]}"
+                export targetDir
+                eval "sudo su -; cd $targetDir"
+            else
+                eval "cd ${mydirs[${1}]}"
+            fi
         fi
         ;;
     esac
@@ -72,12 +90,18 @@ qcode() {
         curDir=$(dirname "$(tracelink "$(which myfunc)")")
     fi
 
+    buildqcdmap
+
     case ${1} in
     --list)
         cat "$curDir"/.funcs/qcd/.mappings
         ;;
     --config)
         editor "$curDir"/.funcs/qcd/.mappings
+        echo -e "Run 'qcode --refresh' to enable tab-completions for this entry"
+        ;;
+    --refresh)
+        update_tab_completions
         ;;
     --help)
         cat "$curDir"/.funcs/qcd/qcode.help
@@ -98,12 +122,18 @@ qn() {
         curDir=$(dirname "$(tracelink "$(which myfunc)")")
     fi
 
+    buildqcdmap
+
     case ${1} in
     --list)
         cat "$curDir"/.funcs/qcd/.mappings
         ;;
     --config)
         editor "$curDir"/.funcs/qcd/.mappings
+        echo -e "Run 'qn --refresh' to enable tab-completions for this entry"
+        ;;
+    --refresh)
+        update_tab_completions
         ;;
     --help)
         cat "$curDir"/.funcs/qcd/qn.help
@@ -119,4 +149,5 @@ qn() {
     esac
 }
 
-buildqcdmap
+# No need call it here during .bashrc loading, it will increase load-time
+# buildqcdmap

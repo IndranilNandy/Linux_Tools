@@ -6,7 +6,11 @@ Description:
 
 How to add a new entry?
     [MANUAL]
-    Run 'qcd --config' 
+    1. Run 'qcd --config' 
+    2. Next, run 'qcd --refresh' to update tab-completions
+
+    [PROGRAMMATIC]
+    1. Run 'qcd <dir-alias> <dir-target>'. It will implicitly invoke 'qcd --refresh'.
 
 Usage:
     qcd <dir-alias> <dir-target>
@@ -15,10 +19,15 @@ Usage:
         if dir-alias already exists, dir-target will be ignored.
     qcd <dir-alias>
         cd to the directory mapped by dir-alias.
+    qcd <dir-alias> --sudo
+        This still under implementation. DO NOT USE it.
+        cd to the directory mapped by dir-alias, for those directories which requires to be logged in as root user.
     qcd --list
         List all user defined paths.
     qcd --config
         [MANUAL] Add entry to .mappings.
+    qcd --refresh
+        Update tab-completions for new enries.
     qcd
     qcd --help
         Help content of qcd.
@@ -29,5 +38,6 @@ Examples:
     qcd k8
     qcd --list
     qcd --config
+    qcd --refresh
     qcd
     qcd --help

@@ -6,7 +6,8 @@ Description:
 
 How to add a new entry?
     [MANUAL]
-    Run 'qn --config' 
+    1. Run 'qn --config' 
+    2. Next, run 'qn --refresh' to update tab-completions
 
 Usage:
     qn <list of dirs>
@@ -15,6 +16,8 @@ Usage:
         List all user defined paths.
     qn --config
         [MANUAL] Add entry to .mappings.
+    qn --refresh
+        Update tab-completions for new enries.
     qn
     qn --help
         Help content of qcd.
@@ -23,5 +26,6 @@ Examples:
     qn linux_tools k8
     qn --list
     qn --config
+    qn --refresh
     qn
     qn --help

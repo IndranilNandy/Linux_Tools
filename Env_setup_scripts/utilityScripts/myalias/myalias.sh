@@ -40,15 +40,13 @@ case ${1} in
     --compl)
         reset_completions_list
         update_alias_completions_list
-        source ~/.bashrc
         ;;
     --alias)
         reset_alias_file
         update_alias_file
-        source ~/.bashrc
         ;;
     '')
-        reset_alias_file && reset_completions_list && update_alias_file && update_alias_completions_list && source ~/.bashrc
+        reset_alias_file && reset_completions_list && update_alias_file && update_alias_completions_list
         ;;
     *)
         echo -e "check command with myalias --help"
@@ -67,6 +65,5 @@ case ${1} in
     cat "$curDir"/.aliases/.genericaliases | grep "$*" || echo $* >>"$curDir"/.aliases/.genericaliases && echo -e "Before using this alias, open a new window"
     update_alias_file
     update_alias_completions_list
-    source ~/.bashrc
     ;;
 esac

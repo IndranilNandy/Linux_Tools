@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+setup() {
+    gnome-terminal -- /bin/sh -c "kubectl proxy --port=${1}"
+    # PID=$!
+    # wait $PID
+    sleep 2s
+
+    [[ -d ~/tmp_myfunc ]] || mkdir -p ~/tmp_myfunc
+
+    curl localhost:${1}/openapi/v2 >~/tmp_myfunc/k8s-swagger.json
+    docker run -d \
+        --rm \
+        -p 80:"${1}" \
+        -e PORT="${1}" \
+        -e SWAGGER_JSON=/k8s-swagger.json \
+        -v ~/tmp_myfunc/k8s-swagger.json:/k8s-swagger.json \
+        swaggerapi/swagger-ui
+    xdg-open http://localhost &
+}
+
+k8swaggerui() {
+    case ${1} in
+    --proxy=*)
+        echo "Here"
+        port=$(echo ${1} | sed "s/--proxy=\(.*\)/\1/")
+        echo "$port"
+        setup "$port"
+        ;;
+    --help)
+        cat "$curDir"/.funcs/k8swaggerui/k8swaggerui.help
+        ;;
+    '')
+        setup "8080"
+        ;;
+    *)
+        ;;
+    esac
+}
+
+mycompl -W '"'--proxy --help'"' k8swaggerui

@@ -1,0 +1,16 @@
+Description:
+    Show Kubernetes API on Swagger UI.
+    Ref. https://jonnylangefeld.com/blog/kubernetes-how-to-view-swagger-ui
+
+Usage:
+    k8swaggerui --port=<port_no>
+        Starts kubectl proxy at <port port_no> (default 8080)
+    k8swaggerui
+        Starts kubectl proxy at default port 8080
+    k8swaggerui --help
+        Help content of k8swaggerui.
+  
+Examples:
+    k8swaggerui --proxy=8081
+    k8swaggerui 
+    k8swaggerui --help

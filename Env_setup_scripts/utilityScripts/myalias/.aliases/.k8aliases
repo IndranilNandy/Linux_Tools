@@ -24,7 +24,7 @@ kdn=kubectl describe node
 
 kgp=kubectl get pod
 kgpw=kubectl get pod -o wide
-kgpy=kubectl get pod-o yaml
+kgpy=kubectl get pod -o yaml
 
 kdp=kubectl describe pod
 ###############################

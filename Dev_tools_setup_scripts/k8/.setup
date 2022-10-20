@@ -1,6 +1,16 @@
 #!/bin/bash
 
+update_env_var() {
+    envloader="$MYCONFIGLOADER"/.envloader
+    [[ ! -f "$envloader" ]] && echo -e "[ERROR] .envloader doesn't exist. Check why it wasn't created as part of the full setup" && return 1
+
+    env_var='export KUBE_EDITOR="code -w"'
+    grep -q "$env_var" "$envloader" || echo "$env_var" >> "$envloader"
+}
 echo -e "${YELLOW}[k8] Setup process started.${RESET}"
+
+# Change default editor for kubectl edit
+update_env_var
 
 # createref .initCluster $(pwd)
 # createref .tearCluster $(pwd)

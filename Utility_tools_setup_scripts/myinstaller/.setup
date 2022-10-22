@@ -11,7 +11,7 @@ xargs -I X echo "grep -q X  ../../_verify/.allTools || echo \"X:X\" >> ../../_ve
 xargs -I X echo "grep -q X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <.fullAptPkgTools | bash
 
 xargs -I X echo "grep -q X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <.localSnapPkgTools | bash
-xargs -I X echo "grep -q X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <fullSnapPkgTools | bash
+xargs -I X echo "grep -q X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <.fullSnapPkgTools | bash
 
 # Check if it is already installed
 [[ -n $(which myinstaller) ]] && echo -e "\n${GREEN}[myinstaller] Already installed. Exiting.${RESET}" && exit 0

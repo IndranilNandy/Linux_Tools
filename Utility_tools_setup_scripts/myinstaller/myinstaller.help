@@ -1,11 +1,11 @@
 Description:
-    Customized installer to install/uninstall all/specific APT/SNAP packages (listed in .localAptPkgTools/.fullAptPkgTools/.localSnapPkgTools/fullSnapPkgTools).
+    Customized installer to install/uninstall all/specific APT/SNAP packages (listed in .localAptPkgTools/fullAptPkgTools/.localSnapPkgTools/fullSnapPkgTools).
     .localAptPkgTools/.localSnapPkgTools: 
         - Lists all the APT/SNAP packages installed (with myinstaller only) in the current setup/system only. 
         - Every new installation of package using minstaller tool will add that package in this list, and uninstallation removes it from this list. 
         - Hence, this list shows the current snapshot of the system.
         - '--uninstall --FULL' uses this list.
-    .fullAptPkgTools/fullSnapPkgTools:
+    fullAptPkgTools/fullSnapPkgTools:
         - Lists superset of any APT/SNAP packages installed across system and time.
         - Any uninstallation doesn't remove any entry from this list.
         - Installation of any new APT package anytime in any system adds new entry in this list, if that was missing.
@@ -23,27 +23,27 @@ Usage:
     myinstaller
     -----------------------------------------------------------
     myinstaller --install --FULL
-        Installs all packages listed in .fullAptPkgTools/fullSnapPkgTools if not installed and "adds" each entry to .localAptPkgTools/.localSnapPkgTools if missing.
+        Installs all packages listed in fullAptPkgTools/fullSnapPkgTools if not installed and "adds" each entry to .localAptPkgTools/.localSnapPkgTools if missing.
 
     myinstaller --install --LOCAL <tempList_fullFilePath>
-        Installs all packages listed in <tempList_fullFilePath> if not installed and "adds" each entry to .localAptPkgTools/.localSnapPkgTools and .fullAptPkgTools/fullSnapPkgTools if missing.
+        Installs all packages listed in <tempList_fullFilePath> if not installed and "adds" each entry to .localAptPkgTools/.localSnapPkgTools and fullAptPkgTools/fullSnapPkgTools if missing.
         <tempList_fullFilePath> should be an absolute path to a temporary file listing all the apt/snap packages to be installed.
 
     myinstaller --install <toolname>
-        Installs <toolname> if not installed, and "adds" an entry to .localAptPkgTools/.localSnapPkgTools and .fullAptPkgTools/fullSnapPkgTools if missing.
+        Installs <toolname> if not installed, and "adds" an entry to .localAptPkgTools/.localSnapPkgTools and fullAptPkgTools/fullSnapPkgTools if missing.
 
     myinstaller --uninstall --FULL
         Uninstalls all packages listed in .localAptPkgTools/.localSnapPkgTools if installed, and "removes" corresponding entry from .localAptPkgTools/.localSnapPkgTools only.
-        .fullAptPkgTools/fullSnapPkgTools isn't affected.
+        fullAptPkgTools/fullSnapPkgTools isn't affected.
 
     myinstaller --uninstall --LOCAL <tempList_fullFilePath>
         Uninstalls all packages listed in <tempList_fullFilePath if installed, and "removes" each entry from .localAptPkgTools/.localSnapPkgTools only.
-        .fullAptPkgTools/fullSnapPkgTools isn't affected.
+        fullAptPkgTools/fullSnapPkgTools isn't affected.
         <tempList_fullFilePath> should be an absolute path to a temporary file listing all the apt/snap packages to be installed.
 
     myinstaller --uninstall <toolname>
         Uninstalls <toolname> if installed, and "removes" entry from .localAptPkgTools/.localSnapPkgTools only.
-        .fullAptPkgTools/fullSnapPkgTools isn't affected.
+        fullAptPkgTools/fullSnapPkgTools isn't affected.
 
     myinstaller --list
         Lists all the installed packages in the current snapshot of the system.

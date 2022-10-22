@@ -32,6 +32,7 @@
 .localSnapPkgTools
 # Runtime created symlinks
 .fullAptPkgTools
+.fullSnapPkgTools
 Dev_tools_setup_scripts/k8/config/.clusterconfig
 Dev_tools_setup_scripts/k8/config/.machineconfig
 

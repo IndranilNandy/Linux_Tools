@@ -43,6 +43,8 @@ set_logDest() {
 
 # This is a hack used to support custom-setup type for a minimal server etc. In future, you may think to refactor the code.
 yes | sudo ln -s -i $(pwd)/myinstaller/fullAptPkgTools myinstaller/.fullAptPkgTools
+yes | sudo ln -s -i $(pwd)/myinstaller/fullSnapPkgTools myinstaller/.fullSnapPkgTools
+
 
 for arg in "$@"; do
     case $arg in
@@ -61,6 +63,7 @@ for arg in "$@"; do
         [[ -n "$path" ]] && cust_setup_def=$(cat ../Custom_setup_definitions/$path/.$path)
         # TODO: Add support for passing snap tools list
         [[ -z "$path" ]] || yes | sudo ln -s -i $(pwd)/../Custom_setup_definitions/$path/.$path-aptpkgtools myinstaller/.fullAptPkgTools
+        [[ -z "$path" ]] || yes | sudo ln -s -i $(pwd)/../Custom_setup_definitions/$path/.$path-snappkgtools myinstaller/.fullSnapPkgTools
         ;;
 
     *)
@@ -85,5 +88,7 @@ echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | grep -E -v "$cust_setup_de
 
 # Reverting back to pointing fullAptPkgTools
 yes | sudo ln -s -i fullAptPkgTools .fullAptPkgTools
+yes | sudo ln -s -i fullSnapPkgTools .fullSnapPkgTools
+
 echo -e "\n${GREEN}${BOLD}[Utility_tools_setup_scripts] [$(pwd)] Setup completed.${RESET}"
 echo

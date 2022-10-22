@@ -13,7 +13,7 @@ localSnapList=$curDir"/.localSnapPkgTools"
 [[ -e $localSnapList ]] || touch $localSnapList
 
 fullList=$curDir"/.fullAptPkgTools"
-fullSnapList=$curDir"/fullSnapPkgTools"
+fullSnapList=$curDir"/.fullSnapPkgTools"
 export curDir
 
 tool="apt"

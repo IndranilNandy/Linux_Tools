@@ -10,9 +10,9 @@ server)
         ;;
     --config)
         echo -e "[NFS][server] Configure /etc/.exports"
-        echo -e "Run with --refresh option after updating the configuration"
-        editor ./config/server/.commons
-        editor ./config/server/"$(hostname)-$(hostname -I | awk '{ print $1 }')"
+        editor -w ./config/server/.commons
+        editor -w ./config/server/"$(hostname)-$(hostname -I | awk '{ print $1 }')"
+        mynfs server --refresh
         ;;
     --refresh)
         echo -e "[NFS][server] Rrefresh configuration changes in /etc/.exports"
@@ -38,9 +38,9 @@ client)
         ;;
     --config)
         echo -e "[NFS][client] Configure /etc/.exports"
-        echo -e "Run with --refresh option after updating the configuration"
-        editor ./config/client/.commons
-        editor ./config/client/"$(hostname)-$(hostname -I | awk '{ print $1 }')"
+        editor -w ./config/client/.commons
+        editor -w ./config/client/"$(hostname)-$(hostname -I | awk '{ print $1 }')"
+        mynfs client --refresh
         ;;
     --refresh)
         echo -e "[NFS][client] Adding new updated mounts"

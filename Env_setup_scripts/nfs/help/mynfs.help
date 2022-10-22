@@ -26,13 +26,15 @@ How to add a new entry in sharing-config?
     1. Run 'mynfs server --config'.
     2. If it is a common sharing settings for all server nodes, then add entry to .commons
     3. If it is only for this specific node, create a file named <hostname-ip> under server (like the existing sample file) and add entry to that file.
-    4. Run 'mynfs server --refresh' to affect the changes.
+    4. Run 'mynfs server --refresh' to affect the changes, ONLY IF you've edited the config files manually without running 'mynfs server --config'.
+       Otherwise, '--refresh' is run implicitly after '--config' finishes.
 
     Client:
     1. Run 'mynfs client --config'.
     2. If it is a common sharing settings for all client nodes, then add entry to .commons
     3. If it is only for this specific node, create a file named <hostname-ip> under client (like the existing sample file) and add entry to that file.
-    4. Run 'mynfs client --refresh' to affect the changes.
+    4. Run 'mynfs client --refresh' to affect the changes, ONLY IF you've edited the config files manually without running 'mynfs client --config'.
+       Otherwise, '--refresh' is run implicitly after '--config' finishes.
 
 How to delete an entry from sharing-config?
     Server:

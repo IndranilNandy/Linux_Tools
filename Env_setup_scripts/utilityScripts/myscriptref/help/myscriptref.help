@@ -11,9 +11,9 @@ Description:
 
 How to add a new entry?
     Option 1:
-    [MANUAL] This would save the entry in .refconfig to be used in any other system setup.
+    [COMMAND PROMPT] This would save the entry in .refconfig to be used in any other system setup.
     1. Run 'myscriptref --config' -> add new entry
-    2. Run 'myscriptref --sync' -> this adds ref in refloader and symlink in myscriptrefs
+    2. Run 'myscriptref --sync' -> this adds ref in refloader and symlink in myscriptrefs, ONLY IF you've edited the config files manually without running 'myscriptref --config'.
     3. Run 'mycompl --config' or 'mycompl <tab_completion_logic>' to add tab-completion
     4. Run 'myalias --config' -> run this to add a myalias if you may want
 
@@ -40,7 +40,7 @@ Usage:
     myscriptref --config
         Add new entry to .refconfig to create new script refs for any script-command.
         NOTE: This always ensures that the entry is saved in the .refconfig for future system setups, and this is the diffrence with --create option.
-        Hence, to create random/arbitrary script refs manually, it is always advised to first save it in .refconfig, using 'myscriptref --config' first. After this, run 'myscriptref --sync'
+        Hence, to create random/arbitrary script refs manually, it is always advised to first save it in .refconfig, using 'myscriptref --config' first. Run 'myscriptref --sync', only if you've edited the config manually without running 'myscriptref --config'.
     myscriptref --list
         List all script references
     myscriptref

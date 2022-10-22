@@ -17,6 +17,10 @@ case ${1} in
         echo "Tools installed with APT package manager:"
         sudo apt list --installed
         ;;
+    --snap)
+        echo "Tools installed with SNAP package manager:"
+        sudo snap list
+        ;;
     --link)
         echo -e "\nCustom symbolic links available:"
         sudo ls $MYCOMMANDSREPO
@@ -28,6 +32,6 @@ case ${1} in
         cat $curDir/ifinstalled.help
         ;;
     *)
-        which ${1} || (sudo apt list --installed 2> /dev/null | grep ${1})
+        which ${1} || (sudo apt list --installed 2> /dev/null | grep ${1}) || (sudo snap list 2> /dev/null | grep ${1})
         ;;
 esac

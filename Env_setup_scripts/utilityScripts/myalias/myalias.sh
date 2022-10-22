@@ -32,8 +32,10 @@ case ${1} in
     aliasfiles | grep -E -v " *#" | sed "s/\(.*\)=.*/\1/"
     ;;
 --config)
-    ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X echo "editor $curDir/.aliases/X &" | bash
-    echo -e "Run 'myalias --refresh' to affect alias-update on completions list"
+    ls -a "$curDir"/.aliases | grep -E "\..*aliases$" | xargs -I X echo "echo \"echo Opening $curDir/.aliases/X && editor -w $curDir/.aliases/X\" | bash" | bash
+    echo -e "Run 'myalias --refresh' to affect alias-update, ONLY IF you've updated the alias configuration files manually without running 'myalias --config', otherwise it'll be updated implicitly"
+    echo -e "Open new terminal to affect the update"
+    myalias --refresh
     ;;
 --refresh)
     case ${2} in

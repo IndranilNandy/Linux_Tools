@@ -7,13 +7,14 @@ Description:
     .program_alias_completion_loader    - contains conpletioner entry for specific program command aliases (e.g. k8)
 
 How to add a new entry?
-    [MANUAL]
+    [From COMMAND PROMPT]
     1. Run 'myalias --config' 
                                 -> it opens all .*aliases files in your editor 
                                 -> either create a new entry in one of these files, 
                                 -> or create a new file and entry in it
     2. Run 'myalias --refresh'
                                 -> this affects the update on the aliasloader and completions list
+                                -> run this ONLY IF you've updated the alias configuration files manually without running 'myalias --config', otherwise it'll be updated implicitly
     OR,
     [PROGRAMMATIC]
     Run 'myalias <user_defined_alias>
@@ -34,11 +35,11 @@ Usage:
     myalias --config
         [MANUAL] Open all alias-files to enable the user to edit them for addition/deletion/update.
     myalias --refresh
-        Need to call this anytime after adding/deleting any alias entry so that it adds/deletes corresponding entry in aliasloader and completioner loader files
+        Need to call this anytime after MANUALLY adding/deleting any alias entry so that it adds/deletes corresponding entry in aliasloader and completioner loader files
     myalias --refresh --alias
-        Need to call this anytime after adding/deleting any alias entry so that it adds/deletes corresponding entry in aliasloader only
+        Need to call this anytime after MANUALLY adding/deleting any alias entry so that it adds/deletes corresponding entry in aliasloader only
     myalias --refresh --compl
-        Need to call this anytime after adding/deleting any alias entry so that it adds/deletes corresponding entry in completioner loader file only
+        Need to call this anytime after MANUALLY adding/deleting any alias entry so that it adds/deletes corresponding entry in completioner loader file only
     myalias
     myalias --help
         Help content of myalias.

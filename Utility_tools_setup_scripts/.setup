@@ -59,6 +59,7 @@ for arg in "$@"; do
     --custom-setup=*)
         path=$(echo $arg | sed "s/--custom-setup=\(.*\)/\1/")
         [[ -n "$path" ]] && cust_setup_def=$(cat ../Custom_setup_definitions/$path/.$path)
+        # TODO: Add support for passing snap tools list
         [[ -z "$path" ]] || yes | sudo ln -s -i $(pwd)/../Custom_setup_definitions/$path/.$path-aptpkgtools myinstaller/.fullAptPkgTools
         ;;
 

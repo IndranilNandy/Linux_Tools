@@ -29,7 +29,7 @@
 
 # generated list of locally installed tools through myinstaller
 .localAptPkgTools
-
+.localSnapPkgTools
 # Runtime created symlinks
 .fullAptPkgTools
 Dev_tools_setup_scripts/k8/config/.clusterconfig

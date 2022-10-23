@@ -12,7 +12,7 @@ help() {
 
 case ${1} in
 --config)
-    ls -a "$curDir"/.completions | grep -E "\..*completions$" | xargs -I X echo "editor $curDir/.completions/X &" | bash
+    ls -a "$curDir"/.completions | grep -E "\..*completions$" | xargs -I X echo "echo \"echo Opening $curDir/.completions/X && editor -w $curDir/.completions/X\" | bash" | bash
     ;;
 --help)
     help

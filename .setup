@@ -1,9 +1,29 @@
 #!/bin/bash
 
-. ./.configure
+add_execute_permission() {
+    # Enable execution permission on all shell scripts
+    find . -name "*.sh" | xargs -n1 chmod +x
+    # Enable execution permission on all .setup
+    find . -name ".setup" | xargs -n1 chmod +x
+    # Enable execution permission on all .int
+    find . -name ".int" | xargs -n1 chmod +x
 
-# cat ./vars/.colors | xargs -I X echo "export X" | bash
-chmod +x ./vars/.colors
+    chmod +x ./.hack
+
+    chmod +x ./Dev_tools_setup_scripts/k8/.tearCluster
+    chmod +x ./Dev_tools_setup_scripts/k8/.initCluster
+    chmod +x ./Dev_tools_setup_scripts/k8/.initClusterClients
+
+    chmod +x ./.softclean
+
+    chmod +x ./vars/.colors
+    chmod +x ./_verify/.verify
+    chmod +x ./.interactive_setup
+}
+
+add_execute_permission
+
+. ./.configure
 . ./vars/.colors
 
 echo -e "\n${MAGENTA}[Linux_Tools] $(pwd)${RESET}"
@@ -22,11 +42,6 @@ missing_prereqs() {
 
     echo "$missing"
 }
-
-# Enable execution permission on all shell scripts
-find . -name "*.sh" | xargs -n1 chmod +x
-# Enable execution permission on all .setup
-find . -name ".setup" | xargs -n1 chmod +x
 
 # Install missing prerequisites
 export ToolsDir="$HOME/MyTools/Linux_Tools"
@@ -53,7 +68,7 @@ echo
 )
 (
     cd ./_verify
-    chmod +x .verify
+    # chmod +x .verify
     ./.verify
 )
 (

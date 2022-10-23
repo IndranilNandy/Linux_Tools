@@ -1,0 +1,31 @@
+#!/bin/bash
+
+interactive_setup() {
+    echo -e "${CYAN}INTERACTIVE SETUP STARTED${RESET}"
+
+    read -p "Do want to go for interactive setup now? You may run it later with './.interactive_setup' [y/n].. " ans
+
+    if [[ $(echo $ans | tr [:upper:] [:lower:]) == "y" ]]; then
+        (cd Interactive_setup/ && ./.int)
+    fi
+
+    echo -e "${CYAN}INTERACTIVE SETUP FINISHED${RESET}"
+}
+
+check_arguments() {
+    for arg in "$@"; do
+        case $arg in
+        --no-interactive)
+            echo -e "Skipping interactive setup as it isn't needed." && return 1
+            ;;
+
+        *)
+            # echo "invalid arguments" && exit 1
+            ;;
+        esac
+    done
+    return 0
+}
+
+check_arguments "$@" || exit 0
+interactive_setup

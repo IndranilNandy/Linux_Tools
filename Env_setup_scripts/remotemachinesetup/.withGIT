@@ -17,9 +17,10 @@ read -p "type=? (min|default|dev|full) [default type: dev]" inst
 read -p "log-target=? (term|file) [default log: term]" log
 read -p "custom-setup=? (server-minimal [default custom-setup: <empty>])" cust
 
-inst || inst=dev
-log || log=term
-cust || cust=
+[[ -n "$inst" ]] || inst=dev
+[[ -n "$log" ]] || log=term
+# cust || cust=server-minimal
+[[ -n "$cust" ]] || cust=
 
 echo -e "./.setup --type=$inst --log-target=$log --custom-setup=$cust"
  ./.setup --type=$inst --log-target=$log --custom-setup=$cust

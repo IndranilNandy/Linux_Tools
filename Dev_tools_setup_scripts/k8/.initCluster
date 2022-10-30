@@ -9,6 +9,9 @@ init_cluster_config() {
     cluscf=$(pwd)/config/defaults/.clusterconfigdefault
     machcf=$(pwd)/config/defaults/.machineconfigdefault
 
+    passwd="amarbabamaa123!"
+    echo $passwd | sudo -S whoami
+
     for arg in "$@"; do
         case $arg in
         --clusterconfig=*)
@@ -22,6 +25,12 @@ init_cluster_config() {
             ! check_path "$dir" && return 1
             cluscf=$(pwd)/config/userdefined/"$dir"/.clusterconfig
             machcf=$(pwd)/config/userdefined/"$dir"/.machineconfig
+            ;;
+        --promptpassword)
+            export psdsource="prompt"
+            ;;
+        --filepassword)
+            export psdsource="file"
             ;;
         *) ;;
         esac

@@ -6,12 +6,12 @@ tc0=.tearCluster
 ic1=.initCluster --configdir=Cluster_1
 ic2=.initCluster --configdir=Cluster_2
 ic3=.initCluster --configdir=Cluster_3
-ic4=.initCluster --configdir=Cluster_4
+ic4=.initCluster --configdir=Cluster_4 --filepassword
 
 tc1=.tearCluster --configdir=Cluster_1
 tc2=.tearCluster --configdir=Cluster_2
 tc3=.tearCluster --configdir=Cluster_3
-tc4=.tearCluster --configdir=Cluster_4
+tc4=.tearCluster --configdir=Cluster_4 --filepassword
 
 icc1=.initClusterClients --configdir=Cluster_1
 icc2=.initClusterClients --configdir=Cluster_2

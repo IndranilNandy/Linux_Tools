@@ -11,8 +11,8 @@ local_client=$(hostname)
 user_l=$(cat ./config/.machineconfig | grep -i "$local_client:" | sed "s/$local_client: *\(.*\)/\1/I" | tr " *" "\n" | xargs -I X echo X)
 echo "user_l: $user_l"
 
-
-! ssh -o 'StrictHostKeyChecking no' -t "$user_c"@"$node_c" "sudo scp /etc/kubernetes/admin.conf $user_l@$local_client:~" && echo -e "[CLIENT CONFIGURATION] Failed to get admin.conf from $node_c to $local_client" && exit 1
+. ./lib/loadCred.lib "$user_c" "$node_c"
+! sshpass -p "$passwd" ssh -o 'StrictHostKeyChecking no' -t "$user_c"@"$node_c" "echo $passwd | sudo -S whoami; sudo sshpass -p "$passwd" scp /etc/kubernetes/admin.conf $user_l@$local_client:~" && echo -e "[CLIENT CONFIGURATION] Failed to get admin.conf from $node_c to $local_client" && exit 1
 
 # Copy to client machines .kube/config
 # Ref. https://stackoverflow.com/questions/40447295/how-to-configure-kubectl-with-cluster-information-from-a-conf-file

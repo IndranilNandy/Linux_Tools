@@ -39,7 +39,7 @@ init_cluster_config() {
             export psdsource="file"
             ;;
         --allnodes)
-        # By default, all nodes in the .machineconfig will be selected as part of the cluster
+            # By default, all nodes in the .machineconfig will be selected as part of the cluster
             export k8_tear_allnodes="true"
             ;;
         --help)
@@ -50,18 +50,18 @@ init_cluster_config() {
         esac
     done
 
-    . ./lib/loadCred.lib "$(whoami)" "$(hostname)"
-    echo $passwd | sudo -S echo "entered"
-
     echo -e "Cluster configuration file: $cluscf"
     echo -e "Machines configuration file: $machcf"
     echo -e
 
-    yes | sudo ln -s -i "$cluscf" $(pwd)/config/.clusterconfig 2>/dev/null
-    yes | sudo ln -s -i "$machcf" $(pwd)/config/.machineconfig 2>/dev/null
-
     configureCredStore
-    yes | sudo ln -s -i "$(dirname "$(readlink -f "$machcf")")"/.credconfig $(pwd)/config/.credconfig 2> /dev/null
+
+    yes | ln -s -i "$cluscf" $(pwd)/config/.clusterconfig 2>/dev/null
+    yes | ln -s -i "$machcf" $(pwd)/config/.machineconfig 2>/dev/null
+    yes | ln -s -i "$(dirname "$(readlink -f "$machcf")")"/.credconfig $(pwd)/config/.credconfig 2>/dev/null
+
+    . ./lib/loadCred.lib "$(whoami)" "$(hostname)"
+    echo $passwd | sudo -S echo "entered"
 }
 
 init_controlplane() {

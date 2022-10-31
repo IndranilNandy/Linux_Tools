@@ -5,12 +5,18 @@ check_path() {
     [[ -d "$path" ]] && [[ -e "$path"/.clusterconfig ]] && [[ -e "$path"/.machineconfig ]] || return 1
 }
 
+configureCredStore() {
+    credStorePath=$(dirname "$(readlink -f "$machcf")")
+    [[ -f "$credStorePath"/.credconfig ]] && return 0
+
+    # Create credential file and open it in editor to update
+    cp "$credStorePath"/.machineconfig* "$credStorePath"/.credconfig
+    editor -w "$credStorePath"/.credconfig
+}
+
 init_cluster_config() {
     cluscf=$(pwd)/config/defaults/.clusterconfigdefault
     machcf=$(pwd)/config/defaults/.machineconfigdefault
-
-    passwd="amarbabamaa123!"
-    echo $passwd | sudo -S whoami
 
     for arg in "$@"; do
         case $arg in
@@ -32,9 +38,20 @@ init_cluster_config() {
         --filepassword)
             export psdsource="file"
             ;;
+        --allnodes)
+        # By default, all worker nodes in the .machineconfig will be drained and removed from cluster
+            export k8_tear_allnodes="true"
+            ;;
+        --help)
+            cat "$(pwd)"/help/tearCluster.help
+            exit 0
+            ;;
         *) ;;
         esac
     done
+
+    . ./lib/loadCred.lib "$(whoami)" "$(hostname)"
+    echo $passwd | sudo -S echo "entered"
 
     echo -e "Cluster configuration file: $cluscf"
     echo -e "Machines configuration file: $machcf"
@@ -42,6 +59,9 @@ init_cluster_config() {
 
     yes | sudo ln -s -i "$cluscf" $(pwd)/config/.clusterconfig 2> /dev/null
     yes | sudo ln -s -i "$machcf" $(pwd)/config/.machineconfig 2> /dev/null
+
+    configureCredStore
+    yes | sudo ln -s -i "$(dirname "$(readlink -f "$machcf")")"/.credconfig $(pwd)/config/.credconfig 2> /dev/null
 }
 
 ! init_cluster_config "$@" && echo -e "[CLUSTER TEARDOWN] Invalid cluster configuration information!" && exit 1

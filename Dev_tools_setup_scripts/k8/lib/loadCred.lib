@@ -3,26 +3,31 @@
 userhost="${1}"@"${2}"
 passwd=
 failure=0
-# while :; do
-#     # read -p "Enter user@hostname: " userhost
-#     read -p "Password for $userhost: " -s passwd
-#     echo -e
 
-#     sshpass -p $passwd ssh -o 'StrictHostKeyChecking no' -t "$userhost" "hostname" && break || ((failure++))
+fromPrompt() {
+    while :; do
+        # read -p "Enter user@hostname: " userhost
+        read -p "Password for $userhost: " -s passwd
+        echo -e
 
-#     [[ "$failure" -ge 3 ]] && userhost= && passwd= && break
-#     echo -e "Try#$failure"
-# done
-echo "psdsource=$psdsource"
+        sshpass -p $passwd ssh -o 'StrictHostKeyChecking no' -t "$userhost" "hostname" && break || ((failure++))
+
+        [[ "$failure" -ge 3 ]] && userhost= && passwd= && break
+        echo -e "Try#$failure"
+    done
+}
+
 case "$psdsource" in
-    prompt)
-        echo "prompt...................."
-        ;;
-    file)
-        echo "file......................"
-        ;;
-    "")
-        echo "empty..................."
-        ;;
+prompt)
+    echo -e "credentials source: prompt"
+    fromPrompt
+    ;;
+file)
+    echo -e "credentials source: file"
+    passwd=$(cat $(pwd)/config/.credconfig | grep -i "${2}:" | grep -i "${1}" | awk '{ print $3 }')
+    ;;
+"")
+    echo -e "credentials source: default [prompt]"
+    fromPrompt
+    ;;
 esac
-passwd="amarbabamaa123!"

@@ -12,7 +12,12 @@ user_l=$(cat ./config/.machineconfig | grep -i "$local_client:" | sed "s/$local_
 echo "user_l: $user_l"
 
 . ./lib/loadCred.lib "$user_c" "$node_c"
-! sshpass -p "$passwd" ssh -o 'StrictHostKeyChecking no' -t "$user_c"@"$node_c" "echo $passwd | sudo -S whoami; sudo sshpass -p "$passwd" scp /etc/kubernetes/admin.conf $user_l@$local_client:~" && echo -e "[CLIENT CONFIGURATION] Failed to get admin.conf from $node_c to $local_client" && exit 1
+cplane_psd="$passwd"
+
+. ./lib/loadCred.lib "$user_l" "$local_client"
+client_psd="$passwd"
+
+! sshpass -p "$cplane_psd" ssh -o 'StrictHostKeyChecking no' -t "$user_c"@"$node_c" "export psdsource=$psdsource; export k8_tear_allnodes=$k8_tear_allnodes; echo $cplane_psd | sudo -S echo "entered"; sudo sshpass -p "$client_psd" scp /etc/kubernetes/admin.conf $user_l@$local_client:~" && echo -e "[CLIENT CONFIGURATION] Failed to get admin.conf from $node_c to $local_client" && exit 1
 
 # Copy to client machines .kube/config
 # Ref. https://stackoverflow.com/questions/40447295/how-to-configure-kubectl-with-cluster-information-from-a-conf-file

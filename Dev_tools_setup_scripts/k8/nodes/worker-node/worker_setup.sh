@@ -9,6 +9,6 @@ user=$(cat ./config/.machineconfig | grep -i "$wnode:" | sed "s/$wnode: *\(.*\)/
 
 ! [[ -d ../k8 ]] && echo -e "[WORKER] FAILED!! Credentials not available from control plane" && exit 1
 ! sshpass -p "$passwd" scp -o 'StrictHostKeyChecking no' -r ~/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8 "$user"@"$wnode":~ && echo -e "[WORKER] Failed to copy codebase to worker node $wnode" && exit 1
-! sshpass -p "$passwd" ssh -o 'StrictHostKeyChecking no' -t "$user"@"$wnode" "cd ~/k8; echo $passwd | sudo -S whoami; bash --login ./cluster/k8_cluster_init.sh" --node=worker && echo -e "[WORKER] FAILED!! Setup NOT completed in worker node $wnode" && exit 1
+! sshpass -p "$passwd" ssh -o 'StrictHostKeyChecking no' -t "$user"@"$wnode" "cd ~/k8; export psdsource=$psdsource; export k8_tear_allnodes=$k8_tear_allnodes; echo $passwd | sudo -S echo "entered"; bash --login ./cluster/k8_cluster_init.sh" --node=worker && echo -e "[WORKER] FAILED!! Setup NOT completed in worker node $wnode" && exit 1
 
 exit 0

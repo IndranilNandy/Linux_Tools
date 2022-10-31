@@ -57,7 +57,7 @@ teardown_cluster() {
 
         for w in $node_ws; do
             #echo -e
-            read -p "Want to tear down worker node $w [y] or [n]" ans
+            [[ "$k8_tear_allnodes" == "true" ]] && ans="y" || read -p "Want to tear down worker node $w [y] or [n].. " ans
             if [[ $(echo $ans | tr [:upper:] [:lower:]) == "y" ]]; then
                 drain_node "$w" || echo -e "[TEAR CONTROLPLANE] Failed to drain worker node $w. Still proceeding with deleting node"
                 delete_node "$w" || echo -e "[TEAR CONTROLPLANE] Failed to delete worker node $w. Still proceeding with kubeadm reset"
@@ -67,7 +67,7 @@ teardown_cluster() {
 
         echo -e "\n[TEAR CONTROLPLANE] Finished iterating over all worker nodes [drain -> delete -> kubeadm reset]. Next turn for control plane $node_c"
 
-        read -p "Want to tear down the control plane [y] or [n]" ans
+        [[ "$k8_tear_allnodes" == "true" ]] && ans="y" || read -p "Want to tear down the control plane [y] or [n].. " ans
         if [[ $(echo $ans | tr [:upper:] [:lower:]) == "n" ]]; then
             echo -e "[TEAR CONTROLPLANE] Not tearing down control plane"
             return 0

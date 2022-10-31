@@ -9,7 +9,7 @@ user=$(cat ./config/.machineconfig | grep -i "$cnode:" | sed "s/$cnode: *\(.*\)/
 . ./lib/loadCred.lib "$user" "$cnode"
 
 ! sshpass -p "$passwd" scp -o 'StrictHostKeyChecking no' -r ~/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8 "$user"@"$cnode":~ && echo -e "[CONTROLPLANE] Failed to copy codebase to control plane $cnode" && exit 1
-! sshpass -p "$passwd" ssh -o 'StrictHostKeyChecking no' -t "$user"@"$cnode" "cd ~/k8; echo $passwd | sudo -S whoami; bash --login ./cluster/k8_cluster_init.sh" --node=control --cni=calico && echo -e "[CONTROLPLANE] FAILED!! Setup NOT completed in control plane $cnode" && exit 1
+! sshpass -p "$passwd" ssh -o 'StrictHostKeyChecking no' -t "$user"@"$cnode" "cd ~/k8; export psdsource=$psdsource; export k8_tear_allnodes=$k8_tear_allnodes; echo $passwd | sudo -S echo "entered"; bash --login ./cluster/k8_cluster_init.sh" --node=control --cni=calico && echo -e "[CONTROLPLANE] FAILED!! Setup NOT completed in control plane $cnode" && exit 1
 
 echo -e "[CONTROLPLANE] Setup completed in control plane. Now fetching token and ca-cert-hash"
 mkdir ./credentials

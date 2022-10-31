@@ -1,0 +1,42 @@
+Description:
+    Setup a k8 cluster.
+
+How to use?
+    MANDATORY command parameters -
+    Either use --configdir or both --clusterconfig and --machineconfig.
+
+    ./.initCluster --configdir=[ClusterConfigFolder]
+    ClusterConfigFolder directory must be created in ./config/userdefined, and it should contain files named .clusterconfig and .machineconfig
+    If ClusterConfigFolder isn't provided, then the defaults would be taken. Default configuration is in ./config/defaults
+    e.g. ./.initCluster --configdir=Cluster_1
+
+    Alternatively, you can run as - 
+    ./.initCluster --clusterconfig=[clusterconfigFile] --machineconfig=[machineconfigFile]
+    Both clusterconfigFile and machineconfigFile should have full absolute path mentioned.
+    e.g. ./.initCluster --clusterconfig=$HOME/MyConfigs/clusterConf1 --machineconfig=$HOME/MyConfigs/machineConf1
+
+    Other OPTIONAL command parameters available -
+        --promptpassword/--filepassword
+            promptpassword:
+                - promptpassword is DEFAULT option. It'll ask for each node's login credentials and 'sudo' credentials on command prompt.
+            filepassword:
+                - filepassword takes the credentials stored in files acting as credentials store. As you passwords will be stored unencrypted in a file, 
+                take caution while using this.
+                - This can be used either with --configdir or both --clusterconfig and --machineconfig. In both case, if .credconfig file isn't already available,
+                it copies .machineconfig to its own directory as .clusterconfig and opens it in your default editor where you can provide the credentials for individual
+                machines/nodes. While running the scripts, it will use these credentials and will never prompt for any.
+                - A default template is provided in ./config/defaults/.credconfigtemplate. You may use it as a template for your cluster. DO NOT forget to put it in
+                correct location. In any case, if you don't provide any, on first run, it will create one as mentioned in the previous point.
+        --allnodes
+            - Will not provide YES/NO prompt for each individual node before the setup script proceeds. It'll take YES as a response, by default.
+            - this option is mainly useful for tearCluster command.
+        --help
+            - Shows help contents.
+
+Examples:
+    ./.initCluster --configdir=Cluster_1
+    ./.initCluster --configdir=Cluster_1 --filepassword
+    ./.initCluster --configdir=Cluster_1 --filepassword --allnodes
+    ./.initCluster --clusterconfig=$HOME/MyConfigs/clusterConf1 --machineconfig=$HOME/MyConfigs/machineConf1
+    ./.initCluster --clusterconfig=$HOME/MyConfigs/clusterConf1 --machineconfig=$HOME/MyConfigs/machineConf1 --filepassword
+    ./.initCluster --clusterconfig=$HOME/MyConfigs/clusterConf1 --machineconfig=$HOME/MyConfigs/machineConf1 --filepassword --allnodes

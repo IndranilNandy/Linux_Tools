@@ -1,5 +1,5 @@
--W "--clusterconfig= --machineconfig= --configdir=" .initCluster
--W "--clusterconfig= --machineconfig= --configdir=" .initClusterClients
--W "--clusterconfig= --machineconfig= --configdir=" .tearCluster
+-W "--clusterconfig= --machineconfig= --configdir= --promptpassword --filepassword --allnodes --help" .initCluster
+-W "--clusterconfig= --machineconfig= --configdir= --promptpassword --filepassword --allnodes --help" .initClusterClients
+-W "--clusterconfig= --machineconfig= --configdir= --promptpassword --filepassword --allnodes --help" .tearCluster
 
 -W "--type= --log-target= --custom-setup=" tools-setup

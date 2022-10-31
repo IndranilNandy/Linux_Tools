@@ -5,6 +5,15 @@ check_path() {
     [[ -d "$path" ]] && [[ -e "$path"/.clusterconfig ]] && [[ -e "$path"/.machineconfig ]] || return 1
 }
 
+configureCredStore() {
+    credStorePath=$(dirname "$(readlink -f "$machcf")")
+    [[ -f "$credStorePath"/.credconfig ]] && return 0
+
+    # Create credential file and open it in editor to update
+    cp "$credStorePath"/.machineconfig* "$credStorePath"/.credconfig
+    editor -w "$credStorePath"/.credconfig
+}
+
 init_cluster_config() {
     cluscf=$(pwd)/config/defaults/.clusterconfigdefault
     machcf=$(pwd)/config/defaults/.machineconfigdefault
@@ -23,9 +32,22 @@ init_cluster_config() {
             cluscf=$(pwd)/config/userdefined/"$dir"/.clusterconfig
             machcf=$(pwd)/config/userdefined/"$dir"/.machineconfig
             ;;
+        --promptpassword)
+            export psdsource="prompt"
+            ;;
+        --filepassword)
+            export psdsource="file"
+            ;;
+        --help)
+            cat "$(pwd)"/help/initClusterClients.help
+            exit 0
+            ;;
         *) ;;
         esac
     done
+
+    . ./lib/loadCred.lib "$(whoami)" "$(hostname)"
+    echo $passwd | sudo -S echo "entered"
 
     echo -e "Cluster configuration file: $cluscf"
     echo -e "Machines configuration file: $machcf"
@@ -33,6 +55,9 @@ init_cluster_config() {
 
     yes | sudo ln -s -i "$cluscf" $(pwd)/config/.clusterconfig 2>/dev/null
     yes | sudo ln -s -i "$machcf" $(pwd)/config/.machineconfig 2>/dev/null
+
+    configureCredStore
+    yes | sudo ln -s -i "$(dirname "$(readlink -f "$machcf")")"/.credconfig $(pwd)/config/.credconfig 2> /dev/null
 }
 
 init_clients() {

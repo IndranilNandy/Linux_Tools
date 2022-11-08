@@ -14,4 +14,5 @@ prereq --install ".prereq"
 
 echo -e "${YELLOW}[gradle] Setup process started.${RESET}"
 ./gradle_installer.sh
+./gradle_autocompletion.sh
 echo -e "${GREEN}[gradle] Setup finished.${RESET}"

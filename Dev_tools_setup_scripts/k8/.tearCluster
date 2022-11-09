@@ -14,6 +14,12 @@ configureCredStore() {
     editor -w "$credStorePath"/.credconfig
 }
 
+cleanup_client() {
+    envloader="$MYCONFIGLOADER"/.envloader
+    kubecomplete='source <(kubectl completion bash)'
+    sed -i /^"$kubecomplete"$/d "$envloader"
+}
+
 init_cluster_config() {
     cluscf=$(pwd)/config/defaults/.clusterconfigdefault
     machcf=$(pwd)/config/defaults/.machineconfigdefault
@@ -70,3 +76,4 @@ echo -e "[CLUSTER TEARDOWN] Starting to tear down cluster"
 nodec=$(cat ./config/.clusterconfig | grep "controlplane:" | sed "s/controlplane: *\(.*\)/\1/" | tr " *" "\n" | xargs -I X echo X)
 
 (./nodes/control-plane/controlplane_tear.sh "$nodec" || echo -e "[CLUSTER TEARDOWN] Tearing down cluster faced issues. See log for details")
+cleanup_client

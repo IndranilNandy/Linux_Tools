@@ -6,7 +6,7 @@ envloader="$HOME"/.myconfig/.configloader/.envloader
 kubecomplete='source <(kubectl completion bash)'
 # Enable kubectl autocompletion
 enable_autocompletion() {
-    echo "$kubecomplete" >>"$envloader"
+    [[ $(cat "$envloader" | grep -v "^#" | grep "$kubecomplete") ]] || echo "$kubecomplete" >>"$envloader"
 }
 
 # Install kubectl convert plugin

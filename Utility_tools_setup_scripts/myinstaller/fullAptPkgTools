@@ -23,3 +23,5 @@ bind9-utils
 dnsutils
 yamllint
 jq
+nodejs
+npm

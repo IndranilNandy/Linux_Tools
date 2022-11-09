@@ -10,4 +10,5 @@ myconfig:$HOME/.myconfig
 configloader:$HOME/.myconfig/.configloader
 windowshare:$HOME/SharedFromWindows
 bin:/usr/local/bin
-k8test:$HOME/k8test
+k8test:$HOME/CodeRepo/WorkspaceCollection/Kubernetes/k8test
+coderepo:$HOME/CodeRepo

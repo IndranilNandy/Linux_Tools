@@ -1,5 +1,39 @@
 # Aliases for DOCKER commands
-
 d=docker
+
+# Run a new container
+dr=docker run
+drd=docker run -d
+drit=docker run -it
+driP=docker run -P
+drh=docker run --help
+
+# Manage containers
 dp=docker ps
+dpa=docker ps -a
 dph=docker ps --help
+
+drm=docker rm
+drmf=docker rm -f
+
+dsr=docker start
+dsp=docker stop
+
+deit=docker exec -it
+
+dcp=docker container prune
+dcpf=docker container prune -f
+
+# Manage images
+drmi=docker rmi
+dil=docker image ls
+dip=docker image prune
+dipa=docker image prune -a
+dib=docker image build
+
+# Composed commands
+
+# Stop all containers running
+dspall=docker stop $(docker ps -q)
+# Stop all running containers and then prune all containers
+dcpall=docker stop $(docker ps -q) && docker container prune

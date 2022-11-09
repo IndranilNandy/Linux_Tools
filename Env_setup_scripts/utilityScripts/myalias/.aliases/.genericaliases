@@ -1,6 +1,7 @@
 # Aliases for GENERIC commands
 
 c=clear
+cg=c;g
 sctl=systemctl
 lsa=ls -alut
 

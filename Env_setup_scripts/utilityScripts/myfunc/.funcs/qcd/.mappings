@@ -12,3 +12,4 @@ windowshare:$HOME/SharedFromWindows
 bin:/usr/local/bin
 k8test:$HOME/CodeRepo/WorkspaceCollection/Kubernetes/k8test
 coderepo:$HOME/CodeRepo
+gradlespace:$HOME/CodeRepo/WorkspaceCollection/Gradle

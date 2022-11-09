@@ -9,10 +9,12 @@ downloadCode() {
 
 update_env_var() {
     envloader="$MYCONFIGLOADER"/.envloader
+    complloader="$HOME/bash_completion.d/gradle-completion.bash"
     [[ ! -f "$envloader" ]] && echo -e "[ERROR] .envloader doesn't exist. Check why it wasn't created as part of the full setup" && return 1
 
-    env_var="source $HOME/bash_completion.d/gradle-completion.bash"
-    grep -q "$env_var" "$envloader" || echo "$env_var" >> "$envloader"
+    # env_var="source $HOME/bash_completion.d/gradle-completion.bash"
+    # grep -q "$env_var" "$envloader" || echo "$env_var" >> "$envloader"
+    [[ $(cat "$envloader" | grep -v "^#" | grep "source $complloader") ]] || echo "[[ -f $complloader ]] && source $complloader" >>"$envloader"
 }
 
 downloadCode && update_env_var

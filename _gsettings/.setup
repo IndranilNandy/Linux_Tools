@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# HOw to get the codes for the favApps?
+# First, manuall launch the application and do 'Add to favourites'
+# Now, check in commandline - gsettings get org.gnome.shell favorite-apps
+# See which entry is updated. Add that entry to .favApps
+
 echo -e "${BLUE}${BOLD}Starting GSETTINGS configuration.${RESET}"
 cat .gsettings | grep -v "^#" | xargs -I X echo "gsettings set X" | bash
 

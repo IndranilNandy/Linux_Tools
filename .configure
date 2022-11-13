@@ -19,7 +19,12 @@ create_symlinksrepo() {
     [[ -d "$commandsRepoRoot" ]] || sudo mkdir $commandsRepoRoot
     [[ -d "$scriptRefsRoot" ]] || sudo mkdir $scriptRefsRoot
 
-    expPath="export PATH=$PATH:$commandsRepoRoot:$scriptRefsRoot"
+    # expPath="export PATH=$PATH:$commandsRepoRoot:$scriptRefsRoot"
+
+    expPath="export PATH=$PATH"
+    (echo "$expPath" | grep -E -v " *#" | grep -q "$commandsRepoRoot") || expPath="$expPath":"$commandsRepoRoot"
+    (echo "$expPath" | grep -E -v " *#" | grep -q "$scriptRefsRoot") || expPath="$expPath":"$scriptRefsRoot"
+
     expCmdRoot="export MYCOMMANDSREPO=$commandsRepoRoot"
     expRefsRoot="export MYSCRIPTREFS=$scriptRefsRoot"
     expConfigLoader="export MYCONFIGLOADER=$configloader_src"
@@ -28,13 +33,13 @@ create_symlinksrepo() {
     pattern="alias alert="
     loaderincluder="[[ -e $envloader ]] \&\& source $envloader"
 
-    [[ $(cat "$envloader" | grep "$commandsRepoRoot") ]] || echo "$expPath" >>"$envloader"
-    [[ $(cat "$envloader" | grep "$expCmdRoot") ]] || echo "$expCmdRoot" >>"$envloader"
-    [[ $(cat "$envloader" | grep "$expRefsRoot") ]] || echo "$expRefsRoot" >>"$envloader"
-    [[ $(cat "$envloader" | grep "$expConfigLoader") ]] || echo "$expConfigLoader" >>"$envloader"
-    [[ $(cat "$envloader" | grep "$expConfigStore") ]] || echo "$expConfigStore" >>"$envloader"
+    (cat "$envloader" | grep -E -v " *#" | grep -q "$commandsRepoRoot") || echo "$expPath" >>"$envloader"
+    (cat "$envloader" | grep -E -v " *#" | grep -q "$expCmdRoot") || echo "$expCmdRoot" >>"$envloader"
+    (cat "$envloader" | grep -E -v " *#" | grep -q "$expRefsRoot") || echo "$expRefsRoot" >>"$envloader"
+    (cat "$envloader" | grep -E -v " *#" | grep -q "$expConfigLoader") || echo "$expConfigLoader" >>"$envloader"
+    (cat "$envloader" | grep -E -v " *#" | grep -q "$expConfigStore") || echo "$expConfigStore" >>"$envloader"
 
-    [[ $(cat ~/.bashrc | grep "$loaderincluder") ]] || sudo sed -i "/^$pattern/ s#\(.*\)#\1\n$loaderincluder#" ~/.bashrc
+    (cat ~/.bashrc | grep -E -v " *#" | grep -q "$loaderincluder") || sudo sed -i "/^$pattern/ s#\(.*\)#\1\n$loaderincluder#" ~/.bashrc
 
     . ~/.bashrc
 }

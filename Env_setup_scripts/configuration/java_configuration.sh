@@ -6,13 +6,16 @@ path="$javahome/bin"
 envloader="$MYCONFIGLOADER"/.envloader
 
 expHome="export JAVA_HOME=$javahome"
-expPath="export PATH=$PATH:$path"
+# expPath="export PATH=$PATH:$path"
+
+expPath="export PATH=$PATH"
+(echo "$expPath" | grep -E -v " *#" | grep -q "$path") || expPath="$expPath":"$path"
 
 if [[ $(cat "$envloader" | grep "$expHome") ]]; then
     echo -e "${GREEN}[java] Already configured. Exiting.${RESET}"
 else
     echo -e "${YELLOW}[java] Configuration step started.${RESET}"
-    [[ $(cat "$envloader" | grep "$expHome") ]] || echo "$expHome" >>"$envloader"
+    (cat "$envloader" | grep -E -v " *#" | grep -q "$expHome") || echo "$expHome" >>"$envloader"
     # [[ $(cat "$envloader" | grep "$expPath") ]] || echo "$expPath" >>"$envloader"
     if [[ $(cat "$envloader" | grep -E -v " *#" | grep "export PATH") ]]; then
         # cat "$envloader" | grep -E -v " *#" | grep "export PATH" | head -n1 | sed -i "s/\(.*\)/$expPath/" "$envloader"

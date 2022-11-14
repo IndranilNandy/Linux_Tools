@@ -1,4 +1,14 @@
+# https://github.com/GitCredentialManager/git-credential-manager/blob/release/docs/credstores.md#gpgpass-compatible-files
+
 config_gcm() {
     git-credential-manager-core configure
-    git config --global credential.credentialStore secretservice
+    # git config --global credential.credentialStore secretservice
+    sudo apt install -y pass
+    gpg --gen-key > temp_uid
+
+    uid=$(cat temp_uid | grep uid | awk '{ print $2 }')
+    pass init "$uid"
+
+    git config --global credential.credentialStore gpg
+    rm temp_uid
 }

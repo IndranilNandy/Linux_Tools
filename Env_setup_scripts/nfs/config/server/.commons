@@ -1,3 +1,2 @@
 /nfsroot    userver1(rw,sync,no_subtree_check) serv-worker1(rw,sync,no_subtree_check) serv-worker2(rw,sync,no_subtree_check)
-/my-nfs-vol userver1(rw,sync,no_subtree_check) serv-worker1(rw,sync,no_subtree_check) serv-worker2(rw,sync,no_subtree_check)
-/home/my-testvol1 userver1(rw,sync,no_subtree_check) serv-worker1(rw,sync,no_subtree_check) serv-worker2(rw,sync,no_subtree_check)
+/nfsroot/k8test/examples/ex1/vol    userver1(rw,sync,no_subtree_check) serv-worker1(rw,sync,no_subtree_check)

@@ -13,3 +13,4 @@ bin:/usr/local/bin
 k8test:$HOME/CodeRepo/WorkspaceCollection/Kubernetes/k8test
 coderepo:$HOME/CodeRepo
 gradlespace:$HOME/CodeRepo/WorkspaceCollection/Gradle
+springspace:$HOME/CodeRepo/WorkspaceCollection/Spring

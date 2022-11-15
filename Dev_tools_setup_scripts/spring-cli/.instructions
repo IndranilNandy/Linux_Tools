@@ -6,7 +6,7 @@ Entry script:
     ./.setup: call this for full installation
 
 Installers:
-    ./intellijidea_installer.sh: complete installation script
+    ./springcli_installer.sh: complete installation script
 
 Uninstallers:
-    ./intellijidea_uninstaller.sh: uninstalls intellij-idea
+    ./springcli_uninstaller.sh: uninstalls spring-cli

@@ -15,7 +15,8 @@
 -W "--create --sym --ref --sync --config --list --help" myscriptref
 -W "server client --setup --uninstall --config --refresh --prune --help" mynfs
 -W "--list --set --config --refresh --help" myalias
--W "dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts k8 configloader windowshare myscriptrefs docker bin mycommands myconfig linux_tools --list --config --refresh --help" qcd
--W "dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts k8 configloader windowshare myscriptrefs docker bin mycommands myconfig linux_tools --list --config --refresh --help" qcode
--W "dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts k8 configloader windowshare myscriptrefs docker bin mycommands myconfig linux_tools --list --config --refresh --help" qn
 -W "--proxy --help" k8swaggerui
+-W "dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts gradlespace k8 configloader windowshare myscriptrefs docker bin springspace mycommands myconfig coderepo linux_tools --list --config --refresh --help" qcd
+-W "dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts gradlespace k8 configloader windowshare myscriptrefs docker bin springspace mycommands myconfig coderepo linux_tools --list --config --refresh --help" qcode
+-W "dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts gradlespace k8 configloader windowshare myscriptrefs docker bin springspace mycommands myconfig coderepo linux_tools --list --config --refresh --help" qn
+-W "dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts gradlespace k8 configloader windowshare myscriptrefs docker bin springspace mycommands myconfig coderepo linux_tools --list --config --refresh --help" qidea

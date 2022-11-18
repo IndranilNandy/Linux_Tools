@@ -1,0 +1,31 @@
+Description:
+    Quick open code (intellij-idea) workspace.
+
+    .mappings   - contains all mappings.
+    format      - <tarnet_name>:<original_path>
+
+How to add a new entry?
+    [MANUAL]
+    1. Run 'qidea --config'
+    2. Next, run 'qidea --refresh' to update tab-completions
+
+Usage:
+    qidea <workspace>
+        Open the workspace in intellij-idea.
+    qidea --list
+        List all user defined paths.
+    qidea --config
+        [MANUAL] Add entry to .mappings.
+    qidea --refresh
+        Update tab-completions for new enries.
+    qidea
+    qidea --help
+        Help content of qcd.
+
+Examples:
+    qidea linux_tools
+    qidea --list
+    qidea --config
+    qidea --refresh
+    qidea
+    qidea --help

@@ -5,7 +5,9 @@ declare -A mydirs
 update_tab_completions() {
     mycompl -W '"'"${!mydirs[@]}" --list --config --refresh --help'"' qcd
     mycompl -W '"'"${!mydirs[@]}" --list --config --refresh --help'"' qcode
+    mycompl -W '"'"${!mydirs[@]}" --list --config --refresh --help'"' qidea
     mycompl -W '"'"${!mydirs[@]}" --list --config --refresh --help'"' qn
+
     source ~/.bashrc
 }
 
@@ -111,6 +113,39 @@ qcode() {
         ;;
     *)
         (qcd "${1}" && code .)
+        ;;
+    esac
+}
+
+qidea() {
+
+    if [[ -z $(which myfunc) ]]; then
+        curDir=$(pwd)
+    else
+        curDir=$(dirname "$(tracelink "$(which myfunc)")")
+    fi
+
+    buildqcdmap
+
+    case ${1} in
+    --list)
+        cat "$curDir"/.funcs/qcd/.mappings
+        ;;
+    --config)
+        editor "$curDir"/.funcs/qcd/.mappings
+        echo -e "Run 'qidea --refresh' to enable tab-completions for this entry"
+        ;;
+    --refresh)
+        update_tab_completions
+        ;;
+    --help)
+        cat "$curDir"/.funcs/qcd/qidea.help
+        ;;
+    '')
+        cat "$curDir"/.funcs/qcd/qidea.help
+        ;;
+    *)
+        (qcd "${1}" && intellij-idea-community .)
         ;;
     esac
 }

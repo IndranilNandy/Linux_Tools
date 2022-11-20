@@ -1,19 +1,19 @@
 Description:
     Provides workspace setup, configuration support from user git repositories.
 
-    .allRepoConfig: Repo configurations
+    .wsConfig: Repo configurations
 
 How to add/update/delete an entry?
     Run 'ws --config'
-                                -> it opens the config file (.allRepConfig) in your editor
+                                -> it opens the config file (.wsConfig) in your editor
                                 -> create/delete/update any entry
                                 -> save and exit
 
 Usage:
     ws --config
-        [MANUAL] Open all completions-files to enable the user to edit them for addition/deletion/update.
+        This will open config file (.wsConfig) in your default editor to enable the user to edit them for addition/deletion/update.
     ws --clone
-        This will clone all the repositories mentioned in the config file (.allRepConfig)
+        This will clone all the repositories mentioned in the config file (.wsConfig)
     ws --help
         Help content of ws.
 

@@ -1,4 +1,6 @@
-/home/indranil/DEV/GIT-REPOS/T29local
-/home/indranil/DEV/GIT-REPOS/PowershellTools
-/home/indranil/DEV/GIT-REPOS/DevAssistDocs
-/home/indranil/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes/Microservices-with-Spring-Boot-and-Spring-Cloud-2E
+# Remote          Branch          Local           Tags
+######################################################
+https://github.com/IndranilNandy/PowershellTools.git                                            dev-linux   PowershellTools
+https://github.com/IndranilNandy/DevAssistDocs.git                                              master      DevAssistDocs
+https://github.com/IndranilNandy/T29.git                                                        c           T29local
+https://github.com/IndranilNandy/Books-Microservices-with-Spring-Boot-and-Spring-Cloud-2E.git   main        CodeSamples/Book-SourceCodes/Spring/Microservices-with-Spring-Boot-and-Spring-Cloud-2E      spring,books,codesamples

@@ -19,11 +19,15 @@ buildqcdmap() {
     fi
 
     mydirs=()
-    for line in $(cat "$curDir"/.funcs/qcd/.mappings | xargs -I X echo X); do
-        cdir=$(echo "$line" | cut -d':' -f1)
-        target=$(echo "$line" | cut -d':' -f2)
+    mapfile -t entryArray <<<"$(grep -v "^ *#" <$curDir/.funcs/qcd/.mappings | xargs -I X echo X)"
+
+    for line in "${entryArray[@]}"; do
+        echo "line=$line"
+        cdir=$(echo "$line" | awk '{ print $1 }')
+        target=$(echo "$line" | awk '{ print $2 }')
         mydirs["$cdir"]="$target"
     done
+
     update_tab_completions
 }
 

@@ -8,6 +8,8 @@ prereq --install ".prereq"
 
 echo -e "${YELLOW}[Started fetching all repositories]${RESET}"
 
-./workspace_clone.sh
-yes | sudo ln -s -i "$(pwd)"/workspace_delta.sh "$MYCOMMANDSREPO"/wsd
+# ./workspace_clone.sh
+yes | sudo ln -s -i "$(pwd)"/workspace_setup.sh "$MYCOMMANDSREPO"/ws
+mycompl -W \"--config --clone --help\" ws
+ws --clone
 echo -e "${YELLOW}[Completed fetching all repositories.]${RESET}"

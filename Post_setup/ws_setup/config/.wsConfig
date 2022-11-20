@@ -1,6 +1,6 @@
-# Remote          Branch          Local           Tags
-######################################################
-https://github.com/IndranilNandy/PowershellTools.git                                            dev-linux   PowershellTools
-https://github.com/IndranilNandy/DevAssistDocs.git                                              master      DevAssistDocs
-https://github.com/IndranilNandy/T29.git                                                        c           T29local
-https://github.com/IndranilNandy/Books-Microservices-with-Spring-Boot-and-Spring-Cloud-2E.git   main        CodeSamples/Book-SourceCodes/Spring/Microservices-with-Spring-Boot-and-Spring-Cloud-2E      spring,books,codesamples
+# Remote          ShouldDownload?[y/n]          DefaultBranch       Local           Tags        QuickLink
+#########################################################################################################
+https://github.com/IndranilNandy/PowershellTools.git                                            y   dev-linux   PowershellTools
+https://github.com/IndranilNandy/DevAssistDocs.git                                              y   master      DevAssistDocs
+https://github.com/IndranilNandy/T29.git                                                        n   c           T29local
+https://github.com/IndranilNandy/Books-Microservices-with-Spring-Boot-and-Spring-Cloud-2E.git   y   main        CodeSamples/Book-SourceCodes/Spring/Microservices-with-Spring-Boot-and-Spring-Cloud-2E      spring,books,codesamples        book-microsvc

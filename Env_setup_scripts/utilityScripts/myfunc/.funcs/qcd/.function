@@ -22,7 +22,6 @@ buildqcdmap() {
     mapfile -t entryArray <<<"$(grep -v "^ *#" <$curDir/.funcs/qcd/.mappings | xargs -I X echo X)"
 
     for line in "${entryArray[@]}"; do
-        echo "line=$line"
         cdir=$(echo "$line" | awk '{ print $1 }')
         target=$(echo "$line" | awk '{ print $2 }')
         mydirs["$cdir"]="$target"
@@ -69,7 +68,9 @@ qcd() {
             [[ "$target" == "." ]] && target=$(pwd)
             [[ $(echo "$target" | grep -F "/home/") ]] && target=$(echo "$target" | sed "s#/[^/]*/[^/]*\(/.*\)#\$HOME\1#")
 
-            echo -e "${1}:$target" >>"$curDir"/.funcs/qcd/.mappings
+            # echo -e "${1}:$target" >>"$curDir"/.funcs/qcd/.mappings
+            echo -e "${1}\t\t\t$target" >>"$curDir"/.funcs/qcd/.mappings
+
             mydirs["${1}"]="$target"
             # update_tab_completions && source ~/.bashrc
             update_tab_completions

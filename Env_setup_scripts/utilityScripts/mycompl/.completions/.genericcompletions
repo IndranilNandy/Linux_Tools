@@ -17,7 +17,7 @@
 -W "--list --set --config --refresh --help" myalias
 -W "--proxy --help" k8swaggerui
 -W "--config --clone --help" ws
--W "codesamples dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts gradlespace k8 configloader windowshare myscriptrefs docker bin practicews springspace mycommands myconfig linux_tools --init --list --wslist --config --wsconfig --refresh --tags --help" qcd
--W "codesamples dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts gradlespace k8 configloader windowshare myscriptrefs docker bin practicews springspace mycommands myconfig linux_tools --init --list --wslist --config --wsconfig --refresh --tags --help" qcode
--W "codesamples dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts gradlespace k8 configloader windowshare myscriptrefs docker bin practicews springspace mycommands myconfig linux_tools --init --list --wslist --config --wsconfig --refresh --tags --help" qidea
--W "codesamples dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts gradlespace k8 configloader windowshare myscriptrefs docker bin practicews springspace mycommands myconfig linux_tools --init --list --wslist --config --wsconfig --refresh --tags --help" qn
+-W "codesamples dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts gradlespace k8 practicews springspace linux_tools --init --list --wslist --config --wsconfig --refresh --tags --help" qcd
+-W "codesamples dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts gradlespace k8 practicews springspace linux_tools --init --list --wslist --config --wsconfig --refresh --tags --help" qcode
+-W "codesamples dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts gradlespace k8 practicews springspace linux_tools --init --list --wslist --config --wsconfig --refresh --tags --help" qidea
+-W "codesamples dev_tools_setup_scripts utility_tools_setup_scripts k8test env_setup_scripts gradlespace k8 practicews springspace linux_tools --init --list --wslist --config --wsconfig --refresh --tags --help" qn

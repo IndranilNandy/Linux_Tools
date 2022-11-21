@@ -1,0 +1,6 @@
+#######################################################################################################
+#       dir-alias                         dir-target                                tags
+#######################################################################################################
+codesamples                     $HOME/DEV/GIT-REPOS/CodeSamples                     samples
+gradlespace                     $HOME/CodeRepo/WorkspaceCollection/Gradle           gradle,repo
+springspace                     $HOME/CodeRepo/WorkspaceCollection/Spring           spring,repo

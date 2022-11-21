@@ -1,5 +1,6 @@
+#######################################################################################################
 #       dir-alias                         dir-target
-####################################################################################
+#######################################################################################################
 mycommands                      /usr/local/bin/mycommands
 myscriptrefs                    /usr/local/bin/myscriptrefs
 linux_tools                     $HOME/MyTools/Linux_Tools
@@ -14,5 +15,3 @@ windowshare                     $HOME/SharedFromWindows
 bin                             /usr/local/bin
 k8test                          $HOME/CodeRepo/WorkspaceCollection/Kubernetes/k8test
 coderepo                        $HOME/CodeRepo
-gradlespace                     $HOME/CodeRepo/WorkspaceCollection/Gradle
-springspace                     $HOME/CodeRepo/WorkspaceCollection/Spring

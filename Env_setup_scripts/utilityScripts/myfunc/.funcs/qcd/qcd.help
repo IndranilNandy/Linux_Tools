@@ -1,8 +1,11 @@
 Description:
     Quick 'cd'.
 
-    .mappings   - contains all mappings.
-    format      - <target_name>     <original_path>
+    .dir_mappings   - contains all mappings for general directories.
+    format          - <dir_alias>       <original_path>
+
+    .ws_mappings    - contains all mappings for workspaces.
+    format          - <ws_alias>        <original_path>         <tags>
 
 How to add a new entry?
     [MANUAL]
@@ -26,11 +29,17 @@ Usage:
         Initialize the map from dir-alias to dir-target. If the map is empty (which is the case for a new terminal), running any of the above-mentioned two commands will implicitly initialize it.
         More over, if the tab-completions are already populated (which is the case mostly), you'll see no difference, since the tab-completions will work while using the first two commands.
     qcd --list
-        List all user defined paths.
+        List all user defined aliases for both general directories and workspaces.
+    qcd --wslist
+        List all user defined aliases for workspaces.
     qcd --config
-        [MANUAL] Add entry to .mappings.
+        [MANUAL] Add entry to .dir_mappings.
+    qcd --wsconfig
+        [MANUAL] Add entry to .ws_mappings.
     qcd --refresh
         Update tab-completions for new entries.
+    qcd --tags
+        Show all tags for all workspaces.
     qcd
     qcd --help
         Help content of qcd.
@@ -41,7 +50,10 @@ Examples:
     qcd k8
     qcd --init
     qcd --list
+    qcd --wslist
     qcd --config
+    qcd --wsconfig
     qcd --refresh
+    qcd --tags
     qcd
     qcd --help

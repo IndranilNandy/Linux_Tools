@@ -3,12 +3,22 @@
 declare -A mydirs
 
 update_tab_completions() {
-    mycompl -W '"'"${!mydirs[@]}" --init --list --config --refresh --help'"' qcd
-    mycompl -W '"'"${!mydirs[@]}" --init --list --config --refresh --help'"' qcode
-    mycompl -W '"'"${!mydirs[@]}" --init --list --config --refresh --help'"' qidea
-    mycompl -W '"'"${!mydirs[@]}" --init --list --config --refresh --help'"' qn
+    mycompl -W '"'"${!mydirs[@]}" --init --list --wslist --config --wsconfig --refresh --tags --help'"' qcd
+    mycompl -W '"'"${!mydirs[@]}" --init --list --wslist --config --wsconfig --refresh --tags --help'"' qcode
+    mycompl -W '"'"${!mydirs[@]}" --init --list --wslist --config --wsconfig --refresh --tags --help'"' qidea
+    mycompl -W '"'"${!mydirs[@]}" --init --list --wslist --config --wsconfig --refresh --tags --help'"' qn
 
     source ~/.bashrc
+}
+
+buildwsmap() {
+    mapfile -t entryArray <<<"$(grep -v "^ *#" <$curDir/.funcs/qcd/.ws_mappings | xargs -I X echo X)"
+
+    for line in "${entryArray[@]}"; do
+        cdir=$(echo "$line" | awk '{ print $1 }')
+        target=$(echo "$line" | awk '{ print $2 }')
+        mydirs["$cdir"]="$target"
+    done
 }
 
 buildqcdmap() {
@@ -19,7 +29,7 @@ buildqcdmap() {
     fi
 
     mydirs=()
-    mapfile -t entryArray <<<"$(grep -v "^ *#" <$curDir/.funcs/qcd/.mappings | xargs -I X echo X)"
+    mapfile -t entryArray <<<"$(grep -v "^ *#" <$curDir/.funcs/qcd/.dir_mappings | xargs -I X echo X)"
 
     for line in "${entryArray[@]}"; do
         cdir=$(echo "$line" | awk '{ print $1 }')
@@ -27,7 +37,13 @@ buildqcdmap() {
         mydirs["$cdir"]="$target"
     done
 
+    buildwsmap
     update_tab_completions
+}
+
+show_ws_tags() {
+    echo -e "TAGS\t\tDIR-ALIAS\t\tDIR-TARGET\n"
+    grep -v "^ *#" <"$curDir"/.funcs/qcd/.ws_mappings | xargs -I X echo X
 }
 
 qcd() {
@@ -43,15 +59,30 @@ qcd() {
         buildqcdmap
         ;;
     --list)
-        cat "$curDir"/.funcs/qcd/.mappings
+        cat "$curDir"/.funcs/qcd/.dir_mappings
+        echo -e
+        cat "$curDir"/.funcs/qcd/.ws_mappings
+        ;;
+    --wslist)
+        cat "$curDir"/.funcs/qcd/.ws_mappings
         ;;
     --config)
-        editor -w "$curDir"/.funcs/qcd/.mappings
+        editor -w "$curDir"/.funcs/qcd/.dir_mappings
+        editor -w "$curDir"/.funcs/qcd/.ws_mappings
         echo -e "Run 'qcd --refresh' to enable tab-completions for this entry, ONLY IF you've edited the config files manually without using --config option"
         buildqcdmap
         ;;
+    --wsconfig)
+        editor -w "$curDir"/.funcs/qcd/.ws_mappings
+        echo -e "Run 'qcd --refresh' to enable tab-completions for this entry, ONLY IF you've edited the config files manually without using --wsconfig option"
+        buildwsmap
+        update_tab_completions
+        ;;
     --refresh)
         buildqcdmap
+        ;;
+    --tags)
+        show_ws_tags
         ;;
     --help)
         cat "$curDir"/.funcs/qcd/qcd.help
@@ -70,8 +101,8 @@ qcd() {
             [[ "$target" == "." ]] && target=$(pwd)
             [[ $(echo "$target" | grep -F "/home/") ]] && target=$(echo "$target" | sed "s#/[^/]*/[^/]*\(/.*\)#\$HOME\1#")
 
-            # echo -e "${1}:$target" >>"$curDir"/.funcs/qcd/.mappings
-            echo -e "${1}\t\t\t$target" >>"$curDir"/.funcs/qcd/.mappings
+            # echo -e "${1}:$target" >>"$curDir"/.funcs/qcd/.dir_mappings
+            echo -e "${1}\t\t\t$target" >>"$curDir"/.funcs/qcd/.dir_mappings
 
             mydirs["${1}"]="$target"
             # update_tab_completions && source ~/.bashrc
@@ -104,15 +135,30 @@ qcode() {
         buildqcdmap
         ;;
     --list)
-        cat "$curDir"/.funcs/qcd/.mappings
+        cat "$curDir"/.funcs/qcd/.dir_mappings
+        echo -e
+        cat "$curDir"/.funcs/qcd/.ws_mappings
+        ;;
+    --wslist)
+        cat "$curDir"/.funcs/qcd/.ws_mappings
         ;;
     --config)
-        editor -w "$curDir"/.funcs/qcd/.mappings
+        editor -w "$curDir"/.funcs/qcd/.dir_mappings
+        editor -w "$curDir"/.funcs/qcd/.ws_mappings
         echo -e "Run 'qcode --refresh' to enable tab-completions for this entry, ONLY IF you've edited the config files manually without using --config option"
         buildqcdmap
         ;;
+    --wsconfig)
+        editor -w "$curDir"/.funcs/qcd/.ws_mappings
+        echo -e "Run 'qcode --refresh' to enable tab-completions for this entry, ONLY IF you've edited the config files manually without using --wsconfig option"
+        buildwsmap
+        update_tab_completions
+        ;;
     --refresh)
         buildqcdmap
+        ;;
+    --tags)
+        show_ws_tags
         ;;
     --help)
         cat "$curDir"/.funcs/qcd/qcode.help
@@ -139,15 +185,30 @@ qidea() {
         buildqcdmap
         ;;
     --list)
-        cat "$curDir"/.funcs/qcd/.mappings
+        cat "$curDir"/.funcs/qcd/.dir_mappings
+        echo -e
+        cat "$curDir"/.funcs/qcd/.ws_mappings
+        ;;
+    --wslist)
+        cat "$curDir"/.funcs/qcd/.ws_mappings
         ;;
     --config)
-        editor -w "$curDir"/.funcs/qcd/.mappings
+        editor -w "$curDir"/.funcs/qcd/.dir_mappings
+        editor -w "$curDir"/.funcs/qcd/.ws_mappings
         echo -e "Run 'qidea --refresh' to enable tab-completions for this entry, ONLY IF you've edited the config files manually without using --config option"
         buildqcdmap
         ;;
+    --wsconfig)
+        editor -w "$curDir"/.funcs/qcd/.ws_mappings
+        echo -e "Run 'qcode --refresh' to enable tab-completions for this entry, ONLY IF you've edited the config files manually without using --wsconfig option"
+        buildwsmap
+        update_tab_completions
+        ;;
     --refresh)
         buildqcdmap
+        ;;
+    --tags)
+        show_ws_tags
         ;;
     --help)
         cat "$curDir"/.funcs/qcd/qidea.help
@@ -173,15 +234,30 @@ qn() {
         buildqcdmap
         ;;
     --list)
-        cat "$curDir"/.funcs/qcd/.mappings
+        cat "$curDir"/.funcs/qcd/.dir_mappings
+        echo -e
+        cat "$curDir"/.funcs/qcd/.ws_mappings
+        ;;
+    --wslist)
+        cat "$curDir"/.funcs/qcd/.ws_mappings
         ;;
     --config)
-        editor -w "$curDir"/.funcs/qcd/.mappings
+        editor -w "$curDir"/.funcs/qcd/.dir_mappings
+        editor -w "$curDir"/.funcs/qcd/.ws_mappings
         echo -e "Run 'qn --refresh' to enable tab-completions for this entry, ONLY IF you've edited the config files manually without using --config option"
         buildqcdmap
         ;;
+    --wsconfig)
+        editor -w "$curDir"/.funcs/qcd/.ws_mappings
+        echo -e "Run 'qcode --refresh' to enable tab-completions for this entry, ONLY IF you've edited the config files manually without using --wsconfig option"
+        buildwsmap
+        update_tab_completions
+        ;;
     --refresh)
         buildqcdmap
+        ;;
+    --tags)
+        show_ws_tags
         ;;
     --help)
         cat "$curDir"/.funcs/qcd/qn.help

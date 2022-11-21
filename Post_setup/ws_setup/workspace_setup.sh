@@ -10,7 +10,7 @@ fi
 
 case ${1} in
 --config)
-    editor -w "$curDir"/config/.allRepoConfig
+    editor -w "$curDir"/config/.wsConfig
     ;;
 --clone)
     "$curDir"/workspace_clone.sh "$@"

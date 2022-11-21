@@ -1,8 +1,11 @@
 Description:
     Quick open code (intellij-idea) workspace.
 
-    .mappings   - contains all mappings.
-    format      - <target_name>:<original_path>
+    .dir_mappings   - contains all mappings for general directories.
+    format          - <dir_alias>       <original_path>
+
+    .ws_mappings    - contains all mappings for workspaces.
+    format          - <ws_alias>        <original_path>         <tags>
 
 How to add a new entry?
     [MANUAL]
@@ -15,20 +18,29 @@ Usage:
     qidea --init
         Initialize the map from dir-alias to dir-target. If the map is empty (which is the case for a new terminal), running any of the above-mentioned two commands will implicitly initialize it.
     qidea --list
-        List all user defined paths.
+       List all user defined aliases for both general directories and workspaces.
+    qidea --wslist
+        List all user defined aliases for workspaces.
     qidea --config
-        [MANUAL] Add entry to .mappings.
+        [MANUAL] Add entry to .dir_mappings.
+    qidea --wsconfig
+        [MANUAL] Add entry to .ws_mappings.
     qidea --refresh
         Update tab-completions for new entries.
+    qidea --tags
+        Show all tags for all workspaces.
     qidea
     qidea --help
-        Help content of qcd.
+        Help content of qidea.
 
 Examples:
     qidea linux_tools
     qidea --init
     qidea --list
+    qidea --wslist
     qidea --config
+    qidea --wsconfig
     qidea --refresh
+    qidea --tags
     qidea
     qidea --help

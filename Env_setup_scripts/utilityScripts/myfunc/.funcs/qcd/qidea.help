@@ -2,28 +2,31 @@ Description:
     Quick open code (intellij-idea) workspace.
 
     .mappings   - contains all mappings.
-    format      - <tarnet_name>:<original_path>
+    format      - <target_name>:<original_path>
 
 How to add a new entry?
     [MANUAL]
     1. Run 'qidea --config'
-    2. Next, run 'qidea --refresh' to update tab-completions
+    2. NO NEED to run 'qidea --refresh'. Run 'qidea --refresh' to update tab-completions, ONLY IF you've opened and edited the config file manually without running with --config option.
 
 Usage:
     qidea <workspace>
         Open the workspace in intellij-idea.
+    qidea --init
+        Initialize the map from dir-alias to dir-target. If the map is empty (which is the case for a new terminal), running any of the above-mentioned two commands will implicitly initialize it.
     qidea --list
         List all user defined paths.
     qidea --config
         [MANUAL] Add entry to .mappings.
     qidea --refresh
-        Update tab-completions for new enries.
+        Update tab-completions for new entries.
     qidea
     qidea --help
         Help content of qcd.
 
 Examples:
     qidea linux_tools
+    qidea --init
     qidea --list
     qidea --config
     qidea --refresh

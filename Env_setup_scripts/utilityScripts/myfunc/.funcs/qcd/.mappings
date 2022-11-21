@@ -1,5 +1,5 @@
-# dir-alias               dir-target
-####################################
+#       dir-alias                         dir-target
+####################################################################################
 mycommands                      /usr/local/bin/mycommands
 myscriptrefs                    /usr/local/bin/myscriptrefs
 linux_tools                     $HOME/MyTools/Linux_Tools

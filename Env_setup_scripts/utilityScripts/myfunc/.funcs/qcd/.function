@@ -38,18 +38,20 @@ qcd() {
         curDir=$(dirname "$(tracelink "$(which myfunc)")")
     fi
 
-    buildqcdmap
-
     case ${1} in
+    --init)
+        buildqcdmap
+        ;;
     --list)
         cat "$curDir"/.funcs/qcd/.mappings
         ;;
     --config)
-        editor "$curDir"/.funcs/qcd/.mappings
-        echo -e "Run 'qcd --refresh' to enable tab-completions for this entry"
+        editor -w "$curDir"/.funcs/qcd/.mappings
+        echo -e "Run 'qcd --refresh' to enable tab-completions for this entry, ONLY IF you've edited the config files manually without using --config option"
+        buildqcdmap
         ;;
     --refresh)
-        update_tab_completions
+        buildqcdmap
         ;;
     --help)
         cat "$curDir"/.funcs/qcd/qcd.help
@@ -58,9 +60,9 @@ qcd() {
         cat "$curDir"/.funcs/qcd/qcd.help
         ;;
     *)
-
         # REMEMBER: Don't call "source ~/.bashrc" inside buildqcdmap and after update_tabcompletions -> it'll be recursive
         # [[ -z ${mydirs[${1}]} ]] && buildqcdmap && source ~/.bashrc
+        [[ -z ${mydirs[${1}]} ]] && buildqcdmap
 
         if [[ -z ${mydirs[${1}]} ]]; then
             (("$#" < 2)) && echo -e "Missing dir-target parameter" && return 1
@@ -97,18 +99,20 @@ qcode() {
         curDir=$(dirname "$(tracelink "$(which myfunc)")")
     fi
 
-    buildqcdmap
-
     case ${1} in
+    --init)
+        buildqcdmap
+        ;;
     --list)
         cat "$curDir"/.funcs/qcd/.mappings
         ;;
     --config)
-        editor "$curDir"/.funcs/qcd/.mappings
-        echo -e "Run 'qcode --refresh' to enable tab-completions for this entry"
+        editor -w "$curDir"/.funcs/qcd/.mappings
+        echo -e "Run 'qcode --refresh' to enable tab-completions for this entry, ONLY IF you've edited the config files manually without using --config option"
+        buildqcdmap
         ;;
     --refresh)
-        update_tab_completions
+        buildqcdmap
         ;;
     --help)
         cat "$curDir"/.funcs/qcd/qcode.help
@@ -130,18 +134,20 @@ qidea() {
         curDir=$(dirname "$(tracelink "$(which myfunc)")")
     fi
 
-    buildqcdmap
-
     case ${1} in
+    --init)
+        buildqcdmap
+        ;;
     --list)
         cat "$curDir"/.funcs/qcd/.mappings
         ;;
     --config)
-        editor "$curDir"/.funcs/qcd/.mappings
-        echo -e "Run 'qidea --refresh' to enable tab-completions for this entry"
+        editor -w "$curDir"/.funcs/qcd/.mappings
+        echo -e "Run 'qidea --refresh' to enable tab-completions for this entry, ONLY IF you've edited the config files manually without using --config option"
+        buildqcdmap
         ;;
     --refresh)
-        update_tab_completions
+        buildqcdmap
         ;;
     --help)
         cat "$curDir"/.funcs/qcd/qidea.help
@@ -162,18 +168,20 @@ qn() {
         curDir=$(dirname "$(tracelink "$(which myfunc)")")
     fi
 
-    buildqcdmap
-
     case ${1} in
+    --init)
+        buildqcdmap
+        ;;
     --list)
         cat "$curDir"/.funcs/qcd/.mappings
         ;;
     --config)
-        editor "$curDir"/.funcs/qcd/.mappings
-        echo -e "Run 'qn --refresh' to enable tab-completions for this entry"
+        editor -w "$curDir"/.funcs/qcd/.mappings
+        echo -e "Run 'qn --refresh' to enable tab-completions for this entry, ONLY IF you've edited the config files manually without using --config option"
+        buildqcdmap
         ;;
     --refresh)
-        update_tab_completions
+        buildqcdmap
         ;;
     --help)
         cat "$curDir"/.funcs/qcd/qn.help
@@ -183,6 +191,7 @@ qn() {
         ;;
     *)
         for dir in $(echo "$@" | xargs -n1); do
+            [[ -z ${mydirs[$dir]} ]] && buildqcdmap
             eval "nautilus ${mydirs[$dir]}"
         done
         ;;

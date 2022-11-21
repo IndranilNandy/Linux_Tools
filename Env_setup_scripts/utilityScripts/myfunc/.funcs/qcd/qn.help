@@ -2,28 +2,31 @@ Description:
     Quick open Nautilus file browser with the arg path.
 
     .mappings   - contains all mappings.
-    format      - <tarnet_name>:<original_path>
+    format      - <target_name>:<original_path>
 
 How to add a new entry?
     [MANUAL]
-    1. Run 'qn --config' 
-    2. Next, run 'qn --refresh' to update tab-completions
+    1. Run 'qn --config'
+    2. NO NEED to run 'qn --refresh'. Run 'qn --refresh' to update tab-completions, ONLY IF you've opened and edited the config file manually without running with --config option.
 
 Usage:
     qn <list of dirs>
         Open all dirs in Nautilus.
+    qn --init
+        Initialize the map from dir-alias to dir-target. If the map is empty (which is the case for a new terminal), running any of the above-mentioned two commands will implicitly initialize it.
     qn --list
         List all user defined paths.
     qn --config
         [MANUAL] Add entry to .mappings.
     qn --refresh
-        Update tab-completions for new enries.
+        Update tab-completions for new entries.
     qn
     qn --help
         Help content of qcd.
-  
+
 Examples:
     qn linux_tools k8
+    qn --init
     qn --list
     qn --config
     qn --refresh

@@ -2,28 +2,31 @@ Description:
     Quick open code (vscode) workspace.
 
     .mappings   - contains all mappings.
-    format      - <tarnet_name>:<original_path>
+    format      - <target_name>:<original_path>
 
 How to add a new entry?
     [MANUAL]
-    1. Run 'qcode --config' 
-    2. Next, run 'qcode --refresh' to update tab-completions
+    1. Run 'qcode --config'
+    2. NO NEED to run 'qcode --refresh'. Run 'qcode --refresh' to update tab-completions, ONLY IF you've opened and edited the config file manually without running with --config option.
 
 Usage:
     qcode <workspace>
         Open the workspace in vscode.
+    qcode --init
+        Initialize the map from dir-alias to dir-target. If the map is empty (which is the case for a new terminal), running any of the above-mentioned two commands will implicitly initialize it.
     qcode --list
         List all user defined paths.
     qcode --config
         [MANUAL] Add entry to .mappings.
     qcode --refresh
-        Update tab-completions for new enries.
+        Update tab-completions for new entries.
     qcode
     qcode --help
         Help content of qcd.
-  
+
 Examples:
     qcode linux_tools
+    qcode --init
     qcode --list
     qcode --config
     qcode --refresh

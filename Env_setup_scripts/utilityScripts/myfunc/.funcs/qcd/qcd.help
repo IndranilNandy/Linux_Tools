@@ -2,12 +2,12 @@ Description:
     Quick 'cd'.
 
     .mappings   - contains all mappings.
-    format      - <tarnet_name>:<original_path>
+    format      - <target_name>     <original_path>
 
 How to add a new entry?
     [MANUAL]
-    1. Run 'qcd --config' 
-    2. Next, run 'qcd --refresh' to update tab-completions
+    1. Run 'qcd --config'
+    2. NO NEED to run 'qcd --refresh'. Run 'qcd --refresh' to update tab-completions, ONLY IF you've opened and edited the config file manually without running with --config option.
 
     [PROGRAMMATIC]
     1. Run 'qcd <dir-alias> <dir-target>'. It will implicitly invoke 'qcd --refresh'.
@@ -22,20 +22,24 @@ Usage:
     qcd <dir-alias> --sudo
         This still under implementation. DO NOT USE it.
         cd to the directory mapped by dir-alias, for those directories which requires to be logged in as root user.
+    qcd --init
+        Initialize the map from dir-alias to dir-target. If the map is empty (which is the case for a new terminal), running any of the above-mentioned two commands will implicitly initialize it.
+        More over, if the tab-completions are already populated (which is the case mostly), you'll see no difference, since the tab-completions will work while using the first two commands.
     qcd --list
         List all user defined paths.
     qcd --config
         [MANUAL] Add entry to .mappings.
     qcd --refresh
-        Update tab-completions for new enries.
+        Update tab-completions for new entries.
     qcd
     qcd --help
         Help content of qcd.
-  
+
 Examples:
     qcd k8 /home/indranilnandy/MyTools/kubernetes
     qcd k8 .
     qcd k8
+    qcd --init
     qcd --list
     qcd --config
     qcd --refresh

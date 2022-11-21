@@ -3,10 +3,10 @@
 declare -A mydirs
 
 update_tab_completions() {
-    mycompl -W '"'"${!mydirs[@]}" --list --config --refresh --help'"' qcd
-    mycompl -W '"'"${!mydirs[@]}" --list --config --refresh --help'"' qcode
-    mycompl -W '"'"${!mydirs[@]}" --list --config --refresh --help'"' qidea
-    mycompl -W '"'"${!mydirs[@]}" --list --config --refresh --help'"' qn
+    mycompl -W '"'"${!mydirs[@]}" --init --list --config --refresh --help'"' qcd
+    mycompl -W '"'"${!mydirs[@]}" --init --list --config --refresh --help'"' qcode
+    mycompl -W '"'"${!mydirs[@]}" --init --list --config --refresh --help'"' qidea
+    mycompl -W '"'"${!mydirs[@]}" --init --list --config --refresh --help'"' qn
 
     source ~/.bashrc
 }

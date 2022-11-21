@@ -6,8 +6,11 @@ dev_tools_setup_scripts         $HOME/MyTools/Linux_Tools/Dev_tools_setup_script
 env_setup_scripts               $HOME/MyTools/Linux_Tools/Env_setup_scripts                                     setup
 utility_tools_setup_scripts     $HOME/MyTools/Linux_Tools/Utility_tools_setup_scripts                           setup
 k8                              $HOME/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8                            k8
-codesamples                     $HOME/DEV/GIT-REPOS/CodeSamples                                                 samples
+samples-code                    $HOME/DEV/GIT-REPOS/CodeSamples                                                 samples
+samples-gradle                  $HOME/DEV/GIT-REPOS/CodeSamples/Aggregated/GradleSamples                        samples,gradle
+books                           $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes                                books
+books-spring                    $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes/Spring                         books,spring
 practicews                      $HOME/DEV/GIT-REPOS/PracticeWS                                                  practice
-k8test                          $HOME/DEV/GIT-REPOS/PracticeWS/Kubernetes/k8test                                k8,practice
+k8space                         $HOME/DEV/GIT-REPOS/PracticeWS/Kubernetes/k8test                                k8,practice
 gradlespace                     $HOME/DEV/GIT-REPOS/PracticeWS/Gradle                                           gradle,practice
 springspace                     $HOME/DEV/GIT-REPOS/PracticeWS/Spring                                           spring,practice

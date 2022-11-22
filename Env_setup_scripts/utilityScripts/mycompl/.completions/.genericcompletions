@@ -16,7 +16,7 @@
 -W "server client --setup --uninstall --config --refresh --prune --help" mynfs
 -W "--list --set --config --refresh --help" myalias
 -W "--proxy --help" k8swaggerui
--W "--config --clone --help" ws
+-W "--config --clone --list --load --status --help" ws
 -W "dev_tools_setup_scripts books utility_tools_setup_scripts env_setup_scripts gradlespace k8 configloader windowshare k8space samples-gradle myscriptrefs docker books-spring bin samples-code practicews springspace mycommands myconfig linux_tools --init --list --wslist --config --wsconfig --refresh --tags --help" qcd
 -W "dev_tools_setup_scripts books utility_tools_setup_scripts env_setup_scripts gradlespace k8 configloader windowshare k8space samples-gradle myscriptrefs docker books-spring bin samples-code practicews springspace mycommands myconfig linux_tools --init --list --wslist --config --wsconfig --refresh --tags --help" qcode
 -W "dev_tools_setup_scripts books utility_tools_setup_scripts env_setup_scripts gradlespace k8 configloader windowshare k8space samples-gradle myscriptrefs docker books-spring bin samples-code practicews springspace mycommands myconfig linux_tools --init --list --wslist --config --wsconfig --refresh --tags --help" qidea

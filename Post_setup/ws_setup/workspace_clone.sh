@@ -24,12 +24,12 @@ wsConfig="$curDir"/config/.wsConfig
 # }
 
 grep -v "^ *#" <"$wsConfig" | while IFS= read -r line; do
-    remoterepo=$(echo "$line" | awk '{ print $1 }')
-    shouldDwld=$(echo "$line" | awk '{ print $2 }')
-    branch=$(echo "$line" | awk '{ print $3 }')
-    localrepo=$(echo "$line" | awk '{ print $4 }')
-    tags=$(echo "$line" | awk '{ print $5 }')
-    qlink=$(echo "$line" | awk '{ print $6 }')
+    remoterepo=$(echo "$line" | awk '{ print $2 }')
+    shouldDwld=$(echo "$line" | awk '{ print $3 }')
+    branch=$(echo "$line" | awk '{ print $4 }')
+    localrepo=$(echo "$line" | awk '{ print $5 }')
+    tags=$(echo "$line" | awk '{ print $6 }')
+    qlink=$(echo "$line" | awk '{ print $7 }')
 
     echo -e "\nRepo: $remoterepo\nBranch: $branch\nWorkspace: $user_devroot/$repo_root/$localrepo\nShould download?: $(echo "$shouldDwld" | tr [:upper:] [:lower:])\nTags: $tags\nQuicklink: $qlink\n"
     [ $(echo "$shouldDwld" | tr [:upper:] [:lower:]) == "n" ] || git clone -b "$branch" "$remoterepo" "$user_devroot"/"$repo_root"/"$localrepo" 2>"$tempFile" || ([[ $(cat $tempFile | grep 'already exists') ]] && echo "Repo already exists" || echo "Error: $(cat $tempFile)")

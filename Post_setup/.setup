@@ -4,3 +4,8 @@
     cd ./workspace_backup
     ./.setup
 )
+
+(
+    cd ./ws_setup
+    ./.setup
+)

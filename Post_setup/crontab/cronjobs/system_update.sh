@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
-# echo -e "Running 'apt update'" | ts '[%Y-%m-%d %H:%M:%S]' >> "$(pwd)"/../cronlogs/system_update.log
-# sudo apt update | ts '[%Y-%m-%d %H:%M:%S]' >> "$(pwd)"/../cronlogs/system_update.log
+# NOTE:
+# } >> >(ts '[%Y-%m-%d %H:%M:%S]' >>/home/indranilnandy/MyTools/Linux_Tools/Post_setup/crontab/cronlogs/system_update.log) - NOT working for root/user, though ts is available and working
+# } >> >(ts >>/home/indranilnandy/MyTools/Linux_Tools/Post_setup/crontab/cronlogs/system_update.log) - NOT working for root/user, though ts is available and working
+# } >> /home/indranilnandy/MyTools/Linux_Tools/Post_setup/crontab/cronlogs/system_update.log - WORKING for root/user
+# } >> >(ts '[%Y-%m-%d %H:%M:%S]' >>"$(dirname "$BASH_SOURCE")/../cronlogs/$(basename "$BASH_SOURCE" .sh)".log) -NOT working for root/user (empty BASH_SOURCE), but WORKING when the script is run manually
 
-{
-    echo -e "Running 'apt update'"
-    sudo apt update
-    echo -e "Completed 'apt update'"
-} >> >(ts '[%Y-%m-%d %H:%M:%S]' >>"$(pwd)"/../cronlogs/system_update.log)
+echo "Running 'apt update'" | ts '[%Y-%m-%d %H:%M:%S]'
+apt update | ts '[%Y-%m-%d %H:%M:%S]'
+echo "Completed 'apt update'" | ts '[%Y-%m-%d %H:%M:%S]'
+echo

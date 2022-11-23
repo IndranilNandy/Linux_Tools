@@ -38,5 +38,5 @@ Dev_tools_setup_scripts/k8/config/.machineconfig
 Dev_tools_setup_scripts/k8/config/.credconfig
 .credconfig
 
-Post_setup/crontab/cronlogs/*.log
-Post_setup/crontab/cronjobs/generated/*.sh
+Post_setup/mycrontab/cronlogs/*.log
+Post_setup/mycrontab/cronjobs/generated/*.sh

@@ -54,6 +54,7 @@ backup_jobs() {
         dest_dir="$curDir"/cronbackups/mycron-defs/"$(date +%F:%H:%M:%S)"
         mkdir -p "$dest_dir"
         cp "$curDir"/.crontabs/.crontab-* "$dest_dir"
+        echo -e "Backup location [mycrontab def]: $dest_dir"
         ;;
     -cron-def)
         dest_file="$curDir"/cronbackups/cron-defs/backup-"$(date +%F:%H:%M:%S)"
@@ -66,6 +67,7 @@ backup_jobs() {
                 crontab -u "$user" -l | xargs -I ENTRY echo "echo \"$user ENTRY\" >> $dest_file" | bash
             fi
         done
+        echo -e "Backup location [crontab def]: $dest_file"
         ;;
 
     esac
@@ -82,6 +84,11 @@ clean_jobs() {
         echo -e "Jobs cleaned for user $user"
         ;;
     esac
+}
+
+clean_logs() {
+    rm "$curDir"/cronbackups/cron-defs/backup-* 2> /dev/null
+    find "$curDir"/cronbackups/mycron-defs/. ! -name '.' -type d -exec rm -rf {} \; 2> /dev/null
 }
 
 show_logs() {
@@ -122,16 +129,22 @@ case ${1} in
     backup_jobs "${2}"
     echo -e "Completed backing all existing jobs"
     ;;
---clean)
-    [[ -n "${2}" ]] || (echo -e "Missing second argument" && exit 1)
-    clean_jobs "${2}"
-    schedule
-    ;;
 --show-logs)
     show_logs
     ;;
 --show-backups)
     show_backups
+    ;;
+--clean)
+    [[ -n "${2}" ]] || (echo -e "Missing second argument" && exit 1)
+    mycrontab --backup -mycron-def
+    mycrontab --backup -cron-def
+    clean_jobs "${2}"
+    schedule
+    ;;
+--clean-logs)
+    clean_logs
+    echo -e "All logs cleaned"
     ;;
 --help)
     show_help

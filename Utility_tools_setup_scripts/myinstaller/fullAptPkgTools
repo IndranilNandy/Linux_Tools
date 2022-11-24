@@ -25,3 +25,4 @@ yamllint
 jq
 nodejs
 npm
+gawk

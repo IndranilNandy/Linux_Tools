@@ -50,12 +50,12 @@ show_jobs() {
 
 backup_jobs() {
     case "${1}" in
-    --mycron-def)
+    -mycron-def)
         dest_dir="$curDir"/cronbackups/mycron-defs/"$(date +%F:%H:%M:%S)"
         mkdir -p "$dest_dir"
         cp "$curDir"/.crontabs/.crontab-* "$dest_dir"
         ;;
-    --cron-def)
+    -cron-def)
         dest_file="$curDir"/cronbackups/cron-defs/backup-"$(date +%F:%H:%M:%S)"
         touch "$dest_file"
 

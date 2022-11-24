@@ -42,4 +42,4 @@ Post_setup/mycrontab/cronlogs/*.log
 Post_setup/mycrontab/cronjobs/generated/*.sh
 
 Post_setup/mycrontab/cronbackups/cron-defs/backup-*
-Post_setup/mycrontab/cronbackups/mycron-defs/
+Post_setup/mycrontab/cronbackups/mycron-defs/**/

@@ -1,0 +1,9 @@
+# [This is LOCAL configuration applicable to only current local machine, and shouldn't go to repo]
+########################################################################
+# User                          Job-definition
+########################################################################
+indranilnandy   11 * * * * sh $HOME/MyTools/Linux_Tools/Post_setup/mycrontab/cronjobs/testscript.sh
+indranilnandy   21 * * * * sh $HOME/MyTools/Linux_Tools/Post_setup/mycrontab/cronjobs/testscript.sh
+indranilnandy   31 * * * * sh $HOME/MyTools/Linux_Tools/Post_setup/mycrontab/cronjobs/testscript.sh
+indranilnandy   41 * * * * sh $HOME/MyTools/Linux_Tools/Post_setup/mycrontab/cronjobs/testscript.sh
+

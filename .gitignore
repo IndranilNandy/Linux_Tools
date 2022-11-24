@@ -40,3 +40,6 @@ Dev_tools_setup_scripts/k8/config/.credconfig
 
 Post_setup/mycrontab/cronlogs/*.log
 Post_setup/mycrontab/cronjobs/generated/*.sh
+
+Post_setup/mycrontab/cronbackups/cron-defs/backup-*
+Post_setup/mycrontab/cronbackups/mycron-defs/

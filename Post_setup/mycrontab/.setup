@@ -16,5 +16,5 @@ echo -e "${YELLOW}[mycrontab] Setup started${RESET}"
 
 # ./workspace_clone.sh
 yes | sudo ln -s -i "$(pwd)"/mycrontab_setup.sh "$MYCOMMANDSREPO"/mycrontab
-mycompl -W \"--config --help\" mycrontab
+mycompl -W \"--config --schedule ++job-name= ++job-path= --users --jobs --backup --clean --show-logs --show-backups --help\" mycrontab
 echo -e "${YELLOW}[mycrontab] Setup completed.${RESET}"

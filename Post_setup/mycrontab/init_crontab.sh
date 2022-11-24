@@ -25,14 +25,12 @@ handle_root_user() {
 
     # Form generated script's name
     script_path=$(echo "$def" | awk '{ print $NF }')
-    gen_script=$(basename "$script_path" .sh)_generated.sh
-    gen_script_path=$(dirname "$script_path")/generated/"$gen_script"
+    gen_script_path=$(dirname "$script_path")/generated/"$(basename "$script_path")"
 
     # Generate script
     generate_script "$script_path" "$gen_script_path"
     def=$(echo "$def" | sed "s#$script_path#$gen_script_path#")
 
-    [[ -f /tmp/crontab-"$user" ]] || touch /tmp/crontab-"$user"
     grep -q -F "$def" /tmp/crontab-"$user" || /bin/echo "$def" >>/tmp/crontab-"$user"
 }
 
@@ -46,14 +44,12 @@ add_job_to_cron() {
 
     # Form generated script's name
     script_path=$(echo "$def" | awk '{ print $NF }')
-    gen_script=$(basename "$script_path" .sh)_generated.sh
-    gen_script_path=$(dirname "$script_path")/generated/"$gen_script"
+    gen_script_path=$(dirname "$script_path")/generated/"$(basename "$script_path")"
 
     # Generate script
     generate_script "$script_path" "$gen_script_path"
     def=$(echo "$def" | sed "s#$script_path#$gen_script_path#")
 
-    [[ -f /tmp/crontab-"$user" ]] || touch /tmp/crontab-"$user"
     grep -q -F "$def" /tmp/crontab-"$user" || /bin/echo "$def" >>/tmp/crontab-"$user"
 }
 
@@ -68,20 +64,23 @@ create_job_definition() {
 
 create_crontab() {
 
-    grep -v "^ *#" "$curDir"/.crontab | grep -v "^$" | while IFS= read -r line; do
+    grep -v "^$" /etc/cron.allow | while IFS= read -r user; do
+        [[ -f /tmp/crontab-"$user" ]] || touch /tmp/crontab-"$user"
+    done
+
+    grep -v "^ *#" -h "$curDir"/.crontabs/.crontab-* | grep -v "^$" | while IFS= read -r line; do
         user=$(echo "$line" | tr -s ' ' | cut -f1 -d' ')
         def=$(echo "$line" | tr -s ' ' | cut -f2- -d' ' | sed "s#\$HOME#$HOME#")
 
+        [[ -f /tmp/crontab-"$user" ]] || touch /tmp/crontab-"$user"
         create_job_definition "$user" "$def"
     done
 
-    grep -v "^ *#" "$curDir"/.crontab | grep -v "^$" | while IFS= read -r line; do
-        user=$(echo "$line" | tr -s ' ' | cut -f1 -d' ')
-
+    grep -v "^$" /etc/cron.allow | while IFS= read -r user; do
         if [ "$user" == "root" ]; then
-            [[ -f /tmp/crontab-"$user" ]] && sudo crontab /tmp/crontab-"$user"
+            sudo crontab /tmp/crontab-"$user"
         else
-            [[ -f /tmp/crontab-"$user" ]] && crontab -u "$user" /tmp/crontab-"$user"
+            crontab -u "$user" /tmp/crontab-"$user"
         fi
         [[ ! -f /tmp/crontab-"$user" ]] || rm /tmp/crontab-"$user"
     done

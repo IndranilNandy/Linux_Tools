@@ -1,3 +1,4 @@
 tracelink
 prereq
 ifinstalled
+gawk

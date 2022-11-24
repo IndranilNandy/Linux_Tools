@@ -53,10 +53,6 @@ add_job_to_cron() {
     grep -q -F "$def" /tmp/crontab-"$user" || /bin/echo "$def" >>/tmp/crontab-"$user"
 }
 
-init() {
-    [[ -f /etc/cron.allow ]] || sudo touch /etc/cron.allow
-}
-
 create_job_definition() {
     allow_user_to_cron "${1}"
     add_job_to_cron "${1}" "${2}"
@@ -86,5 +82,4 @@ create_crontab() {
     done
 }
 
-init
 create_crontab

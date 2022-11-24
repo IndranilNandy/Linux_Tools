@@ -6,6 +6,12 @@ else
     curDir="$(pwd)"
 fi
 
+init() {
+    [[ -f /etc/cron.allow ]] || sudo touch /etc/cron.allow
+    [[ -f "$curDir"/.crontabs/.crontab-global ]] || touch "$curDir"/.crontabs/.crontab-global
+    [[ -f "$curDir"/.crontabs/.crontab-local ]] ||  touch "$curDir"/.crontabs/.crontab-local
+}
+
 edit_config() {
     editor -w "$curDir"/.crontabs/.crontab-*
     schedule
@@ -104,6 +110,9 @@ show_help() {
 }
 
 case ${1} in
+--init)
+    init
+    ;;
 --config)
     edit_config
     echo -e "Crontabs configured and jobs scheduled"

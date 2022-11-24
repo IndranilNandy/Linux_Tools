@@ -3,3 +3,4 @@
 # User                          Job-definition
 ########################################################################
 root            19 * * * * sh $HOME/MyTools/Linux_Tools/Post_setup/mycrontab/cronjobs/system_update.sh
+indranilnandy   11 * * * * sh $HOME/MyTools/Linux_Tools/Post_setup/mycrontab/cronjobs/testscript.sh

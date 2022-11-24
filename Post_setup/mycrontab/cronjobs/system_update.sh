@@ -10,3 +10,17 @@ echo "Running 'apt update'" | ts '[%Y-%m-%d %H:%M:%S]'
 apt update | ts '[%Y-%m-%d %H:%M:%S]'
 echo "Completed 'apt update'" | ts '[%Y-%m-%d %H:%M:%S]'
 echo
+
+echo "Running 'apt upgrade'" | ts '[%Y-%m-%d %H:%M:%S]'
+yes | apt upgrade | ts '[%Y-%m-%d %H:%M:%S]'
+echo "Completed 'apt upgrade'" | ts '[%Y-%m-%d %H:%M:%S]'
+echo
+
+echo "Running 'apt autoremove'" | ts '[%Y-%m-%d %H:%M:%S]'
+yes | apt autoremove | ts '[%Y-%m-%d %H:%M:%S]'
+echo "Completed 'apt autoremove'" | ts '[%Y-%m-%d %H:%M:%S]'
+echo
+
+echo "#####################DONE#####################"
+echo
+echo

@@ -9,7 +9,7 @@ prereq --install ".prereq"
 # Exit if still missing any prerequisite
 [[ $(prereq --missing ".prereq") ]] && echo -e "${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
 
-# Doing an exception for vscode. We are still creating the symlink even if vscode is already installed. This is needed after introducing soft leaning of the whole setup.
+# Doing an exception for vscode. We are still creating the symlink even if vscode is already installed. This is needed after introducing soft cleaning of the whole setup.
 yes | sudo ln -s -i $(pwd)/extensions/refresh_extension_list.sh $MYCOMMANDSREPO/code-ext
 mycompl -W \"--refresh --update --list --help\" code-ext
 

@@ -1,9 +1,4 @@
 # User              Job-definition
 ####################################
-indranilnandy   11 * * * * sh $HOME/MyTools/Linux_Tools/Post_setup/crontab/cronjobs/testscript.sh
-root            11 * * * * sh $HOME/MyTools/Linux_Tools/Post_setup/crontab/cronjobs/system_update.sh
-indranilnandy   14 * * * * sh $HOME/MyTools/Linux_Tools/Post_setup/crontab/cronjobs/testscript.sh
-indranilnandy   15 * * * * sh $HOME/MyTools/Linux_Tools/Post_setup/crontab/cronjobs/testscript.sh
-indranilnandy   16 * * * * sh $HOME/MyTools/Linux_Tools/Post_setup/crontab/cronjobs/testscript.sh
-indranilnandy   17 * * * * sh $HOME/MyTools/Linux_Tools/Post_setup/crontab/cronjobs/testscript.sh
-indranilnandy   21 * * * * sh $HOME/MyTools/Linux_Tools/Post_setup/crontab/cronjobs/testscript.sh
+indranilnandy   11 * * * * sh $HOME/MyTools/Linux_Tools/Post_setup/mycrontab/cronjobs/testscript.sh
+root            19 * * * * sh $HOME/MyTools/Linux_Tools/Post_setup/mycrontab/cronjobs/system_update.sh

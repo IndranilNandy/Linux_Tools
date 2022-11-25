@@ -1,1 +1,0 @@
-# Directory containing all cronjob logs

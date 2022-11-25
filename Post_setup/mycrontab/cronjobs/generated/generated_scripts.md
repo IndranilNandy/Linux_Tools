@@ -1,1 +1,0 @@
-# This directory contains all the generated scripts for the cronjobs

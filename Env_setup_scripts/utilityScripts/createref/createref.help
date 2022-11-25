@@ -6,17 +6,17 @@ Description:
     $HOME/.myconfig/.configloader/.reflaoder    - contains all the script references to various Linux_Tools setup scripts. These are one-liners executing those referred scripts in corresponding script-directories.
 
 Usage:
-    createref <scriptname> <scriptpath> [refname]
+    createref <scriptname> <scriptpath> [<refname>]
         create a reference of scriptname in refloader directory. refname is optional. If provided, refname will be the name of the reference in refloader.
-        <scriptpath>: script-command
+        <scriptname>: script-command/name
         <scriptpath>: absolue path of script-location
+        <refname>   : reference name of the script in refloader
     createref --help
     createref
         Shows help contents.
 
 Examples:
-    createref .initCluster "$HOME/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8"
+    createref .initCluster "$HOME/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8" icref
     createref .setup $HOME/MyTools/Linux_Tools setup-full
     createref --help
     createref
-    

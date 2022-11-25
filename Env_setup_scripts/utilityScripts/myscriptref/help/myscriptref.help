@@ -1,6 +1,6 @@
 Description:
     [ Reference to script references ]
-    
+
     $HOME/.myconfig/.configloader/.reflaoder    - contains all the script references to various Linux_Tools setup scripts. These are one-liners executing those referred scripts in corresponding script-directories.
     /usr/local/bin/myscriptrefs                 - contains all the symlinks to the script references in the aforementioned directory (.reflaoder).
     .refconfig                                  - list of original script commands for which refs to be created.
@@ -19,14 +19,17 @@ How to add a new entry?
 
     Option 2:
     [PROGRAMMATIC] This would directly add script ref to refloader, on entry is saved in .refconfig. This mainly to be used in any script which is always run as part of the system setup.
-    1. Run 'myscriptref --create' -> add script ref to refloader.
+    1. Run 'myscriptref --create [refname]' -> add script ref to refloader. refname is optional. If provided, refname will be the name of the reference in refloader.
     2. This will automatically call 'myscriptref --sym' to create symlinks. So no need to run any other command manually.
     3. Run 'mycompl --config' or 'mycompl <tab_completion_logic>' to add tab-completion
     4. Run 'myalias --config' -> run this to add a myalias if you may want
 
 Usage:
-    myscriptref --create
-        Add new script refs to refloader directly. 
+    myscriptref --create <scriptname> <scriptpath> [<refname>]
+        Add new script refs to refloader directly.
+        <scriptname>: script-command/name
+        <scriptpath>: absolue path of script-location
+        <refname>   : reference name of the script in refloader
         NOTE: it doesn't keep any entry in .refconfig (i.e., is NOT saved to be used in any other setup), and this is the difference with --config option.
         Hence, it is not advised to run it manually. Though, this can be used in any other script in a programmatic way (to make it available like default commands), which will always run as part of a system setup script, so that the refs are automatically added to the refloader in any fresh setup.
     myscriptref --sym
@@ -49,7 +52,7 @@ Usage:
 
 Examples:
     myscriptref --create .setup $HOME/MyTools/Linux_Tools setup-full
-    myscriptref --create .initCluster "$HOME/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8"
+    myscriptref --create .initCluster "$HOME/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8" icref
     myscriptref --sym
     myscriptref --ref
     myscriptref --sync

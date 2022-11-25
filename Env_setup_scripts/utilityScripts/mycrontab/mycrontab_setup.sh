@@ -49,7 +49,7 @@ show_jobs() {
         ;;
     -u=*)
         user=$(echo "${1}" | awk -F"=" '{ print $2 }')
-        grep -v "^ *#" -h "$curDir"/.crontabs/.crontab-* | grep -v "^$" | grep "$user"
+        grep -v "^ *#" -h "$curDir"/.crontabs/.crontab-* | grep -v "^$" | awk -v user="$user" ' $1==user { print $0 }'
         ;;
     esac
 }
@@ -136,12 +136,10 @@ case ${1} in
     show_users
     ;;
 --jobs)
-    [[ -n "${2}" ]] || (echo -e "Missing second argument" && exit 1)
-    show_jobs "${2}"
+    show_jobs "${2:--a}"
     ;;
 --backup)
-    backup_jobs "${2}"
-    # echo -e "Completed backing all existing jobs"
+    ([[ -n "${2}" ]] && backup_jobs "${2}") || (backup_jobs "-cron-def" && backup_jobs "-mycron-def")
     ;;
 --show-logs)
     show_logs

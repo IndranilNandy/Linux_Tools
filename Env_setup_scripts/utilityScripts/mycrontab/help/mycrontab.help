@@ -94,7 +94,7 @@ Usage:
     mycrontab --jobs -a/-u
         1. Shows all the mycrontab as well as crontab jobs.
         2. REMEMBER to not use crontab along with mycrontab. Migrate crontab jobs to mycrontab.
-        3. Two sub options available.
+        3. Two sub options available. Default option is '-a'.
             mycrontab --backup -a
                 backup all jobs (mycrontab + cronab) for all users.
             mycrontab --backup -u=<user>
@@ -102,7 +102,7 @@ Usage:
 
     mycrontab --backup -cron-def/-mycron-def
         1. Backup all the jobs of all users.
-        2. Two sub options available.
+        2. Two sub options available. If no sub option is provided, then both will be executed.
             mycrontab --backup -cron-def
                 backup crontab jobs for all users.
             mycrontab --backup -mycron-def
@@ -141,8 +141,10 @@ Examples:
     mycrontab --job-name='script_name'
     mycrontab --job-path='script_absolute_path'
     mycrontab --users
+    mycrontab --jobs
     mycrontab --jobs -a
     mycrontab --jobs -u='user'
+    mycrontab --backup
     mycrontab --backup -cron-def
     mycrontab --backup --mycron-def
     mycrontab --show-logs

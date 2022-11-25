@@ -33,14 +33,15 @@
 # Runtime created symlinks
 .fullAptPkgTools
 .fullSnapPkgTools
+
 Dev_tools_setup_scripts/k8/config/.clusterconfig
 Dev_tools_setup_scripts/k8/config/.machineconfig
 Dev_tools_setup_scripts/k8/config/.credconfig
 .credconfig
 
-Post_setup/mycrontab/.crontabs/.crontab-local
-Post_setup/mycrontab/cronlogs/*.log
-Post_setup/mycrontab/cronjobs/generated/*.sh
+Env_setup_scripts/utilityScripts/mycrontab/.crontabs/.crontab-local
+Env_setup_scripts/utilityScripts/mycrontab/cronlogs/*.log
+Env_setup_scripts/utilityScripts/mycrontab/cronjobs/generated/*.sh
 
-Post_setup/mycrontab/cronbackups/cron-defs/backup-*
-Post_setup/mycrontab/cronbackups/mycron-defs/**/
+Env_setup_scripts/utilityScripts/mycrontab/cronbackups/cron-defs/backup-*
+Env_setup_scripts/utilityScripts/mycrontab/cronbackups/mycron-defs/**/

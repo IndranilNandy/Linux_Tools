@@ -92,9 +92,14 @@ clean_jobs() {
     esac
 }
 
-clean_logs() {
+clean_backups() {
     rm "$curDir"/cronbackups/cron-defs/backup-* 2> /dev/null
     find "$curDir"/cronbackups/mycron-defs/. ! -name '.' -type d -exec rm -rf {} \; 2> /dev/null
+}
+
+clean_logs() {
+    rm "$curDir"/cronlogs/*.log
+    # find "$curDir"/cronbackups/mycron-defs/. ! -name '.' -type d -exec rm -rf {} \; 2> /dev/null
 }
 
 show_logs() {
@@ -121,10 +126,10 @@ case ${1} in
     schedule
     echo -e "All the jobs scheduled"
     ;;
-++job-name=*)
+--job-name=*)
     new_job_editor "${1}"
     ;;
-++job-path=*)
+--job-path=*)
     add_new_job_from_path "${1}"
     ;;
 --users)
@@ -136,7 +141,7 @@ case ${1} in
     ;;
 --backup)
     backup_jobs "${2}"
-    echo -e "Completed backing all existing jobs"
+    # echo -e "Completed backing all existing jobs"
     ;;
 --show-logs)
     show_logs
@@ -154,6 +159,10 @@ case ${1} in
 --clean-logs)
     clean_logs
     echo -e "All logs cleaned"
+    ;;
+--clean-backups)
+    clean_backups
+    echo -e "All backups cleaned"
     ;;
 --help)
     show_help

@@ -9,3 +9,8 @@
     cd ./ws_setup
     ./.setup
 )
+
+(
+    cd ./cron_setup
+    ./.setup
+)

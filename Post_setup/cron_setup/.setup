@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo -e "${YELLOW}Setting up all mycrontab jobs${RESET}"
+[[ -n $(which ws) ]] || (echo -e "Missing mycrontab. Not scheduling any job" && exit 1)
+
+mycrontab --backup -cron-def
+mycrontab --backup -mycron-def
+mycrontab --init
+
+echo -e "${YELLOW}Completed scheduling all mycrontab jobs${RESET}"
+

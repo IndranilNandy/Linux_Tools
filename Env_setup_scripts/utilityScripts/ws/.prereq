@@ -2,4 +2,5 @@ tracelink
 prereq
 ifinstalled
 mycompl
+myscriptref
 git

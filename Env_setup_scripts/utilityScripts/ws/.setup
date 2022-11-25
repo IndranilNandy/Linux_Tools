@@ -18,8 +18,4 @@ echo -e "${YELLOW}[ws] Setup started${RESET}"
 myscriptref --create workspace_setup.sh "$HOME"/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/ws ws
 mycompl -W \"--config --clone --list --load --status --help\" ws
 
-echo -e "${YELLOW}[Started fetching all repositories]${RESET}"
-# ws --clone
-echo -e "${YELLOW}[Completed fetching all repositories.]${RESET}"
-
 echo -e "${YELLOW}[ws] Setup completed.${RESET}"

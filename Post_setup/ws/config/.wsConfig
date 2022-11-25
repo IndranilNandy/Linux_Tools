@@ -1,9 +1,0 @@
-###################################################################################################################
-# SerialNo------->Remote------->ShouldDownload?[y/n]------->DefaultBranch------->Local------->Tags------->QuickLink
-###################################################################################################################
-1. https://github.com/IndranilNandy/PowershellTools.git                                             y   dev-linux   Tools/PowershellTools/          tools,powershell
-2. https://github.com/IndranilNandy/DevAssistDocs.git                                               y   master      Tools/DevAssistDocs             tools,devassist
-3. https://github.com/IndranilNandy/T29.git                                                         n   c           T29local
-4. https://github.com/IndranilNandy/Books-Microservices-with-Spring-Boot-and-Spring-Cloud-2E.git    y   main        CodeSamples/Book-SourceCodes/Spring/Microservices-with-Spring-Boot-and-Spring-Cloud-2E      spring,books,codesamples        books-microsvc
-5. https://github.com/IndranilNandy/PracticeWS.git                                                  y   master      PracticeWS                      practice                practice                                             practice
-6. https://github.com/IndranilNandy/Samples.git                                                     y   master      CodeSamples/AggregatedSamples   samples                 samples-aggr

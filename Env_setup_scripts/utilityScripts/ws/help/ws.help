@@ -1,0 +1,33 @@
+Description:
+    Provides workspace setup, configuration support from user git repositories.
+
+    .wsConfig: Repo configurations
+
+How to add/update/delete an entry?
+    Run 'ws --config'
+                                -> it opens the config file (.wsConfig) in your editor
+                                -> create/delete/update any entry
+                                -> save and exit
+
+Usage:
+    ws --config
+        This will open config file (.wsConfig) in your default editor to enable the user to edit them for addition/deletion/update.
+    ws --clone
+        This will clone all the repositories mentioned in the config file (.wsConfig)
+    ws --list
+        This will list all the git workspaces along with their configurations
+    ws --load #SerialNo
+        Given a SerialNo for a particular workspace (get the SerialNo by running 'ws --list'), this will change the current directory to the corresponding workspace in a sub-shell.
+        To go back, type 'exit' or press 'ctrl + d'
+    ws --status
+        This shows the status of all the workspaces.
+    ws --help
+        Help content of ws.
+
+Examples:
+    ws --config
+    ws --clone
+    ws --list
+    ws --load 2
+    ws --status
+    ws --help

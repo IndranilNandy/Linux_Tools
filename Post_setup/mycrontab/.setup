@@ -14,10 +14,12 @@ prereq --install ".prereq"
 
 echo -e "${YELLOW}[mycrontab] Setup started${RESET}"
 
-# ./workspace_clone.sh
-yes | sudo ln -s -i "$(pwd)"/mycrontab_setup.sh "$MYCOMMANDSREPO"/mycrontab
+# yes | sudo ln -s -i "$(pwd)"/mycrontab_setup.sh "$MYCOMMANDSREPO"/mycrontab
+myscriptref --create mycrontab_setup.sh $HOME/MyTools/Linux_Tools/Post_setup/mycrontab mycrontab
+
 mycrontab --backup -cron-def
 mycrontab --backup -mycron-def
 mycrontab --init
+
 mycompl -W \"--config --schedule --job-name= --job-path= --users --jobs --backup --show-logs --show-backups --clean --clean-logs --clean-backups --help -a -u= -mycron-def -cron-def\" mycrontab
 echo -e "${YELLOW}[mycrontab] Setup completed.${RESET}"

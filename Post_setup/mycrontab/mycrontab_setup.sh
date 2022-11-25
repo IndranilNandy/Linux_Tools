@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-if [[ -L $(which mycrontab) ]]; then
-    curDir="$(dirname "$(tracelink mycrontab)")"
-else
+# if [[ -L $(which mycrontab) ]]; then
+#     curDir="$(dirname "$(tracelink mycrontab)")"
+# else
     curDir="$(pwd)"
-fi
+# fi
 
 init() {
     [[ -f /etc/cron.allow ]] || sudo touch /etc/cron.allow

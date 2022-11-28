@@ -4,3 +4,5 @@
 ########################################################################
 root            19 * * * * sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/system_update.sh
 indranilnandy   11 * * * * sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/testscript.sh
+root            52 * * * * sh export DISPLAY=:0.0 && $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/testscript.sh
+

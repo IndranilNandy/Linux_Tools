@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+export DISPLAY=:0.0
 echo "Running script" | ts '[%Y-%m-%d %H:%M:%S]'
 date | ts
+/usr/bin/gnome-terminal --window -e "echo testing"
 source /home/indranilnandy/.bashrc
 export PATH="$PATH":/usr/local/bin/mycommands
 ws --help

@@ -164,10 +164,14 @@ qcode() {
         cat "$curDir"/.funcs/qcd/qcode.help
         ;;
     '')
-        cat "$curDir"/.funcs/qcd/qcode.help
+        code . &
         ;;
     *)
-        (qcd "${1}" && code .)
+        if [[ "${1}" == "." ]]; then
+            code . &
+        else
+            (qcd "${1}" && code .)
+        fi
         ;;
     esac
 }
@@ -214,10 +218,14 @@ qidea() {
         cat "$curDir"/.funcs/qcd/qidea.help
         ;;
     '')
-        cat "$curDir"/.funcs/qcd/qidea.help
+        intellij-idea-community . &
         ;;
     *)
-        (qcd "${1}" && intellij-idea-community .)
+        if [[ "${1}" == "." ]]; then
+            intellij-idea-community . &
+        else
+            (qcd "${1}" && intellij-idea-community .)
+        fi
         ;;
     esac
 }
@@ -263,16 +271,20 @@ qn() {
         cat "$curDir"/.funcs/qcd/qn.help
         ;;
     '')
-        cat "$curDir"/.funcs/qcd/qn.help
+        eval "nautilus . &"
         ;;
     *)
         for dir in $(echo "$@" | xargs -n1); do
             [[ -z ${mydirs[$dir]} ]] && buildqcdmap
-            eval "nautilus ${mydirs[$dir]}"
+            if [[ "$dir" == "." ]]; then
+                eval "nautilus . &"
+            else
+                eval "nautilus ${mydirs[$dir]} &"
+            fi
         done
         ;;
     esac
 }
 
-# No need call it here during .bashrc loading, it will increase load-time
+# No need to call it here during .bashrc loading, it will increase load-time
 # buildqcdmap

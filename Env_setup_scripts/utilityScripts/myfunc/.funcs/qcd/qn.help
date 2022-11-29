@@ -14,7 +14,11 @@ How to add a new entry?
 
 Usage:
     qn <list of dirs>
+    qn .
+    qn
         Open all dirs in Nautilus.
+        If the list of dirs is empty, then it will open the current directory in Nautilus.
+        '.' will be treated as a valid argument, and it'll open the current directory in Nautilus.
     qn --init
         Initialize the map from dir-alias to dir-target. If the map is empty (which is the case for a new terminal), running any of the above-mentioned two commands will implicitly initialize it.
     qn --list
@@ -29,12 +33,14 @@ Usage:
         Update tab-completions for new entries.
     qn --tags
         Show all tags for all workspaces.
-    qn
     qn --help
         Help content of qn.
 
 Examples:
     qn linux_tools k8
+    qn . k8
+    qn .
+    qn
     qn --init
     qn --list
     qn --wslist
@@ -42,5 +48,4 @@ Examples:
     qn --wsconfig
     qn --refresh
     qn --tags
-    qn
     qn --help

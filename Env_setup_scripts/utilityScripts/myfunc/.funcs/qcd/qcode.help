@@ -14,7 +14,10 @@ How to add a new entry?
 
 Usage:
     qcode <workspace>
+    qcode .
+    qcode
         Open the workspace in vscode.
+        If workspace is null or ".", then it will open the current directory as a workspace in vscode.
     qcode --init
         Initialize the map from dir-alias to dir-target. If the map is empty (which is the case for a new terminal), running any of the above-mentioned two commands will implicitly initialize it.
     qcode --list
@@ -29,12 +32,13 @@ Usage:
         Update tab-completions for new entries.
     qcode --tags
         Show all tags for all workspaces.
-    qcode
     qcode --help
         Help content of qcode.
 
 Examples:
     qcode linux_tools
+    qcode .
+    qcode
     qcode --init
     qcode --list
     qcode --wslist
@@ -42,5 +46,4 @@ Examples:
     qcode --wsconfig
     qcode --refresh
     qcode --tags
-    qcode
     qcode --help

@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
-export DISPLAY=:0.0
+# export DISPLAY=:0.0
 echo "Running script" | ts '[%Y-%m-%d %H:%M:%S]'
 date | ts
-/usr/bin/gnome-terminal --window -e "echo testing"
-source /home/indranilnandy/.bashrc
-export PATH="$PATH":/usr/local/bin/mycommands
+# /usr/bin/gnome-terminal --window -e "echo testing"
+# source /home/indranilnandy/.bashrc
+export PATH="$PATH":/usr/local/bin/mycommands:/usr/local/bin/myscriptrefs
 ws --help
+qcd --help
 # /home/indranilnandy/MyTools/Linux_Tools/Post_setup/mycrontab/cronjobs/test.sh
 # /home/indranilnandy/MyTools/Linux_Tools/Post_setup/ws_setup/workspace_setup.sh --help
 echo "bash_source=$BASH_SOURCE"

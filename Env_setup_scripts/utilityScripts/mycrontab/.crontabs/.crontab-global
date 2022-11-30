@@ -6,7 +6,7 @@ root            19 * * * * sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilit
 # root            52 * * * * sh export DISPLAY=:0.0 && $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/testscript.sh
 indranilnandy   46 * * * * sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/testscript.sh
 # indranilnandy   32 * * * * BASH_ENV=$HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/preload.sh bash -l $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/sdkman_update.sh
-indranilnandy   44 * * * * sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/sdkman_update.sh
+indranilnandy   * * * * 0 sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/sdkman_update.sh
 # indranilnandy   45 * * * * BASH_ENV=$HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/preload.sh sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/sdkman_update.sh
 
 

@@ -18,6 +18,7 @@ generate_script() {
     ${1}
 } >> "$(dirname "${1}")/../cronlogs/$(basename "${1}" .sh)".log
 EOF
+    chmod +x "${1}"
 }
 
 handle_root_user() {
@@ -66,7 +67,7 @@ create_crontab() {
 
     grep -v "^ *#" -h "$curDir"/.crontabs/.crontab-* | grep -v "^$" | while IFS= read -r line; do
         user=$(echo "$line" | tr -s ' ' | cut -f1 -d' ')
-        def=$(echo "$line" | tr -s ' ' | cut -f2- -d' ' | sed "s#\$HOME#$HOME#")
+        def=$(echo "$line" | tr -s ' ' | cut -f2- -d' ' | sed "s#\$HOME#$HOME#g")
 
         [[ -f /tmp/crontab-"$user" ]] || touch /tmp/crontab-"$user"
         create_job_definition "$user" "$def"

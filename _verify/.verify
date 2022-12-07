@@ -8,28 +8,28 @@ for x in $(cat .allTools); do
     tool=$(echo "$x" | sed 's/\(.*\):.*/\1/')
 
     if [[ $(ifinstalled $cmd) ]]; then
-        echo "$tool:installed"
+        printf "%-50s %s\n" "$tool" ":installed"
     else
         case $cmd in
         java)
             # TODO: HARDCODED path needs to be changed
-            "$HOME"/MyTools/Linux_Tools/Dev_tools_setup_scripts/jdk/.check_installation.sh && -e "$tool:installed" || echo -e "$tool:NOT installed"
+            "$HOME"/MyTools/Linux_Tools/Dev_tools_setup_scripts/jdk/.check_installation.sh && echo -e "$tool:installed" || echo -e "$tool:NOT installed"
             ;;
         gradle)
-            which gradle > /dev/null && echo -e "$tool:installed" || echo -e "$tool:NOT installed"
+            which gradle >/dev/null && printf "%-50s %s\n" "$tool" ":installed" || printf "%-50s %s\n" "$tool" ":NOT installed"
             ;;
         sdk)
-            bash --init-file <(echo -e "source ~/.bashrc; sdk version > /dev/null 2>&1 || exit 1; exit 0;") && echo -e "$tool:installed" || echo -e "$tool:NOT installed"
+            bash --init-file <(echo -e "source ~/.bashrc; sdk version > /dev/null 2>&1 || exit 1; exit 0;") && printf "%-50s %s\n" "$tool" ":installed" || printf "%-50s %s\n" "$tool" ":NOT installed"
             ;;
         winmerge)
             if [[ -e $HOME/'.wine/drive_c/Program Files/WinMerge/WinMergeU.exe' ]]; then
-                echo "$tool:installed"
+                printf "%-50s %s\n" "$tool" ":installed"
             else
-                echo "$tool:NOT installed"
+                printf "%-50s %s\n" "$tool" ":NOT installed"
             fi
             ;;
         *)
-            echo "$tool:NOT installed"
+            printf "%-50s %s\n" "$tool" ":NOT installed"
             ;;
         esac
     fi

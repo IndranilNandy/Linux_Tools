@@ -2,12 +2,13 @@
 ########################################################################
 # User                          Job-definition
 ########################################################################
-root            */45 */11 * * 0           sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/system_update.sh
-indranilnandy   */45 * * * *           sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/testscript.sh
-indranilnandy   */45 */11 * * 0           sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/sdkman_update.sh
+root            */45 */11 * * 0     sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/system_update.sh
+root            */45 */11 * * 0     sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/clean_system.sh
+indranilnandy   */45 * * * *        sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/testscript.sh
+indranilnandy   */45 */11 * * 0     sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/sdkman_update.sh
 indranilnandy   */45 */11 1-7 * 3   sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/mycrontab_clean_logs.sh
 indranilnandy   */45 */10 1-7 * 3   sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/mycrontab_clean_all_backups.sh
-indranilnandy   */45 */10 * * *   sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/mycrontab_backup_all_jobs.sh
+indranilnandy   */45 */10 * * *     sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/mycrontab_backup_all_jobs.sh
 
 
 # root            52 * * * *        sh export DISPLAY=:0.0 && $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/testscript.sh

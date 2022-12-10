@@ -25,3 +25,5 @@ yamllint
 jq
 gawk
 htop
+bleachbit
+stacer

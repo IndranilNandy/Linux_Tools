@@ -82,8 +82,8 @@ case ${1} in
     xargs -I X echo "grep -q X  \"\$curDir\"/../../_verify/.allTools || echo \"X:X\" >> \"\$curDir\"/../../_verify/.allTools" <"$localList" | bash
     ;;
 --list)
-    cat $localList | xargs -I X echo "[[ \$(ifinstalled X) ]] && echo "APT- Already installed X" " | bash
-    cat $localSnapList | xargs -I X echo "[[ \$(ifinstalled X) ]] && echo "SNAP- Already installed X" " | bash
+    cat $localList | xargs -I X echo "[[ \$(ifinstalled X) ]] && printf \"%-10s %s %s\n\" \"APT\" \": Already installed\" 'X' " | bash
+    cat $localSnapList | xargs -I X echo "[[ \$(ifinstalled X) ]] && printf \"%-10s %s %s\n\" \"SNAP\" \": Already installed\" 'X' " | bash
     ;;
 --help)
     cat $curDir/myinstaller.help

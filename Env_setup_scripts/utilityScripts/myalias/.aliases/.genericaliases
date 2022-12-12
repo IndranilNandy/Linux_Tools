@@ -17,3 +17,5 @@ s=shutdown now
 
 listjava=sdk list java | grep "installed"
 listgradle=sdk list gradle | grep "\*" | grep -v "installed"
+
+sstarter=springstarter

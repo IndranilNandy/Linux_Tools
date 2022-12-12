@@ -45,7 +45,7 @@ fetch_project() {
 
 merge_build_files() {
     echo -e "\nMerging files:\n${1}\n${2}"
-    p4merge -nb "Ignore this file as base!" -nl "Current Build File" -nr "Downloaded Build File" -nm "Merged Build File" "${1}" "${1}" "${2}" "${1}" 2> /dev/null
+    p4merge -nb "Current Build File" -nl "Ignore this file as it is same as the current build file!" -nr "Downloaded Build File" -nm "Merged Build File" "${1}" "${1}" "${2}" "${1}" 2> /dev/null
     echo -e "\nMerged into:\n${1}"
 }
 

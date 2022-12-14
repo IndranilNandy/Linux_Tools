@@ -19,3 +19,6 @@ listjava=sdk list java | grep "installed"
 listgradle=sdk list gradle | grep "\*" | grep -v "installed"
 
 sstarter=springstarter
+
+k700=kill $(sudo lsof -i -P -n | grep -E "700.*" | awk '\''{ print $2 }'\'')
+k8080=kill $(sudo lsof -i -P -n | grep -E "8080" | awk '\''{ print $2 }'\'')

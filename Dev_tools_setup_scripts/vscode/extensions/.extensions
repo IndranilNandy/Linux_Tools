@@ -158,3 +158,7 @@ ms-vscode.powershell
 dbaeumer.vscode-eslint
 
 juhahinkula.thymeleaf
+
+richardwillis.vscode-spotless-gradle
+
+tahabasri.snippets

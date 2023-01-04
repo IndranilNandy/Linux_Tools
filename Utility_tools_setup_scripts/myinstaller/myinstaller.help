@@ -1,12 +1,12 @@
 Description:
-    Customized installer to install/uninstall all/specific APT/SNAP packages (listed in .localAptPkgTools/fullAptPkgTools/.localSnapPkgTools/fullSnapPkgTools).
-    .localAptPkgTools/.localSnapPkgTools: 
-        - Lists all the APT/SNAP packages installed (with myinstaller only) in the current setup/system only. 
-        - Every new installation of package using minstaller tool will add that package in this list, and uninstallation removes it from this list. 
+    Customized installer to install/uninstall all/specific APT/SNAP/NPM packages (listed in .localAptPkgTools/fullAptPkgTools/.localSnapPkgTools/fullSnapPkgTools).
+    .localAptPkgTools/.localSnapPkgTools/.localNpmPkgTools:
+        - Lists all the APT/SNAP/NPM packages installed (with myinstaller only) in the current setup/system only.
+        - Every new installation of package using minstaller tool will add that package in this list, and uninstallation removes it from this list.
         - Hence, this list shows the current snapshot of the system.
         - '--uninstall --FULL' uses this list.
-    fullAptPkgTools/fullSnapPkgTools:
-        - Lists superset of any APT/SNAP packages installed across system and time.
+    fullAptPkgTools/fullSnapPkgTools/fullNpmPkgTools:
+        - Lists superset of any APT/SNAP/NPM packages installed across system and time.
         - Any uninstallation doesn't remove any entry from this list.
         - Installation of any new APT package anytime in any system adds new entry in this list, if that was missing.
         - '--install --FULL' option uses this list, and copies each entry to .localAptPkgTools if missing.
@@ -49,8 +49,8 @@ Usage:
         Lists all the installed packages in the current snapshot of the system.
         .localAptPkgTools/.localSnapPkgTools represents the current snapshot of the system.
         Effectively it lists all the packages from .localAptPkgTools/.localSnapPkgTools
-    
-    myinstaller --help 
+
+    myinstaller --help
     myinstaller
         Shows the help contents.
 

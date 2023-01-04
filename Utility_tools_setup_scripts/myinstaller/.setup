@@ -7,11 +7,14 @@ prereq --install ".prereq"
 [[ $(prereq --missing ".prereq") ]] && echo -e "${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
 
 # Putting all tools again, if missed during post installation last time
-xargs -I X echo "grep -q X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <.localAptPkgTools | bash
-xargs -I X echo "grep -q X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <.fullAptPkgTools | bash
+xargs -I X echo "grep -q X:X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <.localAptPkgTools | bash
+xargs -I X echo "grep -q X:X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <.fullAptPkgTools | bash
 
-xargs -I X echo "grep -q X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <.localSnapPkgTools | bash
-xargs -I X echo "grep -q X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <.fullSnapPkgTools | bash
+xargs -I X echo "grep -q X:X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <.localSnapPkgTools | bash
+xargs -I X echo "grep -q X:X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <.fullSnapPkgTools | bash
+
+xargs -I X echo "grep -q X:X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <.localNpmPkgTools | bash
+xargs -I X echo "grep -q X:X  ../../_verify/.allTools || echo \"X:X\" >> ../../_verify/.allTools" <.fullNpmPkgTools | bash
 
 # Check if it is already installed
 [[ -n $(which myinstaller) ]] && echo -e "\n${GREEN}[myinstaller] Already installed. Exiting.${RESET}" && exit 0
@@ -20,7 +23,7 @@ echo -e "${YELLOW}[myinstaller] Setup process started.${RESET}"
 
 ./myinstaller.sh --install --FULL
 
-sudo ln -s -i $(pwd)/myinstaller.sh $MYCOMMANDSREPO/myinstaller
+sudo ln -s -i "$(pwd)"/myinstaller.sh "$MYCOMMANDSREPO"/myinstaller
 
 mycompl -W \"--install --uninstall --list --help --FULL --LOCAL\" myinstaller
 

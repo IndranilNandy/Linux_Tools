@@ -1,0 +1,1 @@
+n           sudo npm ls -g n | awk 'NR==2' | grep n

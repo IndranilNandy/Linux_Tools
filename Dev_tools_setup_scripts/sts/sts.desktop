@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=true
+Name=Spring Tool Suite
+Comment=Launches Spring Tool Suite
+Icon=/opt/sts/icon.xpm
+Exec=/opt/sts/SpringToolSuite4

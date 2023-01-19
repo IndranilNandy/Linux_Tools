@@ -6,12 +6,17 @@ Entry script:
     ./.setup: call this for installation
 
 Installers:
-    ./androidstudio_installer_from_binary.sh: installs from downloaded binary. This is the default installation. But, you need to update the download link periodically in the script.
-    ./androidstudio_installer_from_official_repo.sh: installs using official repository
-    ./androidstudio_installer_with_snap.sh: installs using snap
+    ./androidstudio_installer.sh: this is the main installer
+    ./installers/androidstudio_installer_from_binary.sh: installs from downloaded binary. This is the default installation. But, you need to update the download link periodically in the script.
+    ./installers/androidstudio_installer_from_official_repo.sh: installs using official repository
+    ./installers/androidstudio_installer_with_snap.sh: installs using snap
 
 
 Uninstallers:
-    ./androidstudio_uninstaller_from_binary.sh: removed the binary directly from /opt/android-studio
-    ./androidstudio_uninstaller_from_official_repo.sh: uninstalls using apt
-    ./androidstudio_uninstaller_with_snap.sh: uninstalls using snap
+    ./androidstudio_uninstaller.sh: this is the main uninstaller
+    ./uninstallers/androidstudio_uninstaller_from_binary.sh: removed the binary directly from /opt/android-studio
+    ./uninstallers/androidstudio_uninstaller_from_official_repo.sh: uninstalls using apt
+    ./uninstallers/androidstudio_uninstaller_with_snap.sh: uninstalls using snap
+
+Note:
+    Use 'sdkmanager' command to list, install, update, uninstall packages. See 'sdkmanager --help'

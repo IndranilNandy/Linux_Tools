@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Ref: https://developer.android.com/studio/command-line/sdkmanager
+
 ANDROID_SDK="$HOME"/Android/Sdk
 
 install_android_sdk_cmd_tools_from_binary() {
@@ -39,6 +41,11 @@ add_env_var() {
     fi
 
     (grep -v " *#" "$envloader" | grep -q -E "$androidhome") || echo "$androidhome" >>"$envloader"
+
+    # . ~/.bashrc
+
+    # export ANDROID_HOME="$ANDROID_SDK"
+    # export PATH="$PATH":"$tools":"$bin":"$platformtools":"$buildtools"
 }
 
 install_android_sdk_cmd_tools_from_binary && add_env_var

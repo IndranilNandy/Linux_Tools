@@ -21,5 +21,8 @@ remove_env_vars() {
     sed -i "s@\(.*\):$buildtools\(.*\)@\1\2@" "$envloader"
 }
 
-remove_env_vars
+remove_android_sdk_home() {
+    [[ -d "$HOME"/Android ]] && rm -rf "$HOME"/Android
+}
 
+remove_env_vars && remove_android_sdk_home

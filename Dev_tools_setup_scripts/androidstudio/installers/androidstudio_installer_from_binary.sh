@@ -5,6 +5,7 @@
 install_required_libraries() {
     yes | sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386
 }
+
 install_android_studio_from_binary() {
     mkdir tmp
     (
@@ -19,6 +20,11 @@ install_android_studio_from_binary() {
 
 create_symlink() {
     yes | sudo ln -s -i /opt/android-studio/bin/studio.sh "$MYCOMMANDSREPO"/androidstudio
+
+    # Note: This is required because otherwise 'flutter doctor' will flag error - 'Unable to find bundled Java version.'
+    # https://github.com/flutter/flutter/issues/118502
+    # https://stackoverflow.com/a/75145961/15347692
+    yes | sudo ln -s -i /opt/android-studio/jbr /opt/android-studio/jre
 }
 
 validate_and_install() {

@@ -15,7 +15,6 @@ install_android_studio_from_binary() {
         sudo tar xvzf android-studio.tar.gz -C /opt
     )
     rm -rf tmp
-
 }
 
 create_symlink() {

@@ -1,0 +1,17 @@
+Entrypoint directory:
+    All scripts under this directory and sub-directories should be run from this directory. All the script-paths are relative to this directory.
+    To use these scripts in any other bash script do a 'cd' to this directory first in a sub-shell, e.g., (cd root_dir && ./xyz.sh)
+
+Entry script:
+    ./.setup: call this for installation
+
+Installers:
+    ./androidstudio_installer_from_binary.sh: installs from downloaded binary. This is the default installation. But, you need to update the download link periodically in the script.
+    ./androidstudio_installer_from_official_repo.sh: installs using official repository
+    ./androidstudio_installer_with_snap.sh: installs using snap
+
+
+Uninstallers:
+    ./androidstudio_uninstaller_from_binary.sh: removed the binary directly from /opt/android-studio
+    ./androidstudio_uninstaller_from_official_repo.sh: uninstalls using apt
+    ./androidstudio_uninstaller_with_snap.sh: uninstalls using snap

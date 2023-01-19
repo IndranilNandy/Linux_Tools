@@ -13,5 +13,5 @@ prereq --install ".prereq"
 [[ -n $(which flutter) ]] && echo -e "\n${GREEN}[flutter] Already installed. Exiting.${RESET}" && exit 0
 
 echo -e "${YELLOW}[flutter] Setup process started.${RESET}"
-# ./flutter_installer_from_binary.sh
+./flutter_installer.sh
 echo -e "${GREEN}[flutter] Setup finished.${RESET}"

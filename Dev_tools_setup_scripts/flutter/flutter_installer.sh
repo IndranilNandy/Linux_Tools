@@ -16,6 +16,10 @@ install_flutter() {
     sudo snap install flutter --classic
 }
 
+flutter_config() {
+    flutter config --android-sdk "$ANDROID_HOME"
+}
+
 flutter_doctor() {
     flutter doctor
     (flutter doctor | grep -q "Doctor found issues") && return 1
@@ -23,4 +27,5 @@ flutter_doctor() {
 }
 
 check_req_tools && install_flutter
+# flutter_config
 flutter_doctor || echo -e "Error while running 'flutter doctor'"

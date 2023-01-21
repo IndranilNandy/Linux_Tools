@@ -23,4 +23,4 @@ read -p "custom-setup=? (server-minimal [default custom-setup: <empty>])" cust
 [[ -n "$cust" ]] || cust=
 
 echo -e "./.setup --type=$inst --log-target=$log --custom-setup=$cust"
- ./.setup --type=$inst --log-target=$log --custom-setup=$cust
+./.setup --type=$inst --log-target=$log --custom-setup=$cust

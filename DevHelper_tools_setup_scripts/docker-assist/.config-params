@@ -1,0 +1,4 @@
+#!/bin/bash
+
+dockerassist_root_dir="docker-assist-dir"
+incr_dfiles_dir="incremental-dockerfiles"

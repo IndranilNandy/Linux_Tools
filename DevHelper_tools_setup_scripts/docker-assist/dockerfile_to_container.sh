@@ -1,174 +1,87 @@
 #!/usr/bin/env bash
 
 . ./.config-params
+. ./process_dockerfile.sh
 
-createContainer() {
-    local basedir="${1}"
-    local dockerfile="${2}"
-    local image_name="${3}"
-    local image_version="${4}"
-    local context="${5}"
-    local container_name="${6}"
-    local ext=".Dockerfile"
+# basedir="$HOME/DEV/GIT-REPOS/PracticeWS/IDEwise/Vscode/Java/javatest2/app"
+basedir=
+# dockerfile=javatest2-sample1
+dockerfile=
+context=.
+startline=1
 
-    echo -e "docker build \
-                        \n\t\t-t $image_name:$image_version \
-                        \n\t\t-f $basedir/$dockerfile$ext \
-                        \n\t\t$basedir/$context \n"
-
-    echo -e "________________________________________________"
-
-    docker build -t "${image_name}":"${image_version}" -f "${basedir}/${dockerfile}${ext}" "${basedir}/${context}"
-
-    echo -e
-    echo -e "docker run -it --name $container_name $image_name:$image_version"
-    gnome-terminal --tab --title="$image_name:$image_version" -- /bin/sh -c " \
-                                echo \"Dockerfile: ${dockerfile}${ext}\"; echo ; \
-                                echo \"Step: ${image_version}\"; echo ; \
-                                cat ${basedir}/${dockerfile}${ext}; echo ; \
-                                docker run -it --name $container_name $image_name:$image_version"
-
-    # gnome-terminal --tab --title="rails s" --tab-with-profile=Default -- /bin/sh -c "docker run -it --name $container_name $image_name:$image_version"
-}
-
-removeComments() {
-    local basedir="${1}"
-    local dockerfile="${2}"
-    local processed_dfile="${3}"
-    local ext=".Dockerfile"
-
-    cat "$basedir"/"$dockerfile""$ext" | grep -v "^#" | grep -v "^$" >"${basedir}"/"$dockerassist_root_dir"/"$processed_dfile""$ext"
-}
-
-createIncrementalDockerfile() {
-    local basedir="${1}"
-    local dockerfile="${2}"
-    local processed_dfile="$dockerfile-full"
-    local ext=".Dockerfile"
-
-    mkdir -p "${basedir}"/"$dockerassist_root_dir"
-    (
-        cd "${basedir}"/"$dockerassist_root_dir" || return 1
-        removeComments "$basedir" "$dockerfile" "$processed_dfile"
-
-        local lines=$(wc -l "${basedir}"/"$dockerassist_root_dir"/"$processed_dfile""$ext" | cut -f1 -d' ')
-        mkdir -p "$incr_dfiles_dir" || return 1
-
-        local entrypoint="ENTRYPOINT [ \"/bin/sh\" ]"
-
-        for ((i = 1; i <= "lines"; i++)); do
-            head -n"$i" "$processed_dfile""$ext" >"$incr_dfiles_dir"/incr-"$i""$ext"
-            echo "$entrypoint" >>"$incr_dfiles_dir"/incr-"$i""$ext"
-            echo "Created ""$incr_dfiles_dir"/incr-"$i""$ext"
-
-        done
-    )
-}
-
-processIncrementalDockerfile() {
-    local basedir="${1}"
-    local incr_dockerfile="${2}"
-    local image_name="${3}"
-    local image_version="${4}"
-    local context="${5}"
-    local container_name="${6}"
-    # local ext=".Dockerfile"
-
-    echo -e "createContainer \n\t\tbasedir=:$basedir/$dockerassist_root_dir/$incr_dfiles_dir \
-                                    \n\t\tdockerfile=$incr_dockerfile \
-                                    \n\t\timage=$image_name:$image_version \
-                                    \n\t\tcontext=$context \
-                                    \n\t\tcontainer=$container_name\n"
-
-    createContainer "$basedir"/"$dockerassist_root_dir"/"$incr_dfiles_dir" "$incr_dockerfile" "$image_name" "$image_version" "../../""$context" "$container_name"
-
-}
-
-evaluateIncrementalDockerfile() {
-    local basedir="${1}"
-    local dockerfile="${2}"
+processDockerfile() {
+    basedir="${1}"
+    dockerfile="${2}"
     local context="${3}"
     local startline="${4}"
-    local ext=".Dockerfile"
 
-    (
-        cd "${basedir}"/"$dockerassist_root_dir"/"$incr_dfiles_dir" || return 1
+    createIncrementalDockerfiles "$basedir" "$dockerfile" || echo -e "Cannot create incremental dockerfiles"
 
-        local curline=$((startline))
-        local image_name=i-"$dockerfile"
-        local total_steps=$(ls -1 |wc -l | cut -f1 -d' ')
-        local ans=c # c: current
-        local step_status="changed"
-
-        echo -e "\nTotal steps: $total_steps"
-
-        while [ ! "$ans" = "e" ] && [ ! "$ans" = "a" ]; do
-            echo -e "______________________________________________________________________________________"
-            echo -e "Running step# $curline/$total_steps"
-            echo -e "______________________________________________________________________________________"
-
-            local incr_dockerfile="incr-""$curline"
-            echo -e "\nProcessing $incr_dockerfile$ext:\n"
-            # echo -e "total_steps=$total_steps"
-
-            local image_version="$curline"
-            local container_name=c-"$dockerfile"-"$image_version"
-
-            case "$step_status" in
-                changed)
-                    echo -e "changed"
-                    ;;
-                unchanged)
-                    echo -e "unchanged"
-                    ;;
-                error)
-                    echo -e "error occurred"
-                    ;;
-            esac
-
-            # processIncrementalDockerfile "$basedir" "$incr_dockerfile" "$image_name" "$image_version" "$context" "$container_name"
-
-            echo -e
-            echo -e "Current step# $curline/$total_steps"
-            read -p "n[next] or p[prev] or line#[e.g. 12] or s[skip] or a[abort] or e[exit] " ans
-
-            case $ans in
-            n)
-                ((curline < total_steps)) && ((curline++)) && step_status="changed" || step_status="unchanged"
-                ;;
-            p)
-                ((curline > 1)) && ((curline--)) && step_status="changed" || step_status="unchanged"
-                ;;
-            ([[:digit:]]*)
-                echo "digit"
-                ((ans <= total_steps)) && ((curline=ans)) && step_status="changed" || step_status="unchanged"
-                ;;
-            s)
-                ;;
-            a)
-                step_status="aborted"
-                ;;
-            e)
-                step_status="exited"
-                ;;
-            *) ;;
-
-            esac
-
-        done
-    )
+    evaluateIncrementalDockerfiles "$basedir" "$dockerfile" "$context" "$startline"
 }
 
-basedir1="$HOME/DEV/GIT-REPOS/PracticeWS/IDEwise/Vscode/Java/javatest2/app"
-dockerfile1=javatest2-sample1
-image_name1="testimage"
-image_version1="1"
-context1=.
-container_name1="test_container"
-startline1=1
+set_basedir_n_dockerfile() {
+    arg="${1}"
+    # TODO: if arg is null check for dockerfiles in current director and show list to choose from
 
-# createIncrementalDockerfile "$basedir" "$dockerfile" "$processed_dfile" || echo -e "Cannot create incremental dockerfiles"
-createIncrementalDockerfile "$basedir1" "$dockerfile1" || echo -e "Cannot create incremental dockerfiles"
+    dockerfile=$(basename -s .Dockerfile "$(basename -s .dockerfile "$arg")")
+    basedir=$(dirname "$arg")
+    echo -e "basedir:$basedir dockerfile=$dockerfile"
 
-evaluateIncrementalDockerfile "$basedir1" "$dockerfile1" "$context1" "$startline1"
-# createContainer "$basedir" "$dockerfile" "$image_name" "$image_version" "$context" "$container_name"
+    [[ ! -d "$basedir" ]] && echo -e "Base directory doesn't exist. Exiting." && return 1
+    [[ ! -e "$basedir"/"$dockerfile".Dockerfile ]] && [[ ! -e "$basedir"/"$dockerfile".dockerfile ]] && echo -e "Dockerfile doesn't exist. Exiting." && return 1
+
+    return 0
+}
+
+for arg in "$@"; do
+    case $arg in
+    --basedir=*)
+        echo -e "basedir at first: $basedir"
+
+        if [[ "$basedir" ]]; then
+            echo -e "Wrong usage of command arguments!"
+            echo -e "You're setting basedir twice"
+            exit 1
+        fi
+        basedir=$(echo $arg | sed "s/--basedir=\(.*\)/\1/")
+        [[ ! -d "$basedir" ]] && echo -e "Base directory doesn't exist. Exiting." && exit 1
+        [[ "$dockerfile" ]] && [[ ! -e "$basedir"/"$dockerfile".Dockerfile ]] && [[ ! -e "$basedir"/"$dockerfile".dockerfile ]] && echo -e "Dockerfile doesn't exist. Exiting." && exit 1
+
+        echo -e "basedir at first: $basedir"
+        ;;
+    --dockerfile=*)
+        if [[ "$dockerfile" ]]; then
+            echo -e "Wrong usage of command arguments!"
+            echo -e "You're setting dockerfile twice"
+            exit 1
+        fi
+        dockerfile=$(echo $arg | sed "s/--dockerfile=\(.*\)/\1/")
+        [[ "$basedir" ]] && [[ ! -e "$basedir"/"$dockerfile".Dockerfile ]] && [[ ! -e "$basedir"/"$dockerfile".dockerfile ]] && echo -e "Dockerfile doesn't exist. Exiting." && exit 1
+        ;;
+    --context=*)
+        context=$(echo $arg | sed "s/--context=\(.*\)/\1/")
+        ;;
+    --startline=*)
+        startline=$(echo $arg | sed "s/--startline=\(.*\)/\1/")
+        ;;
+    *)
+        echo -e "basedir at last: $basedir"
+        if [[ "$basedir" ]] || [[ "$dockerfile" ]]; then
+            echo -e "Wrong usage of command arguments!"
+            echo -e "Either you're setting basedir/dockerfile twice, or, you're providing multiple unnamed parameters, only one unnamed parameter (format: basedir/dockerfile) is valid"
+            exit 1
+        fi
+        set_basedir_n_dockerfile "$arg" || exit 1
+        # if [[ ! $(set_basedir_n_dockerfile "$arg") ]]; then
+        #     echo -e "Invalid basedir or dockerfile or both. Exiting."
+        #     exit 1
+        # fi
+        echo -e "basedir at last: $basedir"
+
+        ;;
+    esac
+done
+
+processDockerfile "$basedir" "$dockerfile" "$context" "$startline"

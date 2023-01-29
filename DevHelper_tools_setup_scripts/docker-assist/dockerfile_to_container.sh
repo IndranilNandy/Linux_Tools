@@ -4,15 +4,31 @@
 
 createContainer() {
     local basedir="${1}"
-    local local local dockerfile="${2}"
+    local dockerfile="${2}"
     local image_name="${3}"
     local image_version="${4}"
     local context="${5}"
     local container_name="${6}"
     local ext=".Dockerfile"
 
+    echo -e "docker build \
+                        \n\t\t-t $image_name:$image_version \
+                        \n\t\t-f $basedir/$dockerfile$ext \
+                        \n\t\t$basedir/$context \n"
+
+    echo -e "________________________________________________"
+
     docker build -t "${image_name}":"${image_version}" -f "${basedir}/${dockerfile}${ext}" "${basedir}/${context}"
-    docker run --rm -it --name "${container_name}" "${image_name}":"${image_version}"
+
+    echo -e
+    echo -e "docker run -it --name $container_name $image_name:$image_version"
+    gnome-terminal --tab --title="$image_name:$image_version" -- /bin/sh -c " \
+                                echo \"Dockerfile: ${dockerfile}${ext}\"; echo ; \
+                                echo \"Step: ${image_version}\"; echo ; \
+                                cat ${basedir}/${dockerfile}${ext}; echo ; \
+                                docker run -it --name $container_name $image_name:$image_version"
+
+    # gnome-terminal --tab --title="rails s" --tab-with-profile=Default -- /bin/sh -c "docker run -it --name $container_name $image_name:$image_version"
 }
 
 removeComments() {
@@ -49,6 +65,25 @@ createIncrementalDockerfile() {
     )
 }
 
+processIncrementalDockerfile() {
+    local basedir="${1}"
+    local incr_dockerfile="${2}"
+    local image_name="${3}"
+    local image_version="${4}"
+    local context="${5}"
+    local container_name="${6}"
+    # local ext=".Dockerfile"
+
+    echo -e "createContainer \n\t\tbasedir=:$basedir/$dockerassist_root_dir/$incr_dfiles_dir \
+                                    \n\t\tdockerfile=$incr_dockerfile \
+                                    \n\t\timage=$image_name:$image_version \
+                                    \n\t\tcontext=$context \
+                                    \n\t\tcontainer=$container_name\n"
+
+    createContainer "$basedir"/"$dockerassist_root_dir"/"$incr_dfiles_dir" "$incr_dockerfile" "$image_name" "$image_version" "../../""$context" "$container_name"
+
+}
+
 evaluateIncrementalDockerfile() {
     local basedir="${1}"
     local dockerfile="${2}"
@@ -58,44 +93,69 @@ evaluateIncrementalDockerfile() {
 
     (
         cd "${basedir}"/"$dockerassist_root_dir"/"$incr_dfiles_dir" || return 1
-        stages=$(ls | wc -l)
 
         local curline=$((startline))
-        ans=c # c: current
+        local image_name=i-"$dockerfile"
+        local total_steps=$(ls -1 |wc -l | cut -f1 -d' ')
+        local ans=c # c: current
+        local step_status="changed"
 
-        while [ ! "$ans" = "e" ]; do
-            # echo "ans=$ans"
+        echo -e "\nTotal steps: $total_steps"
+
+        while [ ! "$ans" = "e" ] && [ ! "$ans" = "a" ]; do
+            echo -e "______________________________________________________________________________________"
+            echo -e "Running step# $curline/$total_steps"
+            echo -e "______________________________________________________________________________________"
+
             local incr_dockerfile="incr-""$curline"
-            echo -e "Processing $incr_dockerfile$ext:\n"
-            cat incr-"$curline""$ext"
-            echo -e
+            echo -e "\nProcessing $incr_dockerfile$ext:\n"
+            # echo -e "total_steps=$total_steps"
 
-            local image_name=i-"$dockerfile"
             local image_version="$curline"
             local container_name=c-"$dockerfile"-"$image_version"
 
-            echo -e "$basedir"/"$dockerassist_root_dir"/"$incr_dfiles_dir" "$incr_dockerfile" "$image_name" "$image_version" "$context" "$container_name"
+            case "$step_status" in
+                changed)
+                    echo -e "changed"
+                    ;;
+                unchanged)
+                    echo -e "unchanged"
+                    ;;
+                error)
+                    echo -e "error occurred"
+                    ;;
+            esac
 
-            createContainer "$basedir"/"$dockerassist_root_dir"/"$incr_dfiles_dir" "$incr_dockerfile" "$image_name" "$image_version" "../../""$context" "$container_name"
+            # processIncrementalDockerfile "$basedir" "$incr_dockerfile" "$image_name" "$image_version" "$context" "$container_name"
 
-            read -p "n [next] or p [prev] or e [exit] " ans
+            echo -e
+            echo -e "Current step# $curline/$total_steps"
+            read -p "n[next] or p[prev] or line#[e.g. 12] or s[skip] or a[abort] or e[exit] " ans
 
             case $ans in
             n)
-                ((curline++))
+                ((curline < total_steps)) && ((curline++)) && step_status="changed" || step_status="unchanged"
                 ;;
             p)
-                ((curline--))
+                ((curline > 1)) && ((curline--)) && step_status="changed" || step_status="unchanged"
+                ;;
+            ([[:digit:]]*)
+                echo "digit"
+                ((ans <= total_steps)) && ((curline=ans)) && step_status="changed" || step_status="unchanged"
+                ;;
+            s)
+                ;;
+            a)
+                step_status="aborted"
+                ;;
+            e)
+                step_status="exited"
                 ;;
             *) ;;
 
             esac
 
         done
-
-        # for ((i = 1; i <= stages; i++)); do
-        #     echo "stage$i"
-        # done
     )
 }
 

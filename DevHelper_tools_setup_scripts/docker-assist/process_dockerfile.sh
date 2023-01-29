@@ -19,6 +19,10 @@ createIncrementalDockerfiles() {
     local processed_dfile="$dockerfile-full"
     local ext=".Dockerfile"
 
+    echo -e "______________________________________________________________________________________"
+    echo -e "Creating Incremental Dockerfiles"
+    echo -e "______________________________________________________________________________________"
+
     mkdir -p "${basedir}"/"$dockerassist_root_dir"
     (
         cd "${basedir}"/"$dockerassist_root_dir" || return 1
@@ -158,6 +162,8 @@ evaluateIncrementalDockerfiles() {
 
     echo -e "\nTotal steps: $total_steps"
 
+    ((curline > total_steps)) && echo -e "startline value is more than the size of the dockerfile. Exiting" && return 1
+
     while [ ! "$ans" = "e" ] && [ ! "$ans" = "a" ] && [ ! "$ans" = "c" ]; do
         echo -e "______________________________________________________________________________________"
         echo -e "Running step# $curline/$total_steps"
@@ -197,4 +203,5 @@ evaluateIncrementalDockerfiles() {
     cd "$cur_dir" || return 1
 
     clean "$basedir" "$dockerfile" "$step_status" version_set
+    return 0
 }

@@ -4,13 +4,106 @@
 . ./process_containers.sh
 . ./process_images.sh
 
+prompt() {
+    local curline="${1}"
+    local total_steps="${2}"
+    local step_status="${3}"
+    local ans="${4}"
+
+    shopt -s extglob
+
+    read -p "n[next] or p[prev] or line#[e.g. 12] or +/-step[e.g. +5/-5] or +s[skip forward] or -s[skip backward] or a[abort] or e[exit] or c[clean] " ans
+    ans=$(echo "$ans" | tr [:upper:] [:lower:])
+    case $ans in
+    n)
+        ((curline < total_steps)) && ((curline++)) && step_status="changed" || step_status="unchanged"
+        ;;
+    p)
+        ((curline > 1)) && ((curline--)) && step_status="changed" || step_status="unchanged"
+        ;;
+    [[:digit:]]*)
+        ((ans != curline)) && ((ans >= 1)) && ((ans <= total_steps)) && ((curline = ans)) && step_status="changed" || step_status="unchanged"
+        ;;
+    +[[:digit:]]*)
+        ahead=$(echo $ans | cut -c2-)
+        target_line=$((curline + ahead))
+        ((target_line != curline)) && ((target_line <= total_steps)) && ((curline = target_line)) && step_status="changed" || step_status="unchanged"
+        ;;
+    -[[:digit:]]*)
+        ahead=$(echo $ans | cut -c2-)
+        target_line=$((curline - ahead))
+        ((target_line != curline)) && ((target_line >= 1)) && ((curline = target_line)) && step_status="changed" || step_status="unchanged"
+        ;;
+    s)
+        ((curline < total_steps)) && ((curline++))
+        step_status="skipped"
+        ;;
+    +s)
+        ((curline < total_steps)) && ((curline++))
+        step_status="skipped"
+        ;;
+    -s)
+        ((curline > 1)) && ((curline--))
+        step_status="skipped"
+        ;;
+    a)
+        step_status="aborted"
+        ;;
+    e)
+        step_status="exited"
+        ;;
+    c)
+        step_status="cleaned"
+        ;;
+    *)
+        step_status="invalid"
+    ;;
+
+    esac
+
+    echo "$curline $step_status $ans"
+}
+
+clean() {
+    local basedir="${1}"
+    local dockerfile="${2}"
+    local step_status="${3}"
+    local -n version_set_lref=${4}
+
+    case "$step_status" in
+    aborted)
+        echo -e "Images and Containers are NOT cleaned. Needs to be CLEANED MANUALLY."
+        echo -e "Remove docker-assist-dir MANUALLY"
+        ;;
+    exited)
+        cleanContainers "$dockerfile" version_set_lref
+        echo -e "Images are NOT cleaned. Need to clean manually."
+        echo -e "Remove docker-assist-dir MANUALLY"
+        echo -e "Containers are REMOVED."
+        ;;
+    cleaned)
+        cleanContainers "$dockerfile" version_set_lref
+        cleanImages "$dockerfile" version_set_lref
+        rm -r "${basedir:?}"/"$dockerassist_root_dir"
+        echo -e "Images and Containers are CLEANED."
+        echo -e "docker-assist-dir is REMOVED"
+
+        ;;
+    *)
+        echo -e "INVALID STATE"
+        echo -e "Everything NEEDS to be MANUALLY CLEANED"
+        echo -e "Remove docker-assist-dir MANUALLY"
+        ;;
+    esac
+}
+
 removeComments() {
     local basedir="${1}"
     local dockerfile="${2}"
     local processed_dfile="${3}"
     local ext=".Dockerfile"
 
-    cat "$basedir"/"$dockerfile""$ext" | grep -v "^#" | grep -v "^$" >"${basedir}"/"$dockerassist_root_dir"/"$processed_dfile""$ext"
+    cat "$basedir"/"$dockerfile".Dockerfile "$basedir"/"$dockerfile".dockerfile 2>/dev/null | grep -v "^#" | grep -v "^$" >"${basedir}"/"$dockerassist_root_dir"/"$processed_dfile""$ext"
 }
 
 createIncrementalDockerfiles() {
@@ -61,84 +154,6 @@ processIncrementalDockerfiles() {
 
 }
 
-prompt() {
-    local curline="${1}"
-    local total_steps="${2}"
-    local step_status="${3}"
-    local ans="${4}"
-
-    read -p "n[next] or p[prev] or line#[e.g. 12] or s[skip] or a[abort] or e[exit] or c[clean] " ans
-    ans=$(echo "$ans" | tr [:upper:] [:lower:])
-    case $ans in
-    n)
-        ((curline < total_steps)) && ((curline++)) && step_status="changed" || step_status="unchanged"
-        ;;
-    p)
-        ((curline > 1)) && ((curline--)) && step_status="changed" || step_status="unchanged"
-        ;;
-    [[:digit:]]*)
-        ((ans != curline)) && ((ans >= 1)) && ((ans <= total_steps)) && ((curline = ans)) && step_status="changed" || step_status="unchanged"
-        ;;
-    +[[:digit:]]*)
-        ahead=$(echo $ans | cut -c2-)
-        target_line=$((curline + ahead))
-        ((target_line != curline)) && ((target_line <= total_steps)) && ((curline = target_line)) && step_status="changed" || step_status="unchanged"
-        ;;
-    -[[:digit:]]*)
-        ahead=$(echo $ans | cut -c2-)
-        target_line=$((curline - ahead))
-        ((target_line != curline)) && ((target_line >= 1)) && ((curline = target_line)) && step_status="changed" || step_status="unchanged"
-        ;;
-    s) ;;
-
-    a)
-        step_status="aborted"
-        ;;
-    e)
-        step_status="exited"
-        ;;
-    c)
-        step_status="cleaned"
-        ;;
-    *) ;;
-
-    esac
-
-    echo "$curline $step_status $ans"
-}
-
-clean() {
-    local basedir="${1}"
-    local dockerfile="${2}"
-    local step_status="${3}"
-    local -n version_set_lref=${4}
-
-    case "$step_status" in
-    aborted)
-        echo -e "Images and Containers are NOT cleaned. Needs to be CLEANED MANUALLY."
-        echo -e "Remove docker-assist-dir MANUALLY"
-        ;;
-    exited)
-        cleanContainers "$dockerfile" version_set_lref
-        echo -e "Images are NOT cleaned. Need to clean manually."
-        echo -e "Remove docker-assist-dir MANUALLY"
-        echo -e "Containers are REMOVED."
-        ;;
-    cleaned)
-        cleanContainers "$dockerfile" version_set_lref
-        cleanImages "$dockerfile" version_set_lref
-        rm -r "${basedir:?}"/"$dockerassist_root_dir"
-        echo -e "Images and Containers are CLEANED."
-        echo -e "docker-assist-dir is REMOVED"
-
-        ;;
-    *)
-        echo -e "INVALID STATE"
-        echo -e "Everything NEEDS to be MANUALLY CLEANED"
-        echo -e "Remove docker-assist-dir MANUALLY"
-        ;;
-    esac
-}
 evaluateIncrementalDockerfiles() {
     local basedir="${1}"
     local dockerfile="${2}"
@@ -186,6 +201,12 @@ evaluateIncrementalDockerfiles() {
             ;;
         unchanged)
             echo -e "Step# unchanged. Not processing."
+            ;;
+        skipped)
+            echo -e "Step# $curline skipped"
+            ;;
+        invalid)
+            echo -e "INVALID STATE/INPUT"
             ;;
         esac
 

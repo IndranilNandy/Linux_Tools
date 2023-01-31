@@ -13,8 +13,11 @@ prereq --install ".prereq"
 if [[ -n $(which git) ]]; then
     echo -e "\n${GREEN}[git] Already installed. Exiting.${RESET}"
     echo "Checking if configured already"
+
     [[ $(which setgittool) ]] || ./configurer/git_configurer.sh
-    ifinstalled gcmcore || ./gcm_installer.sh
+    # ifinstalled gcmcore || ./gcm_installer.sh
+    dpkg-query -l gcm >/dev/null && echo -e "GCM is already installed and configured" || ./gcm_installer.sh
+
     echo "Git configuration finished"
 else
     echo -e "${YELLOW}[git] Setup process started.${RESET}"

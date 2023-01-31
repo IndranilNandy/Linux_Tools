@@ -7,6 +7,8 @@ install_required_libraries() {
 }
 
 install_android_studio_from_binary() {
+    [[ -d /opt/android-studio ]] && echo -e "Since directory \"/opt/android-studio\" already exists, assuming that the binary is already installed." && return 0
+
     mkdir tmp
     (
         cd tmp || return

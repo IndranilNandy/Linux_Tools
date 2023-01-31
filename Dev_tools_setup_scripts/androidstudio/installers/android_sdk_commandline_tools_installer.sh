@@ -5,6 +5,8 @@
 ANDROID_SDK="$HOME"/Android/Sdk
 
 install_android_sdk_cmd_tools_from_binary() {
+    [[ -d "$ANDROID_SDK"/cmdline-tools ]] && echo -e "Since directory \"$ANDROID_SDK/cmdline-tools\" already exists, assuming that the binary is already installed." && return 0
+
     mkdir tmp
     (
         cd tmp || return

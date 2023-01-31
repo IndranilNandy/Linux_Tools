@@ -26,4 +26,3 @@ accept_licenses() {
 }
 
 install_packages && update_packages && accept_licenses
-# install_packages

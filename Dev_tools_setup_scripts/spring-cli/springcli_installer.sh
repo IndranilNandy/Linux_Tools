@@ -34,7 +34,7 @@ add_env_var() {
 
 add_shell_completion() {
     springhome="$HOME/spring-boot-cli/spring-3.0.0-M5"
-    sudo ln -s -i "$springhome"/shell-completion/bash/spring /etc/bash_completion.d/spring
+    yes | sudo ln -s -i "$springhome"/shell-completion/bash/spring /etc/bash_completion.d/spring
 }
 
 installer && add_env_var && add_shell_completion || echo -e "[spring-cli] Failed to install"

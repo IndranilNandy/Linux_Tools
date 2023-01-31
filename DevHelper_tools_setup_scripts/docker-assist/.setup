@@ -31,10 +31,6 @@ for arg in "$@"; do
     esac
 done
 
-filter_tools() {
-    xargs -I X echo "grep -E -q \"\$(basename \$(dirname X)).*${1}.*\" ./install.config && echo X" | bash
-}
-
 export loggingDest
 export errorDest
 

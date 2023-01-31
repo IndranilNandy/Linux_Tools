@@ -16,7 +16,12 @@ createContainer() {
 
     echo -e "________________________________________________"
 
-    DOCKER_BUILDKIT=1 docker build -t "${image_name}":"${image_version}" -f "${basedir}/${dockerfile}${ext}" "${basedir}/${context}"
+    # buildargs=${DKRSTEPPER_BUILD_ARGS:-' '}
+    if [[ "$DKRSTEPPER_BUILD_ARGS" ]]; then
+        DOCKER_BUILDKIT=1 docker build "$DKRSTEPPER_BUILD_ARGS" -t "${image_name}":"${image_version}" -f "${basedir}/${dockerfile}${ext}" "${basedir}/${context}"
+    else
+        DOCKER_BUILDKIT=1 docker build -t "${image_name}":"${image_version}" -f "${basedir}/${dockerfile}${ext}" "${basedir}/${context}"
+    fi
 
     echo -e
     echo -e "docker run -it --name $container_name $image_name:$image_version"

@@ -115,6 +115,11 @@ for arg in "$@"; do
     --startline=*)
         startline=$(echo $arg | sed "s/--startline=\(.*\)/\1/")
         ;;
+    --build-args=*)
+        read -r -p "Enter build-args for the docker build in a single line:" buildargs
+        echo -e "buildargs = $buildargs"
+        export DKRSTEPPER_BUILD_ARGS="$buildargs"
+        ;;
     *)
         if [[ "$basedir" ]] || [[ "$dockerfile" ]]; then
             echo -e "Wrong usage of command arguments!"

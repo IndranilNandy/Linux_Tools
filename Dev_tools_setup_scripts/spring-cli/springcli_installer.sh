@@ -2,6 +2,7 @@
 
 # https://docs.spring.io/spring-boot/docs/1.2.0.M2/reference/html/getting-started-installing-spring-boot.html#getting-started-manual-cli-installation
 installer() {
+    [[ -d "$HOME"/spring-boot-cli ]] && echo -e "Since directory \"spring-boot-cli\" already exists, assuming that the binary is already installed." && return 0
     mkdir tmp
     (
         cd tmp || return
@@ -33,7 +34,7 @@ add_env_var() {
 
 add_shell_completion() {
     springhome="$HOME/spring-boot-cli/spring-3.0.0-M5"
-    sudo ln -s "$springhome"/shell-completion/bash/spring /etc/bash_completion.d/spring
+    sudo ln -s -i "$springhome"/shell-completion/bash/spring /etc/bash_completion.d/spring
 }
 
 installer && add_env_var && add_shell_completion || echo -e "[spring-cli] Failed to install"

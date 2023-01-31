@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
-# . ./.config-params
-. ./process_containers.sh
-. ./process_images.sh
+if [ -L $(which dkrstepper) ]; then
+    curDir="$(dirname "$(tracelink dkrstepper)")"
+else
+    curDir="$(pwd)"
+fi
+
+. "$curDir"/components/process_containers.sh
+. "$curDir"/components/process_images.sh
 
 prompt() {
     local curline="${1}"
@@ -12,7 +17,7 @@ prompt() {
 
     shopt -s extglob
 
-    read -p "n[next] or p[prev] or line#[e.g. 12] or +/-step[e.g. +5/-5] or +s[skip forward] or -s[skip backward] or a[abort] or e[exit] or c[clean] " ans
+    read -p "n[next] or p[prev] or line#[e.g. 12] or +/-step[e.g. +5/-5] or +s/s[skip forward] or -s[skip backward] or a[abort] or e[exit] or c[clean] " ans
     ans=$(echo "$ans" | tr [:upper:] [:lower:])
     case $ans in
     n)
@@ -58,7 +63,6 @@ prompt() {
     *)
         step_status="invalid"
     ;;
-
     esac
 
     echo "$curline $step_status $ans"

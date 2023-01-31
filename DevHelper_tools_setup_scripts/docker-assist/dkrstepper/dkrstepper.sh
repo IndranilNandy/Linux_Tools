@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 
-. ./.config-params
-. ./process_dockerfile.sh
+if [ -L $(which dkrstepper) ]; then
+    curDir="$(dirname "$(tracelink dkrstepper)")"
+else
+    curDir="$(pwd)"
+fi
+
+. "$curDir"/configs/.config-params
+. "$curDir"/components/process_dockerfile.sh
 
 basedir=
 dockerfile=
@@ -20,32 +26,26 @@ processDockerfile() {
 }
 
 findDockerfile() {
-    echo "abcde"
+    find . -name "*.dockerfile" -o -name "*.Dockerfile" > /tmp/dfilelist
+    count_of_dockerfiles=$(cat /tmp/dfilelist | wc -l)
 
-    count_of_dockerfiles=$(find . -name "*.dockerfile" -o -name "*.Dockerfile" | wc -l)
-    echo "abcd"
-    ((count_of_dockerfiles == 0)) && return 1
+    ((count_of_dockerfiles == 0)) && echo -e "No Dockerfile found in the current directory hierarchy. Exiting." && return 1
+
     if ((count_of_dockerfiles == 1)); then
-        echo -e "one"
-        file=$(find . -name "*.dockerfile" -o -name "*.Dockerfile")
-        # basedir="."
-        dockerfile=$(basename -s .Dockerfile "$(basename -s .dockerfile "$file")")
-        basedir=$(dirname "$file")
-
+        dockerfile=$(basename -s .Dockerfile "$(basename -s .dockerfile "$(cat /tmp/dfilelist)")")
+        basedir=$(dirname "$(cat /tmp/dfilelist)")
     else
-        echo -e "multiple"
-        echo -e "Select the number of the dockerfile:"
-        find . -name "*.dockerfile" -o -name "*.Dockerfile" | nl
-        read -p "Enter: " no
-        # no=2
-        echo "$no"
-        file=$(find . -name "*.dockerfile" -o -name "*.Dockerfile" | nl | head -n$no | tail -n1 | cut -f2)
-        echo "$file"
-        # file=$(find . -name "*.dockerfile" -o -name "*.Dockerfile")
-        # basedir="."
+        echo -e "Multiple Dockerfiles found in the current directory hierarchy!"
+        cat /tmp/dfilelist | nl
+
+        read -p "Which Dockerfile to choose? Enter the number: " no
+        file=$(cat /tmp/dfilelist | nl | head -n$no | tail -n1 | cut -f2)
+
         dockerfile=$(basename -s .Dockerfile "$(basename -s .dockerfile "$file")")
         basedir=$(dirname "$file")
     fi
+
+    rm /tmp/dfilelist
     return 0
 }
 

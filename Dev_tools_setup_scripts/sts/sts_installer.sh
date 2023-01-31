@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 installer() {
+    [[ -d /opt/sts ]] && echo -e "Since directory \"/opt/sts\" already exists, assuming that the binary is already installed." && return 0
+
     mkdir tmp
     (
         cd tmp || return

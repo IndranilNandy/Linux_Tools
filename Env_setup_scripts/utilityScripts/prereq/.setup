@@ -29,6 +29,10 @@ missing_prereqs $file | xargs -I FILE find "$ToolsDir" -name FILE | xargs -I INP
 
 echo -e "${YELLOW}[prereq] Setup process started.${RESET}"
 
-yes | sudo ln -i -s $(pwd)/prereq.sh $MYCOMMANDSREPO/prereq
+yes | sudo ln -i -s "$(pwd)"/prereq.sh "$MYCOMMANDSREPO"/prereq
+
+# Cannot use mycompl to create completions, since mycompl is installed later.
+# Instead add this entry to the setup of mycompl
+# mycompl -W \"--list --missing --missingcount --help\" prereq
 
 echo -e "${GREEN}[prereq] Setup finished.${RESET}"

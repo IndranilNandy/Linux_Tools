@@ -6,26 +6,34 @@ Description:
 
 How to add a new entry?
     [MANUAL]
-    Run 'mycompl --config' 
-                                -> it opens all .*completions files in your editor 
-                                -> either create a new entry in one of these files, 
+    Run 'mycompl --config'
+                                -> it opens all .*completions files in your editor
+                                -> either create a new entry in one of these files,
                                 -> or create a new file and entry in it
     OR,
     [PROGRAMMATIC]
     Run 'mycompl <tab_completion_logic>
-                                -> this will add an entry to default .genericcompletions
+                                -> this will add an entry to .scriptgeneratedcompletions
 
 Usage:
     mycompl --config
         [MANUAL] Open all completions-files to enable the user to edit them for addition/deletion/update.
     mycompl <tab_completion_logic>
-        [PROGRAMMATIC] This will add an entry to default .genericcompletions
+        [PROGRAMMATIC] This will add an entry to .scriptgeneratedcompletions
+    mycompl --dynamic <tab_completion_logic>
+        [PROGRAMMATIC] This will add an entry to .dynamiccompletions
+        Usage: This is mainly used to create completions for bash functions, which is dynamically created whenever a new tab/terminal/session is created, and, hence, it is more prone to frequent changes.
+    mycompl --temp <tab_completion_logic>
+        [PROGRAMMATIC] This will add an entry to .tempcompletions
+        Usage: This is mainly used to create any completion for temporary use, and may no longer be needed later.
     mycompl --help
         Help content of mycompl.
-  
+
 Examples:
     mycompl --config
     mycompl -W \"--list --missing --missingcount --help\" prereq
+    mycompl --dynamic -W '"'"${!mydirs[@]}" --init --list --wslist --config --wsconfig --refresh --tags --help'"' qcd
+    mycompl --temp -W \"--help\" temp-command
     mycompl --help
 
 

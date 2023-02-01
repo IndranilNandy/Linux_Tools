@@ -1,0 +1,22 @@
+-W "--config --temp --help" mycompl
+-W "--help" tracelink
+-W "--list --missing --missingcount --help" prereq
+-W "--list --apt --link --help" ifinstalled
+-W "--install --uninstall --list --help --FULL --LOCAL" myinstaller
+-W "--help" createref
+-W "--list --set --config --refresh --help" myalias
+-W "--create --sym --ref --sync --config --list --help" myscriptref
+-W "--basedir --dockerfile --context --startline --help" dkrstepper
+-W "--options --options-reset --options-reset= --options-reset=build --options-reset=run --help" dkrstepperconfig
+-W "--help" setgittool
+-W "--refresh --update --list --help" code-ext
+-W "--help" cmount
+-W "--help" cumount
+-W "--list --config --help" myfunc
+-W "server client --setup --uninstall --config --refresh --help" mynfs
+-W "--config --schedule --job-name= --job-path= --users --jobs --backup --show-logs --show-backups --clean --clean-logs --clean-backups --help -a -u= -mycron-def -cron-def" mycrontab
+-W "--config --clone --list --load --status --help" ws
+-W "--help" setXrdpGnuSession
+-W "--help" revert2XrdpSession
+-W "--proxy --help" k8swaggerui
+-W "--on --off --status --help" myhistory

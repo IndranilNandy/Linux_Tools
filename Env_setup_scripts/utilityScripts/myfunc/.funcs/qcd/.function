@@ -3,10 +3,10 @@
 declare -A mydirs
 
 update_tab_completions() {
-    mycompl -W '"'"${!mydirs[@]}" --init --list --wslist --config --wsconfig --refresh --tags --help'"' qcd
-    mycompl -W '"'"${!mydirs[@]}" --init --list --wslist --config --wsconfig --refresh --tags --help'"' qcode
-    mycompl -W '"'"${!mydirs[@]}" --init --list --wslist --config --wsconfig --refresh --tags --help'"' qidea
-    mycompl -W '"'"${!mydirs[@]}" --init --list --wslist --config --wsconfig --refresh --tags --help'"' qn
+    mycompl --dynamic -W '"'"${!mydirs[@]}" --init --list --wslist --config --wsconfig --refresh --tags --help'"' qcd
+    mycompl --dynamic -W '"'"${!mydirs[@]}" --init --list --wslist --config --wsconfig --refresh --tags --help'"' qcode
+    mycompl --dynamic -W '"'"${!mydirs[@]}" --init --list --wslist --config --wsconfig --refresh --tags --help'"' qidea
+    mycompl --dynamic -W '"'"${!mydirs[@]}" --init --list --wslist --config --wsconfig --refresh --tags --help'"' qn
 
     source ~/.bashrc
 }

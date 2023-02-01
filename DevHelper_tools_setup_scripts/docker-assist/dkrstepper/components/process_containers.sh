@@ -9,14 +9,6 @@ createContainer() {
     local container_name="${6}"
     local ext=".Dockerfile"
 
-    echo -e "DOCKER_BUILDKIT=1 docker build \
-                        \n\t\t-t $image_name:$image_version \
-                        \n\t\t-f $basedir/$dockerfile$ext \
-                        \n\t\t$basedir/$context \n"
-
-    echo -e "________________________________________________"
-
-    # buildargs=${DKRSTEPPER_BUILD_ARGS:-' '}
     if [[ "$DKRSTEPPER_BUILD_OPTIONS" ]]; then
         DOCKER_BUILDKIT=1 docker build "$DKRSTEPPER_BUILD_OPTIONS" -t "${image_name}":"${image_version}" -f "${basedir}/${dockerfile}${ext}" "${basedir}/${context}"
     else
@@ -29,18 +21,22 @@ createContainer() {
         runcommand="docker run -it --name $container_name $image_name:$image_version"
     fi
 
-    echo -e "runcommand = $runcommand"
+    echo -e "Build command:"
+    echo -e "DOCKER_BUILDKIT=1 docker build $DKRSTEPPER_BUILD_OPTIONS\
+                        \n\t\t-t $image_name:$image_version \
+                        \n\t\t-f $basedir/$dockerfile$ext \
+                        \n\t\t$basedir/$context \n"
 
-    echo -e
-    echo -e "docker run -it --name $container_name $image_name:$image_version"
+    echo -e "________________________________________________"
+
+    echo -e "Run command:"
+    echo -e "$runcommand"
+
     gnome-terminal --tab --title="$image_name:$image_version" -- /bin/sh -c " \
                                 echo \"Dockerfile: ${dockerfile}${ext}\"; echo ; \
                                 echo \"Step: ${image_version}\"; echo ; \
                                 cat ${basedir}/${dockerfile}${ext}; echo ; \
                                 $runcommand"
-                                # docker run -it --name $container_name $image_name:$image_version"
-
-    # gnome-terminal --tab --title="rails s" --tab-with-profile=Default -- /bin/sh -c "docker run -it --name $container_name $image_name:$image_version"
 }
 
 cleanContainers() {

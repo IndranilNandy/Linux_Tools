@@ -16,7 +16,17 @@ help() {
     cat "$curDir"/help/myalias.help
 }
 
-# TODO: After adding or deleting any entry and doing a refres (--refresh), still I need to open a new terminal to affect the changes. 
+addAliasEntry() {
+    local scriptName="${1}"
+    local alias_entry="${@:2}"
+
+    echo -e "script:$scriptName alias:$alias_entry"
+    cat "$curDir"/.aliases/"$scriptName" | grep "$*" || echo "$alias_entry" >>"$curDir"/.aliases/"$scriptName" && echo -e "Before using this alias, open a new window"
+    update_alias_file
+    update_alias_completions_list
+}
+
+# TODO: After adding or deleting any entry and doing a refresh (--refresh), still I need to open a new terminal to affect the changes.
 # Sourcing .bashrc on terminal works, but here I sourced .bashrc and still it is not working. Need to look into this later.
 case ${1} in
 --list*)
@@ -36,6 +46,9 @@ case ${1} in
     echo -e "Run 'myalias --refresh' to affect alias-update, ONLY IF you've updated the alias configuration files manually without running 'myalias --config', otherwise it'll be updated implicitly"
     echo -e "Open new terminal to affect the update"
     myalias --refresh
+    ;;
+--gen)
+    addAliasEntry ".scriptgeneratedaliases" "${@:2}"
     ;;
 --refresh)
     case ${2} in
@@ -64,8 +77,6 @@ case ${1} in
     if [[ -z $(echo "$*" | grep -E =) ]]; then
         help && exit 0
     fi
-    cat "$curDir"/.aliases/.genericaliases | grep "$*" || echo $* >>"$curDir"/.aliases/.genericaliases && echo -e "Before using this alias, open a new window"
-    update_alias_file
-    update_alias_completions_list
+    addAliasEntry ".genericaliases" "$@"
     ;;
 esac

@@ -22,3 +22,6 @@ sstarter=springstarter
 
 k700=kill $(sudo lsof -i -P -n | grep -E "7000 | 7001 | 7002 | 7003" | awk '\''{ print $2 }'\'')
 k8080=kill $(sudo lsof -i -P -n | grep -E "8080" | awk '\''{ print $2 }'\'')
+
+cleanmycommandsrepo=cd /usr/local/bin/mycommands && sudo rm
+cleanmyscriptrefs=cd /usr/local/bin/myscriptrefs && sudo rm

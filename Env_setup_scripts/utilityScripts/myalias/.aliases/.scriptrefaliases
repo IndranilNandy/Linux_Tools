@@ -1,5 +1,5 @@
 # Aliases to my SCRIPT REFs in refloader
-ic0=.initCluster 
+ic0=.initCluster
 icc0=.initClusterClients
 tc0=.tearCluster
 
@@ -17,3 +17,4 @@ icc1=.initClusterClients --configdir=Cluster_1
 icc2=.initClusterClients --configdir=Cluster_2
 icc3=.initClusterClients --configdir=Cluster_3
 icc4=.initClusterClients --configdir=Cluster_4
+

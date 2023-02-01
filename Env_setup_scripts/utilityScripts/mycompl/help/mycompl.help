@@ -14,6 +14,7 @@ How to add a new entry?
     [PROGRAMMATIC]
     Run 'mycompl <tab_completion_logic>
                                 -> this will add an entry to .scriptgeneratedcompletions
+    You may also use '--dynamic' or '--temp' option. For details, see the 'Usage' section.
 
 Usage:
     mycompl --config
@@ -35,5 +36,3 @@ Examples:
     mycompl --dynamic -W '"'"${!mydirs[@]}" --init --list --wslist --config --wsconfig --refresh --tags --help'"' qcd
     mycompl --temp -W \"--help\" temp-command
     mycompl --help
-
-

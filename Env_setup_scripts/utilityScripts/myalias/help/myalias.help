@@ -18,8 +18,9 @@ How to add a new entry?
     OR,
     [PROGRAMMATIC]
     Run 'myalias <user_defined_alias>
-                                -> it adds an entry to .genericaliases
-    No need to run 'myalias --refresh', since it is called implicitly
+                                -> it adds an entry to .aliases/.genericaliases
+    No need to run 'myalias --refresh', since it is called implicitly.
+    You may also use '--gen' option, which will add an entry of the alias to .aliases/.scriptgeneratedaliases, which is mainly used to create aliases programmatically from within a script.
 
 How to delete an alias entry?
     1. First, remove it from corresponding alias-file in .aliases
@@ -45,6 +46,8 @@ Usage:
         Help content of myalias.
     myalias <user_defined_alias>
         [PROGRAMMATIC] Add <user_defined_alias> to the list of user defined aliases in .aliases/.genericaliases file.
+    myalias --gen <user_defined_alias>
+        [PROGRAMMATIC] Add <user_defined_alias> to the list of user defined aliases in .aliases/.scriptgeneratedaliases file.
 
 Examples:
     myalias --list
@@ -58,5 +61,4 @@ Examples:
     myalias --help
     myalias dp=docker ps
     myalias cleanmycommandsrepo=cd /usr/local/bin/mycommands \&\& sudo rm
-
-
+    myalias --gen dkrstepperconfig=. dkrstepperconfig

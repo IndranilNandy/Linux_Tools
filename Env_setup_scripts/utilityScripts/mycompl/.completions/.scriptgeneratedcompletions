@@ -1,4 +1,4 @@
--W "--config --temp --help" mycompl
+-W "--config --dynamic --temp --help" mycompl
 -W "--help" tracelink
 -W "--list --missing --missingcount --help" prereq
 -W "--list --apt --link --help" ifinstalled

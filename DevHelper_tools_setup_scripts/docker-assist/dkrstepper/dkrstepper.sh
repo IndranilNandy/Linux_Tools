@@ -14,17 +14,6 @@ dockerfile=
 context=.
 startline=1
 
-processDockerfile() {
-    basedir="${1}"
-    dockerfile="${2}"
-    local context="${3}"
-    local startline="${4}"
-
-    createIncrementalDockerfiles "$basedir" "$dockerfile" || echo -e "Cannot create incremental dockerfiles" || return 1
-    evaluateIncrementalDockerfiles "$basedir" "$dockerfile" "$context" "$startline" || return 1
-    return 0
-}
-
 findDockerfile() {
     find . -name "*.dockerfile" -o -name "*.Dockerfile" > /tmp/dfilelist
     count_of_dockerfiles=$(cat /tmp/dfilelist | wc -l)

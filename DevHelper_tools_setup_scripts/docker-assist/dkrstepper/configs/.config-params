@@ -2,3 +2,8 @@
 
 dockerassist_root_dir="docker-assist-dir"
 incr_dfiles_dir="incremental-dockerfiles"
+dkrstepper_dir="dkrstepper-dir"
+all_sessions_file=".sessions"
+session_images=".images"
+session_containers=".containers"
+curstep=".curstep"

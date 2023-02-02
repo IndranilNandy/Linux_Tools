@@ -8,34 +8,16 @@ fi
 
 . "$curDir"/components/process_containers.sh
 . "$curDir"/components/process_images.sh
-. "$curDir"/components/process_sessioninfo.sh
 
 prompt() {
     local curline="${1}"
     local total_steps="${2}"
     local step_status="${3}"
     local ans="${4}"
-    # echo -e "[prompt] curline=$curline total_steps=$total_steps step_status=$step_status ans=$ans"
 
     shopt -s extglob
 
-    read -p $'
-    n       [next step in current session]                          |
-    p       [prev step in current session]                          |
-    line#   [to line# in current session] [e.g. 12]                 |
-    +/-step [forward/backward steps in current session] [e.g. +5/-5]|
-    +s/s    [skip forward in current session]                       |
-    -s      [skip backward in current session]                      |
-    a       [abort current session -> reload next session]          |
-    e       [exit current session -> reload next session]           |
-    c       [clean exit current session -> reload next session]     |
-    r       [abort current session -> reload next session] [eq a]   |
-    xa      [abort all sessions -> exit run]                        |
-    xe      [exit all sessions -> exit run]                         |
-    xc      [clean exit all sessions -> exit run]                   |
-    x       [clean exit all sessions -> exit run] [eq xc]           |
-    > ' ans
-
+    read -p "n[next] | p[prev] | line#[e.g. 12] | +/-step[e.g. +5/-5] | +s/s[skip forward] | -s[skip backward] | a[abort] | e[exit] | c[clean] " ans
     ans=$(echo "$ans" | tr [:upper:] [:lower:])
     case $ans in
     n)
@@ -70,73 +52,46 @@ prompt() {
         step_status="skipped"
         ;;
     a)
-        step_status="sessionaborted"
+        step_status="aborted"
         ;;
     e)
-        step_status="sessionexited"
+        step_status="exited"
         ;;
     c)
-        step_status="sessioncleaned"
-        ;;
-    r)
-        step_status="reloadeded"
-        ;;
-    xa)
-        step_status="runaborted"
-        ;;
-    xe)
-        step_status="runexited"
-        ;;
-    xc)
-        step_status="runcleaned" # fully exited
-        ;;
-    x)
-        step_status="exited" # fully exited with no trace. Previous and this case are equivalent.
+        step_status="cleaned"
         ;;
     *)
         step_status="invalid"
-        ;;
+    ;;
     esac
 
     echo "$curline $step_status $ans"
 }
 
-sessionClean() {
+clean() {
     local basedir="${1}"
     local dockerfile="${2}"
     local step_status="${3}"
     local -n version_set_lref=${4}
-    local session_id="${5}"
 
     case "$step_status" in
-    sessionaborted)
-        echo -e "Images and Containers are NOT cleaned. Needs to be CLEANED MANUALLY."
-        echo -e "Remove docker-assist-dir MANUALLY"
-        ;;
-    sessionexited)
-        cleanContainers "$dockerfile" version_set_lref "$session_id"
-        echo -e "Images are NOT cleaned. Need to clean manually."
-        echo -e "Remove docker-assist-dir MANUALLY"
-        echo -e "Containers are REMOVED."
-        ;;
-    sessioncleaned)
-        cleanContainers "$dockerfile" version_set_lref "$session_id"
-        cleanImages "$dockerfile" version_set_lref "$session_id"
-        # rm -r "${basedir:?}"/"$dockerassist_root_dir"
-        echo -e "Images and Containers are CLEANED."
-        echo -e "docker-assist-dir is REMOVED"
-        ;;
-    reloaded)
+    aborted)
         echo -e "Images and Containers are NOT cleaned. Needs to be CLEANED MANUALLY."
         echo -e "Remove docker-assist-dir MANUALLY"
         ;;
     exited)
-        clean_all_sessions
-        # cleanContainers "$dockerfile" version_set_lref
-        # cleanImages "$dockerfile" version_set_lref
-        # rm -r "${basedir:?}"/"$dockerassist_root_dir"
-        # echo -e "Images and Containers are CLEANED."
-        # echo -e "docker-assist-dir is REMOVED"
+        cleanContainers "$dockerfile" version_set_lref
+        echo -e "Images are NOT cleaned. Need to clean manually."
+        echo -e "Remove docker-assist-dir MANUALLY"
+        echo -e "Containers are REMOVED."
+        ;;
+    cleaned)
+        cleanContainers "$dockerfile" version_set_lref
+        cleanImages "$dockerfile" version_set_lref
+        rm -r "${basedir:?}"/"$dockerassist_root_dir"
+        echo -e "Images and Containers are CLEANED."
+        echo -e "docker-assist-dir is REMOVED"
+
         ;;
     *)
         echo -e "INVALID STATE"
@@ -150,16 +105,14 @@ removeComments() {
     local basedir="${1}"
     local dockerfile="${2}"
     local processed_dfile="${3}"
-    local session_id="${4}"
     local ext=".Dockerfile"
 
-    cat "$basedir"/"$dockerfile".Dockerfile "$basedir"/"$dockerfile".dockerfile 2>/dev/null | grep -v "^#" | grep -v "^$" >/tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$session_id"/"$processed_dfile""$ext"
+    cat "$basedir"/"$dockerfile".Dockerfile "$basedir"/"$dockerfile".dockerfile 2>/dev/null | grep -v "^#" | grep -v "^$" >"${basedir}"/"$dockerassist_root_dir"/"$processed_dfile""$ext"
 }
 
 createIncrementalDockerfiles() {
     local basedir="${1}"
     local dockerfile="${2}"
-    local session_id="${3}"
     local processed_dfile="$dockerfile-full"
     local ext=".Dockerfile"
 
@@ -167,12 +120,12 @@ createIncrementalDockerfiles() {
     echo -e "Creating Incremental Dockerfiles"
     echo -e "______________________________________________________________________________________"
 
-    # mkdir -p /tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$session_id"
+    mkdir -p "${basedir}"/"$dockerassist_root_dir"
     (
-        cd /tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$session_id" || return 1
-        removeComments "$basedir" "$dockerfile" "$processed_dfile" "$session_id"
+        cd "${basedir}"/"$dockerassist_root_dir" || return 1
+        removeComments "$basedir" "$dockerfile" "$processed_dfile"
 
-        local lines=$(wc -l /tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$session_id"/"$processed_dfile""$ext" | cut -f1 -d' ')
+        local lines=$(wc -l "${basedir}"/"$dockerassist_root_dir"/"$processed_dfile""$ext" | cut -f1 -d' ')
         mkdir -p "$incr_dfiles_dir" || return 1
 
         local entrypoint="ENTRYPOINT [ \"/bin/sh\" ]"
@@ -193,17 +146,15 @@ processIncrementalDockerfiles() {
     local image_version="${4}"
     local context="${5}"
     local container_name="${6}"
-    local session_id="${7}"
     # local ext=".Dockerfile"
 
-    echo -e "createContainer \n\t\tbasedir=:$basedir \
+    echo -e "createContainer \n\t\tbasedir=:$basedir/$dockerassist_root_dir/$incr_dfiles_dir \
                                     \n\t\tdockerfile=$incr_dockerfile \
                                     \n\t\timage=$image_name:$image_version \
                                     \n\t\tcontext=$context \
-                                    \n\t\tcontainer=$container_name \
-                                    \n\t\tdockerfile_dir=/tmp/$dockerassist_root_dir/$dkrstepper_dir/$session_id/$incr_dfiles_dir\n"
+                                    \n\t\tcontainer=$container_name\n"
 
-    createContainer "$basedir" "$incr_dockerfile" "$image_name" "$image_version" "$context" "$container_name" /tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$session_id"/"$incr_dfiles_dir"
+    createContainer "$basedir"/"$dockerassist_root_dir"/"$incr_dfiles_dir" "$incr_dockerfile" "$image_name" "$image_version" "../../""$context" "$container_name"
 
 }
 
@@ -212,36 +163,37 @@ evaluateIncrementalDockerfiles() {
     local dockerfile="${2}"
     local context="${3}"
     local startline="${4}"
-    local session_id="${5}"
     local ext=".Dockerfile"
-
-    # echo -e "[evaluateIncrementalDockerfiles] basedir=$basedir dockerfile=$dockerfile context=$context startline=$startline"
 
     local curline=$((startline))
     local image_name=$(echo i-"$dockerfile" | tr [:upper:] [:lower:])
-    # local total_steps=$(ls -1 | wc -l | cut -f1 -d' ')
+    local total_steps=$(ls -1 | wc -l | cut -f1 -d' ')
     local ans=o # o: OK
     local step_status="changed"
 
     declare -A version_set
 
-    local incr_dir=/tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$session_id"/"$incr_dfiles_dir"
-    local total_steps=$(ls -1 "$incr_dir" | wc -l | cut -f1 -d' ')
+    cur_dir=$(pwd)
+
+    cd "${basedir}"/"$dockerassist_root_dir"/"$incr_dfiles_dir" || return 1
+
+    local total_steps=$(ls -1 | wc -l | cut -f1 -d' ')
 
     echo -e "\nTotal steps: $total_steps"
 
     ((curline > total_steps)) && echo -e "startline value is more than the size of the dockerfile. Exiting" && return 1
 
-    while [ ! "$ans" = "e" ] && [ ! "$ans" = "a" ] && [ ! "$ans" = "c" ] && [ ! "$ans" = "r" ] && [ ! "$ans" = "x" ] && [ ! "$ans" = "xa" ] && [ ! "$ans" = "xe" ] && [ ! "$ans" = "xc" ]; do
+    while [ ! "$ans" = "e" ] && [ ! "$ans" = "a" ] && [ ! "$ans" = "c" ]; do
         echo -e "______________________________________________________________________________________"
         echo -e "Running step# $curline/$total_steps"
         echo -e "______________________________________________________________________________________"
 
         local incr_dockerfile="incr-""$curline"
         echo -e "\nProcessing $incr_dockerfile$ext:\n"
+        # echo -e "total_steps=$total_steps"
 
         local image_version="$curline"
-        local container_name=$(echo c-"$dockerfile"-"$session_id"-"$image_version" | tr [:upper:] [:lower:])
+        local container_name=$(echo c-"$dockerfile"-"$image_version" | tr [:upper:] [:lower:])
 
         echo -e "[debug] step_status = $step_status"
 
@@ -249,9 +201,7 @@ evaluateIncrementalDockerfiles() {
         changed)
             # echo -e "[debug] step_status = $step_status"
             version_set["$curline"]=1
-            add_session_image "$image_name"-"$session_id":"$image_version" "$session_id"
-            add_session_container "$container_name" "$session_id"
-            processIncrementalDockerfiles "$basedir" "$incr_dockerfile" "$image_name"-"$session_id" "$image_version" "$context" "$container_name" "$session_id"
+            processIncrementalDockerfiles "$basedir" "$incr_dockerfile" "$image_name" "$image_version" "$context" "$container_name"
             ;;
         unchanged)
             echo -e "Step# unchanged. Not processing."
@@ -275,10 +225,9 @@ evaluateIncrementalDockerfiles() {
         ans=$(echo "$iter_status" | cut -f3 -d' ')
     done
 
-    update_current_step_info "$curline"
-    sessionClean "$basedir" "$dockerfile" "$step_status" version_set "$session_id"
-    # echo "[evaluateIncrementalDockerfiles] curline=$curline step_status=$step_status ans=$ans"
+    cd "$cur_dir" || return 1
 
+    clean "$basedir" "$dockerfile" "$step_status" version_set
     return 0
 }
 
@@ -288,27 +237,7 @@ processDockerfile() {
     local context="${3}"
     local startline="${4}"
 
-    # local ans=o # o: OK
-    local curline="$startline"
-    # local step_status
-    local session_id=
-
-    while true; do
-        echo -e "[processDockerfile] basedir=$basedir dockerfile=$dockerfile context=$context startline=$startline curline=$curline"
-
-        init_session && session_id=$(get_current_session || echo "-1")
-
-        createIncrementalDockerfiles "$basedir" "$dockerfile" "$session_id" || echo -e "Cannot create incremental dockerfiles" || return 1
-        # resp=$(evaluateIncrementalDockerfiles "$basedir" "$dockerfile" "$context" "$curline" || return 1)
-        evaluateIncrementalDockerfiles "$basedir" "$dockerfile" "$context" "$curline" "$session_id" || return 1
-
-        # echo "[processDockerfile] Session end: resp=$resp"
-
-        # curline=$(echo "$resp" | cut -f1 -d' ')
-        # step_status=$(echo "$resp" | cut -f2 -d' ')
-        # ans=$(echo "$resp" | cut -f3 -d' ')
-        sessions_cleared && return 0
-        curline=$(cur_step)
-    done
+    createIncrementalDockerfiles "$basedir" "$dockerfile" || echo -e "Cannot create incremental dockerfiles" || return 1
+    evaluateIncrementalDockerfiles "$basedir" "$dockerfile" "$context" "$startline" || return 1
     return 0
 }

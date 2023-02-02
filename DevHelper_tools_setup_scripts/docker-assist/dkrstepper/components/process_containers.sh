@@ -7,12 +7,13 @@ createContainer() {
     local image_version="${4}"
     local context="${5}"
     local container_name="${6}"
+    local dockerfile_dir="${7}"
     local ext=".Dockerfile"
 
     if [[ "$DKRSTEPPER_BUILD_OPTIONS" ]]; then
-        DOCKER_BUILDKIT=1 docker build "$DKRSTEPPER_BUILD_OPTIONS" -t "${image_name}":"${image_version}" -f "${basedir}/${dockerfile}${ext}" "${basedir}/${context}"
+        DOCKER_BUILDKIT=1 docker build "$DKRSTEPPER_BUILD_OPTIONS" -t "${image_name}":"${image_version}" -f "${dockerfile_dir}/${dockerfile}${ext}" "${basedir}/${context}"
     else
-        DOCKER_BUILDKIT=1 docker build -t "${image_name}":"${image_version}" -f "${basedir}/${dockerfile}${ext}" "${basedir}/${context}"
+        DOCKER_BUILDKIT=1 docker build -t "${image_name}":"${image_version}" -f "${dockerfile_dir}/${dockerfile}${ext}" "${basedir}/${context}"
     fi
 
     if [[ "$DKRSTEPPER_RUN_OPTIONS" ]]; then
@@ -24,7 +25,7 @@ createContainer() {
     echo -e "Build command:"
     echo -e "DOCKER_BUILDKIT=1 docker build $DKRSTEPPER_BUILD_OPTIONS\
                         \n\t\t-t $image_name:$image_version \
-                        \n\t\t-f $basedir/$dockerfile$ext \
+                        \n\t\t-f $dockerfile_dir/$dockerfile$ext \
                         \n\t\t$basedir/$context \n"
 
     echo -e "________________________________________________"
@@ -35,20 +36,21 @@ createContainer() {
     gnome-terminal --tab --title="$image_name:$image_version" -- /bin/sh -c " \
                                 echo \"Dockerfile: ${dockerfile}${ext}\"; echo ; \
                                 echo \"Step: ${image_version}\"; echo ; \
-                                cat ${basedir}/${dockerfile}${ext}; echo ; \
+                                cat ${dockerfile_dir}/${dockerfile}${ext}; echo ; \
                                 $runcommand"
 }
 
 cleanContainers() {
     local dockerfile="${1}"
     local -n version_set_ref=${2}
+    local session_id="${3}"
 
     echo -e "______________________________________________________________________________________"
     echo -e "CLEANING CONTAINERS"
     echo -e "______________________________________________________________________________________"
 
     for version in "${!version_set_ref[@]}"; do
-        local container_name=$(echo c-"$dockerfile"-"$version" | tr [:upper:] [:lower:])
+        local container_name=$(echo c-"$dockerfile"-"$session_id"-"$version" | tr [:upper:] [:lower:])
         echo -e "Removing container: $container_name" && docker stop "$container_name" && docker rm "$container_name" && echo -e "Removed container: $container_name\n" || echo -e "Error in removing container $container_name\n"
     done
 }

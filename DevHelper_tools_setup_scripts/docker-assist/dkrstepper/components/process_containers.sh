@@ -23,8 +23,7 @@ createContainer() {
     fi
 
     echo -e "Build command:"
-    echo -e "DOCKER_BUILDKIT=1 docker build $DKRSTEPPER_BUILD_OPTIONS\
-                        \n\t\t-t $image_name:$image_version \
+    echo -e "DOCKER_BUILDKIT=1 docker build $DKRSTEPPER_BUILD_OPTIONS                        \n\t\t-t $image_name:$image_version \
                         \n\t\t-f $dockerfile_dir/$dockerfile$ext \
                         \n\t\t$basedir/$context \n"
 
@@ -51,6 +50,16 @@ cleanContainers() {
 
     for version in "${!version_set_ref[@]}"; do
         local container_name=$(echo c-"$dockerfile"-"$session_id"-"$version" | tr [:upper:] [:lower:])
-        echo -e "Removing container: $container_name" && docker stop "$container_name" && docker rm "$container_name" && echo -e "Removed container: $container_name\n" || echo -e "Error in removing container $container_name\n"
+        echo -e "Stopping container: $container_name" && docker stop "$container_name" && docker rm "$container_name" && echo -e "Removed container: $container_name\n" || echo -e "Error in removing container $container_name\n"
     done
+}
+
+cleanContainer() {
+    local container_name="${1}"
+
+    # echo -e "______________________________________________________________________________________"
+    # echo -e "CLEANING CONTAINER $container_name"
+    # echo -e "______________________________________________________________________________________"
+
+    echo -e "Stopping container: $container_name" && docker stop "$container_name" && docker rm "$container_name" && echo -e "Removed container: $container_name\n" || echo -e "Error in removing container $container_name\n"
 }

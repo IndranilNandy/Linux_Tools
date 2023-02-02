@@ -130,8 +130,37 @@ sessionClean() {
         echo -e "Images and Containers are NOT cleaned. Needs to be CLEANED MANUALLY."
         echo -e "Remove docker-assist-dir MANUALLY"
         ;;
-    exited)
+    runaborted)
         clean_all_sessions
+
+        echo -e "Images and Containers are NOT cleaned. Needs to be CLEANED MANUALLY."
+        echo -e "Remove docker-assist-dir MANUALLY"
+        ;;
+    runexited)
+        clean_all_session_containers
+        clean_all_sessions
+
+        # cleanContainers "$dockerfile" version_set_lref "$session_id"
+        echo -e "Images are NOT cleaned. Need to clean manually."
+        echo -e "Remove docker-assist-dir MANUALLY"
+        echo -e "Containers are REMOVED."
+        ;;
+    runcleaned)
+        clean_all_session_containers
+        clean_all_session_images
+        clean_all_sessions
+
+        # cleanContainers "$dockerfile" version_set_lref "$session_id"
+        # cleanImages "$dockerfile" version_set_lref "$session_id"
+        # rm -r "${basedir:?}"/"$dockerassist_root_dir"
+        echo -e "Images and Containers are CLEANED."
+        echo -e "docker-assist-dir is REMOVED"
+        ;;
+    exited)
+        clean_all_session_containers
+        clean_all_session_images
+        clean_all_sessions
+
         # cleanContainers "$dockerfile" version_set_lref
         # cleanImages "$dockerfile" version_set_lref
         # rm -r "${basedir:?}"/"$dockerassist_root_dir"

@@ -14,3 +14,9 @@ cleanImages() {
         echo -e "Removing image: $image_name" && docker image rm "$image_name" && echo -e "Removed image: $image_name\n" || echo -e "Error in removing image $image_name\n"
     done
 }
+
+cleanImage() {
+    local image_name="${1}"
+    echo -e "Removing image: $image_name" && docker image rm "$image_name" && echo -e "Removed image: $image_name\n" || echo -e "Error in removing image $image_name\n"
+
+}

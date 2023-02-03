@@ -1,7 +1,12 @@
 #!/bin/bash
 
 dockerassist_root_dir="docker-assist-dir"
-dkrstepper_dir="dkrstepper-dir"
+dkrstepper_dir="dkrstepper"
+rundata_dir="$dkrstepper_dir"/runs
+config_dir="$dkrstepper_dir"/config
+
+runend_flag=".run_ended"
+
 incr_dfiles_dir="incremental-dockerfiles"
 
 all_sessions_file=".sessions"
@@ -9,4 +14,4 @@ runid_file=".runs"
 
 session_images=".images"
 session_containers=".containers"
-curstep=".curstep"
+curstep=".reloadstep"

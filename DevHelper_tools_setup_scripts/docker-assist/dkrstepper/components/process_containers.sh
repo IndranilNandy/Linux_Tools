@@ -57,9 +57,20 @@ cleanContainers() {
 cleanContainer() {
     local container_name="${1}"
 
-    # echo -e "______________________________________________________________________________________"
-    # echo -e "CLEANING CONTAINER $container_name"
-    # echo -e "______________________________________________________________________________________"
-
     echo -e "Stopping container: $container_name" && docker stop "$container_name" && docker rm "$container_name" && echo -e "Removed container: $container_name\n" || echo -e "Error in removing container $container_name\n"
+}
+
+clean_all_session_containers() {
+    local run_id="${1}"
+
+    dkr_dir=/tmp/"$dockerassist_root_dir"/"$rundata_dir"
+    sessions_file="$dkr_dir"/"$run_id"/"$all_sessions_file"
+    export -f cleanContainer
+
+    echo -e "______________________________________________________________________________________"
+    echo -e "CLEANING ALL SESSION CONTAINERS" [Run id: "$run_id"]
+    echo -e "______________________________________________________________________________________"
+
+    cat "$sessions_file" | xargs -I X echo "[[ -e $dkr_dir/$run_id/$sessions_dir/X/$session_containers ]] && cat $dkr_dir/$run_id/$sessions_dir/X/$session_containers" | bash | xargs -I X echo "cleanContainer X" | bash
+    cat "$sessions_file" | xargs -I X echo "[[ -e $dkr_dir/$run_id/$sessions_dir/X/$session_containers ]] && rm $dkr_dir/$run_id/$sessions_dir/X/$session_containers || echo -e Session id - X: Already cleaned" | bash
 }

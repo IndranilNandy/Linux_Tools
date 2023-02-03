@@ -1,8 +1,9 @@
 #!/bin/bash
 
 dockerassist_root_dir="docker-assist-dir"
-dkrstepper_dir="dkrstepper"
+dkrstepper_dir="dkrdebugger"
 rundata_dir="$dkrstepper_dir"/runs
+sessions_dir="sessions"
 config_dir="$dkrstepper_dir"/config
 
 runend_flag=".run_ended"

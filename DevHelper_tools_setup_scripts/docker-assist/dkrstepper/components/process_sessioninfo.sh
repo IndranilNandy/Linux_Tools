@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-if [ -L "$(which dkrstepper)" ]; then
-    curDir="$(dirname "$(tracelink dkrstepper)")"
+if [ -L "$(which dkrdebugger)" ]; then
+    curDir="$(dirname "$(tracelink dkrdebugger)")"
 else
     curDir="$(pwd)"
 fi
@@ -14,19 +14,19 @@ init_run() {
     local run_id=$(date +%4Y%m%d%H%M%S)
 
     mkdir -p /tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id" || return 1
-    echo $run_id >>/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$runid_file"
+    echo $run_id >>/tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$runid_file"
     return 0
 }
 
 get_current_run() {
-    tail -n1 /tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$runid_file" || return 1
+    tail -n1 /tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$runid_file" || return 1
 }
 
 init_session() {
     local run_id="${1}"
     local session_id=$(date +%4Y%m%d%H%M%S)
 
-    mkdir -p /tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$session_id" || return 1
+    mkdir -p /tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$sessions_dir"/"$session_id" || return 1
     echo $session_id >>/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$all_sessions_file"
     return 0
 }
@@ -39,8 +39,8 @@ get_current_session() {
 
 run_end() {
     local run_id="${1}"
-
-    touch /tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$runend_flag"
+    local run_status="${2}"
+    echo "$run_status" > /tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$runend_flag"
 }
 
 run_ended() {
@@ -72,7 +72,7 @@ add_session_image() {
     local session_id="${2}"
     local run_id="${3}"
 
-    local file=/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$session_id"/"$session_images"
+    local file=/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$sessions_dir"/"$session_id"/"$session_images"
 
     [[ -e "$file" ]] && grep -q -E "^$image$" "$file" || echo "$image" >>"$file"
 }
@@ -82,7 +82,7 @@ add_session_container() {
     local session_id="${2}"
     local run_id="${3}"
 
-    local file=/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$session_id"/"$session_containers"
+    local file=/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$sessions_dir"/"$session_id"/"$session_containers"
 
     [[ -e "$file" ]] && grep -q -E "^$container$" "$file" || echo "$container" >>"$file"
 }
@@ -99,56 +99,3 @@ cur_step() {
 
     cat /tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curstep"
 }
-
-# testfn() {
-#     container="${1}"
-#     echo "container = $container"
-# }
-
-clean_all_session_containers() {
-    local run_id="${1}"
-
-    dkr_dir=/tmp/"$dockerassist_root_dir"/"$rundata_dir"
-    sessions_file="$dkr_dir"/"$run_id"/"$all_sessions_file"
-    export -f cleanContainer
-
-    echo -e "______________________________________________________________________________________"
-    echo -e "CLEANING ALL SESSION CONTAINERS"
-    echo -e "______________________________________________________________________________________"
-
-    cat "$sessions_file" | xargs -I X echo "cat $dkr_dir"/"$run_id"/X/"$session_containers" | bash | xargs -I X echo "cleanContainer X" | bash
-}
-
-clean_all_session_images() {
-    local run_id="${1}"
-
-    dkr_dir=/tmp/"$dockerassist_root_dir"/"$rundata_dir"
-    sessions_file="$dkr_dir"/"$run_id"/"$all_sessions_file"
-    export -f cleanImage
-
-    echo -e "______________________________________________________________________________________"
-    echo -e "CLEANING ALL SESSION IMAGES"
-    echo -e "______________________________________________________________________________________"
-
-    cat "$sessions_file" | xargs -I X echo "cat $dkr_dir"/"$run_id"/X/"$session_images" | bash | xargs -I X echo "cleanImage X" | bash
-}
-
-# init_session
-# x=$(get_current_session || echo "failed")
-# echo "last: $x"
-
-# clean_all_sessions
-# sessions_cleared && echo cleared || echo not cleared
-# session_exists && echo exists || echo not exists
-
-# sid=20230202204617
-# add_session_image "123" "$sid"
-# add_session_image "345" "$sid"
-# add_session_image "123" "$sid"
-# add_session_image "444" "$sid"
-
-# update_current_step_info 12
-# echo "$(cur_step)"
-
-# clean_all_session_containers
-# clean_all_session_images

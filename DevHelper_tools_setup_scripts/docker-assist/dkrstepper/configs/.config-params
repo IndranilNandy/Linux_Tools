@@ -1,9 +1,12 @@
 #!/bin/bash
 
 dockerassist_root_dir="docker-assist-dir"
-incr_dfiles_dir="incremental-dockerfiles"
 dkrstepper_dir="dkrstepper-dir"
+incr_dfiles_dir="incremental-dockerfiles"
+
 all_sessions_file=".sessions"
+runid_file=".runs"
+
 session_images=".images"
 session_containers=".containers"
 curstep=".curstep"

@@ -107,6 +107,7 @@ sessionClean() {
     local step_status="${3}"
     local -n version_set_lref=${4}
     local session_id="${5}"
+    local run_id="${6}"
 
     case "$step_status" in
     sessionaborted)
@@ -114,14 +115,14 @@ sessionClean() {
         echo -e "Remove docker-assist-dir MANUALLY"
         ;;
     sessionexited)
-        cleanContainers "$dockerfile" version_set_lref "$session_id"
+        cleanContainers "$dockerfile" version_set_lref "$session_id" "$run_id"
         echo -e "Images are NOT cleaned. Need to clean manually."
         echo -e "Remove docker-assist-dir MANUALLY"
         echo -e "Containers are REMOVED."
         ;;
     sessioncleaned)
-        cleanContainers "$dockerfile" version_set_lref "$session_id"
-        cleanImages "$dockerfile" version_set_lref "$session_id"
+        cleanContainers "$dockerfile" version_set_lref "$session_id" "$run_id"
+        cleanImages "$dockerfile" version_set_lref "$session_id" "$run_id"
         # rm -r "${basedir:?}"/"$dockerassist_root_dir"
         echo -e "Images and Containers are CLEANED."
         echo -e "docker-assist-dir is REMOVED"
@@ -131,14 +132,14 @@ sessionClean() {
         echo -e "Remove docker-assist-dir MANUALLY"
         ;;
     runaborted)
-        clean_all_sessions
+        clean_all_sessions "$run_id"
 
         echo -e "Images and Containers are NOT cleaned. Needs to be CLEANED MANUALLY."
         echo -e "Remove docker-assist-dir MANUALLY"
         ;;
     runexited)
-        clean_all_session_containers
-        clean_all_sessions
+        clean_all_session_containers "$run_id"
+        clean_all_sessions "$run_id"
 
         # cleanContainers "$dockerfile" version_set_lref "$session_id"
         echo -e "Images are NOT cleaned. Need to clean manually."
@@ -146,9 +147,9 @@ sessionClean() {
         echo -e "Containers are REMOVED."
         ;;
     runcleaned)
-        clean_all_session_containers
-        clean_all_session_images
-        clean_all_sessions
+        clean_all_session_containers "$run_id"
+        clean_all_session_images "$run_id"
+        clean_all_sessions "$run_id"
 
         # cleanContainers "$dockerfile" version_set_lref "$session_id"
         # cleanImages "$dockerfile" version_set_lref "$session_id"
@@ -157,9 +158,9 @@ sessionClean() {
         echo -e "docker-assist-dir is REMOVED"
         ;;
     exited)
-        clean_all_session_containers
-        clean_all_session_images
-        clean_all_sessions
+        clean_all_session_containers "$run_id"
+        clean_all_session_images "$run_id"
+        clean_all_sessions "$run_id"
 
         # cleanContainers "$dockerfile" version_set_lref
         # cleanImages "$dockerfile" version_set_lref
@@ -180,15 +181,19 @@ removeComments() {
     local dockerfile="${2}"
     local processed_dfile="${3}"
     local session_id="${4}"
+    local run_id="${5}"
+
     local ext=".Dockerfile"
 
-    cat "$basedir"/"$dockerfile".Dockerfile "$basedir"/"$dockerfile".dockerfile 2>/dev/null | grep -v "^#" | grep -v "^$" >/tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$session_id"/"$processed_dfile""$ext"
+    cat "$basedir"/"$dockerfile".Dockerfile "$basedir"/"$dockerfile".dockerfile 2>/dev/null | grep -v "^#" | grep -v "^$" >/tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$run_id"/"$session_id"/"$processed_dfile""$ext"
 }
 
 createIncrementalDockerfiles() {
     local basedir="${1}"
     local dockerfile="${2}"
     local session_id="${3}"
+    local run_id="${4}"
+
     local processed_dfile="$dockerfile-full"
     local ext=".Dockerfile"
 
@@ -198,10 +203,10 @@ createIncrementalDockerfiles() {
 
     # mkdir -p /tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$session_id"
     (
-        cd /tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$session_id" || return 1
-        removeComments "$basedir" "$dockerfile" "$processed_dfile" "$session_id"
+        cd /tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$run_id"/"$session_id" || return 1
+        removeComments "$basedir" "$dockerfile" "$processed_dfile" "$session_id" "$run_id"
 
-        local lines=$(wc -l /tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$session_id"/"$processed_dfile""$ext" | cut -f1 -d' ')
+        local lines=$(wc -l /tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$run_id"/"$session_id"/"$processed_dfile""$ext" | cut -f1 -d' ')
         mkdir -p "$incr_dfiles_dir" || return 1
 
         local entrypoint="ENTRYPOINT [ \"/bin/sh\" ]"
@@ -223,6 +228,7 @@ processIncrementalDockerfiles() {
     local context="${5}"
     local container_name="${6}"
     local session_id="${7}"
+    local run_id="${8}"
     # local ext=".Dockerfile"
 
     echo -e "createContainer \n\t\tbasedir=:$basedir \
@@ -230,9 +236,9 @@ processIncrementalDockerfiles() {
                                     \n\t\timage=$image_name:$image_version \
                                     \n\t\tcontext=$context \
                                     \n\t\tcontainer=$container_name \
-                                    \n\t\tdockerfile_dir=/tmp/$dockerassist_root_dir/$dkrstepper_dir/$session_id/$incr_dfiles_dir\n"
+                                    \n\t\tdockerfile_dir=/tmp/$dockerassist_root_dir/$dkrstepper_dir/$run_id/$session_id/$incr_dfiles_dir\n"
 
-    createContainer "$basedir" "$incr_dockerfile" "$image_name" "$image_version" "$context" "$container_name" /tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$session_id"/"$incr_dfiles_dir"
+    createContainer "$basedir" "$incr_dockerfile" "$image_name" "$image_version" "$context" "$container_name" /tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$run_id"/"$session_id"/"$incr_dfiles_dir"
 
 }
 
@@ -242,6 +248,8 @@ evaluateIncrementalDockerfiles() {
     local context="${3}"
     local startline="${4}"
     local session_id="${5}"
+    local run_id="${6}"
+
     local ext=".Dockerfile"
 
     # echo -e "[evaluateIncrementalDockerfiles] basedir=$basedir dockerfile=$dockerfile context=$context startline=$startline"
@@ -254,7 +262,7 @@ evaluateIncrementalDockerfiles() {
 
     declare -A version_set
 
-    local incr_dir=/tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$session_id"/"$incr_dfiles_dir"
+    local incr_dir=/tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$run_id"/"$session_id"/"$incr_dfiles_dir"
     local total_steps=$(ls -1 "$incr_dir" | wc -l | cut -f1 -d' ')
 
     echo -e "\nTotal steps: $total_steps"
@@ -278,9 +286,9 @@ evaluateIncrementalDockerfiles() {
         changed)
             # echo -e "[debug] step_status = $step_status"
             version_set["$curline"]=1
-            add_session_image "$image_name"-"$session_id":"$image_version" "$session_id"
-            add_session_container "$container_name" "$session_id"
-            processIncrementalDockerfiles "$basedir" "$incr_dockerfile" "$image_name"-"$session_id" "$image_version" "$context" "$container_name" "$session_id"
+            add_session_image "$image_name"-"$session_id":"$image_version" "$session_id" "$run_id"
+            add_session_container "$container_name" "$session_id" "$run_id"
+            processIncrementalDockerfiles "$basedir" "$incr_dockerfile" "$image_name"-"$session_id" "$image_version" "$context" "$container_name" "$session_id" "$run_id"
             ;;
         unchanged)
             echo -e "Step# unchanged. Not processing."
@@ -304,8 +312,8 @@ evaluateIncrementalDockerfiles() {
         ans=$(echo "$iter_status" | cut -f3 -d' ')
     done
 
-    update_current_step_info "$curline"
-    sessionClean "$basedir" "$dockerfile" "$step_status" version_set "$session_id"
+    update_current_step_info "$curline" "$run_id"
+    sessionClean "$basedir" "$dockerfile" "$step_status" version_set "$session_id" "$run_id"
     # echo "[evaluateIncrementalDockerfiles] curline=$curline step_status=$step_status ans=$ans"
 
     return 0
@@ -321,23 +329,26 @@ processDockerfile() {
     local curline="$startline"
     # local step_status
     local session_id=
+    local run_id=
+
+    init_run && run_id=$(get_current_run || echo "-1")
 
     while true; do
         echo -e "[processDockerfile] basedir=$basedir dockerfile=$dockerfile context=$context startline=$startline curline=$curline"
 
-        init_session && session_id=$(get_current_session || echo "-1")
+        init_session "$run_id" && session_id=$(get_current_session "$run_id" || echo "-1")
 
-        createIncrementalDockerfiles "$basedir" "$dockerfile" "$session_id" || echo -e "Cannot create incremental dockerfiles" || return 1
+        createIncrementalDockerfiles "$basedir" "$dockerfile" "$session_id" "$run_id" || echo -e "Cannot create incremental dockerfiles" || return 1
         # resp=$(evaluateIncrementalDockerfiles "$basedir" "$dockerfile" "$context" "$curline" || return 1)
-        evaluateIncrementalDockerfiles "$basedir" "$dockerfile" "$context" "$curline" "$session_id" || return 1
+        evaluateIncrementalDockerfiles "$basedir" "$dockerfile" "$context" "$curline" "$session_id" "$run_id" || return 1
 
         # echo "[processDockerfile] Session end: resp=$resp"
 
         # curline=$(echo "$resp" | cut -f1 -d' ')
         # step_status=$(echo "$resp" | cut -f2 -d' ')
         # ans=$(echo "$resp" | cut -f3 -d' ')
-        sessions_cleared && return 0
-        curline=$(cur_step)
+        sessions_cleared "$run_id" && return 0
+        curline=$(cur_step "$run_id")
     done
     return 0
 }

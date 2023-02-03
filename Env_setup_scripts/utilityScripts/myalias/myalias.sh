@@ -20,7 +20,6 @@ addAliasEntry() {
     local scriptName="${1}"
     local alias_entry="${@:2}"
 
-    echo -e "script:$scriptName alias:$alias_entry"
     cat "$curDir"/.aliases/"$scriptName" | grep "$*" || echo "$alias_entry" >>"$curDir"/.aliases/"$scriptName" && echo -e "Before using this alias, open a new window"
     update_alias_file
     update_alias_completions_list

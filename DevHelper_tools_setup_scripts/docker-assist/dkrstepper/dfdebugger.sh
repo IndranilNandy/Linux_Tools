@@ -8,12 +8,12 @@ fi
 
 case "${1}" in
 step)
-    "$curDir"/dkrstepper.sh "${@:2}"
+    "$curDir"/dfstepper.sh "${@:2}"
     ;;
 clean)
     "$curDir"/dfdebugger_cleandb.sh "${@:2}"
     ;;
 *)
-    "$curDir"/dkrstepper.sh "$@"
+    "$curDir"/dfstepper.sh "$@"
     ;;
 esac

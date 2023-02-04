@@ -14,12 +14,12 @@ init_run() {
     local run_id=$(date +%4Y%m%d%H%M%S)
 
     mkdir -p /tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id" || return 1
-    echo $run_id >>/tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$runid_file"
+    echo $run_id >>/tmp/"$dockerassist_root_dir"/"$dfstepper_dir"/"$runid_file"
     return 0
 }
 
 get_current_run() {
-    tail -n1 /tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$runid_file" || return 1
+    tail -n1 /tmp/"$dockerassist_root_dir"/"$dfstepper_dir"/"$runid_file" || return 1
 }
 
 init_session() {

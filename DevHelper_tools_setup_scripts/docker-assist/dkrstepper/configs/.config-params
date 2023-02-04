@@ -1,10 +1,10 @@
 #!/bin/bash
 
 dockerassist_root_dir="docker-assist-dir"
-dkrstepper_dir="dfdebugger"
-rundata_dir="$dkrstepper_dir"/runs
+dfstepper_dir="dfdebugger"
+rundata_dir="$dfstepper_dir"/runs
 sessions_dir="sessions"
-config_dir="$dkrstepper_dir"/config
+config_dir="$dfstepper_dir"/config
 
 runend_flag=".run_ended"
 

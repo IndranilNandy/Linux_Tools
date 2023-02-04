@@ -84,12 +84,12 @@ export_list() {
 
 cleanContainersInRun() {
     local run_type="${1}"
-    cat /tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$runid_file" | xargs -I X echo clean_container_req_for_run X "$run_type" | bash
+    cat /tmp/"$dockerassist_root_dir"/"$dfstepper_dir"/"$runid_file" | xargs -I X echo clean_container_req_for_run X "$run_type" | bash
 }
 
 cleanImagesInRun() {
     local run_type="${1}"
-    cat /tmp/"$dockerassist_root_dir"/"$dkrstepper_dir"/"$runid_file" | xargs -I X echo clean_image_req_for_run X "$run_type" | bash
+    cat /tmp/"$dockerassist_root_dir"/"$dfstepper_dir"/"$runid_file" | xargs -I X echo clean_image_req_for_run X "$run_type" | bash
 }
 
 cleanRun() {

@@ -10,20 +10,20 @@ createContainer() {
     local dockerfile_dir="${7}"
     local ext=".Dockerfile"
 
-    if [[ "$DKRSTEPPER_BUILD_OPTIONS" ]]; then
-        DOCKER_BUILDKIT=1 docker build "$DKRSTEPPER_BUILD_OPTIONS" -t "${image_name}":"${image_version}" -f "${dockerfile_dir}/${dockerfile}${ext}" "${basedir}/${context}"
+    if [[ "$DFSTEPPER_BUILD_OPTIONS" ]]; then
+        DOCKER_BUILDKIT=1 docker build "$DFSTEPPER_BUILD_OPTIONS" -t "${image_name}":"${image_version}" -f "${dockerfile_dir}/${dockerfile}${ext}" "${basedir}/${context}"
     else
         DOCKER_BUILDKIT=1 docker build -t "${image_name}":"${image_version}" -f "${dockerfile_dir}/${dockerfile}${ext}" "${basedir}/${context}"
     fi
 
-    if [[ "$DKRSTEPPER_RUN_OPTIONS" ]]; then
-        runcommand="docker run -it $DKRSTEPPER_RUN_OPTIONS --name $container_name $image_name:$image_version"
+    if [[ "$DFSTEPPER_RUN_OPTIONS" ]]; then
+        runcommand="docker run -it $DFSTEPPER_RUN_OPTIONS --name $container_name $image_name:$image_version"
     else
         runcommand="docker run -it --name $container_name $image_name:$image_version"
     fi
 
     echo -e "Build command:"
-    echo -e "DOCKER_BUILDKIT=1 docker build $DKRSTEPPER_BUILD_OPTIONS                        \n\t\t-t $image_name:$image_version \
+    echo -e "DOCKER_BUILDKIT=1 docker build $DFSTEPPER_BUILD_OPTIONS                        \n\t\t-t $image_name:$image_version \
                         \n\t\t-f $dockerfile_dir/$dockerfile$ext \
                         \n\t\t$basedir/$context \n"
 

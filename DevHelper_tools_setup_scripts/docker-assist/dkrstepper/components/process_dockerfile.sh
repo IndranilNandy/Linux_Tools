@@ -232,7 +232,7 @@ processIncrementalDockerfiles() {
                                     \n\t\tcontainer=$container_name \
                                     \n\t\tdockerfile_dir=/tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$sessions_dir/$session_id/$incr_dfiles_dir\n"
 
-    createContainer "$basedir" "$incr_dockerfile" "$image_name" "$image_version" "$context" "$container_name" /tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$sessions_dir"/"$session_id"/"$incr_dfiles_dir"
+    createContainer "$basedir" "$incr_dockerfile" "$image_name" "$image_version" "$context" "$container_name" /tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$sessions_dir"/"$session_id"/"$incr_dfiles_dir" "$run_id"
 
 }
 
@@ -326,6 +326,7 @@ processDockerfile() {
     local run_id=
 
     init_run && run_id=$(get_current_run || echo "-1")
+    init_config "$run_id" "$basedir"/"$dockerfile"
 
     while true; do
         echo -e "[processDockerfile] basedir=$basedir dockerfile=$dockerfile context=$context startline=$startline curline=$curline"

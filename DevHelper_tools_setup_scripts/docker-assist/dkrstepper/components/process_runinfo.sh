@@ -13,7 +13,7 @@ init_run() {
     local run_id=$(date +%4Y%m%d%H%M%S)
 
     mkdir -p /tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id" || return 1
-    echo $run_id >>/tmp/"$dockerassist_root_dir"/"$dfstepper_dir"/"$runid_file"
+    echo "$run_id" >>/tmp/"$dockerassist_root_dir"/"$dfstepper_dir"/"$runid_file"
     return 0
 }
 

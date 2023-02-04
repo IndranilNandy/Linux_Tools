@@ -4,7 +4,14 @@ dockerassist_root_dir="docker-assist-dir"
 dfstepper_dir="dfdebugger"
 rundata_dir="$dfstepper_dir"/runs
 sessions_dir="sessions"
-config_dir="$dfstepper_dir"/config
+config_dir="$dfstepper_dir"/configs
+build_config_dir=".buildconfig"
+run_config_dir=".runconfig"
+
+default_cfg_template="$HOME"/MyTools/Linux_Tools/DevHelper_tools_setup_scripts/docker-assist/dkrstepper/configs/.config-docker
+default_build_cfg="default.buildconfig"
+default_run_cfg="default.runconfig"
+runfile=".runfile"
 
 runend_flag=".run_ended"
 
@@ -16,3 +23,9 @@ runid_file=".runs"
 session_images=".images"
 session_containers=".containers"
 curstep=".reloadstep"
+
+image_pholder="_IMAGE_NAME_"
+imagev_pholder="_IMAGE_VERSION_"
+dfile_pholder="_DOCKERFILE_"
+context_pholder="_CONTEXT_"
+container_pholder="_CONTAINER_NAME_"

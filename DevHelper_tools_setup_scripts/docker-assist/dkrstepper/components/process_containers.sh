@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+if [ -L "$(which dfdebugger)" ]; then
+    curDir="$(dirname "$(tracelink dfdebugger)")"
+else
+    curDir="$(pwd)"
+fi
+
+. "$curDir"/components/process_configs.sh
+
 createContainer() {
     local basedir="${1}"
     local dockerfile="${2}"
@@ -8,24 +16,42 @@ createContainer() {
     local context="${5}"
     local container_name="${6}"
     local dockerfile_dir="${7}"
+    local run_id="${8}"
     local ext=".Dockerfile"
 
-    if [[ "$DFSTEPPER_BUILD_OPTIONS" ]]; then
-        DOCKER_BUILDKIT=1 docker build "$DFSTEPPER_BUILD_OPTIONS" -t "${image_name}":"${image_version}" -f "${dockerfile_dir}/${dockerfile}${ext}" "${basedir}/${context}"
-    else
-        DOCKER_BUILDKIT=1 docker build -t "${image_name}":"${image_version}" -f "${dockerfile_dir}/${dockerfile}${ext}" "${basedir}/${context}"
-    fi
+    declare -A cfgmap
+    cfgmap["$image_pholder"]="${image_name}"
+    cfgmap["$imagev_pholder"]="${image_version}"
+    cfgmap["$dfile_pholder"]="${dockerfile_dir}/${dockerfile}${ext}"
+    cfgmap["$context_pholder"]="${basedir}/${context}"
+    cfgmap["$container_pholder"]="${container_name}"
 
-    if [[ "$DFSTEPPER_RUN_OPTIONS" ]]; then
-        runcommand="docker run -it $DFSTEPPER_RUN_OPTIONS --name $container_name $image_name:$image_version"
-    else
-        runcommand="docker run -it --name $container_name $image_name:$image_version"
-    fi
+    buildcommand=$(buildcfg_builder "$run_id" cfgmap)
+    runcommand=$(runcfg_builder "$run_id" cfgmap)
+
+    echo -e "________________________________________________"
 
     echo -e "Build command:"
-    echo -e "DOCKER_BUILDKIT=1 docker build $DFSTEPPER_BUILD_OPTIONS                        \n\t\t-t $image_name:$image_version \
-                        \n\t\t-f $dockerfile_dir/$dockerfile$ext \
-                        \n\t\t$basedir/$context \n"
+    echo -e "$buildcommand"
+
+    eval "$buildcommand"
+
+    # if [[ "$DFSTEPPER_BUILD_OPTIONS" ]]; then
+    #     DOCKER_BUILDKIT=1 docker build "$DFSTEPPER_BUILD_OPTIONS" -t "${image_name}":"${image_version}" -f "${dockerfile_dir}/${dockerfile}${ext}" "${basedir}/${context}"
+    # else
+    #     DOCKER_BUILDKIT=1 docker build -t "${image_name}":"${image_version}" -f "${dockerfile_dir}/${dockerfile}${ext}" "${basedir}/${context}"
+    # fi
+
+    # if [[ "$DFSTEPPER_RUN_OPTIONS" ]]; then
+    #     runcommand="docker run -it $DFSTEPPER_RUN_OPTIONS --name $container_name $image_name:$image_version"
+    # else
+    #     runcommand="docker run -it --name $container_name $image_name:$image_version"
+    # fi
+
+    # echo -e "Build command:"
+    # echo -e "DOCKER_BUILDKIT=1 docker build $DFSTEPPER_BUILD_OPTIONS                        \n\t\t-t $image_name:$image_version \
+    #                     \n\t\t-f $dockerfile_dir/$dockerfile$ext \
+    #                     \n\t\t$basedir/$context \n"
 
     echo -e "________________________________________________"
 

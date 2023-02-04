@@ -7,13 +7,13 @@ else
 fi
 
 case "${1}" in
-    step)
+step)
     "$curDir"/dkrstepper.sh "${@:2}"
     ;;
-    clean)
+clean)
     "$curDir"/dkrdebugger_cleandb.sh "${@:2}"
     ;;
-    *)
+*)
     "$curDir"/dkrstepper.sh "$@"
     ;;
 esac

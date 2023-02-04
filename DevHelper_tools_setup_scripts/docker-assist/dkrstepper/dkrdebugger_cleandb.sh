@@ -16,7 +16,7 @@ rs_type="all"
 
 for arg in "$@"; do
     case "$arg" in
-    --allruns)
+    --force)
         run_type="all"
         ;;
     --containers)

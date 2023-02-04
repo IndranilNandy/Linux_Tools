@@ -15,7 +15,8 @@ context=.
 startline=1
 
 findDockerfile() {
-    find . -name "*.dockerfile" -o -name "*.Dockerfile" > /tmp/dfilelist
+    find "$basedir" -name "*.dockerfile" -o -name "*.Dockerfile" >/tmp/dfilelist
+
     count_of_dockerfiles=$(cat /tmp/dfilelist | wc -l)
 
     ((count_of_dockerfiles == 0)) && echo -e "No Dockerfile found in the current directory hierarchy. Exiting." && return 1
@@ -79,9 +80,33 @@ tr_path_rel_to_abs() {
     echo "$path" | sed "s#^\.\(.*\)#$(pwd)\1#"
 }
 
+# Either provide [option 1] --basedir/--dockerfile, or provide [option 2] full path (absolute/relative) of the dockerfile [NOT BOTH], or [option 3] provide NO input (context and startline are always accepted)
+# Dockerfile names/paths should end with the extension (.dockerfile/.Dockerfile)
+# [OPTION 1]
+#        basedir accepts absolute/relative path
+#        dockerfile accepts only name (with extension), no path should be preceeded
+#        if basedir is NOT provided, then basedir is assumed to be current directory
+#        if dockerfile is NOT provided, then the program searches for all dockerfiles in the directory tree pointed by basedir
+#        if both are provided, then NO search is performed and basedir/dockerfile is taken as the full dockerfile path intended
+# [OPTION 2]
+#        accepts dockerfile with .dockerfile/.Dockerfile extension preceeded by absoulte/relative path
+#        if only dockerfilename.ext is provided, then it takes the current directory as basedir
+#        it does NOT do any dockerfile search, only accepts the given input
+# [OPTION 3]
+#        provide no input (as mentioned in Option 1 and 2) -> program will search for dockerfiles in the current directory
+#        REMEMBER that context and startline values are always accepted if provided.
+# --------------------------------------------------------------------------------------
+# Context value is always relative to the basedir
+# Default: .
+# --------------------------------------------------------------------------------------
+# startline value is validated for negative or out-of-range
+# Default: 1
+# --------------------------------------------------------------------------------------
+
 for arg in "$@"; do
     case $arg in
     --basedir=*)
+        # Accepts both absolute and relative path
         if [[ "$basedir" ]]; then
             echo -e "Wrong usage of command arguments!"
             echo -e "You're setting basedir twice"
@@ -90,6 +115,7 @@ for arg in "$@"; do
         basedir=$(echo $arg | sed "s/--basedir=\(.*\)/\1/")
         ;;
     --dockerfile=*)
+        # Accepts only the dockerfile name with extension, no paths should be preceeded
         if [[ "$dockerfile" ]]; then
             echo -e "Wrong usage of command arguments!"
             echo -e "You're setting dockerfile twice"
@@ -99,12 +125,14 @@ for arg in "$@"; do
         dockerfile=$(basename -s .Dockerfile "$(basename -s .dockerfile "$dockerfile")")
         ;;
     --context=*)
+        # Accepts path relative to the basedir only
         context=$(echo $arg | sed "s/--context=\(.*\)/\1/")
         ;;
     --startline=*)
         startline=$(echo $arg | sed "s/--startline=\(.*\)/\1/")
         ;;
-    *)
+    *.dockerfile)
+        # Accepts dockerfile with .dockerfile/.Dockerfile extension preceeded by absoulte/relative path
         if [[ "$basedir" ]] || [[ "$dockerfile" ]]; then
             echo -e "Wrong usage of command arguments!"
             echo -e "Either you're setting basedir/dockerfile twice, or, you're providing multiple unnamed parameters, only one unnamed parameter (format: basedir/dockerfile) is valid"
@@ -112,12 +140,31 @@ for arg in "$@"; do
         fi
         set_basedir_n_dockerfile "$arg" || exit 1
         ;;
+    *.Dockerfile)
+        # Accepts dockerfile with .dockerfile/.Dockerfile extension preceeded by absoulte/relative path
+        if [[ "$basedir" ]] || [[ "$dockerfile" ]]; then
+            echo -e "Wrong usage of command arguments!"
+            echo -e "Either you're setting basedir/dockerfile twice, or, you're providing multiple unnamed parameters, only one unnamed parameter (format: basedir/dockerfile) is valid"
+            exit 1
+        fi
+        set_basedir_n_dockerfile "$arg" || exit 1
+        ;;
+    *)
+        echo -e "Invalid arguments. Exiting" && exit 1
+        ;;
     esac
 done
 
 shopt -s extglob
 
-[[ "$basedir" ]] || [[ "$dockerfile" ]] || findDockerfile || exit 1
+# Note: 1 > If no basedir given (and no .Dockerfile is provided), then assume the indended dockerfile location to be current directory
+[[ "$basedir" ]] || basedir=.
+
+# Note: 2 > If at this point, still dockerfile isn't provided then the user intends to search it at directory tree pointed by basedir, which is again current directory if not explicitly provided by the user
+[[ "$dockerfile" ]] || findDockerfile || exit 1
+
+# If basedir is still empty here, that means --dockerfile option was provided by the user
+
 basedir=$(tr_path_rel_to_abs "$basedir")
 validate "$context" "$startline" || exit 1
 processDockerfile "$basedir" "$dockerfile" "$context" "$startline" || exit 1

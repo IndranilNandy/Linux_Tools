@@ -61,4 +61,4 @@ Examples:
     myalias --help
     myalias dp=docker ps
     myalias cleanmycommandsrepo=cd /usr/local/bin/mycommands \&\& sudo rm
-    myalias --gen dkrstepperconfig=. dkrstepperconfig
+    myalias --gen dfdebuggerconfig=. dfdebuggerconfig

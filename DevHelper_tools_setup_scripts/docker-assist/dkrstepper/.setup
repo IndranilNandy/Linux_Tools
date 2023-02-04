@@ -15,11 +15,11 @@ prereq --install ".prereq"
 echo -e "${YELLOW}[dfdebugger] Setup process started.${RESET}"
 
 yes | sudo ln -i -s "$(pwd)"/dfdebugger.sh "$MYCOMMANDSREPO"/dfdebugger && echo -e "\nCreated symbolink link dfdebugger in $MYCOMMANDSREPO"
-yes | sudo ln -i -s "$(pwd)"/dkrstepperconfig.sh "$MYCOMMANDSREPO"/dkrstepperconfig && echo -e "\nCreated symbolink link dkrstepperconfig in $MYCOMMANDSREPO"
+yes | sudo ln -i -s "$(pwd)"/dfdebuggerconfig.sh "$MYCOMMANDSREPO"/dfdebuggerconfig && echo -e "\nCreated symbolink link dfdebuggerconfig in $MYCOMMANDSREPO"
 
-myalias --gen dkrstepperconfig=. dkrstepperconfig
+myalias --gen dfdebuggerconfig=. dfdebuggerconfig
 
 mycompl -W \"--basedir --dockerfile --context --startline --help --force --containers --images step clean\" dfdebugger
-mycompl -W \"--options --options-reset --options-reset=  --options-reset=build --options-reset=run --help\" dkrstepperconfig
+mycompl -W \"--options --options-reset --options-reset=  --options-reset=build --options-reset=run --help\" dfdebuggerconfig
 
 echo -e "${GREEN}[dfdebugger] Setup finished.${RESET}"

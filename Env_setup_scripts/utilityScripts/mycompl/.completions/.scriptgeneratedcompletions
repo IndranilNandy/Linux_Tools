@@ -6,7 +6,7 @@
 -W "--help" createref
 -W "--list --set --config --refresh --help" myalias
 -W "--create --sym --ref --sync --config --list --help" myscriptref
--W "--options --options-reset --options-reset= --options-reset=build --options-reset=run --help" dkrstepperconfig
+-W "--options --options-reset --options-reset= --options-reset=build --options-reset=run --help" dfdebuggerconfig
 -W "--help" setgittool
 -W "--refresh --update --list --help" code-ext
 -W "--help" cmount

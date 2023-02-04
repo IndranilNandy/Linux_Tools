@@ -9,6 +9,30 @@ fi
 . "$curDir"/configs/.config-params
 . "$curDir"/components/process_sessioninfo.sh
 
+init_run() {
+    local run_id=$(date +%4Y%m%d%H%M%S)
+
+    mkdir -p /tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id" || return 1
+    echo $run_id >>/tmp/"$dockerassist_root_dir"/"$dfstepper_dir"/"$runid_file"
+    return 0
+}
+
+get_current_run() {
+    tail -n1 /tmp/"$dockerassist_root_dir"/"$dfstepper_dir"/"$runid_file" || return 1
+}
+
+run_end() {
+    local run_id="${1}"
+    local run_status="${2}"
+    echo "$run_status" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$runend_flag"
+}
+
+run_ended() {
+    local run_id="${1}"
+
+    [[ -e /tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$runend_flag" ]] || return 1
+}
+
 run_status() {
     local run_id="${1}"
     # echo "[run_status] run_id=$run_id"
@@ -109,7 +133,7 @@ cleanRun() {
     images)
         cleanImagesInRun "$run_type"
         ;;
-    *)
-        ;;
+    *) ;;
+
     esac
 }

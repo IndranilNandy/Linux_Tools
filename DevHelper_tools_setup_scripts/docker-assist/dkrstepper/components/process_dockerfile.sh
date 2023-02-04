@@ -9,6 +9,7 @@ fi
 . "$curDir"/components/process_containers.sh
 . "$curDir"/components/process_images.sh
 . "$curDir"/components/process_sessioninfo.sh
+. "$curDir"/components/process_runinfo.sh
 
 prompt() {
     local curline="${1}"

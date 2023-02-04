@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-if [ -L "$(which dkrdebugger)" ]; then
-    curDir="$(dirname "$(tracelink dkrdebugger)")"
+if [ -L "$(which dfdebugger)" ]; then
+    curDir="$(dirname "$(tracelink dfdebugger)")"
 else
     curDir="$(pwd)"
 fi

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-if [ -L "$(which dkrdebugger)" ]; then
-    curDir="$(dirname "$(tracelink dkrdebugger)")"
+if [ -L "$(which dfdebugger)" ]; then
+    curDir="$(dirname "$(tracelink dfdebugger)")"
 else
     curDir="$(pwd)"
 fi
@@ -36,4 +36,5 @@ for arg in "$@"; do
     esac
 done
 
+echo "run_type = $run_type" "rs_type = $rs_type"
 cleanRun "$run_type" "$rs_type"

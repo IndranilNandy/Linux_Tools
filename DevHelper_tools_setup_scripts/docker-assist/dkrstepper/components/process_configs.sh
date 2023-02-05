@@ -20,44 +20,28 @@ init_config() {
     mkdir -p "$build_config_path"
     mkdir -p "$run_config_path"
 
-    [[ -e "$build_config_path"/"0.buildconfig" ]] || cp "$default_cfg_template"/"$default_build_cfg" "$build_config_path"/"0.buildconfig"
-    [[ -e "$run_config_path"/"0.runconfig" ]] || cp "$default_cfg_template"/"$default_run_cfg" "$run_config_path"/"0.runconfig"
+    [[ -e "$build_config_path"/"default.buildconfig" ]] || cp "$default_cfg_template"/"$default_build_cfg" "$build_config_path"/"default.buildconfig"
+    [[ -e "$run_config_path"/"default.runconfig" ]] || cp "$default_cfg_template"/"$default_run_cfg" "$run_config_path"/"default.runconfig"
 
     echo "$dfile" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$runfile"
+    echo "$build_config_path"/"default.buildconfig" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curBuildCfg"
+    echo "$run_config_path"/"default.runconfig" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curRunCfg"
 }
 
 build_config_template() {
     local dfile="${1}"
     local run_id="${2}"
 
-    local hash=$(echo "$dfile" | md5sum | cut -f1 -d' ')
-    local dfile_cfgdir=/tmp/"$dockerassist_root_dir"/"$config_dir"
-    local build_config_path="$dfile_cfgdir"/"$hash"/"$build_config_dir"
-
     cur_build_cfg_file="/tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curBuildCfg"
-
-    if [[ -e "$cur_build_cfg_file" ]]; then
-        cat "$cur_build_cfg_file"
-    else
-        echo "$build_config_path"/"0.buildconfig"
-    fi
+    cat "$cur_build_cfg_file"
 }
 
 run_config_template() {
     local dfile="${1}"
     local run_id="${2}"
 
-    local hash=$(echo "$dfile" | md5sum | cut -f1 -d' ')
-    local dfile_cfgdir=/tmp/"$dockerassist_root_dir"/"$config_dir"
-    local run_config_path="$dfile_cfgdir"/"$hash"/"$run_config_dir"
-
     cur_run_cfg_file="/tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curRunCfg"
-
-    if [[ -e "$cur_run_cfg_file" ]]; then
-        cat "$cur_run_cfg_file"
-    else
-        echo "$run_config_path"/"0.runconfig"
-    fi
+    cat "$cur_run_cfg_file"
 }
 
 replace() {
@@ -136,9 +120,6 @@ updateRunConfigFiles() {
     local run_cfg_file=
     local tempfile=/tmp/runConfigPath-"$(date +%N)"
 
-    # echo "hash = $hash"
-    # echo "bfcg_path = $run_config_path"
-
     find "$run_config_path" -name "*.runconfig" -type f >"$tempfile"
 
     count_of_runConfigs=$(cat "$tempfile" | wc -l)
@@ -175,6 +156,27 @@ updateConfigFiles() {
 
     updateBuildConfigFiles "$dfile" "$build_config_path" "$run_id"
     updateRunConfigFiles "$dfile" "$run_config_path" "$run_id"
+}
+
+createConfigFiles() {
+    local dfile="${1}"
+    local run_id="${2}"
+
+    local hash=$(echo "$dfile" | md5sum | cut -f1 -d' ')
+    local dfile_cfgdir=/tmp/"$dockerassist_root_dir"/"$config_dir"
+    local build_config_path="$dfile_cfgdir"/"$hash"/"$build_config_dir"
+    local run_config_path="$dfile_cfgdir"/"$hash"/"$run_config_dir"
+
+    local bfile=
+    local rfile=
+
+    read -p "Enter only the name of the new .buildconfig file (do not provide the extension) > " bfile
+    editor -w "$build_config_path"/"$bfile".buildconfig
+    echo "$build_config_path"/"$bfile".buildconfig >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curBuildCfg"
+
+    read -p "Enter only the name of the new .runconfig file (do not provide the extension) > " rfile
+    editor -w "$run_config_path"/"$rfile".runconfig
+    echo "$run_config_path"/"$rfile".runconfig >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curRunCfg"
 }
 
 # f=/home/indranilnandy/DEV/GIT-REPOS/PracticeWS/IDEwise/Vscode/Java/javatest2/buildInDocker

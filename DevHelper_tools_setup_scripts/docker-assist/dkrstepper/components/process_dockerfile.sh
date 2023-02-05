@@ -21,7 +21,8 @@ prompt() {
     shopt -s extglob
 
     read -p $'
-    f       [change config of this dockerfile for all runs/sessions]|
+    f       [change (and edit, if needed) config of this dockerfile for all runs/sessions] [eq change-config + reload (r)]  |
+    +f      [create new config files for this dockerfile]                                                                   |
     n       [next step in current session]                          |
     p       [prev step in current session]                          |
     line#   [to line# in current session] [e.g. 12]                 |
@@ -42,6 +43,9 @@ prompt() {
     case $ans in
     f)
         step_status="configchanged"
+        ;;
+    +f)
+        step_status="configcreated"
         ;;
     n)
         ((curline < total_steps)) && ((curline++)) && step_status="changed" || step_status="unchanged"
@@ -115,6 +119,10 @@ sessionClean() {
     local run_id="${6}"
 
     case "$step_status" in
+    configcreated)
+        echo -e "Creating new configs"
+        createConfigFiles "$basedir"/"$dockerfile" "$run_id"
+        ;;
     configchanged)
         updateConfigFiles "$basedir"/"$dockerfile" "$run_id"
         echo -e "Reloading..."
@@ -273,7 +281,7 @@ evaluateIncrementalDockerfiles() {
 
     ((curline > total_steps)) && echo -e "startline value is more than the size of the dockerfile. Exiting" && return 1
 
-    while [ ! "$ans" = "f" ] && [ ! "$ans" = "e" ] && [ ! "$ans" = "a" ] && [ ! "$ans" = "c" ] && [ ! "$ans" = "r" ] && [ ! "$ans" = "x" ] && [ ! "$ans" = "xa" ] && [ ! "$ans" = "xe" ] && [ ! "$ans" = "xc" ]; do
+    while [ ! "$ans" = "+f" ] && [ ! "$ans" = "f" ] && [ ! "$ans" = "e" ] && [ ! "$ans" = "a" ] && [ ! "$ans" = "c" ] && [ ! "$ans" = "r" ] && [ ! "$ans" = "x" ] && [ ! "$ans" = "xa" ] && [ ! "$ans" = "xe" ] && [ ! "$ans" = "xc" ]; do
         echo -e "______________________________________________________________________________________"
         echo -e "Running step# $curline/$total_steps"
         echo -e "______________________________________________________________________________________"

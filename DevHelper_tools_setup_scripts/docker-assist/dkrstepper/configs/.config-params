@@ -14,6 +14,8 @@ default_run_cfg="default.runconfig"
 runfile=".runfile"
 
 runend_flag=".run_ended"
+curBuildCfg=".curBuildConfig"
+curRunCfg=".curRunConfig"
 
 incr_dfiles_dir="incremental-dockerfiles"
 

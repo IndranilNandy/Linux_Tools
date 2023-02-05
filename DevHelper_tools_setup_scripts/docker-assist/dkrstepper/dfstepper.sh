@@ -12,7 +12,8 @@ fi
 basedir=
 dockerfile=
 context=.
-startline=1
+startline=
+defaultconfigedit=
 
 findDockerfile() {
     find "$basedir" -name "*.dockerfile" -o -name "*.Dockerfile" >/tmp/dfilelist
@@ -54,7 +55,6 @@ set_basedir_n_dockerfile() {
 
 validate() {
     local context="${1}"
-    local startline="${2}"
 
     echo -e "Validating parameters:\n"
 
@@ -66,6 +66,7 @@ validate() {
 
     max_steps=$(cat "$basedir"/"$dockerfile".Dockerfile "$basedir"/"$dockerfile".dockerfile 2>/dev/null | grep -v "^#" | grep -v "^$" | wc -l)
 
+    [[ "$startline" ]] || startline="$max_steps"
     ! ( ((startline >= 1)) && ((startline <= max_steps))) && echo -e "Invalid startline (should be between 1 and dockerfile-size." && return 1
 
     echo -e "DONE"
@@ -131,6 +132,9 @@ for arg in "$@"; do
     --startline=*)
         startline=$(echo $arg | sed "s/--startline=\(.*\)/\1/")
         ;;
+    --config)
+        defaultconfigedit="yes"
+        ;;
     *.dockerfile)
         # Accepts dockerfile with .dockerfile/.Dockerfile extension preceeded by absoulte/relative path
         if [[ "$basedir" ]] || [[ "$dockerfile" ]]; then
@@ -166,5 +170,5 @@ shopt -s extglob
 # If basedir is still empty here, that means --dockerfile option was provided by the user
 
 basedir=$(tr_path_rel_to_abs "$basedir")
-validate "$context" "$startline" || exit 1
-processDockerfile "$basedir" "$dockerfile" "$context" "$startline" || exit 1
+validate "$context" || exit 1
+processDockerfile "$basedir" "$dockerfile" "$context" "$startline" "$defaultconfigedit" || exit 1

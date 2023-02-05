@@ -11,6 +11,8 @@ fi
 init_config() {
     local run_id="${1}"
     local dfile="${2}"
+    local defaultconfigedit="${3}"
+
     local hash=$(echo "$dfile" | md5sum | cut -f1 -d' ')
     local dfile_cfgdir=/tmp/"$dockerassist_root_dir"/"$config_dir"
     local build_config_path="$dfile_cfgdir"/"$hash"/"$build_config_dir"
@@ -20,12 +22,14 @@ init_config() {
     mkdir -p "$build_config_path"
     mkdir -p "$run_config_path"
 
-    [[ -e "$build_config_path"/"default.buildconfig" ]] || cp "$default_cfg_template"/"$default_build_cfg" "$build_config_path"/"default.buildconfig"
-    [[ -e "$run_config_path"/"default.runconfig" ]] || cp "$default_cfg_template"/"$default_run_cfg" "$run_config_path"/"default.runconfig"
+    [[ -e "$build_config_path"/"$default_build_cfg" ]] || cp "$default_cfg_template"/"$default_build_cfg" "$build_config_path"/"$default_build_cfg"
+    [[ -e "$run_config_path"/"$default_run_cfg" ]] || cp "$default_cfg_template"/"$default_run_cfg" "$run_config_path"/"$default_run_cfg"
+
+    [[ "$defaultconfigedit" ]] && editor -w "$build_config_path"/"$default_build_cfg" && editor -w "$run_config_path"/"$default_run_cfg"
 
     echo "$dfile" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$runfile"
-    echo "$build_config_path"/"default.buildconfig" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curBuildCfg"
-    echo "$run_config_path"/"default.runconfig" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curRunCfg"
+    echo "$build_config_path"/"$default_build_cfg" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curBuildCfg"
+    echo "$run_config_path"/"$default_run_cfg" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curRunCfg"
 }
 
 build_config_template() {

@@ -61,7 +61,7 @@ createContainer() {
     gnome-terminal --tab --title="$image_name:$image_version" -- /bin/sh -c " \
                                 echo \"Dockerfile: ${dockerfile}${ext}\"; echo ; \
                                 echo \"Step: ${image_version}\"; echo ; \
-                                cat ${dockerfile_dir}/${dockerfile}${ext}; echo ; \
+                                cat ${dockerfile_dir}/${dockerfile}${ext} | nl; echo ; \
                                 $runcommand"
 }
 

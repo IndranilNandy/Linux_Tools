@@ -13,7 +13,7 @@ basedir=
 dockerfile=
 context=.
 startline=
-defaultconfigedit=
+configoption=
 
 findDockerfile() {
     find "$basedir" -name "*.dockerfile" -o -name "*.Dockerfile" >/tmp/dfilelist
@@ -132,8 +132,16 @@ for arg in "$@"; do
     --startline=*)
         startline=$(echo $arg | sed "s/--startline=\(.*\)/\1/")
         ;;
-    --config)
-        defaultconfigedit="yes"
+    --config=edit-default)
+        configoption="edit-default"
+        ;;
+    --config=create-and-set-current)
+        configoption="create-config"
+        echo "Creating new config files"
+        ;;
+    --config=select-and-set-current)
+        configoption="set-current"
+        echo "Select config files"
         ;;
     *.dockerfile)
         # Accepts dockerfile with .dockerfile/.Dockerfile extension preceeded by absoulte/relative path
@@ -171,4 +179,4 @@ shopt -s extglob
 
 basedir=$(tr_path_rel_to_abs "$basedir")
 validate "$context" || exit 1
-processDockerfile "$basedir" "$dockerfile" "$context" "$startline" "$defaultconfigedit" || exit 1
+processDockerfile "$basedir" "$dockerfile" "$context" "$startline" "$configoption" || exit 1

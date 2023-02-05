@@ -336,14 +336,17 @@ processDockerfile() {
     local dockerfile="${2}"
     local context="${3}"
     local startline="${4}"
-    local defaultconfigedit="${5}"
+    local configoption="${5}"
 
     local curline="$startline"
     local session_id=
     local run_id=
 
     init_run && run_id=$(get_current_run || echo "-1")
-    init_config "$run_id" "$basedir"/"$dockerfile" "$defaultconfigedit"
+    init_config "$run_id" "$basedir"/"$dockerfile" "$configoption"
+    [[ "$configoption" == "create-config" ]] && createConfigFiles "$basedir"/"$dockerfile" "$run_id"
+    [[ "$configoption" == "set-current" ]] && updateConfigFiles "$basedir"/"$dockerfile" "$run_id"
+
 
     while true; do
         echo -e "[processDockerfile] basedir=$basedir dockerfile=$dockerfile context=$context startline=$startline curline=$curline"

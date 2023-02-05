@@ -11,7 +11,7 @@ fi
 init_config() {
     local run_id="${1}"
     local dfile="${2}"
-    local defaultconfigedit="${3}"
+    local configoption="${3}"
 
     local hash=$(echo "$dfile" | md5sum | cut -f1 -d' ')
     local dfile_cfgdir=/tmp/"$dockerassist_root_dir"/"$config_dir"
@@ -25,7 +25,7 @@ init_config() {
     [[ -e "$build_config_path"/"$default_build_cfg" ]] || cp "$default_cfg_template"/"$default_build_cfg" "$build_config_path"/"$default_build_cfg"
     [[ -e "$run_config_path"/"$default_run_cfg" ]] || cp "$default_cfg_template"/"$default_run_cfg" "$run_config_path"/"$default_run_cfg"
 
-    [[ "$defaultconfigedit" ]] && editor -w "$build_config_path"/"$default_build_cfg" && editor -w "$run_config_path"/"$default_run_cfg"
+    [[ "$configoption" == "edit-default" ]] && editor -w "$build_config_path"/"$default_build_cfg" && editor -w "$run_config_path"/"$default_run_cfg"
 
     echo "$dfile" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$runfile"
     echo "$build_config_path"/"$default_build_cfg" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curBuildCfg"
@@ -93,7 +93,7 @@ updateBuildConfigFiles() {
     local build_cfg_file=
     local tempfile=/tmp/buildConfigPath-"$(date +%N)"
 
-    find "$build_config_path" -name "*.buildconfig" -type f >"$tempfile"
+    find "$build_config_path" -name "*.buildconfig" -type f | sort >"$tempfile"
 
     count_of_buildConfigs=$(cat "$tempfile" | wc -l)
 
@@ -124,7 +124,7 @@ updateRunConfigFiles() {
     local run_cfg_file=
     local tempfile=/tmp/runConfigPath-"$(date +%N)"
 
-    find "$run_config_path" -name "*.runconfig" -type f >"$tempfile"
+    find "$run_config_path" -name "*.runconfig" -type f | sort >"$tempfile"
 
     count_of_runConfigs=$(cat "$tempfile" | wc -l)
 
@@ -174,10 +174,14 @@ createConfigFiles() {
     local bfile=
     local rfile=
 
+    echo -e "Creating new confiuration files:"
+
+    echo -e "<<.buildconfig>>"
     read -p "Enter only the name of the new .buildconfig file (do not provide the extension) > " bfile
     editor -w "$build_config_path"/"$bfile".buildconfig
     echo "$build_config_path"/"$bfile".buildconfig >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curBuildCfg"
 
+    echo -e "<<.runconfig>>"
     read -p "Enter only the name of the new .runconfig file (do not provide the extension) > " rfile
     editor -w "$run_config_path"/"$rfile".runconfig
     echo "$run_config_path"/"$rfile".runconfig >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curRunCfg"

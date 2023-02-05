@@ -19,4 +19,4 @@
 -W "--help" revert2XrdpSession
 -W "--proxy --help" k8swaggerui
 -W "--on --off --status --help" myhistory
--W "--basedir --dockerfile --context --startline --help --force --containers --images step clean" dfdebugger
+-W "--basedir --dockerfile --context --startline --config=edit-default --config=create-and-set-current --config=select-and-set-current --help --force --containers --images step clean" dfdebugger

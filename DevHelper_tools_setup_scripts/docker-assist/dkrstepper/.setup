@@ -19,7 +19,7 @@ yes | sudo ln -i -s "$(pwd)"/dfdebuggerconfig.sh "$MYCOMMANDSREPO"/dfdebuggercon
 
 myalias --gen dfdebuggerconfig=. dfdebuggerconfig
 
-mycompl -W \"--basedir --dockerfile --context --startline --help --force --containers --images step clean\" dfdebugger
+mycompl -W \"--basedir --dockerfile --context --startline --config=edit-default --config=create-and-set-current --config=select-and-set-current --help --force --containers --images step clean\" dfdebugger
 mycompl -W \"--options --options-reset --options-reset=  --options-reset=build --options-reset=run --help\" dfdebuggerconfig
 
 echo -e "${GREEN}[dfdebugger] Setup finished.${RESET}"

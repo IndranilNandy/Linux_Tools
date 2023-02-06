@@ -16,27 +16,26 @@ prompt() {
     local total_steps="${2}"
     local step_status="${3}"
     local ans="${4}"
-    # echo -e "[prompt] curline=$curline total_steps=$total_steps step_status=$step_status ans=$ans"
 
     shopt -s extglob
 
     read -p $'
-    f       [change (and edit, if needed) config of this dockerfile for all runs/sessions] [eq change-config + reload (r)]  |
+    f       [change (and edit, if needed) config of this dockerfile for all runs/sessions]--[eq change-config + reload (r)] |
     +f      [create new config files for this dockerfile]                                                                   |
-    n       [next step in current session]                          |
-    p       [prev step in current session]                          |
-    line#   [to line# in current session] [e.g. 12]                 |
-    +/-step [forward/backward steps in current session] [e.g. +5/-5]|
-    +s/s    [skip forward in current session]                       |
-    -s      [skip backward in current session]                      |
-    a       [abort current session -> reload next session]          |
-    e       [exit current session -> reload next session]           |
-    c       [clean exit current session -> reload next session]     |
-    r       [abort current session -> reload next session] [eq a]   |
-    xa      [abort all sessions -> exit run]                        |
-    xe      [exit all sessions -> exit run]                         |
-    xc      [clean exit all sessions -> exit run]                   |
-    x       [clean exit all sessions -> exit run] [eq xc]           |
+    n       [next step in current session]                                                                                  |
+    p       [prev step in current session]                                                                                  |
+    line#   [to line# in current session]---------------------------------------------------[e.g. 12]                       |
+    +/-step [forward/backward steps in current session]-------------------------------------[e.g. +5/-5]                    |
+    +s/s    [skip forward in current session]                                                                               |
+    -s      [skip backward in current session]                                                                              |
+    a       [abort current session -> reload next session]                                                                  |
+    e       [exit current session -> reload next session]                                                                   |
+    c       [clean exit current session -> reload next session]                                                             |
+    r       [abort current session -> reload next session]----------------------------------[eq a]                          |
+    xa      [abort all sessions -> exit run]                                                                                |
+    xe      [exit all sessions -> exit run]                                                                                 |
+    xc      [clean exit all sessions -> exit run]                                                                           |
+    x       [clean exit all sessions -> exit run]-------------------------------------------[eq xc]                         |
     > ' ans
 
     ans=$(echo "$ans" | tr [:upper:] [:lower:])
@@ -225,7 +224,7 @@ createIncrementalDockerfiles() {
 
         for ((i = 1; i <= "lines"; i++)); do
             head -n"$i" "$processed_dfile""$ext" >"$incr_dfiles_dir"/incr-"$i""$ext"
-            echo "$entrypoint" >>"$incr_dfiles_dir"/incr-"$i""$ext"
+            # echo "$entrypoint" >>"$incr_dfiles_dir"/incr-"$i""$ext"
             echo "Created ""$incr_dfiles_dir"/incr-"$i""$ext"
 
         done
@@ -292,7 +291,7 @@ evaluateIncrementalDockerfiles() {
         local image_version="$curline"
         local container_name=$(echo c-"$dockerfile"-"$session_id"-"$image_version" | tr [:upper:] [:lower:])
 
-        echo -e "[debug] step_status = $step_status"
+        # echo -e "[debug] step_status = $step_status"
 
         case "$step_status" in
         changed)
@@ -315,6 +314,7 @@ evaluateIncrementalDockerfiles() {
 
         echo -e
         echo -e "Current step# $curline/$total_steps"
+        echo -e "______________________________________________________________________________________"
 
         iter_status=$(prompt "$curline" "$total_steps" "$step_status" "$ans")
         # echo "iter_status = $iter_status"
@@ -349,7 +349,7 @@ processDockerfile() {
 
 
     while true; do
-        echo -e "[processDockerfile] basedir=$basedir dockerfile=$dockerfile context=$context startline=$startline curline=$curline"
+        # echo -e "[processDockerfile][debug] basedir=$basedir dockerfile=$dockerfile context=$context startline=$startline curline=$curline"
 
         init_session "$run_id" && session_id=$(get_current_session "$run_id" || echo "-1")
 

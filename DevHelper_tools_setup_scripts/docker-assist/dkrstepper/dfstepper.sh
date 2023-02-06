@@ -35,7 +35,7 @@ findDockerfile() {
         dockerfile=$(basename -s .Dockerfile "$(basename -s .dockerfile "$file")")
         basedir=$(dirname "$file")
     fi
-
+    echo -e "______________________________________________________________________________________"
     rm /tmp/dfilelist
     return 0
 }
@@ -56,7 +56,9 @@ set_basedir_n_dockerfile() {
 validate() {
     local context="${1}"
 
-    echo -e "Validating parameters:\n"
+    echo -e "______________________________________________________________________________________"
+    echo "Validating parameters:\n"
+    echo -e "______________________________________________________________________________________"
 
     echo -e "basedir=$basedir \ndockerfile=$dockerfile \ncontext=$context \nstartline=$startline\n"
 
@@ -70,6 +72,7 @@ validate() {
     ! ( ((startline >= 1)) && ((startline <= max_steps))) && echo -e "Invalid startline (should be between 1 and dockerfile-size." && return 1
 
     echo -e "DONE"
+    echo -e "______________________________________________________________________________________"
 
     return 0
 }
@@ -132,16 +135,23 @@ for arg in "$@"; do
     --startline=*)
         startline=$(echo $arg | sed "s/--startline=\(.*\)/\1/")
         ;;
-    --config=edit-default)
+    --config-edit-default)
         configoption="edit-default"
+        echo -e "______________________________________________________________________________________"
+        echo -e "Edit default config files"
+        echo -e "______________________________________________________________________________________"
         ;;
-    --config=create-and-set-current)
+    --config-create-and-set-current)
         configoption="create-config"
-        echo "Creating new config files"
+        echo -e "______________________________________________________________________________________"
+        echo -e "Creating new config files"
+        echo -e "______________________________________________________________________________________"
         ;;
-    --config=select-and-set-current)
+    --config-select-and-set-current)
         configoption="set-current"
-        echo "Select config files"
+        echo -e "______________________________________________________________________________________"
+        echo -e "Select config files:"
+        echo -e "______________________________________________________________________________________"
         ;;
     *.dockerfile)
         # Accepts dockerfile with .dockerfile/.Dockerfile extension preceeded by absoulte/relative path

@@ -22,14 +22,15 @@ init_config() {
     mkdir -p "$build_config_path"
     mkdir -p "$run_config_path"
 
-    [[ -e "$build_config_path"/"$default_build_cfg" ]] || cp "$default_cfg_template"/"$default_build_cfg" "$build_config_path"/"$default_build_cfg"
-    [[ -e "$run_config_path"/"$default_run_cfg" ]] || cp "$default_cfg_template"/"$default_run_cfg" "$run_config_path"/"$default_run_cfg"
+    [[ -e "$build_config_path"/"$default_build_cfg" ]] || cp "$default_cfg_template"/*.buildconfig "$build_config_path"
+    [[ -e "$run_config_path"/"$default_run_cfg" ]] || cp "$default_cfg_template"/*.runconfig "$run_config_path"
 
     [[ "$configoption" == "edit-default" ]] && editor -w "$build_config_path"/"$default_build_cfg" && editor -w "$run_config_path"/"$default_run_cfg"
 
     echo "$dfile" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$runfile"
     echo "$build_config_path"/"$default_build_cfg" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curBuildCfg"
     echo "$run_config_path"/"$default_run_cfg" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curRunCfg"
+
 }
 
 build_config_template() {
@@ -103,12 +104,13 @@ updateBuildConfigFiles() {
         build_cfg_file="$(cat "$tempfile")"
         echo "$build_cfg_file"
     else
+        echo -e "______________________________________________________________________________________"
         echo -e "Multiple .buildconfig found in the current directory hierarchy!"
         cat "$tempfile" | xargs -I X echo "echo -e X: \$(cat X)" | bash | nl
 
         read -p "Which .buildconfig to choose? Enter the number: " no
         build_cfg_file=$(cat "$tempfile" | nl | head -n$no | tail -n1 | cut -f2)
-        echo "$build_cfg_file"
+        # echo "$build_cfg_file"
     fi
 
     editor -w "$build_cfg_file"
@@ -134,12 +136,13 @@ updateRunConfigFiles() {
         run_cfg_file="$(cat "$tempfile")"
         echo "$run_cfg_file"
     else
+        echo -e "______________________________________________________________________________________"
         echo -e "Multiple .runconfig found in the current directory hierarchy!"
         cat "$tempfile" | xargs -I X echo "echo -e X: \$(cat X)" | bash | nl
 
         read -p "Which .runconfig to choose? Enter the number: " no
         run_cfg_file=$(cat "$tempfile" | nl | head -n$no | tail -n1 | cut -f2)
-        echo "$run_cfg_file"
+        # echo "$run_cfg_file"
     fi
 
     editor -w "$run_cfg_file"

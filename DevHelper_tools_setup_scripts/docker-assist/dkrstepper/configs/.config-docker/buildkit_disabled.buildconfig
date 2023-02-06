@@ -1,0 +1,1 @@
+docker build -t _IMAGE_NAME_:_IMAGE_VERSION_ -f _DOCKERFILE_ _CONTEXT_

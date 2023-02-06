@@ -29,6 +29,8 @@ createContainer() {
     buildcommand=$(buildcfg_builder "$run_id" cfgmap)
     runcommand=$(runcfg_builder "$run_id" cfgmap)
 
+    echo -e "Current buildconfig: $(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curBuildCfg)"
+    echo -e "Current runconfig: $(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curRunCfg)"
     echo -e "________________________________________________"
 
     echo -e "Build command:"

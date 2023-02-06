@@ -190,6 +190,15 @@ createConfigFiles() {
     echo "$run_config_path"/"$rfile".runconfig >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curRunCfg"
 }
 
+cleanConfig() {
+    echo -e "______________________________________________________________________________________"
+    echo -e "CLEANING ALL CONFIGS"
+    echo -e "______________________________________________________________________________________"
+    read -p "Will delete all configs. Do you want to proceed? (y)es/(n)o > " ans
+    ans=$(echo "$ans" | tr [:upper:] [:lower:])
+    [[ "$ans" == "y" ]] && rm -rf /tmp/"$dockerassist_root_dir"/"$dfstepper_dir" && echo -e "Removed all configs and runs."
+}
+
 # f=/home/indranilnandy/DEV/GIT-REPOS/PracticeWS/IDEwise/Vscode/Java/javatest2/buildInDocker
 # # updateBuildConfigFiles "$f"
 # # updateRunConfigFiles "$f"

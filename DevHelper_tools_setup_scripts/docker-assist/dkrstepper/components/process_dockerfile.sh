@@ -20,22 +20,22 @@ prompt() {
     shopt -s extglob
 
     read -p $'
-    f       [change (and edit, if needed) config of this dockerfile for all runs/sessions]--[eq change-config + reload (r)] |
+    f       [change (and edit, if needed) config of this dockerfile for all runs/sessions]--[eq change-config + reload (r)]-|
     +f      [create new config files for this dockerfile]                                                                   |
     n       [next step in current session]                                                                                  |
     p       [prev step in current session]                                                                                  |
-    line#   [to line# in current session]---------------------------------------------------[e.g. 12]                       |
-    +/-step [forward/backward steps in current session]-------------------------------------[e.g. +5/-5]                    |
+    line#   [to line# in current session]---------------------------------------------------[e.g. 12]-----------------------|
+    +/-step [forward/backward steps in current session]-------------------------------------[e.g. +5/-5]--------------------|
     +s/s    [skip forward in current session]                                                                               |
     -s      [skip backward in current session]                                                                              |
     a       [abort current session -> reload next session]                                                                  |
     e       [exit current session -> reload next session]                                                                   |
     c       [clean exit current session -> reload next session]                                                             |
-    r       [abort current session -> reload next session]----------------------------------[eq a]                          |
+    r       [abort current session -> reload next session]----------------------------------[eq a]--------------------------|
     xa      [abort all sessions -> exit run]                                                                                |
     xe      [exit all sessions -> exit run]                                                                                 |
     xc      [clean exit all sessions -> exit run]                                                                           |
-    x       [clean exit all sessions -> exit run]-------------------------------------------[eq xc]                         |
+    x       [clean exit all sessions -> exit run]-------------------------------------------[eq xc]-------------------------|
     > ' ans
 
     ans=$(echo "$ans" | tr [:upper:] [:lower:])

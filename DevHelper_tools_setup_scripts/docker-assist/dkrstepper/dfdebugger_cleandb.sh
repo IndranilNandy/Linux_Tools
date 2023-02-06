@@ -14,6 +14,8 @@ run_type="stopped"
 # Default: all. Other valid values: containers, images
 rs_type="all"
 
+clean_config=
+
 for arg in "$@"; do
     case "$arg" in
     --force)
@@ -33,8 +35,13 @@ for arg in "$@"; do
             rs_type="all"
         fi
         ;;
+    --config)
+        rs_type="configs"
+        clean_config="yes"
+        ;;
     esac
 done
 
 echo "run_type = $run_type" "rs_type = $rs_type"
 cleanRun "$run_type" "$rs_type"
+([[ "$clean_config" == "yes" ]] || [[ "$rs_type" == "all" ]]) && cleanConfig

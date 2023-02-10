@@ -20,30 +20,34 @@ prompt() {
     shopt -s extglob
 
     read -p $'
-    f       [change (and edit, if needed) config of this dockerfile for all runs/sessions]--[eq change-config + reload (r)]-|
-    +f      [create new config files for this dockerfile]                                                                   |
-    n       [next step in current session]                                                                                  |
-    p       [prev step in current session]                                                                                  |
-    line#   [to line# in current session]---------------------------------------------------[e.g. 12]-----------------------|
-    +/-step [forward/backward steps in current session]-------------------------------------[e.g. +5/-5]--------------------|
-    +s/s    [skip forward in current session]                                                                               |
-    -s      [skip backward in current session]                                                                              |
-    a       [abort current session -> reload next session]                                                                  |
-    e       [exit current session -> reload next session]                                                                   |
-    c       [clean exit current session -> reload next session]                                                             |
-    r       [abort current session -> reload next session]----------------------------------[eq a]--------------------------|
-    xa      [abort all sessions -> exit run]                                                                                |
-    xe      [exit all sessions -> exit run]                                                                                 |
-    xc      [clean exit all sessions -> exit run]                                                                           |
-    x       [clean exit all sessions -> exit run]-------------------------------------------[eq xc]-------------------------|
+    fr      [change (and edit, if needed) config of this dockerfile for all sessions of this run]-------[eq change-config + reload (r)]-|
+    fd      [change (and edit, if needed) default "current-config" of this dockerfile for all runs]-----[eq change-config + reload (r)]-|
+    fc      [create new config files for this dockerfile]                                                                               |
+    n       [next step in current session]                                                                                              |
+    p       [prev step in current session]                                                                                              |
+    line#   [to line# in current session]---------------------------------------------------------------[e.g. 12]-----------------------|
+    +/-step [forward/backward steps in current session]-------------------------------------------------[e.g. +5/-5]--------------------|
+    +s/s    [skip forward in current session]                                                                                           |
+    -s      [skip backward in current session]                                                                                          |
+    a       [abort current session -> reload next session]                                                                              |
+    e       [exit current session -> reload next session]                                                                               |
+    c       [clean exit current session -> reload next session]                                                                         |
+    r       [abort current session -> reload next session]----------------------------------------------[eq a]--------------------------|
+    xa      [abort all sessions -> exit run]                                                                                            |
+    xe      [exit all sessions -> exit run]                                                                                             |
+    xc      [clean exit all sessions -> exit run]                                                                                       |
+    x       [clean exit all sessions -> exit run]-------------------------------------------------------[eq xc]-------------------------|
     > ' ans
 
     ans=$(echo "$ans" | tr [:upper:] [:lower:])
     case $ans in
-    f)
-        step_status="configchanged"
+    fr)
+        step_status="configchangedforthisrun"
         ;;
-    +f)
+    fd)
+        step_status="configchangedforthisdockerfile"
+        ;;
+    fc)
         step_status="configcreated"
         ;;
     n)
@@ -122,8 +126,14 @@ sessionClean() {
         echo -e "Creating new configs"
         createConfigFiles "$basedir"/"$dockerfile" "$run_id"
         ;;
-    configchanged)
+    configchangedforthisrun)
         updateConfigFiles "$basedir"/"$dockerfile" "$run_id"
+        echo -e "Reloading..."
+        echo -e "Images and Containers are NOT cleaned. Needs to be CLEANED MANUALLY."
+        echo -e "Remove docker-assist-dir MANUALLY"
+        ;;
+    configchangedforthisdockerfile)
+        updateCurrentConfigFiles "$basedir"/"$dockerfile" "$run_id"
         echo -e "Reloading..."
         echo -e "Images and Containers are NOT cleaned. Needs to be CLEANED MANUALLY."
         echo -e "Remove docker-assist-dir MANUALLY"
@@ -280,7 +290,17 @@ evaluateIncrementalDockerfiles() {
 
     ((curline > total_steps)) && echo -e "startline value is more than the size of the dockerfile. Exiting" && return 1
 
-    while [ ! "$ans" = "+f" ] && [ ! "$ans" = "f" ] && [ ! "$ans" = "e" ] && [ ! "$ans" = "a" ] && [ ! "$ans" = "c" ] && [ ! "$ans" = "r" ] && [ ! "$ans" = "x" ] && [ ! "$ans" = "xa" ] && [ ! "$ans" = "xe" ] && [ ! "$ans" = "xc" ]; do
+    while [ ! "$ans" = "fc" ] && \
+            [ ! "$ans" = "fr" ] && \
+            [ ! "$ans" = "fd" ] && \
+            [ ! "$ans" = "e" ] && \
+            [ ! "$ans" = "a" ] && \
+            [ ! "$ans" = "c" ] && \
+            [ ! "$ans" = "r" ] && \
+            [ ! "$ans" = "x" ] && \
+            [ ! "$ans" = "xa" ] && \
+            [ ! "$ans" = "xe" ] && \
+            [ ! "$ans" = "xc" ]; do
         echo -e "______________________________________________________________________________________"
         echo -e "Running step# $curline/$total_steps"
         echo -e "______________________________________________________________________________________"
@@ -351,15 +371,8 @@ processDockerfile() {
         init_session "$run_id" && session_id=$(get_current_session "$run_id" || echo "-1")
 
         createIncrementalDockerfiles "$basedir" "$dockerfile" "$session_id" "$run_id" || echo -e "Cannot create incremental dockerfiles" || return 1
-        # resp=$(evaluateIncrementalDockerfiles "$basedir" "$dockerfile" "$context" "$curline" || return 1)
         evaluateIncrementalDockerfiles "$basedir" "$dockerfile" "$context" "$curline" "$session_id" "$run_id" || return 1
 
-        # echo "[processDockerfile] Session end: resp=$resp"
-
-        # curline=$(echo "$resp" | cut -f1 -d' ')
-        # step_status=$(echo "$resp" | cut -f2 -d' ')
-        # ans=$(echo "$resp" | cut -f3 -d' ')
-        # sessions_cleared "$run_id" && return 0
         run_ended "$run_id" && return 0
         curline=$(cur_step "$run_id")
     done

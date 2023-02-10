@@ -8,6 +8,43 @@ fi
 
 . "$curDir"/configs/.config-params
 
+processConfigFiles() {
+    local dfile="${1}"
+    local run_id="${2}"
+    local configoption="${3}"
+
+    local hash=$(echo "$dfile" | md5sum | cut -f1 -d' ')
+    local dfile_cfgdir=/tmp/"$dockerassist_root_dir"/"$config_dir"
+    local build_config_path="$dfile_cfgdir"/"$hash"/"$config_templates"/"$build_config_dir"
+    local run_config_path="$dfile_cfgdir"/"$hash"/"$config_templates"/"$run_config_dir"
+    local cur_template_dir="$dfile_cfgdir"/"$hash"/"$cur_template"
+
+    case "$configoption" in
+    edit-default)
+        echo -e "[Config option] edit-default"
+        editor -w "$build_config_path"/"$default_build_cfg" && editor -w "$run_config_path"/"$default_run_cfg"
+
+        cp "$build_config_path"/"$default_build_cfg" "$cur_template_dir"/"$cur_build_cfg"
+        cp "$run_config_path"/"$default_run_cfg" "$cur_template_dir"/"$cur_run_cfg"
+        ;;
+    create-config)
+        echo -e "[Config option] create-config"
+        createConfigFiles "$basedir"/"$dockerfile" "$run_id"
+        ;;
+    set-current-for-run)
+        echo -e "[Config option] set-current-for-run"
+        updateConfigFiles "$basedir"/"$dockerfile" "$run_id"
+        ;;
+    set-current-for-dockerfile)
+        echo -e "[Config option] set-current-for-dockerfile"
+        updateCurrentConfigFiles "$basedir"/"$dockerfile" "$run_id"
+        ;;
+    *)
+        echo -e "No change in config files"
+        ;;
+    esac
+}
+
 init_config() {
     local run_id="${1}"
     local dfile="${2}"
@@ -27,8 +64,6 @@ init_config() {
     [[ -e "$build_config_path"/"$default_build_cfg" ]] || cp "$default_cfg_template"/*.buildconfig "$build_config_path"
     [[ -e "$run_config_path"/"$default_run_cfg" ]] || cp "$default_cfg_template"/*.runconfig "$run_config_path"
 
-    [[ "$configoption" == "edit-default" ]] && editor -w "$build_config_path"/"$default_build_cfg" && editor -w "$run_config_path"/"$default_run_cfg"
-
     echo "$dfile" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$runfile"
 
     [[ -e "$cur_template_dir"/"$cur_build_cfg" ]] || cp "$build_config_path"/"$default_build_cfg" "$cur_template_dir"/"$cur_build_cfg"
@@ -36,19 +71,19 @@ init_config() {
 
     echo "$cur_template_dir"/"$cur_build_cfg" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curBuildCfg"
     echo "$cur_template_dir"/"$cur_run_cfg" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curRunCfg"
+
+    processConfigFiles "$dfile" "$run_id" "$configoption"
 }
 
 build_config_template() {
-    local dfile="${1}"
-    local run_id="${2}"
+    local run_id="${1}"
 
     cur_build_cfg_file="/tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curBuildCfg"
     cat "$cur_build_cfg_file"
 }
 
 run_config_template() {
-    local dfile="${1}"
-    local run_id="${2}"
+    local run_id="${1}"
 
     cur_run_cfg_file="/tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curRunCfg"
     cat "$cur_run_cfg_file"
@@ -80,21 +115,18 @@ cfg_builder() {
 buildcfg_builder() {
     local run_id="${1}"
     local -n build_cfgmap_ref=${2}
-    local dfile=$(run_file "$run_id")
-    cfg_builder "$(build_config_template $dfile $run_id)" build_cfgmap_ref
+    cfg_builder "$(build_config_template $run_id)" build_cfgmap_ref
 }
 
 runcfg_builder() {
     local run_id="${1}"
     local -n run_cfgmap_ref=${2}
-    local dfile=$(run_file "$run_id")
-    cfg_builder "$(run_config_template $dfile $run_id)" run_cfgmap_ref
+    cfg_builder "$(run_config_template $run_id)" run_cfgmap_ref
 }
 
 updateBuildConfigFiles() {
-    local dfile="${1}"
-    local build_config_path="${2}"
-    local run_id="${3}"
+    local build_config_path="${1}"
+    local run_id="${2}"
 
     local build_cfg_file=
     local tempfile=/tmp/buildConfigPath-"$(date +%N)"
@@ -113,59 +145,22 @@ updateBuildConfigFiles() {
         echo -e "Multiple .buildconfig found in the current directory hierarchy!"
         cat "$tempfile" | xargs -I X echo "echo -e X: \$(cat X)" | bash | nl
 
-        read -p "Which .buildconfig to choose? Enter the number: " no
-        build_cfg_file=$(cat "$tempfile" | nl | head -n$no | tail -n1 | cut -f2)
+        read -p "Which .buildconfig to choose? Enter the number (press ENTER for no change): " no
+        [[ "$no" ]] && build_cfg_file=$(cat "$tempfile" | nl | head -n$no | tail -n1 | cut -f2)
         # echo "$build_cfg_file"
     fi
+
+    rm "$tempfile"
+    [[ ! "$build_cfg_file" ]] && echo -e "Keeping the current selection" && return 0
 
     editor -w "$build_cfg_file"
     echo "$build_cfg_file" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curBuildCfg"
-
-    rm "$tempfile"
-    return 0
-}
-
-updateCurrentBuildConfigFile() {
-    local dfile="${1}"
-    local build_config_path="${2}"
-    local run_id="${3}"
-    local cur_template_dir="${4}"
-
-    local build_cfg_file=
-    local tempfile=/tmp/currentBuildConfigPath-"$(date +%N)"
-
-    find "$build_config_path" -name "*.buildconfig" -type f | sort >"$tempfile"
-
-    count_of_buildConfigs=$(cat "$tempfile" | wc -l)
-
-    ((count_of_buildConfigs == 0)) && echo -e "No .buildconfig found in the current directory hierarchy. Exiting." && return 1
-
-    if ((count_of_buildConfigs == 1)); then
-        build_cfg_file="$(cat "$tempfile")"
-        echo "$build_cfg_file"
-    else
-        echo -e "______________________________________________________________________________________"
-        echo -e "Multiple .buildconfig found in the current directory hierarchy!"
-        cat "$tempfile" | xargs -I X echo "echo -e X: \$(cat X)" | bash | nl
-
-        read -p "Which .buildconfig to choose? Enter the number: " no
-        build_cfg_file=$(cat "$tempfile" | nl | head -n$no | tail -n1 | cut -f2)
-        # echo "$build_cfg_file"
-    fi
-
-    editor -w "$build_cfg_file"
-
-    cat "$build_cfg_file" > "$cur_template_dir"/"$cur_build_cfg"
-    echo "$cur_template_dir"/"$cur_build_cfg" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curBuildCfg"
-
-    rm "$tempfile"
     return 0
 }
 
 updateRunConfigFiles() {
-    local dfile="${1}"
-    local run_config_path="${2}"
-    local run_id="${3}"
+    local run_config_path="${1}"
+    local run_id="${2}"
 
     local run_cfg_file=
     local tempfile=/tmp/runConfigPath-"$(date +%N)"
@@ -184,23 +179,73 @@ updateRunConfigFiles() {
         echo -e "Multiple .runconfig found in the current directory hierarchy!"
         cat "$tempfile" | xargs -I X echo "echo -e X: \$(cat X)" | bash | nl
 
-        read -p "Which .runconfig to choose? Enter the number: " no
-        run_cfg_file=$(cat "$tempfile" | nl | head -n$no | tail -n1 | cut -f2)
+        read -p "Which .runconfig to choose? Enter the number (press ENTER for no change): " no
+        [[ "$no" ]] && run_cfg_file=$(cat "$tempfile" | nl | head -n$no | tail -n1 | cut -f2)
         # echo "$run_cfg_file"
     fi
 
+    rm "$tempfile"
+    [[ ! "$run_cfg_file" ]] && echo -e "Keeping the current selection" && return 0
+
     editor -w "$run_cfg_file"
     echo "$run_cfg_file" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curRunCfg"
+    return 0
+}
+
+updateConfigFiles() {
+    local dfile="${1}"
+    local run_id="${2}"
+
+    local hash=$(echo "$dfile" | md5sum | cut -f1 -d' ')
+    local dfile_cfgdir=/tmp/"$dockerassist_root_dir"/"$config_dir"
+    local build_config_path="$dfile_cfgdir"/"$hash"/"$config_templates"/"$build_config_dir"
+    local run_config_path="$dfile_cfgdir"/"$hash"/"$config_templates"/"$run_config_dir"
+
+    updateBuildConfigFiles "$build_config_path" "$run_id"
+    updateRunConfigFiles "$run_config_path" "$run_id"
+}
+
+updateCurrentBuildConfigFile() {
+    local build_config_path="${1}"
+    local run_id="${2}"
+    local cur_template_dir="${3}"
+
+    local build_cfg_file=
+    local tempfile=/tmp/currentBuildConfigPath-"$(date +%N)"
+
+    find "$build_config_path" -name "*.buildconfig" -type f | sort >"$tempfile"
+
+    count_of_buildConfigs=$(cat "$tempfile" | wc -l)
+
+    ((count_of_buildConfigs == 0)) && echo -e "No .buildconfig found in the current directory hierarchy. Exiting." && return 1
+
+    if ((count_of_buildConfigs == 1)); then
+        build_cfg_file="$(cat "$tempfile")"
+        echo "$build_cfg_file"
+    else
+        echo -e "______________________________________________________________________________________"
+        echo -e "Multiple .buildconfig found in the current directory hierarchy!"
+        cat "$tempfile" | xargs -I X echo "echo -e X: \$(cat X)" | bash | nl
+
+        read -p "Which .buildconfig to choose? Enter the number (press ENTER for no change): " no
+        [[ "$no" ]] && build_cfg_file=$(cat "$tempfile" | nl | head -n$no | tail -n1 | cut -f2)
+        # echo "$build_cfg_file"
+    fi
 
     rm "$tempfile"
+    [[ ! "$build_cfg_file" ]] && echo -e "Keeping the current selection" && return 0
+
+    editor -w "$build_cfg_file"
+
+    cat "$build_cfg_file" >"$cur_template_dir"/"$cur_build_cfg"
+    echo "$cur_template_dir"/"$cur_build_cfg" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curBuildCfg"
     return 0
 }
 
 updateCurrentRunConfigFile() {
-    local dfile="${1}"
-    local run_config_path="${2}"
-    local run_id="${3}"
-    local cur_template_dir="${4}"
+    local run_config_path="${1}"
+    local run_id="${2}"
+    local cur_template_dir="${3}"
 
     local run_cfg_file=
     local tempfile=/tmp/currentRunConfigPath-"$(date +%N)"
@@ -219,31 +264,19 @@ updateCurrentRunConfigFile() {
         echo -e "Multiple .runconfig found in the current directory hierarchy!"
         cat "$tempfile" | xargs -I X echo "echo -e X: \$(cat X)" | bash | nl
 
-        read -p "Which .runconfig to choose? Enter the number: " no
-        run_cfg_file=$(cat "$tempfile" | nl | head -n$no | tail -n1 | cut -f2)
+        read -p "Which .runconfig to choose? Enter the number (press ENTER for no change): " no
+        [[ "$no" ]] && run_cfg_file=$(cat "$tempfile" | nl | head -n$no | tail -n1 | cut -f2)
         # echo "$run_cfg_file"
     fi
 
+    rm "$tempfile"
+    [[ ! "$run_cfg_file" ]] && echo -e "Keeping the current selection" && return 0
+
     editor -w "$run_cfg_file"
 
-    cat "$run_cfg_file" > "$cur_template_dir"/"$cur_run_cfg"
+    cat "$run_cfg_file" >"$cur_template_dir"/"$cur_run_cfg"
     echo "$cur_template_dir"/"$cur_run_cfg" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curRunCfg"
-
-    rm "$tempfile"
     return 0
-}
-
-updateConfigFiles() {
-    local dfile="${1}"
-    local run_id="${2}"
-
-    local hash=$(echo "$dfile" | md5sum | cut -f1 -d' ')
-    local dfile_cfgdir=/tmp/"$dockerassist_root_dir"/"$config_dir"
-    local build_config_path="$dfile_cfgdir"/"$hash"/"$config_templates"/"$build_config_dir"
-    local run_config_path="$dfile_cfgdir"/"$hash"/"$config_templates"/"$run_config_dir"
-
-    updateBuildConfigFiles "$dfile" "$build_config_path" "$run_id"
-    updateRunConfigFiles "$dfile" "$run_config_path" "$run_id"
 }
 
 updateCurrentConfigFiles() {
@@ -256,8 +289,8 @@ updateCurrentConfigFiles() {
     local run_config_path="$dfile_cfgdir"/"$hash"/"$config_templates"/"$run_config_dir"
     local cur_template_dir="$dfile_cfgdir"/"$hash"/"$cur_template"
 
-    updateCurrentBuildConfigFile "$dfile" "$build_config_path" "$run_id" "$cur_template_dir"
-    updateCurrentRunConfigFile "$dfile" "$run_config_path" "$run_id" "$cur_template_dir"
+    updateCurrentBuildConfigFile "$build_config_path" "$run_id" "$cur_template_dir"
+    updateCurrentRunConfigFile "$run_config_path" "$run_id" "$cur_template_dir"
 }
 
 createConfigFiles() {

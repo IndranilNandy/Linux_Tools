@@ -2,15 +2,23 @@
 
 dockerassist_root_dir="docker-assist-dir"
 dfstepper_dir="dfdebugger"
+
 rundata_dir="$dfstepper_dir"/runs
 sessions_dir="sessions"
+
 config_dir="$dfstepper_dir"/configs
+config_templates=templates
+cur_template=current
+
 build_config_dir=".buildconfig"
 run_config_dir=".runconfig"
 
 default_cfg_template="$HOME"/MyTools/Linux_Tools/DevHelper_tools_setup_scripts/docker-assist/dfdebugger/configs/.config-docker
 default_build_cfg="default.buildconfig"
 default_run_cfg="default.runconfig"
+cur_build_cfg="current.buildconfig"
+cur_run_cfg="current.runconfig"
+
 runfile=".runfile"
 
 runend_flag=".run_ended"

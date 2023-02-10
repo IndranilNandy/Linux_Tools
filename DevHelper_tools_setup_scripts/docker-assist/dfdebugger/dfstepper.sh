@@ -141,16 +141,22 @@ for arg in "$@"; do
         echo -e "Edit default config files"
         echo -e "______________________________________________________________________________________"
         ;;
-    --config-create-and-set-current)
+    --config-create-and-set-as-current-for-this-run)
         configoption="create-config"
         echo -e "______________________________________________________________________________________"
-        echo -e "Creating new config files"
+        echo -e "Creating new config files (and stored in templates for this dockerfile) -> et as current confiuration for this run:"
         echo -e "______________________________________________________________________________________"
         ;;
-    --config-select-and-set-current)
-        configoption="set-current"
+    --config-select-and-set-as-current-for-this-run)
+        configoption="set-current-for-run"
         echo -e "______________________________________________________________________________________"
-        echo -e "Select config files:"
+        echo -e "Select config files (from templates collection of this dockerfile)-> set as current confiuration for this run:"
+        echo -e "______________________________________________________________________________________"
+        ;;
+    --config-select-and-set-as-current-for-this-dockerfile)
+        configoption="set-current-for-dockerfile"
+        echo -e "______________________________________________________________________________________"
+        echo -e "Select config files (from templates collection of this dockerfile)-> set as current confiuration for this dockerfile for any run:"
         echo -e "______________________________________________________________________________________"
         ;;
     *.dockerfile)

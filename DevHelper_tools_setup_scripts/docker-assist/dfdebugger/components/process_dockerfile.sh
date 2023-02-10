@@ -345,8 +345,8 @@ processDockerfile() {
     init_run && run_id=$(get_current_run || echo "-1")
     init_config "$run_id" "$basedir"/"$dockerfile" "$configoption"
     [[ "$configoption" == "create-config" ]] && createConfigFiles "$basedir"/"$dockerfile" "$run_id"
-    [[ "$configoption" == "set-current" ]] && updateConfigFiles "$basedir"/"$dockerfile" "$run_id"
-
+    [[ "$configoption" == "set-current-for-run" ]] && updateConfigFiles "$basedir"/"$dockerfile" "$run_id"
+    [[ "$configoption" == "set-current-for-dockerfile" ]] && updateCurrentConfigFiles "$basedir"/"$dockerfile" "$run_id"
 
     while true; do
         # echo -e "[processDockerfile][debug] basedir=$basedir dockerfile=$dockerfile context=$context startline=$startline curline=$curline"

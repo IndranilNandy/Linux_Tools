@@ -8,7 +8,7 @@ config_dir="$dfstepper_dir"/configs
 build_config_dir=".buildconfig"
 run_config_dir=".runconfig"
 
-default_cfg_template="$HOME"/MyTools/Linux_Tools/DevHelper_tools_setup_scripts/docker-assist/dkrstepper/configs/.config-docker
+default_cfg_template="$HOME"/MyTools/Linux_Tools/DevHelper_tools_setup_scripts/docker-assist/dfdebugger/configs/.config-docker
 default_build_cfg="default.buildconfig"
 default_run_cfg="default.runconfig"
 runfile=".runfile"

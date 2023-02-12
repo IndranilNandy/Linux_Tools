@@ -39,3 +39,5 @@ imagev_pholder="_IMAGE_VERSION_"
 dfile_pholder="_DOCKERFILE_"
 context_pholder="_CONTEXT_"
 container_pholder="_CONTAINER_NAME_"
+
+cmd_pwd_pholder="\$(.*)"

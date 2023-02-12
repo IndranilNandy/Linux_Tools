@@ -109,7 +109,8 @@ cfg_builder() {
         replace "$imagev_pholder" ${cfgmap_ref[$imagev_pholder]} |
         replace "$dfile_pholder" ${cfgmap_ref[$dfile_pholder]} |
         replace "$context_pholder" ${cfgmap_ref[$context_pholder]} |
-        replace "$container_pholder" ${cfgmap_ref[$container_pholder]}
+        replace "$container_pholder" ${cfgmap_ref[$container_pholder]} |
+        replace "$cmd_pwd_pholder" ${cfgmap_ref[$cmd_pwd_pholder]}
 }
 
 buildcfg_builder() {

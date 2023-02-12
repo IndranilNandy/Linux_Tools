@@ -1,0 +1,1 @@
+docker run -it --name _CONTAINER_NAME_ --mount type=bind,src=$(pwd)/temp_volume,target=/application/logs --entrypoint "/bin/sh" _IMAGE_NAME_:_IMAGE_VERSION_

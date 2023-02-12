@@ -25,6 +25,7 @@ createContainer() {
     cfgmap["$dfile_pholder"]="${dockerfile_dir}/${dockerfile}${ext}"
     cfgmap["$context_pholder"]="${basedir}/${context}"
     cfgmap["$container_pholder"]="${container_name}"
+    cfgmap["$cmd_pwd_pholder"]="$(pwd)"
 
     buildcommand=$(buildcfg_builder "$run_id" cfgmap)
     runcommand=$(runcfg_builder "$run_id" cfgmap)

@@ -41,6 +41,7 @@ processConfigFiles() {
         ;;
     *)
         echo -e "No change in config files"
+        echo -e
         ;;
     esac
 }
@@ -73,6 +74,75 @@ init_config() {
     echo "$cur_template_dir"/"$cur_run_cfg" >/tmp/"$dockerassist_root_dir"/"$rundata_dir"/"$run_id"/"$curRunCfg"
 
     processConfigFiles "$dfile" "$run_id" "$configoption"
+}
+
+show_config() {
+    local run_id="${1}"
+    local dfile="${2}"
+
+    local hash=$(echo "$dfile" | md5sum | cut -f1 -d' ')
+    local dfile_cfgdir=/tmp/"$dockerassist_root_dir"/"$config_dir"
+    local build_config_path="$dfile_cfgdir"/"$hash"/"$config_templates"/"$build_config_dir"
+    local run_config_path="$dfile_cfgdir"/"$hash"/"$config_templates"/"$run_config_dir"
+    local cur_template_dir="$dfile_cfgdir"/"$hash"/"$cur_template"
+
+    local buildTempfile=/tmp/buildConfigPath-"$(date +%N)"
+    find "$build_config_path" -name "*.buildconfig" -type f | sort >"$buildTempfile"
+
+    echo -e "______________________________________________________________________________________"
+    echo -e "Configs [for dockerfile and run]"
+    echo -e "______________________________________________________________________________________"
+
+    echo -e "buildconfig >\n"
+    cat "$buildTempfile" | xargs -I X echo "echo -e X:; \
+                            ([[ \$(cat $cur_template_dir/$cur_build_cfg) == \$(cat X) ]] && [[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curBuildCfg)) == \$(cat X) ]] && echo -e \\\e[32m[*d][*r] \$(cat X)\\\e[0m) || \
+                            ([[ \$(cat $cur_template_dir/$cur_build_cfg) == \$(cat X) ]] && echo -e \\\e[32m[*d] \$(cat X)\\\e[0m) || \
+                            ([[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curBuildCfg)) == \$(cat X) ]] && echo -e \\\e[33m[*r] \$(cat X)\\\e[0m) || cat X; echo -e" | bash | nl -bp.*\.buildconfig
+
+    local runTempfile=/tmp/runConfigPath-"$(date +%N)"
+    find "$run_config_path" -name "*.runconfig" -type f | sort >"$runTempfile"
+    echo -e "______________________________________________________________________________________"
+
+    echo -e "runconfig >\n"
+    cat "$runTempfile" | xargs -I X echo "echo -e X:; \
+                            ([[ \$(cat $cur_template_dir/$cur_run_cfg) == \$(cat X) ]] && [[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curRunCfg)) == \$(cat X) ]] && echo -e \\\e[32m[*d][*r] \$(cat X)\\\e[0m) || \
+                            ([[ \$(cat $cur_template_dir/$cur_run_cfg) == \$(cat X) ]] && echo -e \\\e[32m[*d] \$(cat X)\\\e[0m) || \
+                            ([[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curRunCfg)) == \$(cat X) ]] && echo -e \\\e[33m[*r] \$(cat X)\\\e[0m) || cat X; echo -e" | bash | nl -bp.*\.runconfig
+
+    echo -e "______________________________________________________________________________________"
+}
+
+show_config_for_dockerfile() {
+    local dfile="${1}"
+
+    local hash=$(echo "$dfile" | md5sum | cut -f1 -d' ')
+    local dfile_cfgdir=/tmp/"$dockerassist_root_dir"/"$config_dir"
+    local build_config_path="$dfile_cfgdir"/"$hash"/"$config_templates"/"$build_config_dir"
+    local run_config_path="$dfile_cfgdir"/"$hash"/"$config_templates"/"$run_config_dir"
+    local cur_template_dir="$dfile_cfgdir"/"$hash"/"$cur_template"
+
+    local buildTempfile=/tmp/buildConfigPath-"$(date +%N)"
+    find "$build_config_path" -name "*.buildconfig" -type f | sort >"$buildTempfile"
+
+    echo -e "______________________________________________________________________________________"
+    echo -e "Configs [for dockerfile]"
+    echo -e "______________________________________________________________________________________"
+
+    echo -e "buildconfig >\n"
+    cat "$buildTempfile" | xargs -I X echo "echo -e X:; \
+                            ([[ \$(cat $cur_template_dir/$cur_build_cfg) == \$(cat X) ]] && echo -e \\\e[32m[*d] \$(cat X)\\\e[0m) || \
+                            cat X; echo -e" | bash | nl -bp.*\.buildconfig
+
+    local runTempfile=/tmp/runConfigPath-"$(date +%N)"
+    find "$run_config_path" -name "*.runconfig" -type f | sort >"$runTempfile"
+    echo -e "______________________________________________________________________________________"
+
+    echo -e "runconfig >\n"
+    cat "$runTempfile" | xargs -I X echo "echo -e X:; \
+                            ([[ \$(cat $cur_template_dir/$cur_run_cfg) == \$(cat X) ]] && echo -e \\\e[32m[*d] \$(cat X)\\\e[0m) || \
+                            cat X; echo -e" | bash | nl -bp.*\.runconfig
+
+    echo -e "______________________________________________________________________________________"
 }
 
 build_config_template() {

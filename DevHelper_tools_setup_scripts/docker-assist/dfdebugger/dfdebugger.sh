@@ -13,6 +13,9 @@ step)
 clean)
     "$curDir"/dfdebugger_cleandb.sh "${@:2}"
     ;;
+show)
+    "$curDir"/dfstepper.sh "${@:2}"
+    ;;
 *)
     "$curDir"/dfstepper.sh "$@"
     ;;

@@ -14,6 +14,7 @@ dockerfile=
 context=.
 startline=
 configoption=
+showconfig=
 
 findDockerfile() {
     find "$basedir" -name "*.dockerfile" -o -name "*.Dockerfile" >/tmp/dfilelist
@@ -104,7 +105,7 @@ tr_path_rel_to_abs() {
 # Default: .
 # --------------------------------------------------------------------------------------
 # startline value is validated for negative or out-of-range
-# Default: 1
+# Default: the last step in dockerfile
 # --------------------------------------------------------------------------------------
 
 for arg in "$@"; do
@@ -159,6 +160,9 @@ for arg in "$@"; do
         echo -e "Select config files (from templates collection of this dockerfile)-> set as current confiuration for this dockerfile for any run:"
         echo -e "______________________________________________________________________________________"
         ;;
+    --configs)
+        showconfig="yes"
+        ;;
     *.dockerfile)
         # Accepts dockerfile with .dockerfile/.Dockerfile extension preceeded by absoulte/relative path
         if [[ "$basedir" ]] || [[ "$dockerfile" ]]; then
@@ -195,4 +199,6 @@ shopt -s extglob
 
 basedir=$(tr_path_rel_to_abs "$basedir")
 validate "$context" || exit 1
+[[ "$showconfig" ]] && show_config_for_dockerfile "$basedir"/"$dockerfile" && exit 0
+
 processDockerfile "$basedir" "$dockerfile" "$context" "$startline" "$configoption" || exit 1

@@ -23,6 +23,7 @@ prompt() {
     fr      [change (and edit, if needed) config of this dockerfile for all sessions of this run]-------[eq change-config + reload (r)]-|
     fd      [change (and edit, if needed) default "current-config" of this dockerfile for all runs]-----[eq change-config + reload (r)]-|
     fc      [create new config files for this dockerfile]                                                                               |
+    f       [show all config files and point to the config files for this dockerfile or current run]                                    |
     n       [next step in current session]                                                                                              |
     p       [prev step in current session]                                                                                              |
     line#   [to line# in current session]---------------------------------------------------------------[e.g. 12]-----------------------|
@@ -49,6 +50,9 @@ prompt() {
         ;;
     fc)
         step_status="configcreated"
+        ;;
+    f)
+        step_status="showconfigandthenunchanged"
         ;;
     n)
         ((curline < total_steps)) && ((curline++)) && step_status="changed" || step_status="unchanged"
@@ -91,7 +95,7 @@ prompt() {
         step_status="sessioncleaned"
         ;;
     r)
-        step_status="reloadeded"
+        step_status="reloaded"
         ;;
     xa)
         step_status="runaborted"
@@ -288,7 +292,7 @@ evaluateIncrementalDockerfiles() {
 
     echo -e "\nTotal steps: $total_steps"
 
-    ((curline > total_steps)) && echo -e "startline value is more than the size of the dockerfile. Exiting" && return 1
+    ((curline > total_steps)) && echo -e "startline value is more than the size of the dockerfile. Setting it to last step" && curline=$((total_steps))
 
     while [ ! "$ans" = "fc" ] && \
             [ ! "$ans" = "fr" ] && \
@@ -326,6 +330,11 @@ evaluateIncrementalDockerfiles() {
             ;;
         skipped)
             echo -e "Step# $curline skipped"
+            ;;
+        showconfigandthenunchanged)
+            echo -e "Showing all configs."
+            show_config "$run_id" "$basedir"/"$dockerfile"
+            step_status="unchanged"
             ;;
         invalid)
             echo -e "INVALID STATE/INPUT"

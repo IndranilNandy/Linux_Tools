@@ -36,7 +36,7 @@ findDockerfile() {
         dockerfile=$(basename -s .Dockerfile "$(basename -s .dockerfile "$file")")
         basedir=$(dirname "$file")
     fi
-    echo -e "______________________________________________________________________________________"
+    # echo -e "______________________________________________________________________________________"
     rm /tmp/dfilelist
     return 0
 }
@@ -58,7 +58,7 @@ validate() {
     local context="${1}"
 
     echo -e "______________________________________________________________________________________"
-    echo "Validating parameters:\n"
+    echo -e "Validating parameters:"
     echo -e "______________________________________________________________________________________"
 
     echo -e "basedir=$basedir \ndockerfile=$dockerfile \ncontext=$context \nstartline=$startline\n"

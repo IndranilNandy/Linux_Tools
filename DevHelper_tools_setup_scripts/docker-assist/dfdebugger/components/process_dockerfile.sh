@@ -294,17 +294,17 @@ evaluateIncrementalDockerfiles() {
 
     ((curline > total_steps)) && echo -e "startline value is more than the size of the dockerfile. Setting it to last step" && curline=$((total_steps))
 
-    while [ ! "$ans" = "fc" ] && \
-            [ ! "$ans" = "fr" ] && \
-            [ ! "$ans" = "fd" ] && \
-            [ ! "$ans" = "e" ] && \
-            [ ! "$ans" = "a" ] && \
-            [ ! "$ans" = "c" ] && \
-            [ ! "$ans" = "r" ] && \
-            [ ! "$ans" = "x" ] && \
-            [ ! "$ans" = "xa" ] && \
-            [ ! "$ans" = "xe" ] && \
-            [ ! "$ans" = "xc" ]; do
+    while [ ! "$ans" = "fc" ] &&
+        [ ! "$ans" = "fr" ] &&
+        [ ! "$ans" = "fd" ] &&
+        [ ! "$ans" = "e" ] &&
+        [ ! "$ans" = "a" ] &&
+        [ ! "$ans" = "c" ] &&
+        [ ! "$ans" = "r" ] &&
+        [ ! "$ans" = "x" ] &&
+        [ ! "$ans" = "xa" ] &&
+        [ ! "$ans" = "xe" ] &&
+        [ ! "$ans" = "xc" ]; do
         echo -e "______________________________________________________________________________________"
         echo -e "Running step# $curline/$total_steps"
         echo -e "______________________________________________________________________________________"
@@ -360,6 +360,24 @@ evaluateIncrementalDockerfiles() {
     return 0
 }
 
+init_prompt() {
+    local basedir="${1}"
+    local dockerfile="${2}"
+    local run_id="${3}"
+
+    read -p "Do you want to change configs for this run/dockerfile? [y/n] [Or, press ENTER to continue without changing] _" init_res
+    ([[ ! "$init_res" ]] || [[ $(echo "$init_res" | tr [:upper:] [:lower:]) == "n" ]]) && return 0
+
+    show_config "$run_id" "$basedir"/"$dockerfile"
+
+    read -p "Do you want to change configs for this [r]un or [d]ockerfile? [r/d] [Or, press ENTER to continue without changing] _" update_res
+    [[ ! "$update_res" ]] && return 0
+
+    [[ $(echo "$update_res" | tr [:upper:] [:lower:]) == "d" ]] && updateCurrentConfigFiles "$basedir"/"$dockerfile" "$run_id"
+    [[ $(echo "$update_res" | tr [:upper:] [:lower:]) == "r" ]] && updateConfigFiles "$basedir"/"$dockerfile" "$run_id"
+
+}
+
 processDockerfile() {
     local basedir="${1}"
     local dockerfile="${2}"
@@ -370,6 +388,7 @@ processDockerfile() {
     local curline="$startline"
     local session_id=
     local run_id=
+    local init=
 
     init_run && run_id=$(get_current_run || echo "-1")
     init_config "$run_id" "$basedir"/"$dockerfile" "$configoption"
@@ -378,7 +397,8 @@ processDockerfile() {
         # echo -e "[processDockerfile][debug] basedir=$basedir dockerfile=$dockerfile context=$context startline=$startline curline=$curline"
 
         init_session "$run_id" && session_id=$(get_current_session "$run_id" || echo "-1")
-
+        [[ ! "$init" ]] && init_prompt "$basedir" "$dockerfile" "$run_id" && init="initialized"
+        
         createIncrementalDockerfiles "$basedir" "$dockerfile" "$session_id" "$run_id" || echo -e "Cannot create incremental dockerfiles" || return 1
         evaluateIncrementalDockerfiles "$basedir" "$dockerfile" "$context" "$curline" "$session_id" "$run_id" || return 1
 

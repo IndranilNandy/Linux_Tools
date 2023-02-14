@@ -17,4 +17,5 @@ do
 done
 
 gsettings set org.gnome.shell favorite-apps "$curFavApps]"
+./set_terminal_preferences.sh
 echo -e "${BLUE}${BOLD}Finished GSETTINGS configuration.${RESET}"

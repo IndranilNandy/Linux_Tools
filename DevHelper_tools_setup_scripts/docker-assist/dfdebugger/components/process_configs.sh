@@ -94,22 +94,29 @@ show_config() {
     echo -e "______________________________________________________________________________________"
 
     echo -e "buildconfig >\n"
+
     cat "$buildTempfile" | xargs -I X echo "echo -e X:; \
-                            ([[ \$(cat $cur_template_dir/$cur_build_cfg) == \$(cat X) ]] && [[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curBuildCfg)) == \$(cat X) ]] && echo -e \\\e[32m[*d][*r] \$(cat X)\\\e[0m) || \
-                            ([[ \$(cat $cur_template_dir/$cur_build_cfg) == \$(cat X) ]] && echo -e \\\e[32m[*d] \$(cat X)\\\e[0m) || \
-                            ([[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curBuildCfg)) == \$(cat X) ]] && echo -e \\\e[33m[*r] \$(cat X)\\\e[0m) || cat X; echo -e" | bash | nl -bp.*\.buildconfig
+                            ([[ \$(cat $cur_template_dir/$cur_build_cfg) == \$(cat X) ]] && [[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curBuildCfg)) == \$(cat X) ]] && echo -e \"echo -e \\\e[32m[*d][*r]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash) || \
+                            ([[ \$(cat $cur_template_dir/$cur_build_cfg) == \$(cat X) ]] && echo -e \"echo -e \\\e[32m[*d]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash) || \
+                            ([[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curBuildCfg)) == \$(cat X) ]] && echo -e \"echo -e \\\e[33m[*r]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash) || \
+                            ((cat X | grep -v \" *#\" | grep -v \"^\$\") && echo -e);" | bash | nl -bp.*\.buildconfig
 
     local runTempfile=/tmp/runConfigPath-"$(date +%N)"
     find "$run_config_path" -name "*.runconfig" -type f | sort >"$runTempfile"
     echo -e "______________________________________________________________________________________"
 
     echo -e "runconfig >\n"
+
     cat "$runTempfile" | xargs -I X echo "echo -e X:; \
-                            ([[ \$(cat $cur_template_dir/$cur_run_cfg) == \$(cat X) ]] && [[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curRunCfg)) == \$(cat X) ]] && echo -e \\\e[32m[*d][*r] \$(cat X)\\\e[0m) || \
-                            ([[ \$(cat $cur_template_dir/$cur_run_cfg) == \$(cat X) ]] && echo -e \\\e[32m[*d] \$(cat X)\\\e[0m) || \
-                            ([[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curRunCfg)) == \$(cat X) ]] && echo -e \\\e[33m[*r] \$(cat X)\\\e[0m) || cat X; echo -e" | bash | nl -bp.*\.runconfig
+                            ([[ \$(cat $cur_template_dir/$cur_run_cfg) == \$(cat X) ]] && [[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curRunCfg)) == \$(cat X) ]] && echo -e \"echo -e \\\e[32m[*d][*r]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash)  || \
+                            ([[ \$(cat $cur_template_dir/$cur_run_cfg) == \$(cat X) ]] && echo -e \"echo -e \\\e[32m[*d]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash) || \
+                            ([[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curRunCfg)) == \$(cat X) ]] && echo -e \"echo -e \\\e[33m[*r]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash) || \
+                            ((cat X | grep -v \" *#\" | grep -v \"^\$\") && echo -e);" | bash | nl -bp.*\.runconfig
 
     echo -e "______________________________________________________________________________________"
+
+    rm "$buildTempfile"
+    rm "$runTempfile"
 }
 
 show_config_for_dockerfile() {
@@ -129,20 +136,25 @@ show_config_for_dockerfile() {
     echo -e "______________________________________________________________________________________"
 
     echo -e "buildconfig >\n"
+
     cat "$buildTempfile" | xargs -I X echo "echo -e X:; \
-                            ([[ \$(cat $cur_template_dir/$cur_build_cfg) == \$(cat X) ]] && echo -e \\\e[32m[*d] \$(cat X)\\\e[0m) || \
-                            cat X; echo -e" | bash | nl -bp.*\.buildconfig
+                            ([[ \$(cat $cur_template_dir/$cur_build_cfg) == \$(cat X) ]] && echo -e \"echo -e \\\e[32m[*d]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash) || \
+                            ((cat X | grep -v \" *#\" | grep -v \"^\$\") && echo -e);" | bash | nl -bp.*\.buildconfig
 
     local runTempfile=/tmp/runConfigPath-"$(date +%N)"
     find "$run_config_path" -name "*.runconfig" -type f | sort >"$runTempfile"
     echo -e "______________________________________________________________________________________"
 
     echo -e "runconfig >\n"
+
     cat "$runTempfile" | xargs -I X echo "echo -e X:; \
-                            ([[ \$(cat $cur_template_dir/$cur_run_cfg) == \$(cat X) ]] && echo -e \\\e[32m[*d] \$(cat X)\\\e[0m) || \
-                            cat X; echo -e" | bash | nl -bp.*\.runconfig
+                            ([[ \$(cat $cur_template_dir/$cur_run_cfg) == \$(cat X) ]] && echo -e \"echo -e \\\e[32m[*d]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash) || \
+                            ((cat X | grep -v \" *#\" | grep -v \"^\$\") && echo -e);" | bash | nl -bp.*\.runconfig
 
     echo -e "______________________________________________________________________________________"
+
+    rm "$buildTempfile"
+    rm "$runTempfile"
 }
 
 build_config_template() {
@@ -162,7 +174,7 @@ run_config_template() {
 replace() {
     key="${1}"
     val="${2}"
-    sed "s#\(.*\)$key\(.*\)#\1$val\2#"
+    sed "s#\(.*\)$key\(.*\)#\1$val\2#g"
 }
 
 run_file() {
@@ -174,7 +186,7 @@ cfg_builder() {
     local cfg="${1}"
     local -n cfgmap_ref=${2}
 
-    cat "$cfg" |
+    cat "$cfg" | grep -v " *#" | grep -v "^$" |
         replace "$image_pholder" ${cfgmap_ref[$image_pholder]} |
         replace "$imagev_pholder" ${cfgmap_ref[$imagev_pholder]} |
         replace "$dfile_pholder" ${cfgmap_ref[$dfile_pholder]} |
@@ -198,6 +210,7 @@ runcfg_builder() {
 updateBuildConfigFiles() {
     local build_config_path="${1}"
     local run_id="${2}"
+    local cur_template_dir="${3}"
 
     local build_cfg_file=
     local tempfile=/tmp/buildConfigPath-"$(date +%N)"
@@ -214,11 +227,15 @@ updateBuildConfigFiles() {
     else
         echo -e "______________________________________________________________________________________"
         echo -e "Multiple .buildconfig found in the current directory hierarchy!"
-        cat "$tempfile" | xargs -I X echo "echo -e X: \$(cat X)" | bash | nl
+
+        cat "$tempfile" | xargs -I X echo "echo -e X:; \
+                            ([[ \$(cat $cur_template_dir/$cur_build_cfg) == \$(cat X) ]] && [[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curBuildCfg)) == \$(cat X) ]] && echo -e \"echo -e \\\e[32m[*d][*r]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash) || \
+                            ([[ \$(cat $cur_template_dir/$cur_build_cfg) == \$(cat X) ]] && echo -e \"echo -e \\\e[32m[*d]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash) || \
+                            ([[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curBuildCfg)) == \$(cat X) ]] && echo -e \"echo -e \\\e[33m[*r]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash) || \
+                            ((cat X | grep -v \" *#\" | grep -v \"^\$\") && echo -e);" | bash | nl -bp.*\.buildconfig
 
         read -p "Which .buildconfig to choose? Enter the number (press ENTER for no change): " no
         [[ "$no" ]] && build_cfg_file=$(cat "$tempfile" | nl | head -n$no | tail -n1 | cut -f2)
-        # echo "$build_cfg_file"
     fi
 
     rm "$tempfile"
@@ -232,6 +249,7 @@ updateBuildConfigFiles() {
 updateRunConfigFiles() {
     local run_config_path="${1}"
     local run_id="${2}"
+    local cur_template_dir="${3}"
 
     local run_cfg_file=
     local tempfile=/tmp/runConfigPath-"$(date +%N)"
@@ -248,11 +266,15 @@ updateRunConfigFiles() {
     else
         echo -e "______________________________________________________________________________________"
         echo -e "Multiple .runconfig found in the current directory hierarchy!"
-        cat "$tempfile" | xargs -I X echo "echo -e X: \$(cat X)" | bash | nl
+
+        cat "$tempfile" | xargs -I X echo "echo -e X:; \
+                            ([[ \$(cat $cur_template_dir/$cur_run_cfg) == \$(cat X) ]] && [[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curRunCfg)) == \$(cat X) ]] && echo -e \"echo -e \\\e[32m[*d][*r]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash)  || \
+                            ([[ \$(cat $cur_template_dir/$cur_run_cfg) == \$(cat X) ]] && echo -e \"echo -e \\\e[32m[*d]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash) || \
+                            ([[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curRunCfg)) == \$(cat X) ]] && echo -e \"echo -e \\\e[33m[*r]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash) || \
+                            ((cat X | grep -v \" *#\" | grep -v \"^\$\") && echo -e);" | bash | nl -bp.*\.runconfig
 
         read -p "Which .runconfig to choose? Enter the number (press ENTER for no change): " no
         [[ "$no" ]] && run_cfg_file=$(cat "$tempfile" | nl | head -n$no | tail -n1 | cut -f2)
-        # echo "$run_cfg_file"
     fi
 
     rm "$tempfile"
@@ -271,9 +293,10 @@ updateConfigFiles() {
     local dfile_cfgdir=/tmp/"$dockerassist_root_dir"/"$config_dir"
     local build_config_path="$dfile_cfgdir"/"$hash"/"$config_templates"/"$build_config_dir"
     local run_config_path="$dfile_cfgdir"/"$hash"/"$config_templates"/"$run_config_dir"
+    local cur_template_dir="$dfile_cfgdir"/"$hash"/"$cur_template"
 
-    updateBuildConfigFiles "$build_config_path" "$run_id"
-    updateRunConfigFiles "$run_config_path" "$run_id"
+    updateBuildConfigFiles "$build_config_path" "$run_id" "$cur_template_dir"
+    updateRunConfigFiles "$run_config_path" "$run_id" "$cur_template_dir"
 }
 
 updateCurrentBuildConfigFile() {
@@ -296,11 +319,15 @@ updateCurrentBuildConfigFile() {
     else
         echo -e "______________________________________________________________________________________"
         echo -e "Multiple .buildconfig found in the current directory hierarchy!"
-        cat "$tempfile" | xargs -I X echo "echo -e X: \$(cat X)" | bash | nl
+
+        cat "$tempfile" | xargs -I X echo "echo -e X:; \
+                            ([[ \$(cat $cur_template_dir/$cur_build_cfg) == \$(cat X) ]] && [[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curBuildCfg)) == \$(cat X) ]] && echo -e \"echo -e \\\e[32m[*d][*r]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash) || \
+                            ([[ \$(cat $cur_template_dir/$cur_build_cfg) == \$(cat X) ]] && echo -e \"echo -e \\\e[32m[*d]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash) || \
+                            ([[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curBuildCfg)) == \$(cat X) ]] && echo -e \"echo -e \\\e[33m[*r]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash) || \
+                            ((cat X | grep -v \" *#\" | grep -v \"^\$\") && echo -e);" | bash | nl -bp.*\.buildconfig
 
         read -p "Which .buildconfig to choose? Enter the number (press ENTER for no change): " no
         [[ "$no" ]] && build_cfg_file=$(cat "$tempfile" | nl | head -n$no | tail -n1 | cut -f2)
-        # echo "$build_cfg_file"
     fi
 
     rm "$tempfile"
@@ -333,11 +360,15 @@ updateCurrentRunConfigFile() {
     else
         echo -e "______________________________________________________________________________________"
         echo -e "Multiple .runconfig found in the current directory hierarchy!"
-        cat "$tempfile" | xargs -I X echo "echo -e X: \$(cat X)" | bash | nl
+
+        cat "$tempfile" | xargs -I X echo "echo -e X:; \
+                            ([[ \$(cat $cur_template_dir/$cur_run_cfg) == \$(cat X) ]] && [[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curRunCfg)) == \$(cat X) ]] && echo -e \"echo -e \\\e[32m[*d][*r]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash)  || \
+                            ([[ \$(cat $cur_template_dir/$cur_run_cfg) == \$(cat X) ]] && echo -e \"echo -e \\\e[32m[*d]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash) || \
+                            ([[ \$(cat \$(cat /tmp/$dockerassist_root_dir/$rundata_dir/$run_id/$curRunCfg)) == \$(cat X) ]] && echo -e \"echo -e \\\e[33m[*r]; echo -e \\\"cat X | grep -v \\\\\" *#\\\\\" | grep -v \\\\\"^\\\$\\\\\" \\\" | bash; echo -e \\\e[0m\" | bash) || \
+                            ((cat X | grep -v \" *#\" | grep -v \"^\$\") && echo -e);" | bash | nl -bp.*\.runconfig
 
         read -p "Which .runconfig to choose? Enter the number (press ENTER for no change): " no
         [[ "$no" ]] && run_cfg_file=$(cat "$tempfile" | nl | head -n$no | tail -n1 | cut -f2)
-        # echo "$run_cfg_file"
     fi
 
     rm "$tempfile"

@@ -395,10 +395,10 @@ processDockerfile() {
 
     while true; do
         # echo -e "[processDockerfile][debug] basedir=$basedir dockerfile=$dockerfile context=$context startline=$startline curline=$curline"
-
         init_session "$run_id" && session_id=$(get_current_session "$run_id" || echo "-1")
-        [[ ! "$init" ]] && init_prompt "$basedir" "$dockerfile" "$run_id" && init="initialized"
-        
+        [[ ! "$init" ]] && init_prompt "$basedir" "$dockerfile" "$run_id"
+        init="initialized"
+
         createIncrementalDockerfiles "$basedir" "$dockerfile" "$session_id" "$run_id" || echo -e "Cannot create incremental dockerfiles" || return 1
         evaluateIncrementalDockerfiles "$basedir" "$dockerfile" "$context" "$curline" "$session_id" "$run_id" || return 1
 

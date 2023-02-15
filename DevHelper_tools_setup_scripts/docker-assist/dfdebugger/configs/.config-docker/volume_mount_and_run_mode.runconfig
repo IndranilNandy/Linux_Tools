@@ -1,1 +1,19 @@
-docker run -it --name _CONTAINER_NAME_ --mount type=bind,src=$(pwd)/temp_volume,target=/application/logs _IMAGE_NAME_:_IMAGE_VERSION_; read -p 'Press ENTER key to EXIT _' exitkey;
+mkdir -p $(pwd)/dfdebugger_vols/temp_volume
+echo "Created default volume: $(pwd)/dfdebugger_vols/temp_volume"
+echo "Changing ownership and group of default volume"
+
+echo "Default uid: 7070"
+read -p "Press ENTER to continue with default uid, or put the value here _" uid
+test -z "$uid" && uid=7070
+#[[ "$uid" ]] || uid=7070
+
+echo "Default gid: 7070"
+read -p "Press ENTER to continue with default gid, or put the value here _" gid
+test -z "$gid" && gid=7070
+#[[ "$gid" ]] || gid=7070
+
+sudo chown "$uid" $(pwd)/dfdebugger_vols/temp_volume
+sudo chgrp "$gid" $(pwd)/dfdebugger_vols/temp_volume
+docker run -it --name _CONTAINER_NAME_ --mount type=bind,src=$(pwd)/dfdebugger_vols/temp_volume,target=/application/logs _IMAGE_NAME_:_IMAGE_VERSION_;
+
+read -p 'Press ENTER key to EXIT _' exitkey;

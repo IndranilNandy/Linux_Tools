@@ -14,16 +14,6 @@ prereq --install ".prereq"
 
 echo -e "${YELLOW}[springstarter] Setup process started.${RESET}"
 
-# read -p "Setup for NFS server or client? [server] or [client] or any other key to skip.. " ans
-# ([[ "$(echo $ans | tr [:upper:] [:lower:])" == "server" ]] && ./nfs_setup.sh server --setup) || \
-# ([[ "$(echo $ans | tr [:upper:] [:lower:])" == "client" ]] && ./nfs_setup.sh client --setup) || \
-# echo -e "Skipping NFS setup. Use 'mynfs' command to do the setup later.\nFor more, see 'mynfs --help'"
-
-# ./springstarter.sh
-
-# myscriptref --create springstarter.sh "$(pwd)" springstarter
-yes | sudo ln -i -s $(pwd)/springstarter.sh $MYCOMMANDSREPO/springstarter && echo -e "\nCreated symbolink link springstarter in $MYCOMMANDSREPO"
-
-# mycompl -W \"server client --setup --uninstall --config --refresh --help\" mynfs
+yes | sudo ln -i -s "$(pwd)"/springstarter.sh "$MYCOMMANDSREPO"/springstarter && echo -e "\nCreated symbolink link springstarter in $MYCOMMANDSREPO"
 
 echo -e "${GREEN}[springstarter] Setup finished.${RESET}"

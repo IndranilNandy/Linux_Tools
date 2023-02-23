@@ -1,15 +1,7 @@
 #!/usr/bin/env bash
 
 remove_env_vars() {
-    envloader="$MYCONFIGLOADER"/.envloader
-    springhome="$HOME/spring-boot-cli/spring-3.0.0-M5"
-    exp_springhome="export SPRING_HOME=$springhome"
-
-    springpath="$springhome"/bin
-    # expPath="export PATH=$PATH"
-
-    sed -i "\,^$exp_springhome$,d" "$envloader"
-    sed -i "s@\(.*\):$springpath\(.*\)@\1\2@" "$envloader"
+    myshpath remove --path="$HOME/spring-boot-cli/spring-3.0.0-M5/bin" --export="SPRING_HOME=$HOME/spring-boot-cli/spring-3.0.0-M5"
 }
 
 remove_autocompletion() {

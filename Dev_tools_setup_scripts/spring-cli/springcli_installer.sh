@@ -15,21 +15,7 @@ installer() {
 }
 
 add_env_var() {
-    envloader="$MYCONFIGLOADER"/.envloader
-    springhome="$HOME/spring-boot-cli/spring-3.0.0-M5"
-    exp_springhome="export SPRING_HOME=$springhome"
-
-    springpath="$springhome"/bin
-    expPath="export PATH=$PATH"
-
-    (echo "$expPath" | grep -E -v " *#" | grep -q "$springpath") || expPath="$expPath":"$springpath"
-    if grep -v " *#" "$envloader" | grep -q -E "export PATH" ; then
-        sed -i "s#\(export PATH=.*\)#$expPath#" "$envloader"
-    else
-        echo "$expPath" >>"$envloader"
-    fi
-
-    (grep -v " *#" "$envloader" | grep -q -E "$exp_springhome") || echo "$exp_springhome" >>"$envloader"
+    myshpath add --path="$HOME/spring-boot-cli/spring-3.0.0-M5/bin" --export="SPRING_HOME=$HOME/spring-boot-cli/spring-3.0.0-M5"
 }
 
 add_shell_completion() {

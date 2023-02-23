@@ -23,7 +23,7 @@ create_refs() {
     cat <<EOF >"$refloader"/"$refname"
 #!/bin/bash
 
-(cd "$scriptpath" && chmod +x $scriptname && ./$scriptname \$*)
+(cd "$scriptpath" && chmod +x $scriptname && ./$scriptname "\$@")
 EOF
 
     chmod +x "$refloader"/"$refname"

@@ -3,10 +3,10 @@
 curDir="$(pwd)"
 
 case "${1}" in
---add)
+add)
     "$curDir"/scripts/add_env.sh "${@:2}"
     ;;
---remove)
+remove)
     "$curDir"/scripts/delete_env.sh "${@:2}"
     ;;
 --help)

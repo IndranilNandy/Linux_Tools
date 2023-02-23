@@ -1,0 +1,37 @@
+Description:
+    Update PATH and export commands in bashrc.
+
+Usage:
+    myshpath add <arguments>
+    myshpath remove <arguments>
+
+    See below for more details on options for <arguments>
+    -----------------------------------------------------------
+    myshpath add --path=<path_to_add> --export=<export_command_expression>
+    myshpath add --path=<path_to_add>
+    myshpath add --export=<export_command_expression>
+        Update (add) PATH variable and export commands in bashrc.
+        NOTE: You can pass any argument containing spaces, by wrapping that argument withing single quotes('') or double quotes(""), e.g.,
+        myshpath add '--export KUBE_EDITOR=code -w'
+
+    myshpath remove --path=<path_to_add> --export=<export_command_expression>
+    myshpath remove --path=<path_to_add>
+    myshpath remove --export=<export_command_expression>
+        Update (remove) PATH variable and export commands in bashrc.
+        NOTE: You can pass any argument containing spaces, by wrapping that argument withing single quotes('') or double quotes(""), e.g.,
+        myshpath remove '--export KUBE_EDITOR=code -w'
+
+    myshpath add --help
+    myshpath remove --help
+    myshpath --help
+    myshpath
+        Show help contents on myshpath
+
+Examples:
+    myshpath add --path="$HOME/spring-boot-cli/spring-3.0.0-M5/bin" --export="SPRING_HOME=$HOME/spring-boot-cli/spring-3.0.0-M5"
+    myshpath add --path="$HOME/spring-boot-cli/spring-3.0.0-M5/bin"
+    myshpath add --export="SPRING_HOME=$HOME/spring-boot-cli/spring-3.0.0-M5"
+    myshpath remove --path="$HOME/spring-boot-cli/spring-3.0.0-M5/bin" --export="SPRING_HOME=$HOME/spring-boot-cli/spring-3.0.0-M5"
+    myshpath remove --path="$HOME/spring-boot-cli/spring-3.0.0-M5/bin"
+    myshpath remove --export="SPRING_HOME=$HOME/spring-boot-cli/spring-3.0.0-M5"
+    myshpath --help

@@ -15,6 +15,6 @@ prereq --install ".prereq"
 echo -e "${YELLOW}[myshpath] Setup process started.${RESET}"
 
 myscriptref --create myshpath.sh "$HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/myshpath" myshpath
-mycompl -W \"--add --remove --help\" myshpath
+mycompl -W \"add remove --help --path= --export=\" myshpath
 
 echo -e "${GREEN}[myshpath] Setup finished.${RESET}"

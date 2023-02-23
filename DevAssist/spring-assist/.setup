@@ -1,0 +1,39 @@
+#!/bin/bash
+
+loggingDest="/dev/stdout"
+errorDest="/dev/stdout"
+
+set_logDest() {
+    case ${1} in
+    file)
+        loggingDest=".logs"
+        errorDest=".errors"
+        ;;
+    term)
+        loggingDest="/dev/stdout"
+        errorDest="/dev/stdout"
+        ;;
+    *) ;;
+
+    esac
+}
+
+for arg in "$@"; do
+    case $arg in
+    --log-target=*)
+        set_logDest $(echo $arg | sed "s/--log-target=\(.*\)/\1/")
+        ;;
+    *)
+        echo "invalid arguments" && exit 1
+        ;;
+    esac
+done
+
+export loggingDest
+export errorDest
+
+echo -e "\n${YELLOW}${BOLD}[spring-assist] [$(pwd)] Starting setup.${RESET}"
+echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | xargs -I INPUT echo -e "(cd \$(dirname INPUT) && echo -e \"\\n{\\nINPUT $*\\n} >> >(ts '[%Y-%m-%d %H:%M:%S]' >> "$loggingDest") 2>> >(ts '[%Y-%m-%d %H:%M:%S]' >> "$errorDest")\" | bash)" | bash
+echo -e "\n${GREEN}${BOLD}[spring-assist] [$(pwd)] Setup completed.${RESET}"
+echo
+

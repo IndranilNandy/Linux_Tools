@@ -30,3 +30,4 @@ check_req_tools && install_flutter
 # flutter_config
 flutter_doctor || echo -e "Error while running 'flutter doctor'"
 ./flutter_upgrade.sh
+./dart/dart_env_configurer.sh

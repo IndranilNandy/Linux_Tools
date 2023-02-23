@@ -1,3 +1,4 @@
 prereq
 ifinstalled
+myshpath
 androidstudio

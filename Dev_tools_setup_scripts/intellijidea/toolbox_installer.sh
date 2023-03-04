@@ -49,7 +49,7 @@ fi
 
 chmod -R +rwx ${DIR}
 
-ln -s ${DIR}/jetbrains-toolbox /usr/local/bin/jetbrains-toolbox
+yes | ln -s -i ${DIR}/jetbrains-toolbox /usr/local/bin/jetbrains-toolbox
 chmod -R +rwx /usr/local/bin/jetbrains-toolbox
 echo ""
 rm "${DEST}"

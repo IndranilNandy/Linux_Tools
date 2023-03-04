@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Ref. https://learn.microsoft.com/en-us/powershell/scripting/install/install-ubuntu?view=powershell-7.3#installation-via-package-repository
 # Update the list of packages
 sudo apt-get update
 # Install pre-requisite packages.

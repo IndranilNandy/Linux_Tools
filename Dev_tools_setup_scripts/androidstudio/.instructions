@@ -10,6 +10,7 @@ Installers:
     ./installers/androidstudio_installer_from_binary.sh: installs from downloaded binary. This is the default installation. But, you need to update the download link periodically in the script.
     ./installers/androidstudio_installer_from_official_repo.sh: installs using official repository
     ./installers/androidstudio_installer_with_snap.sh: installs using snap
+    ./installers/androidstudio_configurer.sh: mainly enable hardware acceleration
 
 
 Uninstallers:

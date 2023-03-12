@@ -5,7 +5,7 @@ Description:
             > adding custom build/run templates
             > quick auto-cleaning of all residual images and containers after a debug run/session completes
             > quick manual cleaning of all resources (images/containers/configs) created by this tool
-
+-------------------------------------------------------------------------------------------------------------------------------------------
 
 Concepts:
 
@@ -43,30 +43,30 @@ Concepts:
                 (*) Remember current RUN will only consider the current build/run config for this 'RUN', and not of the 'dockerfile'. [Also, no separate config for Session]
                 (*) Config for current 'RUN', by default, points to the config for current Dockerfile if you've not manually selected/created another default config for the current RUN.
 
-                            Predefined templates -  Set of predefined build and run configs stored in /tmp/docker-assist-dir/dfdebugger/configs/<hash_id>/templates/
-                            Current config -        As just stated above, there are two different concepts of current config -
+                    Predefined templates -  Set of predefined build and run configs stored in /tmp/docker-assist-dir/dfdebugger/configs/<hash_id>/templates/
+                    Current config -        As just stated above, there are two different concepts of current config -
 
-                                                        Current config for this Dockerfile:
-                                                            This is the current config (current.buildconfig/current.runconfig) set for this dockerfile.
-                                                            NOTE that this contains the template copied from (and NOT just a pointer) one of the templates stored in .buildconfig/.runconfig
-                                                            You can change current.buildconfig/current.runconfig to set as another template from .buildconfig/.runconfig
-                                                            This can be changed/created any time during a RUN.
-                                                            There is already a default set of templates in .buildconfig/.runconfig.
-                                                            default.buildconfig and default.runconfig are the default ones to be copied to current.buildconfig and current.runconfig, if you do not manually set the current config for the dockerfile to another template.
-                                                            You can also create new templates. Any new template you create will go the same location. You can also check in the new templates to Git Repository.
-                                                            This is to facilitate building and running a dockerfile to a container without providing the build and run commands again and again.
-                                                            Generally, given a particular dockerfile, the build and run commands remain same, and you can always put them in build and run templates stored in /tmp/docker-assist-dir/dfdebugger/configs/<hash_id>/templates/
-                                                            REMEMBER that 'current config for this dockerfile' is consulted by the 'current config for this RUN' during any RUN, if the 'current config for this RUN' isn't explicitly selected as another template from the templates-store.
-                                                            ALSO whenever you change 'current config for this dockerfile', the default behavior is that the 'current config for this RUN' will immediately point to it.
+                        Current config for this Dockerfile:
+                            This is the current config (current.buildconfig/current.runconfig) set for this dockerfile.
+                            NOTE that this contains the template copied from (and NOT just a pointer) one of the templates stored in .buildconfig/.runconfig
+                            You can change current.buildconfig/current.runconfig to set as another template from .buildconfig/.runconfig
+                            This can be changed/created any time during a RUN.
+                            There is already a default set of templates in .buildconfig/.runconfig.
+                            default.buildconfig and default.runconfig are the default ones to be copied to current.buildconfig and current.runconfig, if you do not manually set the current config for the dockerfile to another template.
+                            You can also create new templates. Any new template you create will go the same location. You can also check in the new templates to Git Repository.
+                            This is to facilitate building and running a dockerfile to a container without providing the build and run commands again and again.
+                            Generally, given a particular dockerfile, the build and run commands remain same, and you can always put them in build and run templates stored in /tmp/docker-assist-dir/dfdebugger/configs/<hash_id>/templates/
+                            REMEMBER that 'current config for this dockerfile' is consulted by the 'current config for this RUN' during any RUN, if the 'current config for this RUN' isn't explicitly selected as another template from the templates-store.
+                            ALSO whenever you change 'current config for this dockerfile', the default behavior is that the 'current config for this RUN' will immediately point to it.
 
-                                                        Current config for this RUN:
-                                                            This is the current config which takes effect during any RUN.
-                                                            This either can be explicitly selected from templates-store or created afresh (and stored in templates-store) or if nothing provided, can implicitly point to the 'current config for this dockerfile'.
-                                                            This can be changed/created any time during a RUN.
-                                                            If you've not explicitly set it to another template, it'll POINT TO the 'current config for this dockerfile'.
-                                                            You can explicitly set it to point to another template in templates-store.
-                                                            Whenever you change 'current config for this dockerfile', the default behavior is that the 'current config for this RUN' will immediately point to it.
-
+                        Current config for this RUN:
+                            This is the current config which takes effect during any RUN.
+                            This either can be explicitly selected from templates-store or created afresh (and stored in templates-store) or if nothing provided, can implicitly point to the 'current config for this dockerfile'.
+                            This can be changed/created any time during a RUN.
+                            If you've not explicitly set it to another template, it'll POINT TO the 'current config for this dockerfile'.
+                            You can explicitly set it to point to another template in templates-store.
+                            Whenever you change 'current config for this dockerfile', the default behavior is that the 'current config for this RUN' will immediately point to it.
+-------------------------------------------------------------------------------------------------------------------------------------------
 
 Storage layout:
 
@@ -77,8 +77,8 @@ Storage layout:
                             |
                             |---    <run_id1>/          [stores a particular run-specific data]
                                             |
-                                            |---    .curBuidConfig          []
-                                            |---    .curRunConfig
+                                            |---    .curBuidConfig          [store the template of current buildconfig for this dockerfile]
+                                            |---    .curRunConfig           [store the template of current runconfig for this dockerfile]
                                             |---    .sessions               [list of all sessions for this run]
                                             |---    .reloadstep             [contains the step/line number of the dockerfile where the last reload occurred]
                                             |---    .run_ended              [created at a run-end to indicate that the run had already completed]
@@ -113,72 +113,173 @@ Storage layout:
                                                                                 |---    default.runconfig
                                                                                 |---    <other .runconfig files>
                             |---    <hash_id2>/
-
+-------------------------------------------------------------------------------------------------------------------------------------------
 
 Execution:
+    How to execute the tool?
+        Simplest way:
+            1.  Go the directory or any parent directory containing the dockerfile.
+            2.  Run 'dfdebugger'.
+            3.  It'll ask you to select your dockerfile from a list of dockerfiles which can be traced down from the current directory to its children directories.
+            4.  Prompt you to change config files for this RUN or for this dockerfile.
+                    - if you select 'for this RUN', then the config file will take effect only during this RUN. 'current config for this dockerfile' will not change.
+                    - if you select 'for this dockerfile', then 'current config for this dockerfile' will change, and 'current config for this RUN' will immediately point to that.
+                    - if you do not select any, 'current config for this RUN' will automatically point to the 'current config for this dockerfile'.
+                    - default value of 'current config for this dockerfile' is default.buildconfig/default.runconfig, if you have not already changed 'current config for this dockerfile' during any earlier run for this dockerfile.
+                    - (*) BEST PRACTICE: since generally for a particular dockerfile you'll always use the same build and run commands, you can select to change 'current config for this dockerfile' for once and all, and set it to the desired one.
+            5.  By default, it'll build the incremental dockerfile till the last line/step and create the container with entrypoint '/bin/sh' (unless you've changed the run config) and open it in a new terminal
+            6.  It'll then show a long list of debug commands (d-cmds) available for this session/run. Choose your options accordingly.
+            7.  For any session change, use a/e/c/r. BEST PRACTICE: Use r
+            8.  For closing the RUN, use xa/xe/xc/xr. BEST PRACTICE: Use x. Or, for quick response, use xa [Then you need to clean all images/containers later]
+            9.  For line by line execution, use n/p/line#/[+/-step]/[+s/-s]
+            10. For config create/change/viewing fc/fr/fd/f
+            11. For more on d-cmds see the 'Debug commands' section below.
 
+        All possible ways:
+            Either provide [option 1] --basedir/--dockerfile, or
+            provide [option 2] full path (absolute/relative) of the dockerfile [NOT BOTH], or
+            [option 3] provide NO input
+
+            Dockerfile names/paths should end with the extension (.dockerfile/.Dockerfile)
+            --context and --startline are optional and can combined with any of the 3 options.
+            <config-options> are optional
+            --------------------------------------------------------------------------------------
+            Context value is always relative to the basedir
+            Default: .
+            --------------------------------------------------------------------------------------
+            startline value is validated for negative or out-of-range
+            Default: the last step in dockerfile
+            --------------------------------------------------------------------------------------
+            Accepted values for <config-options>
+                --config-edit-default
+                --config-create-and-set-as-current-for-this-run
+                --config-select-and-set-as-current-for-this-run
+                --config-select-and-set-as-current-for-this-dockerfile
+            For more, see 'How to set configs?' section.
+            --------------------------------------------------------------------------------------
+
+            [OPTION 1]
+                    dfdebugger --dockerfile=<filename.dockerfile> [--context=<path-rel-to-basedir>] [--startline=<line#>] [<config-options>]
+                    dfdebugger --basedir=<path> [--context=<path-rel-to-basedir>] [--startline=<line#>] [<config-options>]
+                    dfdebugger --basedir=<path> --dockerfile=<filename.dockerfile> [--context=<path-rel-to-basedir>] [--startline=<line#>] [<config-options>]
+
+                    basedir accepts absolute/relative path
+                    dockerfile accepts only name (with extension), no path should be preceded
+                    if basedir is NOT provided, then basedir is assumed to be current directory
+                    if dockerfile is NOT provided, then the program searches for all dockerfiles in the directory tree pointed by basedir
+                    if both are provided, then NO search is performed and basedir/dockerfile is taken as the full dockerfile path intended
+
+            [OPTION 2]
+                    dfdebugger <absoute-or-relative-path-of-dockerfile.dockerfile> [--context=<path-rel-to-basedir>] [--startline=<line#>] [<config-options>]
+
+                    accepts dockerfile with .dockerfile/.Dockerfile extension preceded by absolute/relative path
+                    if only dockerfilename.ext is provided, then it takes the current directory as basedir
+                    it does NOT do any dockerfile search, only accepts the given input
+
+            [OPTION 3]
+                    dfdebugger [--context=<path-rel-to-basedir>] [--startline=<line#>] [<config-options>]
+
+                    provide no input (as mentioned in Option 1 and 2) -> program will search for dockerfiles in the current directory
+                    REMEMBER that context and startline values are always accepted if provided.
+
+    Debug commands:
+
+        fr      [change (and edit, if needed) config of this dockerfile for all sessions of this run]-------[eq change-config + reload (r)]-|
+        fd      [change (and edit, if needed) default "current-config" of this dockerfile for all runs]-----[eq change-config + reload (r)]-|
+        fc      [create new config files for this dockerfile]                                                                               |
+        f       [show all config files and point to the config files for this dockerfile or current run]                                    |
+        n       [next step in current session]                                                                                              |
+        p       [prev step in current session]                                                                                              |
+        line#   [to line# in current session]---------------------------------------------------------------[e.g. 12]-----------------------|
+        +/-step [forward/backward steps in current session]-------------------------------------------------[e.g. +5/-5]--------------------|
+        +s/s    [skip forward in current session]                                                                                           |
+        -s      [skip backward in current session]                                                                                          |
+        a       [abort current session -> reload next session]                                                                              |
+        e       [exit current session -> reload next session]                                                                               |
+        c       [clean exit current session -> reload next session]                                                                         |
+        r       [abort current session -> reload next session]----------------------------------------------[eq a]--------------------------|
+        xa      [abort all sessions -> exit run]                                                                                            |
+        xe      [exit all sessions -> exit run]                                                                                             |
+        xc      [clean exit all sessions -> exit run]                                                                                       |
+        x       [clean exit all sessions -> exit run]-------------------------------------------------------[eq xc]-------------------------|
+
+        Difference between (A)bort, (E)xit and (C)lean exit:
+            Abort       - Abort the current session -> Images and Containers not cleaned (Do it manually later) -> Reload a new session
+            Exit        - Exit the current session -> Containers cleaned, Images NOT cleaned (Do it manually later) -> Reload a new session
+            Clean-exit  - Clean exit the current session -> Images and Containers cleaned -> Reload a new session
+
+            NOTE:       Equivalent d-cmds for the RUN is xa, xe and xc.
+                        x is equivalent to xc.
+                        r is equivalent to a.
+    -----------------------------------------------------------------------------------------------------------------------------------------
+    How to view current config?
+        Run command 'dfdebugger show --configs'
+        Select from the list of dockerfiles shown.
+        The output shows all the configs from templates-store, with the current build and run configs highlighted.
+        [*d] -> indicates 'current config for this dockerfile'
+        [*r] -> indicates 'current config for this RUN'
+
+        REMEMBER only during the first run of 'dfdebugger' on a dockerfile, the templates/configs-store is created.
+        So, if you've not run the debugger prior to this, the above command will not show any config.
+        Anyways, during the first run of the debugger (run 'dfdebugger'), it'll first prompt you if you want to view/change the config.
+    -----------------------------------------------------------------------------------------------------------------------------------------
     How to set configs?
-        
-    WARNING!!   DO NOT USE BOTH CRONTAB AND MYCRONTAB COMMANDS TO SCHEDULE THE JOBS.
-                > crontab jobs will be lost after using 'mycrontab' commands
-                > if you've crontab jobs, put them into mycrontab configs
-                > use 'mycrontab --backup' to take a backup of all crontab and mycrontab jobs, and then put the crontab job definitions
-                  in mycrontab configs
-                > initial setup always takes a backup of all jobs.
-                > 'mycrontab --clean' also takes backup of all jobs.
+        You can set configs at two points.
+            - At the start of the RUN: Will prompt you for change in the current config for this RUN/dockerfile
+            - Using d-cmds during any time of the RUN/session: Use fc/fd/fr/f
+        (*) Also remember you can change any one of the following configs.
+            - Current config for the dockerfile: Changing this will immediately cause the other config (for RUN) to point to this one.
+            - Current config for the RUN: Changing this is temporary and only will take effect during this RUN. Next RUN, by default, will point to the 'current config for this dockerfile'.
 
-    Schedule definitions:
-        mycrontab                   : format in which schedule information is stored when 'mycrontab' command is used.
-                                      ex. **indranilnandy 11 * * * * sh $HOME/MyTools/Linux_Tools/Post_setup/mycrontab/cronjobs/testscript.sh**
-        crontab                     : format in which schedule information is stored when 'crontab' command is used.
-                                      ex. **indranilnandy 11 * * * * sh /home/indranilnandy/MyTools/Linux_Tools/Post_setup/mycrontab/cronjobs/generated/testscript.sh**
+        Options to create/update configs (called config-options).
+            --config-edit-default
+                    Update default.buildconfig and default.runconfig -> copies the same to the 'current config for this dockerfile'
+            --config-create-and-set-as-current-for-this-run
+                    Create new config/template in template-store (in .buildconfig/.runconfig folder) -> Updates 'current config for this RUN' to point to this one.
+                    'Current config for thid dockerfile' is unchanged.
+            --config-select-and-set-as-current-for-this-run
+                    Prompts to select and possibly update from a list of templates in templates-store -> Updates 'current config for this RUN' to point to this one.
+                    'Current config for thid dockerfile' is unchanged.
+            --config-select-and-set-as-current-for-this-dockerfile
+                    Prompts to select and possibly update from a list of templates in templates-store -> Updates 'current config for this dockerfile' to copy this template (NOT pointing to).
+                    'Current config for this RUN' immediately points to the 'current config for this dockerfile'
 
-    Locations:
-        .crontabs/*                     : location for storing schedule definitions
-        .crontabs/.crontab-global        : this is GLOBAL configuration applicable across machines, and hence should go to repo
-        .crontabs/.crontab-local         : this is LOCAL configuration applicable to only current local machine, and shouldn't go to repo
+        (**) Remember
+                Running 'dfdebugger <config-options>' first execute the config commands as just stated, and then it'll automatically execute the debug tool 'dfdebugger'
+                This debug tool will prompt you if you want to change the current config for dockerfile/RUN, which would be redundant, and you may ignore (press ENTER)
+                BEST PRACTICE:
+                    Use the config-options only for the first two options (--config-edit-default/--config-create-and-set-as-current-for-this-run) which will either update the default template or create a new one from scratch.
+                    For other two config-options(--config-select-and-set-as-current-for-this-run/--config-select-and-set-as-current-for-this-dockerfile), anyways, you'll be prompted at the start of the debug tool.
 
-        ./cronjobs/*                    : location for all user-defined job definitions/scripts
-        ./cronjobs/generated            : location for autogenerated scripts. These are the translations from the user-defined scripts,
-                                          mainly providing specific log-file targets
+        Questions
+            Why there is no option as --config-create-and-set-as-current-for-this-dockerfile?
+                Yes, currently there is no such option. But you can achieve it with following steps -
+                    - Execute 'dfdebugger --config-create-and-set-as-current-for-this-run'
+                    - At the start of the debug tool, anyways, it'll show a prompt asking if you want to change the config for this RUN/dockerfile
+                    - Select 'for dockerfile' and then from the list select the one you just created.
+-------------------------------------------------------------------------------------------------------------------------------------------
 
-        ./cronbackups/*                 : location for all backups of the existing job definitions (mycrontab and crontab definitions)
-        ./cronbackups/cron-defs/*       : stores 'crontab' definitions.REMEMBER that jobs scheduled using BOTH 'crontab' and 'mycrontab' commands are backed up here.
-        ./cronbackups/mycron-defs/*     : stores 'mycrontab' definitions. Remember that jobs scheduled using 'mycrontab' command ONLY are backed up here.
+Best Practice:
 
-        ./cronlogs/*                    : stores logs of all jobs
+    1. First go to the directory containing the dockerfile, or to any parent directory.
 
-How to add/delete a job-schedule?
-    [MANUAL]
-    Run 'mycrontab --config'
-                                -> Opens the configs in default editor. Add/delete your jobs here in proper format. Either choose .crontab-global or .crontab-local.
-                                -> Adds to the schedule configs of mycrontab, and also updates underlying crontab configs, which EFFECTIVELY SCHEDULES the jobs.
-                                -> NOTE: If you manually launch the configs without using 'mycrontab --config' command, then after saving the configs, you've to manually
-                                   run 'mycrontab --schedule' to update the underlying crontab configs to effectively schedule the jobs.
-                                -> WARNING!! ALL JOBS SCHEDULED DIRECTLY USING CRONTAB COMMAND WILL BE LOST. Use 'mycrontab --backup' to backup all the jobs (both mycrontab and crontab)
-    OR,
-    [PROGRAMMATIC]
-    Still not added.
-
-How to add a new job entry?
-    Two options available-
-    [Adding a job from scratch]
-    Run 'mycrontab --job-name=<job_name>'
-                                -> Open the default editor with ./cronjobs/job_name file (if it doesn't exist).
-                                -> Add the job code here and save.
-                                -> REMEMBER that the job is just added to the list of available jobs to schedule. It still doesn't have any schedule.
-                                -> To schedule the job run 'mycrontab --config' and provide schedule information.
-    OR,
-    [Adding an existing job/script]
-    Run 'mycrontab --job-path=<job_path_absolute>'
-                                -> Copies the provided script with absolute path to the job location (./cronjobs/) used for mycrontab.
-                                -> REMEMBER that the job is just added to the list of available jobs to schedule. It still doesn't have any schedule.
-                                -> To schedule the job run 'mycrontab --config' and provide schedule information.
-
-How to refresh all the schedules?
-    Run 'mycrontab --schedule'
-                                -> Updates underlying crontab configs with the schedule configs of mycrontab, and schedules the jobs.
-                                -> WARNING!! ALL JOBS SCHEDULED DIRECTLY USING CRONTAB COMMAND WILL BE LOST. Use 'mycrontab --backup' to backup all the jobs (both mycrontab and crontab)
+    To debug:
+        Setting config:
+                > If you want to edit default config (default.buildconfig/default.runconfig), or create a new config 'for this RUN'
+                            - execute 'dfdebugger ----config-edit-default' or 'dfdebugger --config-create-and-set-as-current-for-this-run'
+                > Otherwise, simply
+                            - execute 'dfdebugger' and change the configs with the prompts.
+                > Mostly, you need to set a default 'current config for this dockerfile. In that case,
+                        >> execute 'dfdebugger --config-create-and-set-as-current-for-this-run'
+                        >> create the new config
+                        >> then at the start of the debug tool, as it asks for changing the config for this RUN/dockerfile, select the dockerfile option -> and then, select the newly created one.
+                        >> if you need this config later, DO NOT FORGET to push to git repository, so that it becomes part the default templates-store.
+        Exiting session:
+                Use 'r'
+        Exiting run:
+                Use 'x' or 'xa' (in the later case, clean manually later)
+        Cleaning:
+                Once you are done, you may clean everything. #TODO
 
 Usage:
     mycrontab --init

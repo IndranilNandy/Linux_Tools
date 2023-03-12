@@ -16,6 +16,9 @@ clean)
 show)
     "$curDir"/dfstepper.sh "${@:2}"
     ;;
+help)
+    cat "$curDir"/help/dfdebugger.help
+    ;;
 *)
     "$curDir"/dfstepper.sh "$@"
     ;;

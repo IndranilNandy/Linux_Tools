@@ -89,12 +89,12 @@ tr_path_rel_to_abs() {
 # Dockerfile names/paths should end with the extension (.dockerfile/.Dockerfile)
 # [OPTION 1]
 #        basedir accepts absolute/relative path
-#        dockerfile accepts only name (with extension), no path should be preceeded
+#        dockerfile accepts only name (with extension), no path should be preceded
 #        if basedir is NOT provided, then basedir is assumed to be current directory
 #        if dockerfile is NOT provided, then the program searches for all dockerfiles in the directory tree pointed by basedir
 #        if both are provided, then NO search is performed and basedir/dockerfile is taken as the full dockerfile path intended
 # [OPTION 2]
-#        accepts dockerfile with .dockerfile/.Dockerfile extension preceeded by absoulte/relative path
+#        accepts dockerfile with .dockerfile/.Dockerfile extension preceded by absolute/relative path
 #        if only dockerfilename.ext is provided, then it takes the current directory as basedir
 #        it does NOT do any dockerfile search, only accepts the given input
 # [OPTION 3]

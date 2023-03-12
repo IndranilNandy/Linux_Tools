@@ -145,7 +145,7 @@ for arg in "$@"; do
     --config-create-and-set-as-current-for-this-run)
         configoption="create-config"
         echo -e "______________________________________________________________________________________"
-        echo -e "Creating new config files (and stored in templates for this dockerfile) -> et as current confiuration for this run:"
+        echo -e "Creating new config files (and stored in templates for this dockerfile) -> set as current confiuration for this run:"
         echo -e "______________________________________________________________________________________"
         ;;
     --config-select-and-set-as-current-for-this-run)

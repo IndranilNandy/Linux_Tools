@@ -1,0 +1,274 @@
+Description:
+    Provides utility tool for -
+            > debugging a dockerfile
+            > quick building of images and containers from build/run templates
+            > adding custom build/run templates
+            > quick auto-cleaning of all residual images and containers after a debug run/session completes
+            > quick manual cleaning of all resources (images/containers/configs) created by this tool
+
+
+Concepts:
+
+    Run:        Each execution of 'dfdebugger' command to debug/run a dockerfile constitutes a 'Run'.
+                Each 'Run' has a 'Run Id'.
+                'Run Id' format > %4Y%m%d%H%M%S
+                All Run Ids are stored in .runs file (location: /tmp/docker-assist-dir/dfdebugger/.runs)
+
+    Session:    Each 'Run' constitutes of multiple 'Sessions'.
+                At the start of each session, current dockerfile is split into multiple incremental dockerfiles to facilitate line by line debugging/execution of the dockerfile.
+                If you do any change into the original dockerfile, it will not be reflected in the current session since the incremental dockerfiles are already generated.
+                You need to Reload (or Abort/Exit/Clean session) to start a new Session within that Run itself, which will generate incremental dockerfiles again based on the current dockerfile.
+                Each 'Session' has a 'Session Id'.
+                'Session Id' format > %4Y%m%d%H%M%S
+                All Session Ids are stored in .sessions file (location: /tmp/docker-assist-dir/dfdebugger/runs/<run_id>/.sessions)
+
+    Resources:  Three types of resources exist - Images, Containers and Configs.
+
+                Images:     Each build of a incremental dockerfile creates an Image.
+                            Syntax of image name > i-<original_dockerfile_name>-<session_id>:<line#> e.g. i-javatest2-sample2-20230312163808:11
+                Since, image-name contains the current session id, you cannot generate multiple images from the same incremental dockerfile in the same session.
+                You've to reload a new session to create another image from the same incremental dockerfile (i.e., from the same line number in the original dockerfile)
+                Each image-build process (from the dockerfile) uses build-templates (see more in the Configs section)
+
+                Containers: Each image (from incremental dockerfile) generates a new Container.
+                            Syntax of container name: c-<original_dockerfile_name>-<session_id>-<line#>
+                Since, container-name contains the current session id, you cannot create another container at same line number of the dockerfile in the same session, if a container for that line number is already running.
+                You either have to terminate that container manually, or reload a new session.
+                Each container-build process (from the aforementioned images) uses run-templates (see more in the Configs section)
+
+                Configs/Templates:
+                            Build config    - This is a template to build an image from a dockerfile
+                            Run config      - This is a template to build a container from an image
+                You can change current build/run config for this particular run or dockerfile at any time during a session or run.
+                (*) Remember current RUN will only consider the current build/run config for this 'RUN', and not of the 'dockerfile'. [Also, no separate config for Session]
+                (*) Config for current 'RUN', by default, points to the config for current Dockerfile if you've not manually selected/created another default config for the current RUN.
+
+                            Predefined templates -  Set of predefined build and run configs stored in /tmp/docker-assist-dir/dfdebugger/configs/<hash_id>/templates/
+                            Current config -        As just stated above, there are two different concepts of current config -
+
+                                                        Current config for this Dockerfile:
+                                                            This is the current config (current.buildconfig/current.runconfig) set for this dockerfile.
+                                                            NOTE that this contains the template copied from (and NOT just a pointer) one of the templates stored in .buildconfig/.runconfig
+                                                            You can change current.buildconfig/current.runconfig to set as another template from .buildconfig/.runconfig
+                                                            This can be changed/created any time during a RUN.
+                                                            There is already a default set of templates in .buildconfig/.runconfig.
+                                                            default.buildconfig and default.runconfig are the default ones to be copied to current.buildconfig and current.runconfig, if you do not manually set the current config for the dockerfile to another template.
+                                                            You can also create new templates. Any new template you create will go the same location. You can also check in the new templates to Git Repository.
+                                                            This is to facilitate building and running a dockerfile to a container without providing the build and run commands again and again.
+                                                            Generally, given a particular dockerfile, the build and run commands remain same, and you can always put them in build and run templates stored in /tmp/docker-assist-dir/dfdebugger/configs/<hash_id>/templates/
+                                                            REMEMBER that 'current config for this dockerfile' is consulted by the 'current config for this RUN' during any RUN, if the 'current config for this RUN' isn't explicitly selected as another template from the templates-store.
+                                                            ALSO whenever you change 'current config for this dockerfile', the default behavior is that the 'current config for this RUN' will immediately point to it.
+
+                                                        Current config for this RUN:
+                                                            This is the current config which takes effect during any RUN.
+                                                            This either can be explicitly selected from templates-store or created afresh (and stored in templates-store) or if nothing provided, can implicitly point to the 'current config for this dockerfile'.
+                                                            This can be changed/created any time during a RUN.
+                                                            If you've not explicitly set it to another template, it'll POINT TO the 'current config for this dockerfile'.
+                                                            You can explicitly set it to point to another template in templates-store.
+                                                            Whenever you change 'current config for this dockerfile', the default behavior is that the 'current config for this RUN' will immediately point to it.
+
+
+Storage layout:
+
+    /tmp/docker-assist-dir/dfdebugger/
+                |
+                |---    .runs       [list of all run ids]
+                |---    runs/       [stores all run data]
+                            |
+                            |---    <run_id1>/          [stores a particular run-specific data]
+                                            |
+                                            |---    .curBuidConfig          []
+                                            |---    .curRunConfig
+                                            |---    .sessions               [list of all sessions for this run]
+                                            |---    .reloadstep             [contains the step/line number of the dockerfile where the last reload occurred]
+                                            |---    .run_ended              [created at a run-end to indicate that the run had already completed]
+                                            |---    .runfile                [original target dockerfile]
+                                            |---    sessions/               [stores all session data]
+                                                            |
+                                                            |---    <session_id1>/
+                                                                                |
+                                                                                |---    <original_dockerfile>
+                                                                                |---    incremental-dockerfiles/
+                                                                                                            |
+                                                                                                            |---    incr-1.Dockerfile
+                                                                                                            |---    incr-2.Dockerfile
+                                                            |---    <session_id2>/
+                            |---    <run_id2>/
+                |---    configs/    [stores all config data]
+                            |
+                            |---    <hash_id1>/         [stores a particular dockerfile-specific configs]
+                                            |
+                                            |---    current/
+                                                            |
+                                                            |---    current.buildconfig     [current build template from one of the templates stored in .buildconfig/]
+                                                            |---    current.runconfig       [current run template from one of the templates stored in .runconfig/]
+                                            |---    templates/          [stores predefined templates for build/run]
+                                                            |
+                                                            |---    .buildconfig/           [stores predefined .buildconfig files for dockerfile-build]
+                                                                                |
+                                                                                |---    default.buildconfig
+                                                                                |---    <other .buildconfig files>
+                                                            |---    .runconfig/             [stores predefined .runconfig files for container-run]
+                                                                                |
+                                                                                |---    default.runconfig
+                                                                                |---    <other .runconfig files>
+                            |---    <hash_id2>/
+
+
+Execution:
+
+    How to set configs?
+        
+    WARNING!!   DO NOT USE BOTH CRONTAB AND MYCRONTAB COMMANDS TO SCHEDULE THE JOBS.
+                > crontab jobs will be lost after using 'mycrontab' commands
+                > if you've crontab jobs, put them into mycrontab configs
+                > use 'mycrontab --backup' to take a backup of all crontab and mycrontab jobs, and then put the crontab job definitions
+                  in mycrontab configs
+                > initial setup always takes a backup of all jobs.
+                > 'mycrontab --clean' also takes backup of all jobs.
+
+    Schedule definitions:
+        mycrontab                   : format in which schedule information is stored when 'mycrontab' command is used.
+                                      ex. **indranilnandy 11 * * * * sh $HOME/MyTools/Linux_Tools/Post_setup/mycrontab/cronjobs/testscript.sh**
+        crontab                     : format in which schedule information is stored when 'crontab' command is used.
+                                      ex. **indranilnandy 11 * * * * sh /home/indranilnandy/MyTools/Linux_Tools/Post_setup/mycrontab/cronjobs/generated/testscript.sh**
+
+    Locations:
+        .crontabs/*                     : location for storing schedule definitions
+        .crontabs/.crontab-global        : this is GLOBAL configuration applicable across machines, and hence should go to repo
+        .crontabs/.crontab-local         : this is LOCAL configuration applicable to only current local machine, and shouldn't go to repo
+
+        ./cronjobs/*                    : location for all user-defined job definitions/scripts
+        ./cronjobs/generated            : location for autogenerated scripts. These are the translations from the user-defined scripts,
+                                          mainly providing specific log-file targets
+
+        ./cronbackups/*                 : location for all backups of the existing job definitions (mycrontab and crontab definitions)
+        ./cronbackups/cron-defs/*       : stores 'crontab' definitions.REMEMBER that jobs scheduled using BOTH 'crontab' and 'mycrontab' commands are backed up here.
+        ./cronbackups/mycron-defs/*     : stores 'mycrontab' definitions. Remember that jobs scheduled using 'mycrontab' command ONLY are backed up here.
+
+        ./cronlogs/*                    : stores logs of all jobs
+
+How to add/delete a job-schedule?
+    [MANUAL]
+    Run 'mycrontab --config'
+                                -> Opens the configs in default editor. Add/delete your jobs here in proper format. Either choose .crontab-global or .crontab-local.
+                                -> Adds to the schedule configs of mycrontab, and also updates underlying crontab configs, which EFFECTIVELY SCHEDULES the jobs.
+                                -> NOTE: If you manually launch the configs without using 'mycrontab --config' command, then after saving the configs, you've to manually
+                                   run 'mycrontab --schedule' to update the underlying crontab configs to effectively schedule the jobs.
+                                -> WARNING!! ALL JOBS SCHEDULED DIRECTLY USING CRONTAB COMMAND WILL BE LOST. Use 'mycrontab --backup' to backup all the jobs (both mycrontab and crontab)
+    OR,
+    [PROGRAMMATIC]
+    Still not added.
+
+How to add a new job entry?
+    Two options available-
+    [Adding a job from scratch]
+    Run 'mycrontab --job-name=<job_name>'
+                                -> Open the default editor with ./cronjobs/job_name file (if it doesn't exist).
+                                -> Add the job code here and save.
+                                -> REMEMBER that the job is just added to the list of available jobs to schedule. It still doesn't have any schedule.
+                                -> To schedule the job run 'mycrontab --config' and provide schedule information.
+    OR,
+    [Adding an existing job/script]
+    Run 'mycrontab --job-path=<job_path_absolute>'
+                                -> Copies the provided script with absolute path to the job location (./cronjobs/) used for mycrontab.
+                                -> REMEMBER that the job is just added to the list of available jobs to schedule. It still doesn't have any schedule.
+                                -> To schedule the job run 'mycrontab --config' and provide schedule information.
+
+How to refresh all the schedules?
+    Run 'mycrontab --schedule'
+                                -> Updates underlying crontab configs with the schedule configs of mycrontab, and schedules the jobs.
+                                -> WARNING!! ALL JOBS SCHEDULED DIRECTLY USING CRONTAB COMMAND WILL BE LOST. Use 'mycrontab --backup' to backup all the jobs (both mycrontab and crontab)
+
+Usage:
+    mycrontab --init
+        After a fresh setup, initializes cron.allow and .crontab-* config files. NO NEED to be called by the user anyway (called implicitly).
+
+    mycrontab --config
+        1. Opens the configs in default editor. Add your jobs here in proper format. Either choose .crontab-global or .crontab-local.
+        2. Adds to the schedule configs of mycrontab, and also updates underlying crontab configs, which EFFECTIVELY SCHEDULES the jobs.
+        3. NOTE: If you manually launch the configs without using 'mycrontab --config' command, then after saving the configs, you've to manually
+           run 'mycrontab --schedule' to update the underlying crontab configs to effectively schedule the jobs.
+        4. WARNING!! ALL JOBS SCHEDULED DIRECTLY USING CRONTAB COMMAND WILL BE LOST. Use 'mycrontab --backup' to backup all the jobs (both mycrontab and crontab)
+
+    mycrontab --schedule
+        1. Updates underlying crontab configs with the schedule configs of mycrontab, and schedules the jobs.
+        2. WARNING!! ALL JOBS SCHEDULED DIRECTLY USING CRONTAB COMMAND WILL BE LOST. Use 'mycrontab --backup' to backup all the jobs (both mycrontab and crontab)
+
+    mycrontab --job-name=<job_name>
+        1. Open the default editor with ./cronjobs/job_name file (if it doesn't exist).
+        2. Add the job code here and save.
+        3. REMEMBER that the job is just added to the list of available jobs to schedule. It still doesn't have any schedule.
+        4. To schedule the job run 'mycrontab --config' and provide schedule information.
+
+    mycrontab --job-path=<job_path_absolute>
+        1. Copies the provided script with absolute path to the job location (./cronjobs/) used for mycrontab.
+        2. REMEMBER that the job is just added to the list of available jobs to schedule. It still doesn't have any schedule.
+        3. To schedule the job run 'mycrontab --config' and provide schedule information.
+
+    mycrontab --users
+        1. Shows all the users allowed for crontab. (from /etc/cron.allow)
+
+    mycrontab --jobs -a/-u
+        1. Shows all the mycrontab as well as crontab jobs.
+        2. REMEMBER to not use crontab along with mycrontab. Migrate crontab jobs to mycrontab.
+        3. Two sub options available. Default option is '-a'.
+            mycrontab --backup -a
+                backup all jobs (mycrontab + cronab) for all users.
+            mycrontab --backup -u=<user>
+                backup all jobs (mycrontab + crontab) for 'user' only
+
+    mycrontab --backup -cron-def/-mycron-def
+        1. Backup all the jobs of all users.
+        2. Two sub options available. If no sub option is provided, then both will be executed.
+            mycrontab --backup -cron-def
+                backup crontab jobs for all users.
+            mycrontab --backup -mycron-def
+                backup mycrontab jobs for all users.
+
+    mycrontab --show-logs
+        1. Opens the default editor with the directory of log-location (./cronlogs/). (only for mycrontab jobs)
+
+    mycrontab --show-backups
+        1. Opens the default editor with the directory of backup-location (./cronbackups/). (mycrontab + crontab jobs)
+
+    mycrontab --clean
+        1. Clean all the jobs (mycrontab + crontab)
+        2. WARNING!! ALL JOBS SCHEDULED DIRECTLY USING CRONTAB COMMAND WILL BE LOST.
+        3. Automatically does a backup of all the jobs (mycrontab + crontab)
+        4. Two sub options are available.
+
+        mycrontab --clean -a
+            clean up all the jobs (mycrontab + crontab) of all users.
+        mycrontab --clean -u=<user>
+            clean up all the jobs (mycrontab + crontab) of 'user' only.
+
+    mycrontab --clean-logs
+        1. Clean all the logs of all scheduled jobs (mycrontab)
+
+    mycrontab --clean-backups
+        1. Clean all the backups of all jobs (mycrontab + crontab)
+
+    mycrontab --help
+        1. Help content of mycrontab.
+
+Examples:
+    mycrontab --init
+    mycrontab --config
+    mycrontab --schedule
+    mycrontab --job-name='script_name'
+    mycrontab --job-path='script_absolute_path'
+    mycrontab --users
+    mycrontab --jobs
+    mycrontab --jobs -a
+    mycrontab --jobs -u='user'
+    mycrontab --backup
+    mycrontab --backup -cron-def
+    mycrontab --backup --mycron-def
+    mycrontab --show-logs
+    mycrontab --show-backups
+    mycrontab --clean -a
+    mycrontab --clean -u='user'
+    mycrontab --clean-logs
+    mycrontab --clean-backups
+    mycrontab --help

@@ -40,6 +40,8 @@ createAVD() {
 
     echo -e "Creating AVD\nname: $name \ndevice:$device \nsysimage:$sysimage \nskin:$skin\n"
     install_pkg "$sysimage"
+
+    avdmanager create avd -n "$name" -d "$device" -k "$sysimage" --skin "$skin"
 }
 
 # avdmanager list avd

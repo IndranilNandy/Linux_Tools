@@ -1,0 +1,5 @@
+build-tools;33.0.1
+emulator
+patcher;v4
+platform-tools
+platforms;android-33-ext4

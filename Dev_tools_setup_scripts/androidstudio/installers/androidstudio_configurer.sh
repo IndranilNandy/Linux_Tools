@@ -14,10 +14,52 @@ add_kvm_perm_for_user() {
 }
 
 enable_hw_acceleration() {
-    ret_code=$("$ANDROID_SDK"/emulator/emulator -accel-check 2> /dev/null | sed -n '/accel:/,+1p' | sed -n '2p')
-    (( ret_code == 0 ))&& echo -e "Hardware acceleration already ENABLED!!" && return 0
-    (( ret_code == 11 )) && add_kvm_perm_for_user && return 0
+    ret_code=$("$ANDROID_SDK"/emulator/emulator -accel-check 2>/dev/null | sed -n '/accel:/,+1p' | sed -n '2p')
+    ((ret_code == 0)) && echo -e "Hardware acceleration already ENABLED!!" && return 0
+    ((ret_code == 11)) && add_kvm_perm_for_user && return 0
     return 1
 }
 
+get_field_at() {
+    local avd="${1}"
+    local field="${2}"
+    echo "$avd" | gawk -v f="$field" '{print $f}'
+}
+
+install_pkg() {
+    echo "Installing ${1}"
+    yes | "$ANDROID_SDK"/cmdline-tools/latest/bin/sdkmanager --install "${1}"
+}
+
+# Ref.  https://developer.android.com/studio/command-line/avdmanager
+createAVD() {
+    local name="${1}"
+    local device="${2}"
+    local sysimage="${3}"
+    local skin="${4}"
+
+    echo -e "Creating AVD\nname: $name \ndevice:$device \nsysimage:$sysimage \nskin:$skin\n"
+    install_pkg "$sysimage"
+}
+
+# avdmanager list avd
+# avdmanager list target
+# avdmanager list device
+# sdkmanager --list_installed
+# sdkmanager --list
+# avdmanager create --help
+# avdmanager create avd -n testWithDevice -d 5 -k "system-images;android-30;google_apis_playstore;x86"
+create_emulator() {
+    export -f get_field_at
+    export -f createAVD
+    export -f install_pkg
+    export ANDROID_SDK
+
+    cat ./installers/.avdlist | grep -v " *#" | xargs -I X echo "createAVD \$(get_field_at \"X\" 1) \
+                                        \$(get_field_at \"X\" 2) \
+                                        \$(get_field_at \"X\" 3) \
+                                        \$(get_field_at \"X\" 4)"| bash
+}
+
 enable_hw_acceleration || echo -e "Failed to enable Hardware Acceleration. Check it manually"
+create_emulator

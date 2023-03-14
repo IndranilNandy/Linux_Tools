@@ -1,0 +1,4 @@
+# NAME  DEVICE  TARGET  SKIN
+Nexus_5X_API_31 8 system-images;android-31;google_apis_playstore;x86_64 nexus_5x
+Pixel_4_API_31 23 system-images;android-31;google_apis_playstore;x86_64 pixel_4
+Nexus_6_API_30 9 system-images;android-30;google_apis;x86 nexus_6

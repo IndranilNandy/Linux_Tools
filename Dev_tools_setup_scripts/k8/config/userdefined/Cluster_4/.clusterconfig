@@ -1,4 +1,4 @@
 --------ROLE:   List of machines-------
 controlplane:   userver1
 workers:        serv-worker1
-clients:        ubuntudevbox
+clients:        vm-devbox1

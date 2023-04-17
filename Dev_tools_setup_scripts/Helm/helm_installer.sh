@@ -7,4 +7,10 @@ install_helm() {
     /tmp/get_helm.sh
 }
 
+bash_auto_complete() {
+    helm completion bash | sudo tee /etc/bash_completion.d/helm
+
+}
+
 install_helm || exit 1
+bash_auto_complete

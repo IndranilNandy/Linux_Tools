@@ -6,11 +6,13 @@ root            */45 */11 * * 0     sh $HOME/MyTools/Linux_Tools/Env_setup_scrip
 root            */45 */10 * * 0     sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/clean_system.sh
 indranilnandy   */45 * * * *        sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/testscript.sh
 indranilnandy   */45 */11 * * 0     sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/sdkman_update.sh
-indranilnandy   */45 */11 1-7 * 3   sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/mycrontab_clean_logs.sh
+# indranilnandy   */45 */11 1-7 * 3   sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/mycrontab_clean_logs.sh
 indranilnandy   */45 */10 1-7 * 3   sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/mycrontab_clean_all_backups.sh
 indranilnandy   */45 */10 * * *     sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/mycrontab_backup_all_jobs.sh
 
-
+# All job definitions in the below section is temporary and can be removed anytime
 # root            52 * * * *        sh export DISPLAY=:0.0 && $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/testscript.sh
 # indranilnandy   32 * * * *        BASH_ENV=$HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/preload.sh bash -l $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/sdkman_update.sh
 # indranilnandy   45 * * * *        BASH_ENV=$HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/preload.sh sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/sdkman_update.sh
+# indranilnandy   0 0 5 31 2 ?        sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/mycrontab_clean_logs.sh
+# root            43 * * * *     sh $HOME/MyTools/Linux_Tools/Env_setup_scripts/utilityScripts/mycrontab/cronjobs/system_update.sh

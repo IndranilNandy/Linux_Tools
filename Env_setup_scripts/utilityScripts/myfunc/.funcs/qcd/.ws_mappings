@@ -13,6 +13,7 @@ books                           $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes
 books-spring                    $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes/Spring                                                                             books,spring
 books-microsvc                  $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes/Spring/Microservices-with-Spring-Boot-and-Spring-Cloud-2E                          books,spring
 books-spring-in-action          $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes/Spring/Spring-in-action                                                            books,spring
+books-learning-helm             $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes/Helm/Learning-helm                                                                 books,helm
 practicews                      $HOME/DEV/GIT-REPOS/PracticeWS                                                                                                      practice
 k8space                         $HOME/DEV/GIT-REPOS/PracticeWS/Kubernetes/k8test                                                                                    k8,practice
 gradlespace                     $HOME/DEV/GIT-REPOS/PracticeWS/Gradle                                                                                               gradle,practice

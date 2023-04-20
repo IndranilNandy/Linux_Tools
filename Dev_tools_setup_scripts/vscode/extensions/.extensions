@@ -234,3 +234,5 @@ ms-toolsai.vscode-jupyter-slideshow
 sandipchitale.vscode-kubernetes-helm-extras
 
 Tim-Koehler.helm-intellisense
+
+sandipchitale.vscode-helmmerge-viewer

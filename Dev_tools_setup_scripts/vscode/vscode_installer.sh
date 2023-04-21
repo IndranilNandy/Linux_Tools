@@ -31,4 +31,3 @@ installAllExtensions() {
 }
 
 (installRepoKey) && (installPackage) && (registerEditor) && (setAsDefaultEditor) && (installAllExtensions)
-

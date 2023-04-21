@@ -2,7 +2,7 @@
 # This is a hack used to support custom-setup type for a minimal server etc. In future, you may think to refactor the code.
 yes | sudo ln -s -i $(pwd)/Utility_tools_setup_scripts/myinstaller/fullAptPkgTools $(pwd)/Utility_tools_setup_scripts/myinstaller/.fullAptPkgTools
 yes | sudo ln -s -i $(pwd)/Utility_tools_setup_scripts/myinstaller/fullSnapPkgTools $(pwd)/Utility_tools_setup_scripts/myinstaller/.fullSnapPkgTools
-yes | sudo ln -s -i $(pwd)/Utility_tools_setup_scripts/myinstaller/fullSnapPkgTools $(pwd)/Utility_tools_setup_scripts/myinstaller/.fullNpmPkgTools
+yes | sudo ln -s -i $(pwd)/Utility_tools_setup_scripts/myinstaller/fullNpmPkgTools $(pwd)/Utility_tools_setup_scripts/myinstaller/.fullNpmPkgTools
 
 for arg in "$@"; do
 echo "arg=$arg"

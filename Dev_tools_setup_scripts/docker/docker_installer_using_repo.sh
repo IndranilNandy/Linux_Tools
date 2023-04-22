@@ -23,3 +23,5 @@ sudo usermod -aG docker ${USER}
 # echo "su - ${USER}"
 su - ${USER}
 id -nG
+
+./docker_tools_installer.sh

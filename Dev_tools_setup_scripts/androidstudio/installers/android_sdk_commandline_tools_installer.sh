@@ -21,33 +21,12 @@ install_android_sdk_cmd_tools_from_binary() {
 }
 
 add_env_var() {
-    envloader="$MYCONFIGLOADER"/.envloader
-    androidhome="export ANDROID_HOME=$ANDROID_SDK"
-
     tools="$ANDROID_SDK"/cmdline-tools/latest
     bin="$ANDROID_SDK"/cmdline-tools/latest/bin
     platformtools="$ANDROID_SDK"/platform-tools
     buildtools="$ANDROID_SDK"/build-tools
 
-    expPath="export PATH=$PATH"
-
-    (echo "$expPath" | grep -E -v " *#" | grep -q "$tools") || expPath="$expPath":"$tools"
-    (echo "$expPath" | grep -E -v " *#" | grep -q "$bin") || expPath="$expPath":"$bin"
-    (echo "$expPath" | grep -E -v " *#" | grep -q "$platformtools") || expPath="$expPath":"$platformtools"
-    (echo "$expPath" | grep -E -v " *#" | grep -q "$buildtools") || expPath="$expPath":"$buildtools"
-
-    if grep -v " *#" "$envloader" | grep -q -E "export PATH" ; then
-        sed -i "s#\(export PATH=.*\)#$expPath#" "$envloader"
-    else
-        echo "$expPath" >>"$envloader"
-    fi
-
-    (grep -v " *#" "$envloader" | grep -q -E "$androidhome") || echo "$androidhome" >>"$envloader"
-
-    # . ~/.bashrc
-
-    # export ANDROID_HOME="$ANDROID_SDK"
-    # export PATH="$PATH":"$tools":"$bin":"$platformtools":"$buildtools"
+    myshpath add --path="$tools:$bin:$platformtools:$buildtools" --export="ANDROID_HOME=$ANDROID_SDK"
 }
 
 install_android_sdk_cmd_tools_from_binary && add_env_var

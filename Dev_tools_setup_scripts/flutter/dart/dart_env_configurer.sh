@@ -8,7 +8,6 @@ dart_global_pkgs() {
     for pkg in "${all_pkgs[@]}"; do
         (dart pub global list | grep -q "$pkg") && echo "$pkg is already activated" || (echo "activating $pkg" && dart pub global activate "$pkg")
     done
-
 }
 
 configure_env_vars() {

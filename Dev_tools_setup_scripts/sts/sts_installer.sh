@@ -14,25 +14,6 @@ installer() {
     rm -rf tmp
 }
 
-# add_env_var1() {
-#     envloader="$MYCONFIGLOADER"/.envloader
-#     stshome=/opt
-
-#     stspath="$stshome"/sts
-#     expPath="export PATH=$PATH"
-
-#     yes | sudo ln -s -i "$stspath"/SpringToolSuite4 "$MYCOMMANDSREPO"/sts
-
-#     (echo "$expPath" | grep -E -v " *#" | grep -q "$stspath") && return 0
-#     expPath="$expPath":"$stspath"
-
-#     if grep -v " *#" "$envloader" | grep -q -E "export PATH"; then
-#         sed -i "s#\(export PATH=.*\)#$expPath#" "$envloader"
-#     else
-#         echo "$expPath" >>"$envloader"
-#     fi
-# }
-
 add_env_var() {
     yes | sudo ln -s -i "/opt/sts/SpringToolSuite4" "$MYCOMMANDSREPO"/sts
     myshpath add --path="/opt/sts"

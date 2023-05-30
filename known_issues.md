@@ -5,4 +5,4 @@
 - [ ] many other paths missing including spring-cli,jdk etc.
 - [x] yo, generator-code not installed
 - [ ] gawk not found inside ifinstalled.sh
-- [ ] powershell, winmerge failing in Ubuntu 23.04
+- [ ] android studio, flutter, powershell, winmerge failing in Ubuntu 23.04

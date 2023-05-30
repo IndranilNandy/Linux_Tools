@@ -6,6 +6,9 @@ update_path() {
     path="${1}"
     envloader="$MYCONFIGLOADER"/.envloader
 
+    # shellcheck source=/dev/null
+    . "$HOME"/.bashrc  # Another shell may have updated $PATH in between, so need to refresh
+
     expPath="export PATH=$PATH"
     (echo "$expPath" | grep -E -v " *#" | grep -q "$path") || expPath="$expPath":"$path"
     if grep -v " *#" "$envloader" | grep -q -E "export PATH"; then

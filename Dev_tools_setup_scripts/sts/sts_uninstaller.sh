@@ -13,7 +13,7 @@ remove_symlink() {
 }
 
 remove_binary() {
-    rm -rf /opt/sts
+    sudo rm -rf /opt/sts
 }
 
 remove_env_vars && remove_symlink && remove_binary || echo -e "[sts] Failed to uninstall"

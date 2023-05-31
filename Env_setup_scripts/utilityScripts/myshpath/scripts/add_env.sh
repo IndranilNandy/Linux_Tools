@@ -9,7 +9,9 @@ update_path() {
     # shellcheck source=/dev/null
     . "$HOME"/.bashrc  # Another shell may have updated $PATH in between, so need to refresh
 
-    expPath="export PATH=$PATH"
+    current_PATH=$(sed -n "/export PATH=/p" "$envloader" | sed "s#export PATH=\(.*\)#\1#")
+    expPath="export PATH=$current_PATH"
+
     (echo "$expPath" | grep -E -v " *#" | grep -q "$path") || expPath="$expPath":"$path"
     if grep -v " *#" "$envloader" | grep -q -E "export PATH"; then
         sed -i "s#\(export PATH=.*\)#$expPath#" "$envloader"

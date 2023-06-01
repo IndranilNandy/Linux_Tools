@@ -33,4 +33,4 @@ validate_and_install() {
     desktop-file-validate android-studio.desktop && sudo desktop-file-install android-studio.desktop
 }
 
-( install_required_libraries && install_android_studio_from_binary && create_symlink && validate_and_install ) || echo -e "Error in installing Android Studio"
+! ( install_required_libraries && install_android_studio_from_binary && create_symlink && validate_and_install ) && echo -e "Error in installing Android Studio" && exit 1

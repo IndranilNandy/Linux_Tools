@@ -16,6 +16,10 @@ install_postgresql() {
 install_postgresql
 
 ./gui_tools/pgadmin4/pgadmin4_installer.sh
-./gui_tools/pgadmin4/pgadmin4_web_configurer.sh
+
+# Configurer is called from the interactive setup script
+# ./gui_tools/pgadmin4/pgadmin4_web_configurer.sh
 
 ./gui_tools/dbeaver/dbeaver_installer.sh
+
+./gui_tools/dbeaver/omnidb_installer.sh

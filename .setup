@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. ./.systemConfig
+
 add_execute_permission() {
     # Enable execution permission on all shell scripts
     find . -name "*.sh" | xargs -n1 chmod +x

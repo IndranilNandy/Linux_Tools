@@ -9,3 +9,8 @@ workspace_backup_local="$HOME/DEV/git_diff_backup"
 workspace_backup_remote="$HOME/thinclient_drives/Y:/Workspace_backups"
 
 workspace_restore_root="$HOME/DEV/WorkspaceDelta/RestoreSpace"
+
+export LINUX_TOOLS_tools_base="$HOME"/MyTools/Linux_Tools
+
+export LINUX_TOOLS_dev_tools_base="$LINUX_TOOLS_tools_base"/Dev_tools_setup_scripts
+export LINUX_TOOLS_postgres_base="$LINUX_TOOLS_dev_tools_base"/postgres

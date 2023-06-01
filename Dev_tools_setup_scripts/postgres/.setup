@@ -4,6 +4,7 @@
 grep -q "postgres:" ../../_verify/.allTools || echo "postgres:postgres" >>../../_verify/.allTools
 grep -q "pgadmin4:" ../../_verify/.allTools || echo "pgadmin4:pgadmin4" >>../../_verify/.allTools
 grep -q "dbeaver:" ../../_verify/.allTools || echo "dbeaver:dbeaver" >>../../_verify/.allTools
+grep -q "omnidb:" ../../_verify/.allTools || echo "omnidb:omnidb" >>../../_verify/.allTools
 
 #Check if all prerequisites are installed, and install the missing ones
 prereq --install ".prereq"

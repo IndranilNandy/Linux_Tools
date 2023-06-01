@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo $(pwd)/**/.* | xargs -n1 echo | grep '\.int' | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT "$*" | bash)" | bash

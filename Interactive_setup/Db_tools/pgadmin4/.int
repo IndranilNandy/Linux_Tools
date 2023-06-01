@@ -1,0 +1,3 @@
+#!/bin/bash
+
+"$LINUX_TOOLS_postgres_base"/gui_tools/pgadmin4/pgadmin4_web_configurer.sh

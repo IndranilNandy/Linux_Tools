@@ -13,13 +13,13 @@ install_postgresql() {
     sudo apt-get -y install postgresql
 }
 
-install_postgresql
+ifinstalled postgresql || install_postgresql
 
-./gui_tools/pgadmin4/pgadmin4_installer.sh
+ifinstalled pgadmin4 || ./gui_tools/pgadmin4/pgadmin4_installer.sh
 
 # Configurer is called from the interactive setup script
 # ./gui_tools/pgadmin4/pgadmin4_web_configurer.sh
 
-./gui_tools/dbeaver/dbeaver_installer.sh
+ifinstalled dbeaver || ./gui_tools/dbeaver/dbeaver_installer.sh
 
-./gui_tools/dbeaver/omnidb_installer.sh
+ifinstalled omnidb || ./gui_tools/omnidb/omnidb_installer.sh

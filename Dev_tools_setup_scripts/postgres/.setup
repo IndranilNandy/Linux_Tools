@@ -16,5 +16,5 @@ prereq --install ".prereq"
 [[ -n $(ifinstalled postgresql) ]] && echo -e "\n${GREEN}[postgres] Already installed. Exiting.${RESET}" && exit 0
 
 echo -e "${YELLOW}[postgres] Setup process started.${RESET}"
-# ./postgres_installer.sh
+./postgres_installer.sh
 echo -e "${GREEN}[postgres] Setup finished.${RESET}"

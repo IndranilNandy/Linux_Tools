@@ -4,11 +4,14 @@
 
 add_execute_permission() {
     # Enable execution permission on all shell scripts
-    find . -name "*.sh" | xargs -n1 chmod +x
+    # find . -name "*.sh" | xargs -n1 chmod +x
+    find . -name "*.sh" -exec chmod +x {} \;
     # Enable execution permission on all .setup
-    find . -name ".setup" | xargs -n1 chmod +x
+    # find . -name ".setup" | xargs -n1 chmod +x
+    find . -name ".setup" -exec chmod +x {} \;
     # Enable execution permission on all .int
-    find . -name ".int" | xargs -n1 chmod +x
+    # find . -name ".int" | xargs -n1 chmod +x
+    find . -name ".int" -exec chmod +x {} \;
 
     chmod +x ./.hack
 

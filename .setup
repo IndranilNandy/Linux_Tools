@@ -45,9 +45,17 @@ missing_prereqs() {
     echo "$missing"
 }
 
+install_explicit_prereqs() {
+    yes | sudo apt install gawk
+}
+
 # Install missing prerequisites
 export ToolsDir="$HOME/MyTools/Linux_Tools"
 file=$(pwd)/.inittools
+
+# TODO: Refactor this later to include list of tools
+# Install gawk as prereq
+install_explicit_prereqs
 
 # hack needed for custom-setup for myinstaller
 ./.hack "$@"

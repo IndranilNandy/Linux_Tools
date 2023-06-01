@@ -72,9 +72,10 @@ export loggingDest
 export errorDest
 
 sdkpkgs=$(pwd)/../.sdkmanpkgs
+toolsWithIssues=$(pwd)/../.toolsWithInstallationIssues
 
 echo -e "\n${YELLOW}${BOLD}[Dev_tools_setup_scripts] [$(pwd)] Starting setup.${RESET}"
-echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | grep -E -v "$cust_setup_def" | grep -E -v -f "$sdkpkgs" | filter_tools $installationType | xargs -I INPUT echo -e "(cd \$(dirname INPUT) && echo -e \"\\n{\\nINPUT\\n} >> >(ts '[%Y-%m-%d %H:%M:%S]' >> "$loggingDest") 2>> >(ts '[%Y-%m-%d %H:%M:%S]' >> "$errorDest")\" | bash)" | bash
+echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | grep -E -v "$cust_setup_def" | grep -E -v -f "$sdkpkgs" | grep -E -v -f "$toolsWithIssues" | filter_tools $installationType | xargs -I INPUT echo -e "(cd \$(dirname INPUT) && echo -e \"\\n{\\nINPUT\\n} >> >(ts '[%Y-%m-%d %H:%M:%S]' >> "$loggingDest") 2>> >(ts '[%Y-%m-%d %H:%M:%S]' >> "$errorDest")\" | bash)" | bash
 
 echo -e "\n${GREEN}${BOLD}[Dev_tools_setup_scripts] [$(pwd)] Setup completed.${RESET}"
 echo

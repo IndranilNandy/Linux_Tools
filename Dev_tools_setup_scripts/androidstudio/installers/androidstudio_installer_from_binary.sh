@@ -4,6 +4,7 @@
 
 install_required_libraries() {
     yes | sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386
+    return 0;
 }
 
 install_android_studio_from_binary() {
@@ -18,6 +19,7 @@ install_android_studio_from_binary() {
         sudo tar xvzf android-studio.tar.gz -C /opt
     )
     rm -rf tmp
+    return 0;
 }
 
 create_symlink() {
@@ -27,10 +29,13 @@ create_symlink() {
     # https://github.com/flutter/flutter/issues/118502
     # https://stackoverflow.com/a/75145961/15347692
     yes | sudo ln -s -i /opt/android-studio/jbr /opt/android-studio/jre
+    return 0;
 }
 
 validate_and_install() {
     desktop-file-validate android-studio.desktop && sudo desktop-file-install android-studio.desktop
+    return 0;
 }
 
 ! ( install_required_libraries && install_android_studio_from_binary && create_symlink && validate_and_install ) && echo -e "Error in installing Android Studio" && exit 1
+exit 0

@@ -17,8 +17,8 @@ ifinstalled postgresql || install_postgresql
 
 ifinstalled pgadmin4 || ./gui_tools/pgadmin4/pgadmin4_installer.sh
 
-# Configurer is called from the interactive setup script
-# ./gui_tools/pgadmin4/pgadmin4_web_configurer.sh
+# Configurer is called from the interactive setup script when Full Setup of Linux_Tools is going
+[[ -n "$LINUX_TOOLS_full_installation" ]] || (./gui_tools/pgadmin4/pgadmin4_web_configurer.sh && echo -e "Launching pgadmin4. Change File -> Preferences -> Miscellaneous -> Themes" && /usr/pgadmin4/bin/pgadmin4)
 
 ifinstalled dbeaver || ./gui_tools/dbeaver/dbeaver_installer.sh
 

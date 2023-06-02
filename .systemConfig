@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export LINUX_TOOLS_full_installation=true
+
 repo_root="GIT-REPOS"
 repo_username="IndranilNandy"
 repo_provider="https://github.com"

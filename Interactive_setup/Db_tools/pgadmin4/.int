@@ -1,3 +1,7 @@
 #!/bin/bash
 
-"$LINUX_TOOLS_postgres_base"/gui_tools/pgadmin4/pgadmin4_web_configurer.sh
+# Configurer is called from the interactive setup script when Full Setup of Linux_Tools is going
+[[ -z "$LINUX_TOOLS_full_installation" ]] || "$LINUX_TOOLS_postgres_base"/gui_tools/pgadmin4/pgadmin4_web_configurer.sh
+
+echo -e "Launching pgadmin4. Change File -> Preferences -> Miscellaneous -> Themes"
+/usr/pgadmin4/bin/pgadmin4

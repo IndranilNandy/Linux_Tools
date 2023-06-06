@@ -1,0 +1,1 @@
+This is to configure how different users will use connections and authentications to access different databases.

@@ -14,6 +14,8 @@ install_postgresql() {
 }
 
 ifinstalled postgresql || install_postgresql
+# Configurer is called from the interactive setup script when Full Setup of Linux_Tools is going
+[[ -n "$LINUX_TOOLS_full_installation" ]] || ./postgres_configurer.sh
 
 ifinstalled pgadmin4 || ./gui_tools/pgadmin4/pgadmin4_installer.sh
 

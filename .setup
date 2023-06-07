@@ -79,11 +79,11 @@ echo
     cd ./_gsettings
     ./.setup
 )
-(
-    cd ./_verify
-    # chmod +x .verify
-    ./.verify
-)
+# (
+#     cd ./_verify
+#     # chmod +x .verify
+#     ./.verify
+# )
 (
     cd ./Post_setup
     ./.setup
@@ -96,3 +96,9 @@ echo -e "${CYAN}AUTOMATED SETUP FINISHED${RESET}"
 ./.interactive_setup "$@"
 
 echo -e "${MAGENTA}FULL SETUP COMPLETED${RESET}"
+
+(
+    cd ./_verify
+    # chmod +x .verify
+    ./.verify
+)

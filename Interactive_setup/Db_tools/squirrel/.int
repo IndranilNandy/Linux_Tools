@@ -2,3 +2,4 @@
 
 # Configurer is called from the interactive setup script when Full Setup of Linux_Tools is going
 [[ -z "$LINUX_TOOLS_full_installation" ]] || "$LINUX_TOOLS_postgres_base"/gui_tools/squirrel/squirrel_installer.sh
+[[ -z "$LINUX_TOOLS_full_installation" ]] || "$LINUX_TOOLS_postgres_base"/gui_tools/squirrel/squirrel_configurer.sh

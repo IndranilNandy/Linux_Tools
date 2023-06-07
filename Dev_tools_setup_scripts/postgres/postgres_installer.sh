@@ -29,3 +29,4 @@ ifinstalled omnidb || ./gui_tools/omnidb/omnidb_installer.sh
 
 # Configurer is called from the interactive setup script when Full Setup of Linux_Tools is going
 ifinstalled squirrel || [[ -n "$LINUX_TOOLS_full_installation" ]] || (./gui_tools/squirrel/squirrel_installer.sh)
+[[ -n "$LINUX_TOOLS_full_installation" ]] || (./gui_tools/squirrel/squirrel_configurer.sh)

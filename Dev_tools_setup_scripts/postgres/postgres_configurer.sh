@@ -28,4 +28,7 @@ init_db() {
     psql postgresql://"$role_admin"@localhost:"$port"/"$db" <'./dbinit_scripts/init.sql'
 }
 
+read -p "Want to proceed with Postgres configuration and db initialization? [Y/N]" reply
+[[ "$reply" == "Y" ]] || [[ "$reply" == "y" ]] || exit 1
+
 create_admin_role && init_db || echo -e "[Error] Configuration failed"

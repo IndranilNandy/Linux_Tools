@@ -13,7 +13,8 @@ install_postgresql() {
     sudo apt-get -y install postgresql
 }
 
-ifinstalled postgresql || install_postgresql
+ifinstalled postgresql > /dev/null || install_postgresql || echo -e "[Error] Postgres installation failed. Exiting..."
+ifinstalled postgresql > /dev/null || exit 1
 # Configurer is called from the interactive setup script when Full Setup of Linux_Tools is going
 [[ -n "$LINUX_TOOLS_full_installation" ]] || ./postgres_configurer.sh
 
@@ -25,3 +26,6 @@ ifinstalled pgadmin4 || ./gui_tools/pgadmin4/pgadmin4_installer.sh
 ifinstalled dbeaver || ./gui_tools/dbeaver/dbeaver_installer.sh
 
 ifinstalled omnidb || ./gui_tools/omnidb/omnidb_installer.sh
+
+# Configurer is called from the interactive setup script when Full Setup of Linux_Tools is going
+ifinstalled squirrel || [[ -n "$LINUX_TOOLS_full_installation" ]] || (./gui_tools/squirrel/squirrel_installer.sh)

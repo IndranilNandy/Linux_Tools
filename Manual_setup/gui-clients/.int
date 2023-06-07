@@ -1,0 +1,4 @@
+#!/bin/bash
+
+glow -w 200 ./setup_steps.md
+read -p "Press 'ENTER' to continue.." ans

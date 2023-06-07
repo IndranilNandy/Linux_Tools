@@ -94,6 +94,7 @@ echo -e "${CYAN}AUTOMATED SETUP FINISHED${RESET}"
 
 # Start interactive setup
 ./.interactive_setup "$@"
+./.manual_setup "$@"
 
 echo -e "${MAGENTA}FULL SETUP COMPLETED${RESET}"
 

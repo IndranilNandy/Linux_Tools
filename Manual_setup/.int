@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# echo $(pwd)/**/.* | xargs -n1 echo | grep '\.int' | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT "$*" | bash)" | bash
+# echo $(pwd)/**/.* | xargs -n1 echo | grep '\.int' | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT "$*" | bash)"
+# echo $(pwd)/**/.* | xargs -n1 echo | grep '\.int' | xargs -I INPUT echo "(cd \$(dirname INPUT) && bash -c \"INPUT $*\")" | bash
+
+# TODO: DO NOT include scripts indvidually. Somehow, the above code snippet isn't working. NEED TO DO A PROPER FIX
+(cd ./gui-clients && ./.int)
+(cd ./misc && ./.int)
+(cd ./vscode && ./.int)

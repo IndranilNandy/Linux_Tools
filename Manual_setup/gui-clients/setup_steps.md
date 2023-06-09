@@ -8,7 +8,7 @@
 
 | Tool        | Steps       | Description | Notes  | Video |
 | ----------- | ----------- | ----------- | ------ | ------|
-| Squirrel    | Create server connection + Change to Dark theme | Download drivers -> create aliases + Global preferences -> General -> Choose Dark -> Apply -> Ok -> Restart | see above | P:\Tech, Tools and Tutorials\Videos\1. Dev tools\Db-tools\squirrel- new server connection creation |
-| PgAdmin4    | Create server connection + Change to Dark theme | | see above | P:\Tech, Tools and Tutorials\Videos\1. Dev tools\Db-tools\pgadmin4-new server connection creation |
-| OmniDB      | Create server connection | | see above | P:\Tech, Tools and Tutorials\Videos\1. Dev tools\Db-tools\omnidb- new server connection creation |
-| DBeaver     | Create server connection | | see above | P:\Tech, Tools and Tutorials\Videos\1. Dev tools\Db-tools\dbeaver-new server connection creation|
+| 1. Squirrel    | Create server connection + Change to Dark theme | Download drivers -> create aliases + Global preferences -> General -> Choose Dark -> Apply -> Ok -> Restart | see above | P:\Tech, Tools and Tutorials\Videos\1. Dev tools\Db-tools\squirrel- new server connection creation |
+| 2. PgAdmin4    | Create server connection + Change to Dark theme | | see above | P:\Tech, Tools and Tutorials\Videos\1. Dev tools\Db-tools\pgadmin4-new server connection creation |
+| 3. OmniDB      | Create server connection | | see above | P:\Tech, Tools and Tutorials\Videos\1. Dev tools\Db-tools\omnidb- new server connection creation |
+| 4. DBeaver     | Create server connection | | see above | P:\Tech, Tools and Tutorials\Videos\1. Dev tools\Db-tools\dbeaver-new server connection creation|

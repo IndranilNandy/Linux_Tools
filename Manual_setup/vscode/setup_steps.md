@@ -6,11 +6,11 @@
 
 | Extensions  | Steps to configure | Notes  | Video |
 | ----------- | ----------- | ------ | ------|
-| SqlTools | Create connection |  |
-| PostgreSQL (explorer) | Create connection |  |
-| MySQL Shell | Run welcome wizard | | |
-| All MySQL extensions | Create connection | | |
-| GistPad | Sign in GitHub | | |
-| GitHub  | Sign in GitHub | | |
-| GitLens | Sign in        | | |
-| Helm Merge Viewer | Copy your customized extension into vscode-extensions' folder | Check DevAssist/vscode-assist | |
+| 1. SqlTools | Create connection |  |
+| 2. PostgreSQL (explorer) | Create connection |  |
+| 3. MySQL Shell | Run welcome wizard | | |
+| 4. All MySQL extensions | Create connection | | |
+| 5. GistPad | Sign in GitHub | | |
+| 6. GitHub  | Sign in GitHub | | |
+| 7. GitLens | Sign in        | | |
+| 8. Helm Merge Viewer | Copy your customized extension into vscode-extensions' folder | Check DevAssist/vscode-assist | |

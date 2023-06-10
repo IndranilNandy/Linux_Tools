@@ -12,7 +12,13 @@ download_postgresql_driver() {
     )
 }
 
+# TODO: Should be in squirrel java class path,
+update-env() {
+    myshpath add --path="$HOME"/db-drivers/jdbc/postgresql
+}
+
 read -p "Want to proceed with downloading pgJDBC driver? [Y/N]" reply
 [[ "$reply" == "Y" ]] || [[ "$reply" == "y" ]] || exit 1
 
 download_postgresql_driver
+# update-env

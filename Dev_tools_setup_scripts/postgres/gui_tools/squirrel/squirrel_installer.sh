@@ -12,7 +12,7 @@ install_squirrel() {
     rm -rf /tmp/squirrel
 
     path=$(find "$HOME" -path "$HOME"/thinclient_drives -prune -false -o -name "squirrel-sql.sh")
-    yes | sudo ln -s -i "$path" "$MYSCRIPTREFS"/squirrel
+    yes | sudo ln -s -i "$path" "$MYCOMMANDSREPO"/squirrel
 }
 
 echo -e "Installing SQuirrel SQL Client..." && install_squirrel

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo -e
+glow -w 200 ./setup_steps.md
+./verify_containers.sh
+# read -p "Press 'ENTER' to continue.." ans

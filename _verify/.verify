@@ -35,4 +35,9 @@ for x in $(cat .allTools); do
     fi
 done
 
+(
+    cd containers_verification
+    ./.int
+)
+
 echo -e "${BLUE}${BOLD}Verification completed${RESET}"

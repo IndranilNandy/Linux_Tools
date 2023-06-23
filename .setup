@@ -85,7 +85,7 @@ echo
 #     ./.verify
 # )
 (
-    cd ./Post_setup
+    cd ./Setup_stages/Post_setup
     ./.setup
 )
 

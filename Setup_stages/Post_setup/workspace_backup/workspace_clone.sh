@@ -6,7 +6,7 @@ else
     curDir="$(pwd)"
 fi
 
-. "$curDir"/../../.systemConfig
+. "$curDir"/../../../.systemConfig
 
 repoConfig="$curDir"/config/.allRepoConfig
 tempFile="$curDir"/tmp

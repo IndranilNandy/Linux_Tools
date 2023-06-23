@@ -7,7 +7,7 @@ manual_setup() {
     echo -e "${RED}${BOLD}${UNDERLINED}!!! MANUAL SETUP NEEDED !!!${RESET}"
     echo -e "${RED}${BOLD}${UNDERLINED}###########################${RESET}"
 
-    (cd ./Manual_setup/ && ./.int)
+    (cd ./Setup_stages/Manual_setup/ && ./.int)
 }
 
 manual_setup

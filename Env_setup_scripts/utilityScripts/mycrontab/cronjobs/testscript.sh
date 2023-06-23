@@ -8,8 +8,8 @@ date | ts
 export PATH="$PATH":/usr/local/bin/mycommands:/usr/local/bin/myscriptrefs
 ws --help
 qcd --help
-# /home/indranilnandy/MyTools/Linux_Tools/Post_setup/mycrontab/cronjobs/test.sh
-# /home/indranilnandy/MyTools/Linux_Tools/Post_setup/ws_setup/workspace_setup.sh --help
+# /home/indranilnandy/MyTools/Linux_Tools/Setup_stages/Post_setup/mycrontab/cronjobs/test.sh
+# /home/indranilnandy/MyTools/Linux_Tools/Setup_stages/Post_setup/ws_setup/workspace_setup.sh --help
 echo "bash_source=$BASH_SOURCE"
 echo "env=$(env) pwd=$(pwd)"
 echo "Completed script" | ts '[%Y-%m-%d %H:%M:%S]'

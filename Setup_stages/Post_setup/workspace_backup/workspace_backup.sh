@@ -6,7 +6,7 @@ else
     curDir="$(pwd)"
 fi
 
-. "$curDir"/../../.systemConfig
+. "$curDir"/../../../.systemConfig
 
 process() {
     local_repo=${1}

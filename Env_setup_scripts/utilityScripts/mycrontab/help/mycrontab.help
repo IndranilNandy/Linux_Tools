@@ -11,9 +11,9 @@ Description:
 
     Schedule definitions:
         mycrontab                   : format in which schedule information is stored when 'mycrontab' command is used.
-                                      ex. **indranilnandy 11 * * * * sh $HOME/MyTools/Linux_Tools/Post_setup/mycrontab/cronjobs/testscript.sh**
+                                      ex. **indranilnandy 11 * * * * sh $HOME/MyTools/Linux_Tools/Setup_stages/Post_setup/mycrontab/cronjobs/testscript.sh**
         crontab                     : format in which schedule information is stored when 'crontab' command is used.
-                                      ex. **indranilnandy 11 * * * * sh /home/indranilnandy/MyTools/Linux_Tools/Post_setup/mycrontab/cronjobs/generated/testscript.sh**
+                                      ex. **indranilnandy 11 * * * * sh /home/indranilnandy/MyTools/Linux_Tools/Setup_stages/Post_setup/mycrontab/cronjobs/generated/testscript.sh**
 
     Locations:
         .crontabs/*                     : location for storing schedule definitions

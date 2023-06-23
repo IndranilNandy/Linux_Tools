@@ -6,7 +6,7 @@ else
     curDir="$(pwd)"
 fi
 
-. "$curDir"/../../.systemConfig
+. "$curDir"/../../../.systemConfig
 
 wsConfig="$curDir"/config/.wsConfig
 
@@ -32,7 +32,7 @@ process_branch_request() {
             echo -e "No backup done till now"
         fi
     fi
-    
+
     if [[ -z "$ref" || "$ref" = "remote" ]]; then
         # For remote
         remote_node=$(git remote show)

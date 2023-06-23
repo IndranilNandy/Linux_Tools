@@ -6,7 +6,7 @@ else
     curDir="$(pwd)"
 fi
 
-. "$curDir"/../../.systemConfig
+. "$curDir"/../../../.systemConfig
 
 if_branch_exists() {
     branch=${1}
@@ -34,7 +34,7 @@ setToPrevDeltaId() {
     local_patch_file=$(ls -1 "$local_patch_file_dir" | grep -E *.patch | grep -E -v windows)
     changeTrackerFile="$workspace_backup_local"/"$(hostname)"/"$ws"/refLocal/branches/"$target_branch"/"$target_commitID"/".changeTracker"
     deltaID_list=$(cat "$changeTrackerFile")
-    cat "$changeTrackerFile" | sed "0,/$cur_deltaID/d" 
+    cat "$changeTrackerFile" | sed "0,/$cur_deltaID/d"
     cat $changeTrackerFile
 
     wsd sync --ws=$src_wsPath --branch=$target_branch --commit=$target_commitID --refLocal

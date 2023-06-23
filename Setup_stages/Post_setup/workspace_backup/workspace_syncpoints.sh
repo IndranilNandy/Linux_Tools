@@ -6,7 +6,7 @@ else
     curDir="$(pwd)"
 fi
 
-. "$curDir"/../../.systemConfig
+. "$curDir"/../../../.systemConfig
 
 fetchSyncPoints() {
     cur_ws=${1}

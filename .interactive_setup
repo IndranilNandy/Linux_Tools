@@ -6,7 +6,7 @@ interactive_setup() {
     read -p "Do want to go for interactive setup now? You may run it later with './.interactive_setup' [y/n].. " ans
 
     if [[ $(echo $ans | tr [:upper:] [:lower:]) == "y" ]]; then
-        (cd Interactive_setup/ && ./.int)
+        (cd Setup_stages/Interactive_setup/ && ./.int)
     fi
 
     echo -e "${CYAN}INTERACTIVE SETUP FINISHED${RESET}"

@@ -14,3 +14,14 @@
     cd ./cron_setup
     ./.setup
 )
+
+(
+    cd ./containers_setup
+
+    (
+        # This setup should be done after 'ws setup'
+        # Ref. Pagila setup: https://github.com/devrimgunduz/pagila
+        cd ./pagila
+        ./.setup
+    )
+)

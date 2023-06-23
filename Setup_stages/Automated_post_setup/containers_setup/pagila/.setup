@@ -1,0 +1,6 @@
+#!/bin/bash
+
+[[ -n "$LINUX_TOOLS_full_installation" ]] || . ./../../../../.systemConfig
+
+echo -e "[Pagila] Setting up docker containers and database Pagila"
+docker compose -f "$LINUX_TOOLS_pagila"/docker-compose.yml up -d

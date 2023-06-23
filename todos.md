@@ -12,3 +12,4 @@
 - [x] Add separate options for workspaces configuration in qcd, qn etc.
 - [x] Update 'ws' tool to download, monitor status, load, list all git workspaces from a single point.
 - [ ] For 'mycompl' command, split .genericcompletions in two separate files - 1. to store static completions, i.e. populated during initial setup, 2. to store dynamic completions, i.e., populated during every shell initialization (e.g. bash function arguments/options).
+- [ ] Export/Import postgres servers [Ref. https://www.pgadmin.org/docs/pgadmin4/development/import_export_servers.html]

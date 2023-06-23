@@ -26,4 +26,7 @@ k8080=kill $(sudo lsof -i -P -n | grep -E "8080" | awk '\''{ print $2 }'\'')
 cleanmycommandsrepo=cd /usr/local/bin/mycommands && sudo rm
 cleanmyscriptrefs=cd /usr/local/bin/myscriptrefs && sudo rm
 
-pg-hostcon-admin-mytestdb=psql postgresql://admin@localhost:5432/mytestdb
+pg-hostcon-user@admin-server@localhost-db@mytestdb=psql postgresql://admin@localhost:5432/mytestdb
+pg-hostcon-user@postgres-server@localhost-db@mytestdb=psql postgresql://postgres@localhost:5432/mytestdb
+pg-hostcon-user@postgres-server@localhost-db@pagila=psql postgresql://postgres@localhost:5432/pagila
+pg-hostcon-user@postgres-server@docker-db@pagila=psql postgresql://postgres@localhost:5433/postgres

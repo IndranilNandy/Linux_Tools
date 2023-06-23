@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Ref. https://github.com/devrimgunduz/pagila
+# Navigate to the URL : http://localhost:5050/ Default Username: admin@admin.com Default Password: root
+# To create a server connection, connection url will be -postgresql://postgres@<vm_ip>:5433/postgres
+
 [[ -n "$LINUX_TOOLS_full_installation" ]] || . ./../../../../.systemConfig
 
 echo -e "[Pagila] Setting up docker containers and database Pagila"

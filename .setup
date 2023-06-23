@@ -69,7 +69,7 @@ missing_prereqs $file | xargs -I FILE find "$ToolsDir" -name FILE | xargs -I INP
 [[ $(missing_prereqs $file) ]] && echo -e "${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
 
 echo -e "${CYAN}\nAUTOMATED SETUP STARTED${RESET}"
-echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | grep -E -v "exclude|_gsettings|Post_setup" | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT "$*" | bash)" | bash
+echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | grep -E -v "exclude|_gsettings|Automated_post_setup" | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT "$*" | bash)" | bash
 echo
 
 # Install packages through sdkman
@@ -85,7 +85,7 @@ echo
 #     ./.verify
 # )
 (
-    cd ./Setup_stages/Post_setup
+    cd ./Setup_stages/Automated_post_setup
     ./.setup
 )
 

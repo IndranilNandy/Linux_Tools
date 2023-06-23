@@ -10,10 +10,10 @@ Example.
 
 *[mycrontab definition]*
 
-**indranilnandy   11 * * * * sh $HOME/MyTools/Linux_Tools/Setup_stages/Post_setup/mycrontab/cronjobs/testscript.sh**
+**indranilnandy   11 * * * * sh $HOME/MyTools/Linux_Tools/Setup_stages/Automated_post_setup/mycrontab/cronjobs/testscript.sh**
 
 TRANSLATES TO -
 
 *[crontab definition]*
 
-**indranilnandy 11 * * * * sh /home/indranilnandy/MyTools/Linux_Tools/Setup_stages/Post_setup/mycrontab/cronjobs/generated/testscript.sh**
+**indranilnandy 11 * * * * sh /home/indranilnandy/MyTools/Linux_Tools/Setup_stages/Automated_post_setup/mycrontab/cronjobs/generated/testscript.sh**

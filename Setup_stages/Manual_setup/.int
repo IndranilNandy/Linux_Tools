@@ -8,3 +8,4 @@
 (cd ./gui-clients && ./.int)
 (cd ./misc && ./.int)
 (cd ./vscode && ./.int)
+(cd ./db-connections && ./.int)

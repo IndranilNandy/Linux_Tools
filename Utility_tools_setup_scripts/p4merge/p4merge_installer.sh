@@ -1,5 +1,10 @@
 #!/bin/bash
 
+validate_and_install() {
+    desktop-file-validate p4merge.desktop && sudo desktop-file-install p4merge.desktop
+    return 0;
+}
+
 [[ -d ./temp ]] || mkdir ./temp
 cd ./temp
 wget https://cdist2.perforce.com/perforce/r22.1/bin.linux26x86_64/p4v.tgz
@@ -10,3 +15,5 @@ sudo mv * /opt/p4v
 sudo ln -s /opt/p4v/bin/p4merge /usr/local/bin/p4merge
 cd ../..
 rm -rf ./temp
+
+validate_and_install

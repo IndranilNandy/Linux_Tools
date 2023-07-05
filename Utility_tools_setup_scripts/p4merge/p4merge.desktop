@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=true
+Name=p4merge
+Comment=Launches p4merge
+Icon=/opt/p4v/lib/P4VResources/icons/p4merge.svg
+Exec=/opt/p4v/bin/p4merge

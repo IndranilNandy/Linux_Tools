@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=true
+Name=OmniDB
+Comment=Launches OmniDB
+Icon=/opt/omnidb-app/omnidb_icon.png
+Exec=/opt/omnidb-app/omnidb-app

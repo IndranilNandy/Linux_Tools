@@ -17,4 +17,9 @@ install_omnidb() {
     rm -rf /tmp/omnidb
 }
 
-install_omnidb
+validate_and_install() {
+    desktop-file-validate omnidb.desktop && sudo desktop-file-install omnidb.desktop
+    return 0;
+}
+
+install_omnidb && validate_and_install

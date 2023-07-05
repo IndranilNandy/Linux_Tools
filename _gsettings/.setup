@@ -14,7 +14,6 @@ export curFavApps=$(gsettings get org.gnome.shell favorite-apps | sed s/.$//)
 mapfile -t favArray <<< "$(cat .favApps | xargs -I X echo X)"
 
 for val in "${favArray[@]}"; do
-    echo "##: $val"
     [[ $(echo "$curFavApps" | grep $val) ]] || curFavApps="$curFavApps, '$val'"
 done
 

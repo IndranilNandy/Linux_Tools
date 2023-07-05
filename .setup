@@ -68,6 +68,7 @@ missing_prereqs $file | xargs -I FILE find "$ToolsDir" -name FILE | xargs -I INP
 # export -f missing_prereqs
 [[ $(missing_prereqs $file) ]] && echo -e "${RED}One or more prerequisites are still missing. Exiting.${RESET}" && exit 0
 
+###################################################################################################
 echo -e "${CYAN}\nAUTOMATED SETUP STARTED${RESET}"
 echo $(pwd)/**/.* | xargs -n1 echo | grep '\.setup' | grep -E -v "exclude|_gsettings|Automated_post_setup" | xargs -I INPUT echo "(cd \$(dirname INPUT) && echo INPUT "$*" | bash)" | bash
 echo
@@ -76,30 +77,37 @@ echo
 ./usesdkman.sh
 
 (
-    cd ./_gsettings
-    ./.setup
-)
-# (
-#     cd ./_verify
-#     # chmod +x .verify
-#     ./.verify
-# )
-(
     cd ./Setup_stages/Automated_post_setup
     ./.setup
 )
 
 # mycompl -W \"--type= --log-target= --custom-setup=\" .setup
 echo -e "${CYAN}AUTOMATED SETUP FINISHED${RESET}"
+###################################################################################################
 
+echo -e "${CYAN}INTERACTIVE SETUP STARTED${RESET}"
 # Start interactive setup
 ./.interactive_setup "$@"
-./.manual_setup "$@"
+echo -e "${CYAN}INTERACTIVE SETUP FINISHED${RESET}"
+###################################################################################################
 
-echo -e "${MAGENTA}FULL SETUP COMPLETED${RESET}"
+echo -e "${CYAN}MANUAL SETUP -- showing steps to perform manually${RESET}"
+# Show steps required to setup manually
+./.manual_setup "$@"
+echo -e "${CYAN}MANUAL SETUP FINISHED${RESET}"
+###################################################################################################
+
+echo -e "${CYAN}GSETTINGS & INSTALLATION VERIFICATION STARTED{RESET}"
+(
+    cd ./_gsettings
+    ./.setup
+)
 
 (
     cd ./_verify
-    # chmod +x .verify
     ./.verify
 )
+echo -e "${CYAN}GSETTINGS & INSTALLATION VERIFICATION FINISHED{RESET}"
+###################################################################################################
+
+echo -e "${MAGENTA}FULL SETUP COMPLETED${RESET}"

@@ -4,7 +4,7 @@ org.gnome.desktop.interface color-scheme 'prefer-dark'
 
 # https://linuxconfig.org/how-to-customize-dock-panel-on-ubuntu-20-04-focal-fossa-linux
 org.gnome.shell.extensions.dash-to-dock dock-position LEFT
-org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 18
+org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 15
 org.gnome.shell.extensions.dash-to-dock extend-height false
 org.gnome.shell.extensions.dash-to-dock unity-backlit-items false
 org.gnome.shell.extensions.dash-to-dock click-action minimize

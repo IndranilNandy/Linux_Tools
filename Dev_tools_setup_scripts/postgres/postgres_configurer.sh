@@ -28,7 +28,14 @@ init_db() {
     psql postgresql://"$role_admin"@localhost:"$port"/"$db" <'./dbinit_scripts/init.sql'
 }
 
+add_env() {
+    app_path=$(sudo su -c "psql -t -c \"show data_directory;\"" "$db_init_admin" | sed 's# ##' | sed 's#/var#/usr#' | sed 's#/main#/bin#')
+    echo $app_path
+    myshpath add --path="$app_path"
+}
+
 read -p "Want to proceed with Postgres configuration and db initialization? [Y/N]" reply
 [[ "$reply" == "Y" ]] || [[ "$reply" == "y" ]] || exit 1
 
 create_admin_role && init_db || echo -e "[Error] Configuration failed"
+add_env

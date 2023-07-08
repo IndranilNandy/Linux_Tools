@@ -2,6 +2,8 @@
 
 ############################################################################################################################
 # USAGE: COPY THIS SCRIPT TO THE LOCATION WHERE YOU WANT TO CREATE THE SPRING PROJECT, AND CHANGE THE PARAMETERS ACCORDINGLY
+
+# To check supported dependencies -> spring init --list -> shows service capabilities
 ############################################################################################################################
 # Default: package-name=groupId.artifact-id (if package-name NOT PROVIDED)
 # If package-name is EXPLICITY provided, then it'll be taken as the package name ignoring the above one

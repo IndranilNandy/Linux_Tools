@@ -20,5 +20,6 @@ gradlespace                     $HOME/DEV/GIT-REPOS/PracticeWS/Gradle           
 springspace                     $HOME/DEV/GIT-REPOS/PracticeWS/Spring                                                                                               spring,practice
 helmspace                       $HOME/DEV/GIT-REPOS/PracticeWS/Helm                                                                                                 helm,practice
 idespace                        $HOME/DEV/GIT-REPOS/PracticeWS/IDEwise                                                                                              ide,practice
-dbspace                         $HOME/DEV/GIT-REPOS/PracticeWS/Database                                                                                             dbspace,practice
+dbspace                         $HOME/DEV/GIT-REPOS/PracticeWS/Database
+pythonspace                     $HOME/DEV/GIT-REPOS/PracticeWS/Python                                                                                             dbspace,practice
 pagila                          $HOME/DEV/GIT-REPOS/DataSamples/Database/Postgres/pagila                                                                            pagila,samples-data

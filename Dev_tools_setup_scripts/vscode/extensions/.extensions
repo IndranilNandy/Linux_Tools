@@ -306,3 +306,5 @@ KevinRose.vsc-python-indent
 njpwerner.autodocstring
 
 wholroyd.jinja
+
+ms-python.black-formatter

@@ -1,0 +1,15 @@
+1.  Running MySQL container:
+    >> Up the service
+        •   Copy the docker-compose.yml from the website to a local folder ./docker/ (remember map the ports as shown in the compose file)
+        •   docker compose up
+    >> Open a mysql client to create the database and user
+        •   docker ps (to identify the mysql container)
+        •   docker exec -it <container_name> bash
+        •   mysql --password (use the password mentioned in the compose file, see below, which is the root passowrd)
+        •   Now, run the commands, mentioned below, to configure the database and user
+
+2.  Configuring MySQL database:
+    •   mysql> create database testdb; -- Creates the new database
+    •   mysql> create user 'servicename'@'%' identified by 'password'; -- Creates the user
+    •   mysql> grant all on testdb.* to 'servicename'@'%'; -- Gives all privileges to the new user on the newly created database
+

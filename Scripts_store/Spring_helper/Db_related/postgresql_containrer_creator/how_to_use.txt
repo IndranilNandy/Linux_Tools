@@ -1,0 +1,18 @@
+1.  Running PostgreSQL container:
+    >> Up the service
+        •   Copy the docker-compose.yml from the website to a local folder ./docker/postgresql/ (remember map the ports as shown in the compose file)
+        •   docker compose up -d
+    >> Create the database and user from psql either from host (if psql is  available on host) or within the postgresql container
+        >>> Within postgresql container
+            •   docker ps (to identify the postgresql container)
+            •   docker exec -it <container_name> bash
+            •   psql postgresql://postgres@localhost:5432/postgres (see the port  no is 5432, NOT 5434, here localhost is the container itself
+            •   Now, run the commands, mentioned above, to configure the database and user
+        >>> Or, from the host machine if psql is available
+            •   psql postgresql://postgres@localhost:5434/postgres (see the port no 5434, the mapped port in compose yaml, the host machine is the localhost
+            •   Now, run the commands, mentioned above, to configure the database and user
+
+2.  Configuring PostgreSQL database:
+    •   create user <servicename> with password 'password';
+    •   create database testdb;
+    •   ALTER DATABASE testdb OWNER TO <servicename>;

@@ -1,7 +1,7 @@
 1.  Running MySQL container:
     >> Up the service
-        •   Copy the docker-compose.yml from the website to a local folder ./docker/ (remember map the ports as shown in the compose file)
-        •   docker compose up
+        •   Copy the docker-compose.yml from the website to a local folder ./docker/mysql/ (remember map the ports as shown in the compose file)
+        •   docker compose up -d
     >> Open a mysql client to create the database and user
         •   docker ps (to identify the mysql container)
         •   docker exec -it <container_name> bash

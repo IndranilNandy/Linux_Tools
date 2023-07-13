@@ -1,0 +1,21 @@
+# Use postgres/example user/password credentials
+# Ref. https://hub.docker.com/_/postgres
+version: '3.1'
+
+services:
+
+  pg-db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+    ports:
+      - 5434:5432
+    expose:
+      - 5434
+
+  pg-adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8083:8080

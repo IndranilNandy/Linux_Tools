@@ -6,21 +6,21 @@ process_vars_mapping() {
     # xargs -I X echo "grep -E X $env_file | cut -d\"=\" -f2-" < "$compose_vars" | bash | xargs -I Y echo hi Y
 
     # This code is kept for reference, this is the longer version of the next one-liner code
-    for mapentry in $(cat "$mapping_file"); do
-        mapkey=$(echo "$mapentry" | awk -F'/' '{print $2}')
-        mapvalue=$(echo "$mapentry" | awk -F'/' '{print $3}')
-        echo "$mapkey"->"$mapvalue"
-        env_value=$(grep -E "$mapvalue" "$env_file" | grep -v " *#" | cut -d"=" -f2-)
-        echo "1s/$mapkey/$env_value/"
-    done
+    # for mapentry in $(cat "$mapping_file" | grep -v " *#"); do
+    #     mapkey=$(echo "$mapentry" | awk -F'/' '{print $2}')
+    #     mapvalue=$(echo "$mapentry" | awk -F'/' '{print $3}')
+    #     # echo "$mapkey" "$mapvalue"
+    #     env_value=$(grep -E "$mapvalue=" "$env_file" | grep -v " *#" | cut -d"=" -f2-)
+    #     echo "s/$mapkey/$env_value/"
+    # done
 
-    # xargs -I X echo "echo \"s/\$(echo X | awk -F'/' '{print \$2}')/\$(grep -E \$(echo X | awk -F'/' '{print \$3}') "$env_file" | grep -v " \*#" | cut -d"=" -f2-)/\"" < "$mapping_file" | bash
+    xargs -I X echo "echo \"s/\$(echo X | awk -F'/' '{print \$2}')/\$(grep -E \$(echo X | awk -F'/' '{print \$3}')= "$env_file" | grep -v " \*#" | cut -d"=" -f2-)/\"" < "$mapping_file" | bash
 }
 
 process_template() {
     file="${1}"
     echo -e "[Compose][Postgres] Now substituting env variables in $file"
-    sed -i -f <(process_vars_mapping) "$file"
+    sed -f <(process_vars_mapping) "$file"
 }
 
 find_db_container() {
@@ -46,9 +46,10 @@ test1() {
     target="/tmp/springstarter"
     mkdir -p "$target"
     script=init.sqltemplate
-    process_vars_mapping
-    # cp "$script" "$target"/init.sql && process_template "$target"/init.sql
-    # cat "$target"/init.sql
+    # process_vars_mapping
+    cp "$script" "$target"/init.sql && process_template "$target"/init.sql
+    echo
+    cat "$target"/init.sql
 }
 
 # process_vars_mapping

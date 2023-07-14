@@ -17,9 +17,9 @@ find_db_container() {
     svc_key=$(grep -E "your-service-name" "$mapping_file" | grep -v " *#" | awk -F'/' '{print $3}')
     svc_value=$(grep -E "$svc_key" "$env_file" | grep -v " *#" | awk -F'=' '{print $2}')
 
-    no=$(sudo -S docker ps --filter ancestor=postgres | grep -c "$svc_value");
-    (( no > 1)) && echo -e "WARNING! Multiple postgres containers running under same project [$svc_value]. Run 'docker compose up' manually." && return 1
-    postgres_container=$(sudo -S docker ps --filter ancestor=postgres | grep "$svc_value" | awk '{print $NF}');
+    no=$(sudo -S docker ps --filter ancestor=postgres | grep -c "$svc_value")
+    ((no > 1)) && echo -e "WARNING! Multiple postgres containers running under same project [$svc_value]. Run 'docker compose up' manually." && return 1
+    postgres_container=$(sudo -S docker ps --filter ancestor=postgres | grep "$svc_value" | awk '{print $NF}')
 
     echo "$postgres_container"
 }
@@ -35,7 +35,14 @@ configContainer() {
     echo -e "[Compose][Postgres] db container -> $postgres_container"
     echo -e "[Compose][Postgres] Configuring db >> docker exec -i $postgres_container bash -c \"psql postgresql://$user@localhost:5432/$db -c '\l'\""
 
-    docker exec -i "$postgres_container" bash -c "psql postgresql://$user@localhost:5432/$db -c '\l'"
+    target="/tmp/springstarter"
+    mkdir -p "$target"
+    script="$curDir"/db/pgsql/container/init.sqltemplate
+    cp "$script" "$target"/init.sql && process_template "$target"/init.sql
+
+    # docker exec -i "$postgres_container" bash -c "psql postgresql://$user@localhost:5432/$db -c '\l'"
+    docker exec -i "$postgres_container" bash -c "psql postgresql://$user@localhost:5432/$db < $target/init.sql"
+
     return 0
 }
 
@@ -58,11 +65,11 @@ process_vars_mapping() {
     #     mapkey=$(echo "$mapentry" | awk -F'/' '{print $2}')
     #     mapvalue=$(echo "$mapentry" | awk -F'/' '{print $3}')
 
-    #     env_value=$(grep -E "$mapvalue" "$env_file" | grep -v " *#" | cut -d"=" -f2-)
+    #     env_value=$(grep -E "$mapvalue=" "$env_file" | grep -v " *#" | cut -d"=" -f2-)
     #     echo "s/$mapkey/$env_value/"
     # done
 
-    xargs -I X echo "echo \"s/\$(echo X | awk -F'/' '{print \$2}')/\$(grep -E \$(echo X | awk -F'/' '{print \$3}') "$env_file" | grep -v " \*#" | cut -d"=" -f2-)/\"" < "$mapping_file" | bash
+    xargs -I X echo "echo \"s/\$(echo X | awk -F'/' '{print \$2}')/\$(grep -E \$(echo X | awk -F'/' '{print \$3}')= "$env_file" | grep -v " \*#" | cut -d"=" -f2-)/\"" <"$mapping_file" | bash
 }
 
 process_template() {

@@ -27,6 +27,9 @@
 # generated tools list for verification stage
 .allTools
 
+# env scripts
+*.env
+
 # generated list of locally installed tools through myinstaller
 .localAptPkgTools
 .localSnapPkgTools

@@ -4,6 +4,7 @@
 
 version: '3.1'
 
+name: your-service-name
 services:
 
   pg-db:
@@ -12,17 +13,17 @@ services:
     environment:
       POSTGRES_PASSWORD: example
     ports:
-      - 5434:5432
+      - your-db-port:5432
     expose:
-      - 5434
+      - your-db-port
     volumes:
-      - pgdata-env_servicename:/var/lib/postgresql/data
+      - pgdata_your-service-name:/var/lib/postgresql/data
 
   pg-adminer:
     image: adminer
     restart: always
     ports:
-      - 8083:8080
+      - your-adminer-port:8080
 
 volumes:
-  pgdata-env_servicename:
+  pgdata_your-service-name:

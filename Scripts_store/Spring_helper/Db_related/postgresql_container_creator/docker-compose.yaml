@@ -1,5 +1,7 @@
 # Use postgres/example user/password credentials
 # Ref. https://hub.docker.com/_/postgres
+# Replace all env_* variables with proper values
+
 version: '3.1'
 
 services:
@@ -13,9 +15,14 @@ services:
       - 5434:5432
     expose:
       - 5434
+    volumes:
+      - pgdata-env_servicename:/var/lib/postgresql/data
 
   pg-adminer:
     image: adminer
     restart: always
     ports:
       - 8083:8080
+
+volumes:
+  pgdata-env_servicename:

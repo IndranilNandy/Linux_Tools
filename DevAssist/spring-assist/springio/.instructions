@@ -6,4 +6,4 @@ Entry script:
     ./.setup: call this for full installation
 
 Installers:
-    ./springstarter_setup.sh: installs springstarter
+    ./springio_setup.sh: installs springio

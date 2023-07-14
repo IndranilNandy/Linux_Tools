@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-if [ -L $(which springstarter) ]; then
-    curDir="$(dirname "$(tracelink springstarter)")"
+if [ -L $(which springio) ]; then
+    curDir="$(dirname "$(tracelink springio)")"
 else
     curDir="$(pwd)"
 fi

@@ -8,9 +8,7 @@ else
 fi
 
 . "$curDir"/../../../.systemConfig
-
-
-# commandsDir="$curDir"/commands
+. "$curDir"/../../../vars/.colors
 
 case "${1}" in
 db)

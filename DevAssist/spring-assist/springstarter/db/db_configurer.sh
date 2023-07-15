@@ -7,7 +7,6 @@ else
 fi
 
 pgsql() {
-    echo "from pgsql -> ""$*"
     "$curDir"/db/pgsql/pgsql_configurer.sh "${@:2}"
 }
 

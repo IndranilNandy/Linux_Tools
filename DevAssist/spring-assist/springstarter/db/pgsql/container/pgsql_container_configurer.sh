@@ -37,7 +37,7 @@ configContainer() {
     target_init_sql=$(find_key_value "your-sql-scriptstore")
     mkdir -p "$target_init_sql"
 
-    script="$curDir"/db/pgsql/container/init.sqltemplate
+    script="$curDir"/db/pgsql/container/init.pgsql.template
     cp "$script" "$(pwd)"/init.sql && process_template "$(pwd)"/init.sql &&
         echo -e "\nVerify init.sql file. It'll be automatically deleted after compose-up" &&
         editor -w "$(pwd)"/init.sql && sudo cp "$(pwd)"/init.sql "$target_init_sql"/init.sql &&
@@ -51,6 +51,7 @@ configContainer() {
     echo -e "[Compose][Postgres] Configuring db >> docker exec -i $postgres_container bash -c \"sleep 10 && psql postgresql://$user@localhost:5432/$db -c '\l'\""
 
     docker exec -i "$postgres_container" bash -c "echo \"Waiting for 10 secs for db to come live\" && sleep 10 && psql postgresql://$user@localhost:5432/$db < /scriptstore/init.sql"
+    sudo rm "$target_init_sql"/init.sql
 
     return 0
 }
@@ -101,6 +102,11 @@ upContainer() {
 
 init() {
     echo -e "[Compose][Postgres] Initializing containers"
+    [[ -f "$target_compose_path"/docker-compose.yaml ]] &&
+        echo -e "${YELLOW}[Compose][Postgres] docker-compose.yaml already exists.\
+        \nHence not fetching/replacing it from scriptstore. This will run 'docker compose up -d' and rerun the db initialization script.\
+        \nIf you intend for 'init', you need to first run 'clean' and delete local docker-compose.yaml, or, you may manually run 'docker compose down' and then delete local docker-compose.yaml.${RESET} \
+        \n${RED}Remember running 'clean' with --f option or manually deleting docker-compose.yaml will delete all your local changes on docker-compose.yaml. You may want to create a backup first.${RESET}"
     [[ ! -f "$env_file" ]] && echo -e ".env file is missing in the root directory. Skipping container setup" && return 1
 
     upContainer || return 1
@@ -109,13 +115,42 @@ init() {
 }
 
 up() {
-    echo "from up -> ""$*"
-    # "$curDir"/db/pgsql/container/pgsql_container_configurer.sh "${@:2}"
+    echo -e "${RED}If you've already run 'init', then you DO NOT need any special command for this. Instead use 'docker compose up -d'.\nOtherwise, use 'init' command.${RESET}"
 }
 
 down() {
-    docker compose -f "$target_compose_path"/docker-compose.yaml down
+    docker compose -f "$target_compose_path"/docker-compose.yaml down && echo -e "[Compose][Postgres] All services are down. Done!"
+    echo -e "${RED}Volumes are NOT cleaned. If you want, you need to do it manually.${RESET}"
+}
 
+clean() {
+    opt="${1}"
+
+    if [[ ! -f "$target_compose_path"/docker-compose.yaml ]]; then
+        echo -e "NOT FOUND ->" "$target_compose_path"/docker-compose.yaml "\nProbably, the services are already down. Check it manually." && return 1
+    fi
+
+    case "$opt" in
+    --f)
+        down
+
+        rm "$target_compose_path"/docker-compose.yaml
+        echo "DELETED ->" "$target_compose_path"/docker-compose.yaml
+        ;;
+    *)
+        echo -e "${RED}[WARNING!!!] docker-compose.yaml MAY CONTAIN your LCOAL CHANGES! Do you really want to clean it? \
+        \nRemember, 'init' will fetch a fresh temmplate, substituted by all env variables. This will delete all your local changes on docker-compose.yaml. You may want to create a backup first.${RESET}"
+        read -p "SHOULD I DELETE? [y/n]..." ans
+        down
+
+        if [[ $(echo "$ans" | tr [:upper:] [:lower:]) == "y" ]]; then
+            rm "$target_compose_path"/docker-compose.yaml
+            echo "DELETED ->" "$target_compose_path"/docker-compose.yaml
+        else
+            echo "NOT DELETED ->" "$target_compose_path"/docker-compose.yaml
+        fi
+        ;;
+    esac
 }
 
 case "${1}" in
@@ -127,6 +162,9 @@ up)
     ;;
 down)
     down "${@:2}"
+    ;;
+clean)
+    clean "${@:2}"
     ;;
 *)
     echo "--help"

@@ -7,7 +7,6 @@ else
 fi
 
 container() {
-    echo "from container -> ""$*"
     "$curDir"/db/pgsql/container/pgsql_container_configurer.sh "${@:2}"
 }
 

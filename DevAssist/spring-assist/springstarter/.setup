@@ -16,4 +16,8 @@ echo -e "${YELLOW}[springstarter] Setup process started.${RESET}"
 
 yes | sudo ln -i -s "$(pwd)"/springstarter.sh "$MYCOMMANDSREPO"/springstarter && echo -e "\nCreated symbolink link springstarter in $MYCOMMANDSREPO"
 
+mycompl -W \"db postgresql container init up down config clean help --f --sqltemplate=templatestore --sqltemplate=localdir --sqltemplate= localdir templatestore\" springstarter
+myalias --gen sspgcontainer=springstarter db postgresql container
+myalias --gen sspgcontainerdefault=springstarter db postgresql container init
+
 echo -e "${GREEN}[springstarter] Setup finished.${RESET}"

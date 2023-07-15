@@ -10,8 +10,10 @@ script_path="$LINUX_TOOLS_spring_helper"/Db_related/postgresql_container_creator
 script="$script_path"/docker-compose.yaml
 target_compose_path="$(pwd)"/docker/postgresql
 env_file="$(pwd)"/.env
-mapping_file="$curDir"/db/pgsql/container/compose.varsmapping
-sql_template_path="$curDir"/db/pgsql/container/templates
+config_root="$curDir"/db/pgsql/container
+help_dir="$config_root"/help
+mapping_file="$config_root"/configuration/compose.varsmapping
+sql_template_path="$config_root"/configuration/templates
 sql_template_ext=".pgsql.template"
 sel_template=
 
@@ -69,7 +71,7 @@ configContainer() {
     target_init_sql=$(find_key_value "your-sql-scriptstore")
     mkdir -p "$target_init_sql"
 
-    script="$sql_template_path"/init.pgsql.template # default template
+    script="$sql_template_path"/default.pgsql.template # default template
 
     for arg in "$@"; do
         case "$arg" in
@@ -86,7 +88,7 @@ configContainer() {
             [[ ! -f "$script" ]] && echo -e "${RED}[WARNING!] Invalid template.\n[Failed!] Skipping configuration.${RESET}" && return 1
             ;;
         *)
-            script="$sql_template_path"/init.pgsql.template # default template
+            script="$sql_template_path"/default.pgsql.template # default template
             ;;
         esac
     done
@@ -172,7 +174,8 @@ config() {
 }
 
 up() {
-    echo -e "${RED}If you've already run 'init', then you DO NOT need any special command for this. Instead use 'docker compose up -d'.\nOtherwise, use 'init' command.${RESET}"
+    docker compose -f "$target_compose_path"/docker-compose.yaml down && echo -e "[Compose][Postgres] All services are UP. Done!"
+    echo -e "${RED}[Advice] If you've already run 'init', then you DO NOT need any special command for this. Instead use 'docker compose up -d'.\nOtherwise, use 'init' command.${RESET}"
 }
 
 down() {
@@ -210,6 +213,10 @@ clean() {
     esac
 }
 
+help() {
+    cat "$help_dir"/pgsql_container_configurer.help
+}
+
 case "${1}" in
 init)
     init "${@:2}"
@@ -226,7 +233,10 @@ config)
 clean)
     clean "${@:2}"
     ;;
+help)
+    help
+    ;;
 *)
-    echo "--help"
+    help
     ;;
 esac

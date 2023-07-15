@@ -7,7 +7,7 @@ version: '3.1'
 name: your-service-name
 services:
 
-  pg-db:
+  pgdb:
     image: postgres
     restart: always
     environment:
@@ -17,13 +17,14 @@ services:
     expose:
       - your-db-port
     volumes:
-      - pgdata_your-service-name:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
+      - your-sql-scriptstore:/scriptstore
 
-  pg-adminer:
+  pgadminer:
     image: adminer
     restart: always
     ports:
       - your-adminer-port:8080
 
 volumes:
-  pgdata_your-service-name:
+  pgdata:

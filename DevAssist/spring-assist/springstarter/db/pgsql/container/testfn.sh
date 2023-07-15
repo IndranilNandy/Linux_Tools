@@ -52,6 +52,18 @@ test1() {
     cat "$target"/init.sql
 }
 
+find_key_value() {
+    key="${1}"
+    env_file="$(pwd)"/.env
+    mapping_file=./compose.varsmapping
+    echo key="$key"
+
+    svc_key=$(grep -E "$key" "$mapping_file" | grep -v " *#" | awk -F'/' '{print $3}')
+    svc_value=$(grep -E "$svc_key" "$env_file" | grep -v " *#" | awk -F'=' '{print $2}')
+    echo "zzz" "$svc_key" "$svc_value"
+}
+
 # process_vars_mapping
 # find_db_container
-test1
+# test1
+find_key_value "your-sql-scriptstore"

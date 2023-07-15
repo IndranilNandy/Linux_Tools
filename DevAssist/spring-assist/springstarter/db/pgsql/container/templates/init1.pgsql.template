@@ -1,0 +1,4 @@
+CREATE user your-db-username WITH PASSWORD 'your-db-password';
+CREATE DATABASE your-db-name;
+ALTER DATABASE your-db-name OWNER TO your-db-username;
+\l

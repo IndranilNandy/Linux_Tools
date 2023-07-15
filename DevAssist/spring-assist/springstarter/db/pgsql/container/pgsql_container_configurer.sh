@@ -11,6 +11,9 @@ script="$script_path"/docker-compose.yaml
 target_compose_path="$(pwd)"/docker/postgresql
 env_file="$(pwd)"/.env
 mapping_file="$curDir"/db/pgsql/container/compose.varsmapping
+sql_template_path="$curDir"/db/pgsql/container/templates
+sql_template_ext=".pgsql.template"
+sel_template=
 
 find_key_value() {
     key="${1}"
@@ -31,13 +34,62 @@ find_db_container() {
     echo "$postgres_container"
 }
 
+findSqlTemplate() {
+    fn_arg="${1}"
+    search_path=
+    if [[ "$fn_arg" == "templatestore" ]]; then
+        search_path="$sql_template_path"
+    elif [[ "$fn_arg" == "localdir" ]]; then
+        search_path="$(pwd)"
+    fi
+
+    find "$search_path" -name "*$sql_template_ext" >/tmp/sqltemplist
+    count_of_templates=$(cat /tmp/sqltemplist | wc -l)
+
+    ((count_of_templates == 0)) && echo -e "No SqlTemplate found in the current directory hierarchy. Exiting." && return 1
+
+    if ((count_of_templates == 1)); then
+        sel_template="$(cat /tmp/sqltemplist)"
+    else
+        echo -e "Multiple SqlTemplates found in the current directory hierarchy!"
+        cat /tmp/sqltemplist | nl
+
+        read -p "Which SqlTemplate to choose? Enter the number: " no
+        sel_template=$(cat /tmp/sqltemplist | nl | head -n$no | tail -n1 | cut -f2)
+    fi
+
+    rm /tmp/sqltemplist
+    echo "Selected template = $sel_template"
+    return 0
+}
+
 configContainer() {
     echo -e "[Compose][Postgres] Now configuring containers"
 
     target_init_sql=$(find_key_value "your-sql-scriptstore")
     mkdir -p "$target_init_sql"
 
-    script="$curDir"/db/pgsql/container/init.pgsql.template
+    script="$sql_template_path"/init.pgsql.template # default template
+
+    for arg in "$@"; do
+        case "$arg" in
+        --sqltemplate=templatestore)
+            findSqlTemplate "templatestore"
+            script="$sel_template"
+            ;;
+        --sqltemplate=localdir)
+            findSqlTemplate "localdir"
+            script="$sel_template"
+            ;;
+        --sqltemplate=*)
+            script=$(echo "$arg" | awk -F'=' '{print $2}')
+            [[ ! -f "$script" ]] && echo -e "${RED}[WARNING!] Invalid template.\n[Failed!] Skipping configuration.${RESET}" && return 1
+            ;;
+        *)
+            script="$sql_template_path"/init.pgsql.template # default template
+            ;;
+        esac
+    done
     cp "$script" "$(pwd)"/init.sql && process_template "$(pwd)"/init.sql &&
         echo -e "\nVerify init.sql file. It'll be automatically deleted after compose-up" &&
         editor -w "$(pwd)"/init.sql && sudo cp "$(pwd)"/init.sql "$target_init_sql"/init.sql &&
@@ -48,9 +100,9 @@ configContainer() {
     db=postgres
 
     echo -e "[Compose][Postgres] db container -> $postgres_container"
-    echo -e "[Compose][Postgres] Configuring db >> docker exec -i $postgres_container bash -c \"sleep 10 && psql postgresql://$user@localhost:5432/$db -c '\l'\""
+    echo -e "[Compose][Postgres] Configuring db >> docker exec -i $postgres_container bash -c \"sleep 5 && psql postgresql://$user@localhost:5432/$db -c '\l'\""
 
-    docker exec -i "$postgres_container" bash -c "echo \"Waiting for 10 secs for db to come live\" && sleep 10 && psql postgresql://$user@localhost:5432/$db < /scriptstore/init.sql"
+    docker exec -i "$postgres_container" bash -c "echo \"Waiting for 10 secs for db to come live\" && sleep 5 && psql postgresql://$user@localhost:5432/$db < /scriptstore/init.sql"
     sudo rm "$target_init_sql"/init.sql
 
     return 0
@@ -110,7 +162,12 @@ init() {
     [[ ! -f "$env_file" ]] && echo -e ".env file is missing in the root directory. Skipping container setup" && return 1
 
     upContainer || return 1
-    configContainer || return 1
+    configContainer "$@" || return 1
+    return 0
+}
+
+config() {
+    configContainer "$@" || return 1
     return 0
 }
 
@@ -162,6 +219,9 @@ up)
     ;;
 down)
     down "${@:2}"
+    ;;
+config)
+    config "${@:2}"
     ;;
 clean)
     clean "${@:2}"

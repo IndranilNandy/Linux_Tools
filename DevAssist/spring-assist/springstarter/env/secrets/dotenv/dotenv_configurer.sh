@@ -12,6 +12,7 @@ global_env="$dotenv_loc"/global/.env
 global_env_def="$dotenv_loc"/global/.env.def
 local_env="$(pwd)"/.env
 vers="$dotenv_loc"/versions_to_push
+help_dir="$curDir"/env/secrets/dotenv/help
 
 sync() {
     [[ -d "$dotenv_loc"/remote ]] && rm -rf "$dotenv_loc"/remote
@@ -62,11 +63,6 @@ load() {
     # REMEMBER: For safety reason, you can NEVER override a local .env once it is created, you can merge it with updated 'global' copy using 'merge' command
     [[ -f "$local_env" ]] && echo -e "${RED}A local scopped '.env' file already exists. Instead of fetcing from 'global' scope, opening the local copy.${RESET}\n${GREEN}For safety reason, you can NEVER override a local .env once it is created, you can merge it with updated 'global' copy using 'merge' command.${RESET}" || cp "$global_env" "$(pwd)"
     editor "$local_env"
-    definition
-}
-
-definition() {
-    echo -e "Showing '.env.def' from 'global' scope. ${RED}\n[WARNING!] BE CAUTIOUS BEFORE CHANGING '.env.def'. THIS WILL CHANGE THE STORE-COPY REFERRED BY ALL PROJECTS!${RESET}"
     editor "$global_env_def"
 }
 
@@ -98,7 +94,7 @@ show() {
         localscope
         ;;
     *)
-        localscope
+        globalscope
         ;;
     esac
 }
@@ -126,6 +122,10 @@ encrypt() {
     cp "$global_env_def" "$target_dir"/
 }
 
+help() {
+    cat "$help_dir"/dotenv_configurer.help
+}
+
 case "${1}" in
 sync)
     sync "${@:2}"
@@ -133,14 +133,8 @@ sync)
 load)
     load "${@:2}"
     ;;
-definition)
-    definition "${@:2}"
-    ;;
 show)
     show "${@:2}"
-    ;;
-remote)
-    remote "${@:2}"
     ;;
 merge)
     merge "${@:2}"
@@ -148,7 +142,10 @@ merge)
 encrypt)
     encrypt "${@:2}"
     ;;
+help)
+    help "${@:2}"
+    ;;
 *)
-    echo "--help"
+    help "${@:2}"
     ;;
 esac

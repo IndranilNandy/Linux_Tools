@@ -14,6 +14,9 @@ case "${1}" in
 db)
     "$curDir"/db/db_configurer.sh "${@:2}"
     ;;
+env)
+    "$curDir"/env/env_configurer.sh "${@:2}"
+    ;;
 *)
     echo "--help"
     ;;

@@ -7,12 +7,12 @@ else
 fi
 
 pgsql() {
-    "$curDir"/db/pgsql/pgsql_configurer.sh "${@:2}"
+    "$curDir"/db/pgsql/pgsql_configurer.sh "$@"
 }
 
 case "${1}" in
 postgresql)
-    pgsql "$@"
+    pgsql "${@:2}"
     ;;
 *)
     echo "--help"

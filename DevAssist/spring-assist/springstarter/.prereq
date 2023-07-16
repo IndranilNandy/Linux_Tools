@@ -1,4 +1,7 @@
 prereq
 tracelink
 myscriptref
+myalias
+mycompl
 p4merge
+gpg

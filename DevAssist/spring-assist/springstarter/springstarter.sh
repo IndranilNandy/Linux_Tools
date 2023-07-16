@@ -11,6 +11,9 @@ fi
 . "$curDir"/../../../vars/.colors
 
 case "${1}" in
+project)
+    "$curDir"/project/project_configurer.sh "${@:2}"
+    ;;
 db)
     "$curDir"/db/db_configurer.sh "${@:2}"
     ;;

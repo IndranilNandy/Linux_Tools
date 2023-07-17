@@ -66,7 +66,10 @@ findSqlTemplate() {
 }
 
 configContainer() {
-    echo -e "[Compose][Postgres] Now configuring containers"
+    echo -e
+    echo -e "-----------------------------------"
+    echo -e "Configuring containers"
+    echo -e "-----------------------------------"
 
     target_init_sql=$(find_key_value "your-sql-scriptstore")
     mkdir -p "$target_init_sql"
@@ -76,11 +79,11 @@ configContainer() {
     for arg in "$@"; do
         case "$arg" in
         --sqltemplate=templatestore)
-            findSqlTemplate "templatestore"
+            findSqlTemplate "templatestore" || return 1
             script="$sel_template"
             ;;
         --sqltemplate=localdir)
-            findSqlTemplate "localdir"
+            findSqlTemplate "localdir"|| return 1
             script="$sel_template"
             ;;
         --sqltemplate=*)
@@ -93,7 +96,7 @@ configContainer() {
         esac
     done
     cp "$script" "$(pwd)"/init.sql && process_template "$(pwd)"/init.sql &&
-        echo -e "\nVerify init.sql file. It'll be automatically deleted after compose-up" &&
+        echo -e "\nVerify init.sql file. It'll be automatically deleted after compose-up." &&
         editor -w "$(pwd)"/init.sql && sudo cp "$(pwd)"/init.sql "$target_init_sql"/init.sql &&
         rm "$(pwd)"/init.sql
 
@@ -101,8 +104,7 @@ configContainer() {
     user=postgres
     db=postgres
 
-    echo -e "[Compose][Postgres] db container -> $postgres_container"
-    echo -e "[Compose][Postgres] Configuring db >> docker exec -i $postgres_container bash -c \"sleep 5 && psql postgresql://$user@localhost:5432/$db -c '\l'\""
+    echo -e "db container: $postgres_container -->running--> docker exec -i $postgres_container bash -c \"sleep 5 && psql postgresql://$user@localhost:5432/$db < /scriptstore/init.sql\""
 
     docker exec -i "$postgres_container" bash -c "echo \"Waiting for 10 secs for db to come live\" && sleep 5 && psql postgresql://$user@localhost:5432/$db < /scriptstore/init.sql"
     sudo rm "$target_init_sql"/init.sql
@@ -111,7 +113,7 @@ configContainer() {
 }
 
 composeUp() {
-    echo -e "[Compose][Postgres] Running 'docker compose up -d'"
+    echo -e "\nRunning 'docker compose up -d'"
     docker compose -f "$target_compose_path"/docker-compose.yaml up -d
 }
 
@@ -130,20 +132,20 @@ process_vars_mapping() {
 
 process_template() {
     file="${1}"
-    echo -e "[Compose][Postgres] Now substituting env variables in $file"
+    echo -e "Substituting env variables in $file"
     sed -i -f <(process_vars_mapping) "$file"
 
 }
 
 copyContainerScript() {
-    echo -e "[Compose][Postgres] Copying compose template and substituting env variables"
-    echo -e "[Compose][Postgres] Target path: $target_compose_path"
+    # echo -e "[Compose][Postgres] Copying compose template and substituting env variables"
+    # echo -e "[Compose][Postgres] Target path: $target_compose_path"
 
     [[ -d "$target_compose_path" ]] || mkdir -p "$target_compose_path"
-    [[ -f "$target_compose_path"/docker-compose.yaml ]] && echo -e "Warning! docker-compose.yaml already exists, hence not copying. You can edit it manually. Going ahead to UP." && return 0
+    [[ -f "$target_compose_path"/docker-compose.yaml ]] && return 0
 
     cp "$script" "$target_compose_path" && process_template "$target_compose_path"/docker-compose.yaml && echo -e "\nVerify docker-compose file!" && editor -w "$target_compose_path"/docker-compose.yaml || return 1
-    echo -e "[Compose][Postgres] Compose file created in target path [$target_compose_path]"
+    echo -e "Compose file created in target path [$target_compose_path]"
 
     return 0
 }
@@ -155,7 +157,10 @@ upContainer() {
 }
 
 init() {
-    echo -e "[Compose][Postgres] Initializing containers"
+    echo -e
+    echo -e "-----------------------------------"
+    echo -e "Initializing containers"
+    echo -e "-----------------------------------"
     [[ -f "$target_compose_path"/docker-compose.yaml ]] &&
         echo -e "${YELLOW}[Compose][Postgres] docker-compose.yaml already exists.\
         \nHence not fetching/replacing it from scriptstore. This will run 'docker compose up -d' and rerun the db initialization script.\
@@ -165,6 +170,7 @@ init() {
 
     upContainer || return 1
     configContainer "$@" || return 1
+    echo -e "\nDONE"
     return 0
 }
 
@@ -174,12 +180,12 @@ config() {
 }
 
 up() {
-    docker compose -f "$target_compose_path"/docker-compose.yaml down && echo -e "[Compose][Postgres] All services are UP. Done!"
+    docker compose -f "$target_compose_path"/docker-compose.yaml up -d && echo -e "All services are UP. Done!"
     echo -e "${RED}[Advice] If you've already run 'init', then you DO NOT need any special command for this. Instead use 'docker compose up -d'.\nOtherwise, use 'init' command.${RESET}"
 }
 
 down() {
-    docker compose -f "$target_compose_path"/docker-compose.yaml down && echo -e "[Compose][Postgres] All services are down. Done!"
+    docker compose -f "$target_compose_path"/docker-compose.yaml down && echo -e "All services are down. Done!"
     echo -e "${RED}Volumes are NOT cleaned. If you want, you need to do it manually.${RESET}"
 }
 
@@ -219,19 +225,39 @@ help() {
 
 case "${1}" in
 init)
+    echo -e "______________________________________________________________________________________"
+    echo -e "[Compose][Postgres] INIT"
+    echo -e "______________________________________________________________________________________"
     init "${@:2}"
+    echo -e "______________________________________________________________________________________"
     ;;
 up)
+    echo -e "______________________________________________________________________________________"
+    echo -e "[Compose][Postgres] UP"
+    echo -e "______________________________________________________________________________________"
     up "${@:2}"
+    echo -e "______________________________________________________________________________________"
     ;;
 down)
+    echo -e "______________________________________________________________________________________"
+    echo -e "[Compose][Postgres] DOWN"
+    echo -e "______________________________________________________________________________________"
     down "${@:2}"
+    echo -e "______________________________________________________________________________________"
     ;;
 config)
+    echo -e "______________________________________________________________________________________"
+    echo -e "[Compose][Postgres] CONFIG"
+    echo -e "______________________________________________________________________________________"
     config "${@:2}"
+    echo -e "______________________________________________________________________________________"
     ;;
 clean)
+    echo -e "______________________________________________________________________________________"
+    echo -e "[Compose][Postgres] CLEAN ""${*:2}"
+    echo -e "______________________________________________________________________________________"
     clean "${@:2}"
+    echo -e "______________________________________________________________________________________"
     ;;
 help)
     help

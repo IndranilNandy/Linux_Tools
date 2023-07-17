@@ -38,6 +38,7 @@ create_tmp_setup() {
     mkdir -p "$tmpdir"
     cp -r "$LINUX_TOOLS_project_config" "$tmpdir"
     code -w "$project_info"
+    code -w "$project_dependencies"/*.dependencies
 }
 
 configure_project() {

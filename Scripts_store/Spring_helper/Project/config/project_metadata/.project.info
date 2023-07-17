@@ -9,9 +9,3 @@ name=productsvc
 packageName=com.myexample.productsvc
 description=Proejct description goes here
 version=1.0.0-SNAPSHOT
-dependencies=lombok
-
-#https://start.spring.io/#!type=gradle-project&language=java&platformVersion=3.1.1&packaging=jar&jvmVersion=17&groupId=com.mydomain.core&artifactId=demo&name=demo&description=demo_description&packageName=com.mydomain.core.demo
-#https://start.spring.io/#!type=gradle-project&language=java&packaging=jar&groupId=com.myexample.core&artifactId=practice&name=productsvc&dependencies=devtools
-
-#https://start.spring.io/#!type=gradle-project&language=java&packaging=jar&groupId=com.myexample&artifactId=practice&name=productsvc&packageName=&description=&dependencies=&

@@ -9,6 +9,7 @@ fi
 springio_url="https://start.spring.io/#!"
 tmpdir="/tmp/springstarter/project"
 project_info="$tmpdir"/config/project_metadata/.project.info
+project_dependencies="$tmpdir"/config/project_metadata/.dependencies
 
 ############################################################################################################################
 # USAGE: COPY THIS SCRIPT TO THE LOCATION WHERE YOU WANT TO CREATE THE SPRING PROJECT, AND CHANGE THE PARAMETERS ACCORDINGLY
@@ -55,7 +56,9 @@ gen_project_with_springio() {
     local localdir="$(pwd)"
     local project_name="${1}"
     local project_info_url=$(cat "$project_info" | grep -v " *#" | grep -v "^$" | tr '\n' '&')
-    local project_url="$springio_url""$project_info_url"
+    local all_dependencies=$(cat "$project_dependencies"/*.dependencies | grep -v " *#" | grep -v "^$" | tr '\n' ',')
+    all_dependencies="${all_dependencies::-1}"  # Removing last character ','
+    local project_url="$springio_url""$project_info_url"dependencies="$all_dependencies"
 
     echo -e "\nFirst, generating and downloading the project from spring.io, once you download, close the browser."
     sleep 1
@@ -86,7 +89,7 @@ create_project() {
     create_tmp_setup
 
     local project_name=$(awk -F'=' '$1 == "name" {print $2}' "$project_info")
-    gen_project_with_springio "$project_name"
+    gen_project_with_springio "$project_name" || return 1
     configure_project "$project_name" || return 1
 
     clean_tmp_setup

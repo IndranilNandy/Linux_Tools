@@ -1,0 +1,9 @@
+###############################################
+# Developer Tools
+###############################################
+#native
+devtools
+lombok
+configuration-processor
+docker-compose
+#modulith

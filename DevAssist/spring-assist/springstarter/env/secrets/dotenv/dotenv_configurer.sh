@@ -62,8 +62,9 @@ load() {
 
     # REMEMBER: For safety reason, you can NEVER override a local .env once it is created, you can merge it with updated 'global' copy using 'merge' command
     [[ -f "$local_env" ]] && echo -e "${RED}A local scopped '.env' file already exists. Instead of fetcing from 'global' scope, opening the local copy.${RESET}\n${GREEN}For safety reason, you can NEVER override a local .env once it is created, you can merge it with updated 'global' copy using 'merge' command.${RESET}" || cp "$global_env" "$(pwd)"
-    editor "$local_env"
     editor "$global_env_def"
+    echo -e "Update, save and close .env before proceeding."
+    editor -w "$local_env"
 }
 
 remotescope() {

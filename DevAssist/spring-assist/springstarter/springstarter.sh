@@ -12,7 +12,7 @@ fi
 
 case "${1}" in
 project)
-    "$curDir"/project/project_configurer.sh "${@:2}"
+    "$curDir"/project/project_setup.sh "${@:2}"
     ;;
 db)
     "$curDir"/db/db_configurer.sh "${@:2}"

@@ -6,6 +6,10 @@ else
     curDir="$(pwd)"
 fi
 
+springio_url="https://start.spring.io/#!"
+tmpdir="/tmp/springstarter/project"
+project_info="$tmpdir"/config/project_metadata/.project.info
+
 ############################################################################################################################
 # USAGE: COPY THIS SCRIPT TO THE LOCATION WHERE YOU WANT TO CREATE THE SPRING PROJECT, AND CHANGE THE PARAMETERS ACCORDINGLY
 
@@ -29,40 +33,71 @@ fi
 # We are not providing package-name, using the default one
 # Default: package-name=groupId.artifact-id (if package-name NOT PROVIDED)
 
-create_project() {
-    spring init \
-        --boot-version=3.1.1 \
-        --build=gradle \
-        --type=gradle-project \
-        --java-version=17 \
-        --packaging=jar \
-        --name=product-service \
-        --groupId=com.mydomain.core \
-        --artifact-id=product \
-        --dependencies=actuator,configuration-processor,data-jpa,devtools,h2,lombok,mysql,postgresql,validation,web \
-        --version=1.0.0-SNAPSHOT \
-        "${1}"
+create_tmp_setup() {
+    mkdir -p "$tmpdir"
+    cp -r "$LINUX_TOOLS_project_config" "$tmpdir"
+    code -w "$project_info"
+}
 
+configure_project() {
+    local project_name="${1}"
     (
-        cd "$(pwd)/${1}" || exit 1
+        cd "$(pwd)/$project_name" || exit 1
+        mkdir -p ".setup"
+        cp -r "$tmpdir"/config .setup
+
         springstarter env secrets dotenv load
         springstarter db postgresql container init
     )
 }
 
-create_project "${@}"
+gen_project_with_springio() {
+    local localdir="$(pwd)"
+    local project_name="${1}"
+    local project_info_url=$(cat "$project_info" | grep -v " *#" | grep -v "^$" | tr '\n' '&')
+    local project_url="$springio_url""$project_info_url"
 
-# case "${1}" in
-# project)
-#     create_project "${@:2}"
-#     ;;
-# db)
-#     "$curDir"/db/db_configurer.sh "${@:2}"
-#     ;;
-# env)
-#     "$curDir"/env/env_configurer.sh "${@:2}"
-#     ;;
-# *)
-#     echo "--help"
-#     ;;
-# esac
+    echo -e "\nFirst, generating and downloading the project from spring.io, once you download, close the browser."
+    sleep 1
+    echo -e "Loading project url: $project_url"
+
+    xdg-open "$project_url" >/dev/null 2>&1
+    echo -e
+    read -p "Did you download the generated project? [y/n] .." ans
+
+    [[ "$(echo $ans | tr [:upper:] [:lower:])" == "n" ]] && return 1
+
+    new_file=$(ls -1t "$HOME"/Downloads | grep "$project_name" | head -n1)
+    mv "$HOME"/Downloads/"$new_file" "$tmpdir"
+    (
+        cd "$tmpdir"
+        unzip "$new_file"
+        mv "$project_name" "$localdir"
+    )
+    echo "Project created and downloaded in $localdir"
+    return 0
+}
+
+clean_tmp_setup() {
+    rm -rf "$tmpdir"
+}
+
+create_project() {
+    create_tmp_setup
+
+    local project_name=$(awk -F'=' '$1 == "name" {print $2}' "$project_info")
+    gen_project_with_springio "$project_name"
+    configure_project "$project_name" || return 1
+
+    clean_tmp_setup
+}
+
+case "${1}" in
+config)
+    "$curDir"/project/config/project_configurer.sh "${@:2}"
+    ;;
+'')
+    create_project
+    ;;
+*) ;;
+esac

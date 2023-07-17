@@ -20,6 +20,7 @@ export LINUX_TOOLS_postgres_base="$LINUX_TOOLS_dev_tools_base"/postgres
 
 export LINUX_TOOLS_scripts_store_base="$LINUX_TOOLS_tools_base"/Scripts_store
 export LINUX_TOOLS_spring_helper="$LINUX_TOOLS_scripts_store_base"/Spring_helper
+export LINUX_TOOLS_project_config="$LINUX_TOOLS_spring_helper"/Project/config
 export LINUX_TOOLS_scrtstore="$HOME"/myscrtstore
 
 export LINUX_TOOLS_pagila="/home/indranilnandy/DEV/GIT-REPOS/DataSamples/Database/Postgres/pagila"

@@ -49,7 +49,12 @@ gen_project_with_springio() {
     all_dependencies="${all_dependencies::-1}" # Removing last character ','
     local project_url="$springio_url""$project_info_url"dependencies="$all_dependencies"
 
-    echo -e "\nFirst, generating and downloading the project from spring.io, once you download, close the browser."
+    echo -e
+    echo -e "-----------------------------------"
+    echo -e "GeneratinG project from SpringIO"
+    echo -e "-----------------------------------"
+
+    echo -e "First, generating and downloading the project from spring.io. Once you download, close the browser."
     sleep 1
     echo -e "Loading project url: $project_url"
 
@@ -85,8 +90,9 @@ create() {
     create_tmp_setup
 
     project_name=$(awk -F'=' '$1 == "name" {print $2}' "$project_info")
+    echo -e "${GREEN}Project name: $project_name${RESET}"
 
-    [[ -d "$(pwd)/$project_name" ]] && echo -e "Project with this name already exists. Exiting without creating a new project" && return 1
+    [[ -d "$(pwd)/$project_name" ]] && echo -e "${RED}Project with this name already exists. Exiting without creating a new project.${RESET}" && return 1
     gen_project_with_springio "$project_name" || return 1
 }
 
@@ -105,19 +111,33 @@ prompt() {
 project_name=
 case "${1}" in
 init)
+    echo -e "______________________________________________________________________________________"
+    echo -e "[Project] INIT"
+    echo -e "______________________________________________________________________________________"
+    echo -e "Step 1: Create project"
+    echo -e "Step 2: Configure project"
+
     springstarter project create "${@:2}"
 
     # Since, in this case, 'create' and 'config' will be called consecutively,
     # "$tmpdir"/config/project_metadata/.project.info wouldn't be changed, in between, by any other command (not running parallely)
     project_name=$(awk -F'=' '$1 == "name" {print $2}' "$project_info")
     springstarter project config "$project_name"
+    echo -e "______________________________________________________________________________________"
     ;;
 create)
+    echo -e "______________________________________________________________________________________"
+    echo -e "[Project] CREATE"
+    echo -e "______________________________________________________________________________________"
     create "${@:2}" || exit 1
     project_name=$(awk -F'=' '$1 == "name" {print $2}' "$project_info")
-    echo -e "PROJECT NAME = $project_name"
+    echo -e "${GREEN}Project created successfully.${RESET}"
+    echo -e "______________________________________________________________________________________"
     ;;
 config)
+    echo -e "______________________________________________________________________________________"
+    echo -e "[Project] CONFIG"
+    echo -e "______________________________________________________________________________________"
     project_name="${@:2}"
     [[ -z "$project_name" ]] && echo -e "Project name not provided. Exiting" && exit 1
     [[ ! -d "$(pwd)/$project_name" ]] && echo -e "Not able to find the project directory in the current directory. Exiting." && exit 1
@@ -128,6 +148,9 @@ config)
     )
 
     clean_tmp_setup
+    echo -e "${GREEN}Project configured successfully.${RESET}"
+
+    echo -e "______________________________________________________________________________________"
     ;;
 help)
     echo --help

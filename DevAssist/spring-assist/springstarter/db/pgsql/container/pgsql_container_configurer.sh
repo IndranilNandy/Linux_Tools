@@ -138,8 +138,8 @@ process_template() {
 }
 
 copyContainerScript() {
-    # echo -e "[Compose][Postgres] Copying compose template and substituting env variables"
-    # echo -e "[Compose][Postgres] Target path: $target_compose_path"
+    # echo -e "[DB][Postgres] Copying compose template and substituting env variables"
+    # echo -e "[DB][Postgres] Target path: $target_compose_path"
 
     [[ -d "$target_compose_path" ]] || mkdir -p "$target_compose_path"
     [[ -f "$target_compose_path"/docker-compose.yaml ]] && return 0
@@ -162,7 +162,7 @@ init() {
     echo -e "Initializing containers"
     echo -e "-----------------------------------"
     [[ -f "$target_compose_path"/docker-compose.yaml ]] &&
-        echo -e "${YELLOW}[Compose][Postgres] docker-compose.yaml already exists.\
+        echo -e "${YELLOW}[DB][Postgres] docker-compose.yaml already exists.\
         \nHence not fetching/replacing it from scriptstore. This will run 'docker compose up -d' and rerun the db initialization script.\
         \nIf you intend for 'init', you need to first run 'clean' and delete local docker-compose.yaml, or, you may manually run 'docker compose down' and then delete local docker-compose.yaml.${RESET} \
         \n${RED}Remember running 'clean' with --f option or manually deleting docker-compose.yaml will delete all your local changes on docker-compose.yaml. You may want to create a backup first.${RESET}"
@@ -238,35 +238,35 @@ prompt() {
 case "${1}" in
 init)
     echo -e "______________________________________________________________________________________"
-    echo -e "[Compose][Postgres] INIT"
+    echo -e "[DB][Postgres] INIT"
     echo -e "______________________________________________________________________________________"
     init "${@:2}"
     echo -e "______________________________________________________________________________________"
     ;;
 up)
     echo -e "______________________________________________________________________________________"
-    echo -e "[Compose][Postgres] UP"
+    echo -e "[DB][Postgres] UP"
     echo -e "______________________________________________________________________________________"
     up "${@:2}"
     echo -e "______________________________________________________________________________________"
     ;;
 down)
     echo -e "______________________________________________________________________________________"
-    echo -e "[Compose][Postgres] DOWN"
+    echo -e "[DB][Postgres] DOWN"
     echo -e "______________________________________________________________________________________"
     down "${@:2}"
     echo -e "______________________________________________________________________________________"
     ;;
 config)
     echo -e "______________________________________________________________________________________"
-    echo -e "[Compose][Postgres] CONFIG"
+    echo -e "[DB][Postgres] CONFIG"
     echo -e "______________________________________________________________________________________"
     config "${@:2}"
     echo -e "______________________________________________________________________________________"
     ;;
 clean)
     echo -e "______________________________________________________________________________________"
-    echo -e "[Compose][Postgres] CLEAN ""${*:2}"
+    echo -e "[DB][Postgres] CLEAN ""${*:2}"
     echo -e "______________________________________________________________________________________"
     clean "${@:2}"
     echo -e "______________________________________________________________________________________"

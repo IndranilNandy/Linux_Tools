@@ -10,7 +10,14 @@ dotenv() {
     "$curDir"/env/secrets/dotenv/dotenv_configurer.sh "$@"
 }
 
+init() {
+    springstarter env secrets dotenv init "$@"
+}
+
 case "${1}" in
+init)
+    init "${@:2}"
+    ;;
 dotenv)
     dotenv "${@:2}"
     ;;

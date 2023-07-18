@@ -10,7 +10,14 @@ secrets() {
     "$curDir"/env/secrets/secrets_configurer.sh "$@"
 }
 
+init() {
+    springstarter env secrets init "${@}"
+}
+
 case "${1}" in
+init)
+    init "${@:2}"
+    ;;
 secrets)
     secrets "${@:2}"
     ;;

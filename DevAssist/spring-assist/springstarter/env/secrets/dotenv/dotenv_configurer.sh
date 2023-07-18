@@ -173,7 +173,14 @@ help() {
     cat "$help_dir"/dotenv_configurer.help
 }
 
+init() {
+    springstarter env secrets dotenv load
+}
+
 case "${1}" in
+init)
+    init "${@:2}"
+    ;;
 sync)
     echo -e "______________________________________________________________________________________"
     echo -e "[Dotenv] SYNC"

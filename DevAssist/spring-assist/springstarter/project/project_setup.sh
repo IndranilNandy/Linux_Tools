@@ -79,6 +79,16 @@ gen_project_with_springio() {
         mv "$project_name" "$localdir"
     )
     echo "Project created and downloaded in $localdir"
+
+    (
+        cd "$(pwd)/$project_name" || exit 1
+        mkdir -p ".setup"
+        cp -r "$tmpdir"/config .setup
+
+        # springstarter env secrets dotenv load
+        # springstarter db postgresql container init
+    )
+
     return 0
 }
 
@@ -96,12 +106,35 @@ create_project() {
     clean_tmp_setup
 }
 
+create() {
+    create_tmp_setup
+
+    project_name=$(awk -F'=' '$1 == "name" {print $2}' "$project_info")
+
+    [[ -d "$(pwd)/$project_name" ]] && echo -e "Project with this name already exists. Exiting without creating a new project" && return 1
+    gen_project_with_springio "$project_name" || return 1
+    # configure_project "$project_name" || return 1
+
+    # clean_tmp_setup
+}
+
+project_name=
 case "${1}" in
+init)
+    springstarter project create "${@:2}"
+    springstarter project config init "$project_name"
+    ;;
+create)
+    create "${@:2}" || exit 1
+    project_name=$(awk -F'=' '$1 == "name" {print $2}' "$project_info")
+    echo -e "PROJECT NAME = $project_name"
+    ;;
 config)
-    "$curDir"/project/config/project_configurer.sh "${@:2}"
+    springstarter config "${@:2}"
+    # "$curDir"/config/project_configurer.sh "${@:2}"
     ;;
 '')
-    create_project
+    # create_project
     ;;
 *) ;;
 esac

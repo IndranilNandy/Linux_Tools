@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if [ -L "$(which springstarter)" ]; then
+    curDir="$(dirname "$(tracelink springstarter)")"
+else
+    curDir="$(pwd)"
+fi
+
 tmpdir="/tmp/springstarter/project"
 
 # create_local_setup() {
@@ -7,13 +13,8 @@ tmpdir="/tmp/springstarter/project"
 #     cp -r "$LINUX_TOOLS_project_config" "$tmpdir"
 # }
 
-project_name=
-
-case "${1}" in
-init)
-    echo -e "init"
-
-    project_name="${@:2}"
+init1() {
+    project_name="${@}"
     echo -e "project: $project_name"
     [[ ! -d "$(pwd)/$project_name" ]] && echo -e "Not able to find the project directory in the current directory. Exiting." && exit 1
     (
@@ -24,11 +25,37 @@ init)
         springstarter env secrets dotenv load
         springstarter db init
     )
+}
+
+init() {
+    springstarter env init "${@}"
+    springstarter db init "${@}"
+}
+
+prompt() {
+    subcommands="$curDir"/config/.commands
+
+    cat "$subcommands" | nl
+    read -p "Your choice: " no
+
+    local choice=$(cat "$subcommands" | nl | head -n"$no" | tail -n1 | cut -f2)
+    echo "Selected: $choice"
+
+    "${0}" "$choice"
+}
+
+project_name=
+
+case "${1}" in
+init)
+    init "${@:2}"
+    ;;
+env)
+    springstarter env "${@:2}"
     ;;
 db)
-;;
-env)
-;;
+    springstarter db "${@:2}"
+    ;;
 appyaml)
     # "$curDir"/project/config/project_configurer.sh "${@:2}"
     ;;
@@ -38,9 +65,11 @@ buildgradle)
 metadata)
     # "$curDir"/env/env_configurer.sh "${@:2}"
     ;;
+help)
+    echo --help
+    ;;
 '')
-    echo empty
-    # create_local_setup
+    prompt
     ;;
 *)
     echo "--help"

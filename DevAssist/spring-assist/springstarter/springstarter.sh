@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 if [ -L "$(which springstarter)" ]; then
     curDir="$(dirname "$(tracelink springstarter)")"
 else
@@ -10,7 +9,19 @@ fi
 . "$curDir"/../../../.systemConfig
 . "$curDir"/../../../vars/.colors
 
-default_choice="project"
+# default_choice="project"
+
+prompt() {
+    subcommands="$curDir"/.commands
+
+    cat "$subcommands" | nl
+    read -p "Your choice: " no
+
+    local choice=$(cat "$subcommands" | nl | head -n"$no" | tail -n1 | cut -f2)
+    echo "Selected: $choice"
+
+    "${0}" "$choice"
+}
 
 case "${1}" in
 init)
@@ -27,6 +38,12 @@ db)
     ;;
 env)
     "$curDir"/env/env_configurer.sh "${@:2}"
+    ;;
+help)
+    echo --help
+    ;;
+'')
+    prompt
     ;;
 *)
     echo "--help"

@@ -1,0 +1,6 @@
+-- INCOMPLETE--
+
+Only the following commands should be run from the parent folder of the project root folder.
+    - springstarter all *           -- here project itself isn't created yet
+    - springstarter project *       -- here either the project isn't created yet (project init/create), or just created and yet to be configured (project config)
+All other commands should run within the project root folder.

@@ -177,6 +177,18 @@ init() {
     springstarter env secrets dotenv load
 }
 
+prompt() {
+    subcommands="$curDir"/env/secrets/dotenv/.commands
+
+    cat "$subcommands" | nl
+    read -p "Your choice: " no
+
+    local choice=$(cat "$subcommands" | nl | head -n"$no" | tail -n1 | cut -f2)
+    echo "Selected: $choice"
+
+    "${0}" "$choice"
+}
+
 case "${1}" in
 init)
     init "${@:2}"
@@ -217,9 +229,12 @@ encrypt)
     echo -e "______________________________________________________________________________________"
     ;;
 help)
-    help "${@:2}"
+    help
+    ;;
+'')
+    prompt
     ;;
 *)
-    help "${@:2}"
+    help
     ;;
 esac

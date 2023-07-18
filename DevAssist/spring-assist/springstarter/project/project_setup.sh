@@ -58,7 +58,7 @@ gen_project_with_springio() {
     local project_name="${1}"
     local project_info_url=$(cat "$project_info" | grep -v " *#" | grep -v "^$" | tr '\n' '&')
     local all_dependencies=$(cat "$project_dependencies"/*.dependencies | grep -v " *#" | grep -v "^$" | tr '\n' ',')
-    all_dependencies="${all_dependencies::-1}"  # Removing last character ','
+    all_dependencies="${all_dependencies::-1}" # Removing last character ','
     local project_url="$springio_url""$project_info_url"dependencies="$all_dependencies"
 
     echo -e "\nFirst, generating and downloading the project from spring.io, once you download, close the browser."
@@ -118,11 +118,27 @@ create() {
     # clean_tmp_setup
 }
 
+prompt() {
+    subcommands="$curDir"/project/.commands
+
+    cat "$subcommands" | nl
+    read -p "Your choice: " no
+
+    local choice=$(cat "$subcommands" | nl | head -n"$no" | tail -n1 | cut -f2)
+    echo "Selected: $choice"
+
+    "${0}" "$choice"
+}
+
 project_name=
 case "${1}" in
 init)
     springstarter project create "${@:2}"
-    springstarter project config init "$project_name"
+
+    # Since, in this case, 'create' and 'config' will be called consecutively,
+    # "$tmpdir"/config/project_metadata/.project.info wouldn't be changed, in between, by any other command (not running parallely)
+    project_name=$(awk -F'=' '$1 == "name" {print $2}' "$project_info")
+    springstarter project config "$project_name"
     ;;
 create)
     create "${@:2}" || exit 1
@@ -130,11 +146,19 @@ create)
     echo -e "PROJECT NAME = $project_name"
     ;;
 config)
-    springstarter config "${@:2}"
-    # "$curDir"/config/project_configurer.sh "${@:2}"
+    project_name="${@:2}"
+    [[ -z "$project_name" ]] && echo -e "Project name not provided. Exiting" && exit 1
+    [[ ! -d "$(pwd)/$project_name" ]] && echo -e "Not able to find the project directory in the current directory. Exiting." && exit 1
+    (
+        cd "$(pwd)/$project_name" || exit 1
+        springstarter config init "${@:2}"
+    )
+    ;;
+help)
+    echo --help
     ;;
 '')
-    # create_project
+    prompt
     ;;
 *) ;;
 esac

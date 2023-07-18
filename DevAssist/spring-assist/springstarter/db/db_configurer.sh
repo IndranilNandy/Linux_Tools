@@ -15,18 +15,15 @@ init() {
 }
 
 prompt() {
-    db_choice="${1}"
-    case "$db_choice" in
-    postgresql)
-        springstarter db postgresql init
-        ;;
-    mysql)
-        echo -e "mysql"
-        ;;
-    *)
-        echo -e "Invalid option ${1}"
-        ;;
-    esac
+    subcommands="$curDir"/db/.commands
+
+    cat "$subcommands" | nl
+    read -p "Your choice: " no
+
+    local choice=$(cat "$subcommands" | nl | head -n"$no" | tail -n1 | cut -f2)
+    echo "Selected: $choice"
+
+    "${0}" "$choice"
 }
 
 case "${1}" in
@@ -35,6 +32,15 @@ init)
     ;;
 postgresql)
     pgsql "${@:2}"
+    ;;
+mysql)
+    echo -e "mysql config yet to be implemented"
+    ;;
+help)
+    echo --help
+    ;;
+'')
+    prompt
     ;;
 *)
     echo "--help"

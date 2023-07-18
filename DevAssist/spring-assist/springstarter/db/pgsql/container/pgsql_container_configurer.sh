@@ -83,7 +83,7 @@ configContainer() {
             script="$sel_template"
             ;;
         --sqltemplate=localdir)
-            findSqlTemplate "localdir"|| return 1
+            findSqlTemplate "localdir" || return 1
             script="$sel_template"
             ;;
         --sqltemplate=*)
@@ -223,6 +223,18 @@ help() {
     cat "$help_dir"/pgsql_container_configurer.help
 }
 
+prompt() {
+    subcommands="$curDir"/db/pgsql/container/.commands
+
+    cat "$subcommands" | nl
+    read -p "Your choice: " no
+
+    local choice=$(cat "$subcommands" | nl | head -n"$no" | tail -n1 | cut -f2)
+    echo "Selected: $choice"
+
+    "${0}" "$choice"
+}
+
 case "${1}" in
 init)
     echo -e "______________________________________________________________________________________"
@@ -261,6 +273,9 @@ clean)
     ;;
 help)
     help
+    ;;
+'')
+    prompt
     ;;
 *)
     help

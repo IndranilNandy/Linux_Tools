@@ -15,19 +15,15 @@ init() {
 }
 
 prompt() {
-    choice="${1}"
-    case "$choice" in
-    container)
-        springstarter db postgresql container init
-        ;;
-    # mysql)
-    #     echo -e "mysql"
-    #     ;;
-    *)
-        echo -e "Invalid option ${1}"
-        ;;
-    esac
+    subcommands="$curDir"/db/pgsql/.commands
 
+    cat "$subcommands" | nl
+    read -p "Your choice: " no
+
+    local choice=$(cat "$subcommands" | nl | head -n"$no" | tail -n1 | cut -f2)
+    echo "Selected: $choice"
+
+    "${0}" "$choice"
 }
 
 case "${1}" in
@@ -36,6 +32,12 @@ init)
     ;;
 container)
     container "${@:2}"
+    ;;
+help)
+    echo --help
+    ;;
+'')
+    prompt
     ;;
 *)
     echo "--help"

@@ -41,18 +41,6 @@ create_tmp_setup() {
     code -w "$project_dependencies"/*.dependencies
 }
 
-configure_project() {
-    local project_name="${1}"
-    (
-        cd "$(pwd)/$project_name" || exit 1
-        mkdir -p ".setup"
-        cp -r "$tmpdir"/config .setup
-
-        springstarter env secrets dotenv load
-        springstarter db postgresql container init
-    )
-}
-
 gen_project_with_springio() {
     local localdir="$(pwd)"
     local project_name="${1}"
@@ -84,9 +72,6 @@ gen_project_with_springio() {
         cd "$(pwd)/$project_name" || exit 1
         mkdir -p ".setup"
         cp -r "$tmpdir"/config .setup
-
-        # springstarter env secrets dotenv load
-        # springstarter db postgresql container init
     )
 
     return 0
@@ -96,16 +81,6 @@ clean_tmp_setup() {
     rm -rf "$tmpdir"
 }
 
-create_project() {
-    create_tmp_setup
-
-    local project_name=$(awk -F'=' '$1 == "name" {print $2}' "$project_info")
-    gen_project_with_springio "$project_name" || return 1
-    configure_project "$project_name" || return 1
-
-    clean_tmp_setup
-}
-
 create() {
     create_tmp_setup
 
@@ -113,9 +88,6 @@ create() {
 
     [[ -d "$(pwd)/$project_name" ]] && echo -e "Project with this name already exists. Exiting without creating a new project" && return 1
     gen_project_with_springio "$project_name" || return 1
-    # configure_project "$project_name" || return 1
-
-    # clean_tmp_setup
 }
 
 prompt() {
@@ -149,10 +121,13 @@ config)
     project_name="${@:2}"
     [[ -z "$project_name" ]] && echo -e "Project name not provided. Exiting" && exit 1
     [[ ! -d "$(pwd)/$project_name" ]] && echo -e "Not able to find the project directory in the current directory. Exiting." && exit 1
+
     (
         cd "$(pwd)/$project_name" || exit 1
         springstarter config init "${@:2}"
     )
+
+    clean_tmp_setup
     ;;
 help)
     echo --help

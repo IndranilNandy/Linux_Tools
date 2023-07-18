@@ -9,8 +9,6 @@ fi
 . "$curDir"/../../../.systemConfig
 . "$curDir"/../../../vars/.colors
 
-# default_choice="project"
-
 prompt() {
     subcommands="$curDir"/.commands
 

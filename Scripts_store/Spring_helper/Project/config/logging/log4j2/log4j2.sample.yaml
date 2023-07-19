@@ -1,0 +1,391 @@
+# Configuration Syntax: https://logging.apache.org/log4j/2.x/manual/configuration.html#ConfigurationSyntax
+# Filters: https://logging.apache.org/log4j/2.x/manual/Filters.html
+# Appenders: https://logging.apache.org/log4j/2.x/manual/appenders.html
+# Layouts: https://logging.apache.org/log4j/2.x/manual/layouts.html
+Configuration:
+    name: YAMLConfigTest
+    advertiser: multicastdns		# (Optional) The Advertiser plugin name which will be used to advertise individual FileAppender or SocketAppender configurations. The only Advertiser plugin provided is 'multicastdns".
+    status: warn					# Setting status="trace" is one of the first tools available to you if you need to troubleshoot log4j.
+    monitorInterval: 300			# The minimum amount of time, in seconds, that must elapse before the file configuration is checked for changes.
+    dest: logs/log4j2-debug.log	 # Either "err" for stderr, "out" for stdout, a file path, or a URL. This logs log4j2 internal events.
+
+    Properties:
+        Property:
+            -
+                name: log-path
+                value: logs
+            -
+                name: archive-path
+                value: ${log-path}/archive
+            -
+                name: logfile
+                value: logfile.log
+            -
+                name: logfile-random
+                value: logfile-random.log
+            -
+                name: logfile-rolling
+                value: logfile-rolling.log
+            -
+                name: logfile-rolling-random
+                value: logfile-rolling-random.log
+            -
+                name: archive-rolling-path
+                value: ${archive-path}/rolling
+            -
+                name: archive-rolling-random-path
+                value: ${archive-path}/rolling-random
+            -
+                name: contextmapconfigfile
+                value: logger-config/contextmap/contextmapconfig.json
+
+
+
+    # Note: Context-wide Filters are configured directly in the configuration. Events that are rejected by these Filters will not be passed to loggers for further processing. Once an event has been accepted by a Context-wide filter it will not be evaluated by any other Context-wide Filters nor will the Logger's Level be used to filter the event. The event will be evaluated by Logger and Appender Filters however.
+    Filters:
+        ThresholdFilter:
+            level: trace
+            onMatch: neutral	# [Default: neutral] May be ACCEPT, DENY or NEUTRAL. The default value is NEUTRAL.
+            onMismatch: neutral	# [Default: deny] May be ACCEPT, DENY or NEUTRAL. The default value is DENY.
+
+        # Allows filtering by log level based on specific attributes. For example, if the user's loginId is being captured in the ThreadContext Map then it is possible to enable debug logging for only that user. If the log event does not contain the specified ThreadContext item NEUTRAL will be returned.
+        DynamicThresholdFilter:
+            key: loginid				# Name of the item in the ThreadContext Map to compare.
+            defaultThreshold: error	 # The default threshold only applies if the log event contains the specified ThreadContext Map item and its value does not match any key in the key/value pairs.
+            onMatch: neutral
+            onMismatch: neutral
+            # One or more KeyValuePair elements that define the matching value for the key and the Level to evaluate when the key matches.
+            KeyValuePair:
+                -
+                    key: user1
+                    value: debug
+                -
+                    key: user2
+                    value: trace
+
+        # MapFilter allows filtering against data elements that are in a MapMessage.
+        MapFilter:
+            onMatch: neutral
+            onMismatch: neutral
+            operator: or		# If the operator is "or" then a match by any one of the key/value pairs will be considered to be a match, otherwise all the key/value pairs must match.
+            # If the same key is specified more than once then the check for that key will automatically be an "or" since a Map can only contain a single value.
+            KeyValuePair:
+                -
+                    key: eventid
+                    value: login
+                -
+                    key: eventid
+                    value: logout
+
+        # Compares the configured Marker value against the Marker that is included in the LogEvent. A match occurs when the Marker name matches either the Log Event's Marker or one of its parents.
+        MarkerFilter:
+            marker: USER_MGMT
+            onMatch: neutral
+            onMismatch: neutral
+
+        # Allows filtering against data elements that are in the current context. By default this is the ThreadContext Map. The values to compare are defined externally and can be periodically polled for changes.
+        MutableThreadContextMapFilter:
+            configLocation: ${contextmapconfigfile}	 # Configuration file should be in JSON, NOT SUPPORTED YAML.
+            pollInterval: 300
+            onMatch: neutral
+            onMismatch: neutral
+
+        # Checks that there is no marker included in the LogEvent. A match occurs when there is no marker in the Log Event.
+        NoMarkerFilter:
+            onMatch: neutral
+            onMismatch: neutral
+
+        # Allows the formatted or unformatted message to be compared against a regular expression.
+        RegexFilter:
+            regex: ".* regexfilter .*"
+            userawmsg: false		# [Default: false] If true the unformatted message will be used, otherwise the formatted message will be used. The default value is false.
+            onMatch: neutral
+            onMismatch: neutral
+
+        # StructureDDataFilter is a MapFilter that also allows filtering on the event id, type and message.
+        StructureDdataFilter:
+            # operator: or		# If the operator is "or" then a match by any one of the key/value pairs will be considered to be a match, otherwise all the key/value pairs must match.
+            onMatch: neutral
+            onMismatch: neutral
+            # One or more KeyValuePair elements that define the key in the map and the value to match on. "id", "id.name", "type", and "message" should be used to match on the StructuredDataId, the name portion of the StructuredDataId, the type, and the formatted message respectively. If the same key is specified more than once then the check for that key will automatically be an "or" since a Map can only contain a single value.
+            KeyValuePair:
+                -
+                    key: id
+                    value: admin1
+                -
+                    key: id
+                    value: admin2
+                -
+                    key: id.name
+                    value: admin1
+                -
+                    key: type
+                    value: admin1 type
+                # -
+                #	 key: message			# COULD NOT GET IT WORKING, NEED TO CHECK AGAIN
+                #	 value: "admin1 msg"
+
+        # ThreadContextMapFilter or ContextMapFilter allows filtering against data elements that are in the current context. By default this is the ThreadContext Map.
+        ThreadContextMapFilter:
+            operator: or		# If the operator is "or" then a match by any one of the key/value pairs will be considered to be a match, otherwise all the key/value pairs must match.
+            onMatch: neutral
+            onMismatch: neutral
+            # One or more KeyValuePair elements that define the key in the map and the value to match on. If the same key is specified more than once then the check for that key will automatically be an "or" since a Map can only contain a single value.
+            KeyValuePair:
+                -
+                    key: userid1
+                    value: anything
+                -
+                    key: userid2
+                    value: something
+
+        # Time filter can be used to restrict filter to only a certain portion of the day.
+        TimeFilter:
+            start: "16:00:00"
+            end: "17:50:00"
+            # timezone: "GMT+0"	   # As understood by java.util.TimeZone.getTimeZone(String)
+            onMatch: neutral
+            onMismatch: neutral
+
+
+    Appenders:
+
+        # ConsoleAppender writes its output to either System.out or System.err with System.out being the default target. A Layout must be provided to format the LogEvent.
+        Console:
+            name: STDOUT
+            target: SYSTEM_OUT	  # Either "SYSTEM_OUT" or "SYSTEM_ERR". The default is "SYSTEM_OUT".
+            # If no layout is supplied the default pattern layout of "%m%n" will be used.
+            PatternLayout:
+                pattern: "%d %p %c [%t] %m%n"
+            Filters:
+                ThresholdFilter:
+                    level: trace
+                    onMatch: neutral
+                    onMismatch: neutral
+            ignoreExceptions: true	  # The default is true, causing exceptions encountered while appending events to be internally logged and then ignored. When set to false exceptions will be propagated to the caller, instead. You must set this to false when wrapping this Appender in a FailoverAppender.
+            # follow:					 # Identifies whether the appender honors reassignments of System.out or System.err via System.setOut or System.setErr made after configuration. Note that the follow attribute cannot be used with Jansi on Windows. Cannot be used with direct.
+            # direct:					 # Write directly to java.io.FileDescriptor and bypass java.lang.System.out/.err. Can give up to 10x performance boost when the output is redirected to file or other process.
+
+        # FileAppender is an OutputStreamAppender that writes to the File named in the fileName parameter. The FileAppender uses a FileManager (which extends OutputStreamManager) to actually perform the file I/O.
+        File:
+            name: File
+            fileName: ${log-path}/${logfile}
+            # append: true				# [Default: true] When true - the default, records will be appended to the end of the file. When set to false, the file will be cleared before new records are written.
+            # bufferedIO: true			# [Default: true] When true - the default, records will be written to a buffer and the data will be written to disk when the buffer is full or, if immediateFlush is set, when the record is written.
+            # bufferSize: 8192			# [Default: 8192 bytes] When bufferedIO is true, this is the buffer size, the default is 8192 bytes.
+            # createOnDemand: false		# [Default: false] The appender creates the file on-demand. The appender only creates the file when a log event passes all Filters and is routed to this appender.
+            # immediateFlush: true		# [Default: true] When set to true - the default, each write will be followed by a flush.
+            # locking: false			# [Default: false] When set to true, I/O operations will occur only while the file lock is held.
+            # ignoreExceptions: true	# [Default: true] The default is true, causing exceptions encountered while appending events to be internally logged and then ignored. When set to false exceptions will be propagated to the caller, instead.
+            # filePermissions: rw-rw-rw	# File attribute permissions in POSIX format to apply whenever the file is created. Underlying files system shall support POSIX file attribute view. Examples: rw------- or rw-rw-rw- etc...
+            # fileOwner: testuser		# File owner to define whenever the file is created.
+            # fileGroup: testgroup		# File group to define whenever the file is created.
+            PatternLayout:
+                pattern: "%d %p %C{1.} [%t] %m%n"
+            Filters:
+                ThresholdFilter:
+                    level: trace
+                    onMatch: neutral
+                    onMismatch: neutral
+                RegexFilter:
+                    regex: ".*Bye .*"
+                    userawmsg: false
+                    onMatch: neutral
+                    onMismatch: neutral
+
+        #  RandomAccessFileAppender is similar to the standard FileAppender except it is always buffered (this cannot be switched off) and internally it uses a ByteBuffer + RandomAccessFile instead of a BufferedOutputStream.
+        RandomAccessFile:
+            name: RandomFile
+            fileName: ${log-path}/${logfile-random}
+            # append: true				# [Default: true] When true - the default, records will be appended to the end of the file. When set to false, the file will be cleared before new records are written.
+            # bufferSize: 262144		  # [Default: 256 * 1024 bytes] When bufferedIO is true, this is the buffer size, the default is 8192 bytes.
+            # immediateFlush: true		# [Default: true] When set to true - the default, each write will be followed by a flush.
+            # ignoreExceptions: true	  # [Default: true] The default is true, causing exceptions encountered while appending events to be internally logged and then ignored. When set to false exceptions will be propagated to the caller, instead.
+            PatternLayout:
+                pattern: "%d %p %C{1.} [%t] %m%n"
+            Filters:
+                ThresholdFilter:
+                    level: trace
+                    onMatch: neutral
+                    onMismatch: neutral
+                RegexFilter:
+                    regex: ".*Trace .*"
+                    userawmsg: false
+                    onMatch: neutral
+                    onMismatch: neutral
+
+        # The RollingFileAppender is an OutputStreamAppender that writes to the File named in the fileName parameter and rolls the file over according the TriggeringPolicy and the RolloverPolicy.
+        RollingFile:
+            name: RollingFile
+            fileName: ${log-path}/${logfile-rolling}	# [REMEMBER: While sing DirectWriteRolloverStrategy, this filed MUST NOT EXIST]
+            filePattern: ${archive-rolling-path}/$${date:yyyy-MM}/app-%d{yyyy-MM-dd-HH-mm}-%i.log.gz
+            # append: true				# [Default: true] When true - the default, records will be appended to the end of the file. When set to false, the file will be cleared before new records are written.
+            # bufferedIO: true			# [Default: true] When true - the default, records will be written to a buffer and the data will be written to disk when the buffer is full or, if immediateFlush is set, when the record is written.
+            # bufferSize: 8192			# [Default: 8192 bytes] When bufferedIO is true, this is the buffer size, the default is 8192 bytes.
+            # createOnDemand: false	   # [Default: false] The appender creates the file on-demand. The appender only creates the file when a log event passes all Filters and is routed to this appender.
+            # immediateFlush: true		# [Default: true] When set to true - the default, each write will be followed by a flush.
+            # ignoreExceptions: true	  # [Default: true] The default is true, causing exceptions encountered while appending events to be internally logged and then ignored. When set to false exceptions will be propagated to the caller, instead.
+            # filePermissions: rw-rw-rw   # File attribute permissions in POSIX format to apply whenever the file is created. Underlying files system shall support POSIX file attribute view. Examples: rw------- or rw-rw-rw- etc...
+            # fileOwner: testuser		 # File owner to define whenever the file is created.
+            # fileGroup: testgroup		# File group to define whenever the file is created.
+            PatternLayout:
+                pattern: "%d %p %C{1.} [%t] %m%n"
+            Policies:
+                # Causes a rollover once the date/time pattern no longer applies to the active file
+                TimeBasedTriggeringPolicy:
+                    interval: 1		 # [Default: 1] How often a rollover should occur based on the most specific time unit in the date pattern.
+                    modulate: false	 # [Default: false] ndicates whether the interval should be adjusted to cause the next rollover to occur on the interval boundary.
+                    maxRandomDelay: 0   # [Default: 0] Indicates the maximum number of seconds to randomly delay a rollover.
+                # Causes a rollover once the file has reached the specified size.
+                SizeBasedTriggeringPolicy:
+                    size: 1 KB		# The size can be specified in bytes, with the suffix KB, MB, GB, or TB, for example 20MB. The size may also contain a fractional value such as 1.5 MB. When combined with a time based triggering policy the file pattern must contain a %i otherwise the target file will be overwritten on every rollover as the SizeBased Triggering Policy will not cause the timestamp value in the file name to change.
+                # Causes a rollover if the log file is older than the current JVM's start time and the minimum file size is met or exceeded.
+                # OnStartupTriggeringPolicy:
+                #	 minSize: 1		  # [Default: 1] The minimum size the file must have to roll over. A size of zero will cause a roll over no matter what the file size is.
+                # Triggers rollover based on a cron expression. This policy is controlled by a timer and is asynchronous to processing log events, so it is possible that log events from the previous or next time period may appear at the beginning or end of the log file.
+                # CronTriggeringPolicy:
+                #	 schedule: "0 0 * * * ?"	 #  The expression is the same as what is allowed in the Quartz scheduler.
+                #	 evaluateOnStartup: false	# On startup the cron expression will be evaluated against the file's last modification timestamp. If the cron expression indicates a rollover should have occurred between that time and the current time the file will be immediately rolled over.
+
+            # The default rollover strategy accepts both a date/time pattern and an integer from the filePattern attribute specified on the RollingFileAppender itself. If the date/time pattern is present it will be replaced with the current date and time values. If the pattern contains an integer it will be incremented on each rollover. If the pattern contains both a date/time and integer in the pattern the integer will be incremented until the result of the date/time pattern changes.
+            DefaultRolloverStrategy:
+                max: 20				# [Default: 7] The maximum value of the counter. Once this values is reached older archives will be deleted on subsequent rollovers.
+                min: 1				# [Default: 1] The minimum value of the counter.
+                fileIndex: max	# [Default: max] [max/min/nomax] If set to "max" (the default), files with a higher index will be newer than files with a smaller index. If set to "min", file renaming and the counter will follow the Fixed Window strategy described above. Finally, as of release 2.8, if the fileIndex attribute is set to "nomax" then the min and max values will be ignored and file numbering will increment by 1 and each rollover will have an incrementally higher value with no maximum number of files.
+                # compressionLevel: 9	 # Sets the compression level, 0-9, where 0 = none, 1 = best speed, through 9 = best compression. Only implemented for ZIP files.
+                # tempCompressedFilePattern: archived-app-%d{yyyy-MM-dd-HH-mm}-%i.log	   # The pattern of the file name of the archived log file during compression.
+                Delete:
+                    basePath: ${archive-rolling-path}
+                    maxDepth: 2
+                    # testMode: true	  # [Default: false] If true, files are not deleted but instead a message is printed to the status logger at INFO level. Use this to do a dry run to test if the configuration works as expected.
+                    IfFileName:
+                        glob: "*/app-*.log.gz"
+                    IfLastModified:
+                        age: PT10S	# https://logging.apache.org/log4j/2.x/log4j-core/apidocs/org/apache/logging/log4j/core/appender/rolling/action/Duration.html#parseCharSequence
+
+            # The DirectWriteRolloverStrategy causes log events to be written directly to files represented by the file pattern. With this strategy file renames are not performed. If the size-based triggering policy causes multiple files to be written during the specified time period they will be numbered starting at one and continually incremented until a time-based rollover occurs.
+            # DirectWriteRolloverStrategy:
+            #	 maxFiles: 10			#[Default: omitted] The maximum number of files to allow in the time period matching the file pattern. If the number of files is exceeded the oldest file will be deleted. If specified, the value must be greater than 1. If the value is less than zero or omitted then the number of files will not be limited.
+            #	 # compressionLevel: 9	 # Sets the compression level, 0-9, where 0 = none, 1 = best speed, through 9 = best compression. Only implemented for ZIP files.
+            #	 # tempCompressedFilePattern: archived-app-%d{yyyy-MM-dd-HH-mm}-%i.log	   # The pattern of the file name of the archived log file during compression.
+
+            Filters:
+                ThresholdFilter:
+                    level: trace
+                    onMatch: neutral
+                    onMismatch: neutral
+                RegexFilter:
+                    regex: ".*Trace .*"
+                    userawmsg: false
+                    onMatch: neutral
+                    onMismatch: neutral
+
+        # RollingRandomAccessFileAppender is similar to the standard RollingFileAppender except it is always buffered (this cannot be switched off) and internally it uses a ByteBuffer + RandomAccessFile instead of a BufferedOutputStream. We saw a 20-200% performance improvement compared to RollingFileAppender with "bufferedIO=true" in our measurements.
+        RollingRandomAccessFile:
+            name: RollingRandomFile
+            fileName: ${log-path}/${logfile-rolling-random}	# [REMEMBER: While sing DirectWriteRolloverStrategy, this filed MUST NOT EXIST]
+            filePattern: ${archive-rolling-random-path}/$${date:yyyy-MM}/app-%d{yyyy-MM-dd-HH-mm}-%i.log.gz
+            # append: true				# [Default: true] When true - the default, records will be appended to the end of the file. When set to false, the file will be cleared before new records are written.
+            # bufferSize: 262144		# [Default: 256 * 1024 bytes] When bufferedIO is true, this is the buffer size, the default is 8192 bytes.
+            # immediateFlush: true		# [Default: true] When set to true - the default, each write will be followed by a flush.
+            # ignoreExceptions: true	# [Default: true] The default is true, causing exceptions encountered while appending events to be internally logged and then ignored. When set to false exceptions will be propagated to the caller, instead.
+            # filePermissions: rw-rw-rw # File attribute permissions in POSIX format to apply whenever the file is created. Underlying files system shall support POSIX file attribute view. Examples: rw------- or rw-rw-rw- etc...
+            # fileOwner: testuser	   # File owner to define whenever the file is created.
+            # fileGroup: testgroup		# File group to define whenever the file is created.
+
+            PatternLayout:
+                pattern: "%d %p %C{1.} [%t] %m%n"
+
+            Policies:
+                # Causes a rollover once the date/time pattern no longer applies to the active file
+                TimeBasedTriggeringPolicy:
+                    interval: 1		 # [Default: 1] How often a rollover should occur based on the most specific time unit in the date pattern.
+                    modulate: false	 # [Default: false] ndicates whether the interval should be adjusted to cause the next rollover to occur on the interval boundary.
+                    maxRandomDelay: 0   # [Default: 0] Indicates the maximum number of seconds to randomly delay a rollover.
+                # Causes a rollover once the file has reached the specified size.
+                SizeBasedTriggeringPolicy:
+                    size: 1 KB		# The size can be specified in bytes, with the suffix KB, MB, GB, or TB, for example 20MB. The size may also contain a fractional value such as 1.5 MB. When combined with a time based triggering policy the file pattern must contain a %i otherwise the target file will be overwritten on every rollover as the SizeBased Triggering Policy will not cause the timestamp value in the file name to change.
+                # Causes a rollover if the log file is older than the current JVM's start time and the minimum file size is met or exceeded.
+                # OnStartupTriggeringPolicy:
+                #	 minSize: 1		  # [Default: 1] The minimum size the file must have to roll over. A size of zero will cause a roll over no matter what the file size is.
+                # Triggers rollover based on a cron expression. This policy is controlled by a timer and is asynchronous to processing log events, so it is possible that log events from the previous or next time period may appear at the beginning or end of the log file.
+                # CronTriggeringPolicy:
+                #	 schedule: "0 0 * * * ?"	 #  The expression is the same as what is allowed in the Quartz scheduler.
+                #	 evaluateOnStartup: false	# On startup the cron expression will be evaluated against the file's last modification timestamp. If the cron expression indicates a rollover should have occurred between that time and the current time the file will be immediately rolled over.
+
+            # The default rollover strategy accepts both a date/time pattern and an integer from the filePattern attribute specified on the RollingFileAppender itself. If the date/time pattern is present it will be replaced with the current date and time values. If the pattern contains an integer it will be incremented on each rollover. If the pattern contains both a date/time and integer in the pattern the integer will be incremented until the result of the date/time pattern changes.
+            DefaultRolloverStrategy:
+                max: 20				# [Default: 7] The maximum value of the counter. Once this values is reached older archives will be deleted on subsequent rollovers.
+                min: 1				# [Default: 1] The minimum value of the counter.
+                fileIndex: max	# [Default: max] [max/min/nomax] If set to "max" (the default), files with a higher index will be newer than files with a smaller index. If set to "min", file renaming and the counter will follow the Fixed Window strategy described above. Finally, as of release 2.8, if the fileIndex attribute is set to "nomax" then the min and max values will be ignored and file numbering will increment by 1 and each rollover will have an incrementally higher value with no maximum number of files.
+                # compressionLevel: 9	 # Sets the compression level, 0-9, where 0 = none, 1 = best speed, through 9 = best compression. Only implemented for ZIP files.
+                # tempCompressedFilePattern: archived-app-%d{yyyy-MM-dd-HH-mm}-%i.log	   # The pattern of the file name of the archived log file during compression.
+                Delete:
+                    basePath: ${archive-rolling-random-path}
+                    maxDepth: 2
+                    # testMode: true	  # [Default: false] If true, files are not deleted but instead a message is printed to the status logger at INFO level. Use this to do a dry run to test if the configuration works as expected.
+                    IfFileName:
+                        glob: "*/app-*.log.gz"
+                    IfLastModified:
+                        age: PT10S	# https://logging.apache.org/log4j/2.x/log4j-core/apidocs/org/apache/logging/log4j/core/appender/rolling/action/Duration.html#parseCharSequence
+
+            # The DirectWriteRolloverStrategy causes log events to be written directly to files represented by the file pattern. With this strategy file renames are not performed. If the size-based triggering policy causes multiple files to be written during the specified time period they will be numbered starting at one and continually incremented until a time-based rollover occurs.
+            # DirectWriteRolloverStrategy:
+            #	 maxFiles: 10			#[Default: omitted] The maximum number of files to allow in the time period matching the file pattern. If the number of files is exceeded the oldest file will be deleted. If specified, the value must be greater than 1. If the value is less than zero or omitted then the number of files will not be limited.
+            #	 # compressionLevel: 9	 # Sets the compression level, 0-9, where 0 = none, 1 = best speed, through 9 = best compression. Only implemented for ZIP files.
+            #	 # tempCompressedFilePattern: archived-app-%d{yyyy-MM-dd-HH-mm}-%i.log	   # The pattern of the file name of the archived log file during compression.
+
+            Filters:
+                ThresholdFilter:
+                    level: trace
+                    onMatch: neutral
+                    onMismatch: neutral
+                RegexFilter:
+                    regex: ".*Trace .*"
+                    userawmsg: false
+                    onMatch: neutral
+                    onMismatch: neutral
+
+            # NEED TO ADD IT LATER. The RoutingAppender evaluates LogEvents and then routes them to a subordinate Appender. The target Appender may be an appender previously configured and may be referenced by its name or the Appender can be dynamically created as needed. The RoutingAppender should be configured after any Appenders it references to allow it to shut down properly.
+            # Routing:
+
+
+
+    Loggers:
+        Logger:
+            -
+                name: com.example.lway.base.Person
+                level: trace
+                # additivity: false		# [Default: true]
+                # ThreadContextMapFilter:		 # Logger Filters are configured on a specified Logger. These are evaluated after the Context-wide Filters and the Log Level for the Logger. Events that are rejected by these Filters will be discarded and the event will not be passed to a parent Logger regardless of the additivity setting.
+                #	 KeyValuePair:
+                #		 key: test
+                #		 value: 123
+                AppenderRef:
+                    ref: STDOUT
+            -
+                name: com.example.lway.base
+                level: error
+                # additivity: false		# [Default: true]
+                AppenderRef:
+                    -
+                        level: trace
+                        ref: File
+                    -
+                        level: trace
+                        ref: RandomFile
+                        Filters:
+                            ThresholdFilter:
+                                level: trace
+                                onMatch: neutral
+                                onMismatch: neutral
+                    -
+                        level: trace
+                        ref: RollingFile
+                    -
+                        level: trace
+                        ref: RollingRandomFile
+        root:
+            level: trace
+            AppenderRef:
+                ref: STDOUT

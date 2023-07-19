@@ -1,0 +1,32 @@
+# Configuration Syntax: https://logging.apache.org/log4j/2.x/manual/configuration.html#ConfigurationSyntax
+# Filters: https://logging.apache.org/log4j/2.x/manual/Filters.html
+# Appenders: https://logging.apache.org/log4j/2.x/manual/appenders.html
+# Layouts: https://logging.apache.org/log4j/2.x/manual/layouts.html
+Configuration:
+    name: YAMLConfigTest
+    advertiser: multicastdns		# (Optional) The Advertiser plugin name which will be used to advertise individual FileAppender or SocketAppender configurations. The only Advertiser plugin provided is 'multicastdns".
+    status: warn					# Setting status="trace" is one of the first tools available to you if you need to troubleshoot log4j.
+    monitorInterval: 300			# The minimum amount of time, in seconds, that must elapse before the file configuration is checked for changes.
+    dest: logs/log4j2-debug.log	 # Either "err" for stderr, "out" for stdout, a file path, or a URL. This logs log4j2 internal events.
+
+    Properties:
+        Property:
+            -
+
+            -
+
+
+    # Note: Context-wide Filters are configured directly in the configuration. Events that are rejected by these Filters will not be passed to loggers for further processing. Once an event has been accepted by a Context-wide filter it will not be evaluated by any other Context-wide Filters nor will the Logger's Level be used to filter the event. The event will be evaluated by Logger and Appender Filters however.
+    Filters:
+
+
+    Appenders:
+
+
+    Loggers:
+        Logger:
+            -
+
+            -
+
+        root:

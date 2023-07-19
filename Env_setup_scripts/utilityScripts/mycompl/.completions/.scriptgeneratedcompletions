@@ -21,4 +21,4 @@
 -W "--on --off --status --help" myhistory
 -W "--help --path= --export= add remove" myshpath
 -W "--basedir --dockerfile --context --startline --configs --config-edit-default --config-create-and-set-as-current-for-this-run --config-select-and-set-as-current-for-this-run --config-select-and-set-as-current-for-this-dockerfile help --force --containers --images --config step clean show" dfdebugger
--W "db postgresql container init up down config clean help --f --sqltemplate=templatestore --sqltemplate=localdir --sqltemplate= localdir templatestore env secrets dotenv load sync show merge encrypt --remote --global --local " springstarter
+-W "project create db postgresql mysql container init up down config clean help --f --sqltemplate=templatestore --sqltemplate=localdir --sqltemplate= localdir templatestore env secrets dotenv load sync show merge encrypt --remote --global --local appyaml empty logging log4j2 default" springstarter

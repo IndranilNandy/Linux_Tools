@@ -2,3 +2,6 @@ sspgcontainerdefault=springstarter db postgresql container init
 ssdotenv=springstarter env secrets dotenv
 ssdotenvgen=springstarter env secrets dotenv load
 sspgcontainer=springstarter db postgresql container
+ssi=springstarter init
+sspgcontainer=springstarter db mysql container
+sspgcontainerdefault=springstarter db mysql container init

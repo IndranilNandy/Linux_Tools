@@ -1,0 +1,9 @@
+s/your-service-name/COMPOSE_APPNAME/
+s/your-home-dir/COMPOSE_USER_HOME/
+s/your-db-port/COMPOSE_MYSQL_DB_PORT/
+s/your-db-username/COMPOSE_MYSQL_DATABASE_USERNAME/
+s/your-db-password/COMPOSE_MYSQL_DATABASE_PASSWORD/
+s/your-db-name/COMPOSE_MYSQL_DATABASE/
+s/your-adminer-port/COMPOSE_MYSQL_ADMINER_PORT/
+s/your-sql-image/COMPOSE_MYSQL_IMAGE/
+s/your-sql-scriptstore/COMPOSE_MYSQL_SCRIPTSTORE/

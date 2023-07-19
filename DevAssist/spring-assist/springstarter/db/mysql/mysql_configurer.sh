@@ -6,32 +6,28 @@ else
     curDir="$(pwd)"
 fi
 
-mysql() {
-    "$curDir"/db/mysql/mysql_configurer.sh "$@"
-}
-
-pgsql() {
-    "$curDir"/db/pgsql/pgsql_configurer.sh "$@"
+container() {
+    "$curDir"/db/mysql/container/mysql_container_configurer.sh "${@}"
 }
 
 init() {
     echo -e
     echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
-    echo -e "${BLUE}${BOLD}[SPRINGSTARTER DB INIT] Started.${RESET}"
+    echo -e "${BLUE}${BOLD}[SPRINGSTARTER DB MYSQL INIT] Started.${RESET}"
     echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
 
     # _____________________________________________________
-    # springstarter db postgresql init "${@}"
+    # springstarter db mysql container init "${@}"
     # _____________________________________________________
-    "$curDir"/db/pgsql/pgsql_configurer.sh "init" "$@"
+    "$curDir"/db/mysql/container/mysql_container_configurer.sh "init" "${@}"
 
     echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
-    echo -e "${BLUE}${BOLD}[SPRINGSTARTER DB INIT] Finished.${RESET}"
+    echo -e "${BLUE}${BOLD}[SPRINGSTARTER DB MYSQL INIT] Finished.${RESET}"
     echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
 }
 
 prompt() {
-    subcommands="$curDir"/db/.commands
+    subcommands="$curDir"/db/mysql/.commands
 
     cat "$subcommands" | nl
     read -p "Your choice: " no
@@ -46,11 +42,8 @@ case "${1}" in
 init)
     init "${@:2}"
     ;;
-postgresql)
-    pgsql "${@:2}"
-    ;;
-mysql)
-    mysql "${@:2}"
+container)
+    container "${@:2}"
     ;;
 help)
     echo --help

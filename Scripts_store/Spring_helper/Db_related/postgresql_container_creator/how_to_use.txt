@@ -10,7 +10,7 @@
             •   Now, run the commands, mentioned above, to configure the database and user
         >>> Or, from the host machine if psql is available
             •   psql postgresql://postgres@localhost:5434/postgres (see the port no 5434, the mapped port in compose yaml, the host machine is the localhost
-            •   Now, run the commands, mentioned above, to configure the database and user
+            •   Now, run the commands, mentioned below, to configure the database and user
 
 2.  Configuring PostgreSQL database:
     •   create user <servicename> with password 'password';

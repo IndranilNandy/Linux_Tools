@@ -1,0 +1,3 @@
+create user your-db-username@'%' identified by 'your-db-password';
+create database your-db-name;
+grant all on your-db-name.* to 'your-db-username'@'%';

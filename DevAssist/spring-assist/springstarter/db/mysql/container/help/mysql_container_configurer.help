@@ -1,0 +1,97 @@
+Command syntax:
+    springstarter db postgresql container SUBCOMMAND [Options]
+    See below for more details.
+
+Description:
+    Provides utility tool for -
+            > setting up postgresql container from compose template (in scriptstore)
+            > initializing/configuring db with sql templates
+            > giving provision to choose a sql-template either from templates-store or from current directory (pwd) searching recursively
+            > providing 'clean' command to 'compose down' and remove locally created docker-compose.yaml
+Note:
+    This script should be run from the root directory of the spring project.
+    This will create ./docker/postgresql directory and a docker-compose.yaml inside it.
+    The rendered sql initialization script is temporaily stored in current directory as well as in 'your-sql-scriptstore' to be shared with container as volume.
+    Remember the root directory must have a .env file.
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Subcommands:
+
+    init:       Fetches docker-compose.yaml template file from the scriptstore.
+                Renders it locally in ./docker/postgresql after substituting by the env variables defined in a ./.env file.
+                Up all the services.
+                Initialize/configure the database using a initializing sql script, which is rendered from sql templates.
+                    By default, default.pgsql.template from the template store is fetched and variables substituted from ./.env file.
+                    --sqltemplate=localdir will search for *.pgsql.template file recursively in the current directory. [You'll will be given options to choose]
+                    --sqltemplate=templatestore will search for *.pgsql.temmplate file recursively in the template store. [You'll will be given options to choose]
+                    --sqltemplate=<temmplate_file_full_path_incuding_name> will take the template as the selected one.
+                If the root directory already contains ./docker/postgresql/docker-compose.yaml, or, you've run the 'init' command earlier,
+                    then successing running of 'init' command will just 'up' the services and run the initializing sql script again.
+
+    up:         This runs all the service up. (equivalent to 'docker compose up -d')
+                You're advised to use 'docker compose up -d' command instead.
+
+    down:       This tears down all the services (equivalent to 'docker compose down')
+                Doesn't clean the volumes, you need to delete it manually if wanted.
+                You may instead run 'docker compose down'.
+
+    config:     If the services are up, initialize/configure the database using a initializing sql script, which is rendered from sql templates.
+                    By default, default.pgsql.template from the template store is fetched and variables substituted from ./.env file.
+                    --sqltemplate=localdir will search for *.pgsql.template file recursively in the current directory. [You'll will be given options to choose]
+                    --sqltemplate=templatestore will search for *.pgsql.temmplate file recursively in the template store. [You'll will be given options to choose]
+                    --sqltemplate=<temmplate_file_full_path_incuding_name> will take the template as the selected one.
+
+    clean:      If first runs the 'down' command, followed by an option if you also want to remove the local docker-compose.yaml file.
+                If you provid '--f' option, then it'll delete the local docker-compose.yaml instantly without asking for any confirmation.
+                This doesn't clean the volumes, you need to delete it manually if wanted.
+
+    help:
+                Shows the help contents on this command.
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Storage layout:
+
+    $HOME/linux_tools_runtime/springstarter/db/postgresql (default value of 'your-sql-scriptstore'): rendered sql template stored here
+    $(pwd)/docker/postgresql: rendered docker-compose.yaml stored here
+    $HOME/MyTools/Linux_Tools/DevAssist/spring-assist/springstarter/db/pgsql/container/configuration/templates: sql-template store
+    $HOME/MyTools/Linux_Tools/Scripts_store/Spring_helper/Db_related/postgresql_container_creator: docker-compose.yaml location in scriptstore
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Usage:
+    init:
+        springstarter db postgresql container init      [Note. default.pgsql.temmplate from scriptstore is the default template]
+        springstarter db postgresql container init --sqltemplate=localdir       [Note. template extension must be .pgsql.template]
+        springstarter db postgresql container init --sqltemplate=scriptstore
+        springstarter db postgresql container init --sqltemplate=<temmplate_file_full_path_incuding_name>   [Note. template extension must be .pgsql.template]
+
+    up:
+        springstarter db postgresql container up
+
+    down:
+        springstarter db postgresql container down
+
+    config:
+        springstarter db postgresql container config
+        springstarter db postgresql container config --sqltemplate=localdir
+        springstarter db postgresql container config --sqltemplate=scriptstore
+        springstarter db postgresql container config --sqltemplate=<temmplate_file_full_path_incuding_name>
+
+    clean:
+        springstarter db postgresql container clean
+        springstarter db postgresql container clean --f
+
+    help:
+        springstarter db postgresql container help
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Aliases:
+
+    sspgcontainer: springstarter db postgresql container
+    sspgcontainerdefault: springstarter db postgresql container init
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Examples:
+
+    See usage above
+-------------------------------------------------------------------------------------------------------------------------------------------
+

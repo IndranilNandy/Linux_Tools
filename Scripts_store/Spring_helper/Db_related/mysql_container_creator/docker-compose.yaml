@@ -2,9 +2,10 @@
 # Ref. https://hub.docker.com/_/mysql
 version: '3.1'
 
+name: your-service-name
 services:
 
-  db:
+  mysqldb:
     image: mysql
     # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
     # (this is just an example, not intended to be a production configuration)
@@ -13,10 +14,18 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: example
     ports:
-      - 3306:3306
+      - your-db-port:3306
+    expose:
+      - your-db-port
+    volumes:
+      - mysqldata:/var/lib/mysql
+      - your-sql-scriptstore:/scriptstore
 
-  adminer:
+  mysqladminer:
     image: adminer
     restart: always
     ports:
-      - 8082:8080
+      - your-adminer-port:8080
+
+volumes:
+  mysqldata:

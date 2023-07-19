@@ -9,6 +9,14 @@ fi
 . "$curDir"/../../../.systemConfig
 . "$curDir"/../../../vars/.colors
 
+init() {
+    # _____________________________________________________
+    # springstarter project init "${@}"
+    # _____________________________________________________
+    "$curDir"/project/project_setup.sh "init" "${@}"
+
+}
+
 prompt() {
     subcommands="$curDir"/.commands
 
@@ -23,7 +31,7 @@ prompt() {
 
 case "${1}" in
 init)
-    springstarter project init "${@:2}"
+    init "${@:2}"
     ;;
 project)
     "$curDir"/project/project_setup.sh "${@:2}"

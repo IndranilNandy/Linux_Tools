@@ -86,7 +86,7 @@ clean_tmp_setup() {
     rm -rf "$tmpdir"
 }
 
-create() {
+create_project() {
     create_tmp_setup
 
     project_name=$(awk -F'=' '$1 == "name" {print $2}' "$project_info")
@@ -94,6 +94,64 @@ create() {
 
     [[ -d "$(pwd)/$project_name" ]] && echo -e "${RED}Project with this name already exists. Exiting without creating a new project.${RESET}" && return 1
     gen_project_with_springio "$project_name" || return 1
+}
+
+config() {
+    echo -e "______________________________________________________________________________________"
+    echo -e "[Project] CONFIG"
+    echo -e "______________________________________________________________________________________"
+    project_name="${@}"
+    [[ -z "$project_name" ]] && echo -e "Project name not provided. Exiting" && exit 1
+    [[ ! -d "$(pwd)/$project_name" ]] && echo -e "Not able to find the project directory in the current directory. Exiting." && exit 1
+
+    (
+        cd "$(pwd)/$project_name" || exit 1
+        # _____________________________________________________
+        # springstarter config init "${@}"
+        # _____________________________________________________
+        "$curDir"/config/project_configurer.sh "init" "${@}"
+
+    )
+
+    clean_tmp_setup
+    echo -e "${GREEN}Project configured successfully.${RESET}"
+
+    echo -e "______________________________________________________________________________________"
+
+}
+
+create() {
+    echo -e "______________________________________________________________________________________"
+    echo -e "[Project] CREATE"
+    echo -e "______________________________________________________________________________________"
+    create_project "${@}" || exit 1
+    project_name=$(awk -F'=' '$1 == "name" {print $2}' "$project_info")
+    echo -e "${GREEN}Project created successfully.${RESET}"
+    echo -e "______________________________________________________________________________________"
+}
+
+init() {
+    echo -e "______________________________________________________________________________________"
+    echo -e "[Project] INIT"
+    echo -e "______________________________________________________________________________________"
+    echo -e "Step 1: Create project"
+    echo -e "Step 2: Configure project"
+
+    # _____________________________________________________
+    # springstarter project create "${@}"
+    # _____________________________________________________
+    create "${@}"
+
+    # Since, in this case, 'create' and 'config' will be called consecutively,
+    # "$tmpdir"/config/project_metadata/.project.info wouldn't be changed, in between, by any other command (not running parallely)
+    project_name=$(awk -F'=' '$1 == "name" {print $2}' "$project_info")
+    # _____________________________________________________
+    # springstarter project config "$project_name"
+    # _____________________________________________________
+    config "$project_name"
+
+    echo -e "______________________________________________________________________________________"
+
 }
 
 prompt() {
@@ -111,46 +169,13 @@ prompt() {
 project_name=
 case "${1}" in
 init)
-    echo -e "______________________________________________________________________________________"
-    echo -e "[Project] INIT"
-    echo -e "______________________________________________________________________________________"
-    echo -e "Step 1: Create project"
-    echo -e "Step 2: Configure project"
-
-    springstarter project create "${@:2}"
-
-    # Since, in this case, 'create' and 'config' will be called consecutively,
-    # "$tmpdir"/config/project_metadata/.project.info wouldn't be changed, in between, by any other command (not running parallely)
-    project_name=$(awk -F'=' '$1 == "name" {print $2}' "$project_info")
-    springstarter project config "$project_name"
-    echo -e "______________________________________________________________________________________"
+    init "${@:2}"
     ;;
 create)
-    echo -e "______________________________________________________________________________________"
-    echo -e "[Project] CREATE"
-    echo -e "______________________________________________________________________________________"
-    create "${@:2}" || exit 1
-    project_name=$(awk -F'=' '$1 == "name" {print $2}' "$project_info")
-    echo -e "${GREEN}Project created successfully.${RESET}"
-    echo -e "______________________________________________________________________________________"
+    create "${@:2}"
     ;;
 config)
-    echo -e "______________________________________________________________________________________"
-    echo -e "[Project] CONFIG"
-    echo -e "______________________________________________________________________________________"
-    project_name="${@:2}"
-    [[ -z "$project_name" ]] && echo -e "Project name not provided. Exiting" && exit 1
-    [[ ! -d "$(pwd)/$project_name" ]] && echo -e "Not able to find the project directory in the current directory. Exiting." && exit 1
-
-    (
-        cd "$(pwd)/$project_name" || exit 1
-        springstarter config init "${@:2}"
-    )
-
-    clean_tmp_setup
-    echo -e "${GREEN}Project configured successfully.${RESET}"
-
-    echo -e "______________________________________________________________________________________"
+    config "${@:2}"
     ;;
 help)
     echo --help

@@ -11,7 +11,11 @@ pgsql() {
 }
 
 init() {
-    springstarter db postgresql init "${@}"
+    # _____________________________________________________
+    # springstarter db postgresql init "${@}"
+    # _____________________________________________________
+    "$curDir"/db/pgsql/pgsql_configurer.sh "init" "$@"
+
 }
 
 prompt() {

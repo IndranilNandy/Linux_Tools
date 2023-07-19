@@ -174,7 +174,10 @@ help() {
 }
 
 init() {
-    springstarter env secrets dotenv load
+    # _____________________________________________________
+    # springstarter env secrets dotenv load
+    # _____________________________________________________
+    load "${@}"
 }
 
 prompt() {

@@ -11,7 +11,10 @@ dotenv() {
 }
 
 init() {
-    springstarter env secrets dotenv init "$@"
+    # _____________________________________________________
+    # springstarter env secrets dotenv init "$@"
+    # _____________________________________________________
+    "$curDir"/env/secrets/dotenv/dotenv_configurer.sh "init" "$@"
 }
 
 prompt() {

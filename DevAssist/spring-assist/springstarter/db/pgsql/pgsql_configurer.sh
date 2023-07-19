@@ -11,7 +11,10 @@ container() {
 }
 
 init() {
-    springstarter db postgresql container init "${@}"
+    # _____________________________________________________
+    # springstarter db postgresql container init "${@}"
+    # _____________________________________________________
+    "$curDir"/db/pgsql/container/pgsql_container_configurer.sh "init" "${@}"
 }
 
 prompt() {

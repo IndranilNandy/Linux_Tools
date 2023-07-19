@@ -11,7 +11,11 @@ secrets() {
 }
 
 init() {
-    springstarter env secrets init "${@}"
+    # _____________________________________________________
+    # springstarter env secrets init "${@}"
+    # _____________________________________________________
+    "$curDir"/env/secrets/secrets_configurer.sh "init" "$@"
+
 }
 
 prompt() {

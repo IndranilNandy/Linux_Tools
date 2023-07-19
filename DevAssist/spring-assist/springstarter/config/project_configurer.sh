@@ -28,8 +28,26 @@ init1() {
 }
 
 init() {
-    springstarter env init "${@}"
-    springstarter db init "${@}"
+    # _____________________________________________________
+    # springstarter env init "${@}"
+    # _____________________________________________________
+    "$curDir"/env/env_configurer.sh "init" "$@"
+
+    # _____________________________________________________
+    # springstarter db init "${@}"
+    # _____________________________________________________
+    "$curDir"/db/db_configurer.sh "init" "$@"
+
+    # _____________________________________________________
+    # springstarter config appyaml init "${@}"
+    # _____________________________________________________
+    "$curDir"/config/appyaml/appyaml_configurer.sh "init" "${@}"
+
+    # _____________________________________________________
+    # springstarter config logging init "${@}"
+    # _____________________________________________________
+    "$curDir"/config/logging/logging_configurer.sh "init" "${@}"
+
 }
 
 prompt() {
@@ -57,13 +75,26 @@ db)
     springstarter db "${@:2}"
     ;;
 appyaml)
-    # "$curDir"/project/config/project_configurer.sh "${@:2}"
+    echo -e
+    echo -e "${GREEN}${BOLD}______________________________________________________________________________________${RESET}"
+    echo -e "${GREEN}${BOLD}Application.yaml${RESET}"
+    echo -e "${GREEN}${BOLD}______________________________________________________________________________________${RESET}"
+    "$curDir"/config/appyaml/appyaml_configurer.sh "${@:2}"
+    echo -e "${GREEN}${BOLD}______________________________________________________________________________________${RESET}"
     ;;
 buildgradle)
     # "$curDir"/db/db_configurer.sh "${@:2}"
     ;;
 metadata)
     # "$curDir"/env/env_configurer.sh "${@:2}"
+    ;;
+logging)
+    echo -e
+    echo -e "${GREEN}${BOLD}______________________________________________________________________________________${RESET}"
+    echo -e "${GREEN}${BOLD}Logging${RESET}"
+    echo -e "${GREEN}${BOLD}______________________________________________________________________________________${RESET}"
+    "$curDir"/config/logging/logging_configurer.sh "${@:2}"
+    echo -e "${GREEN}${BOLD}______________________________________________________________________________________${RESET}"
     ;;
 help)
     echo --help

@@ -1,0 +1,151 @@
+{
+	// Place your snippets for spring-boot-properties-yaml here. Each snippet is defined under a snippet name and has a prefix, body and
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the
+	// same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	// *****************************************************************************
+    // USE CTRL + SHIFT - AND THEN CTRL +
+	// *****************************************************************************
+	// Database configurations
+	// *****************************************************************************
+    "H2 Config": {
+        "prefix": [
+			"[snp] H2 Config",
+			"[sb-config] H2 Config",
+		],
+        "body": [
+            "---",
+            "",
+            "spring:",
+            "\tconfig:",
+            "\t\tactivate:",
+            "\t\t\ton-profile:",
+            "\t\t\t\t- h2",
+            "\tdatasource:",
+            "\t\turl: jdbc:h2:mem:\\${H2_DATABASE};DB_CLOSE_ON_EXIT=FALSE",
+            "\t\tdriver-class-name: org.h2.Driver",
+            "\t\tusername: \\${spring.application.name}",
+            "\t\tpassword: \\${H2_DATABASE_PASSWORD}",
+            "\th2:",
+            "\t\tconsole:",
+            "\t\t\tenabled: true"
+        ],
+        "description": "H2 Config"
+    },
+    "MySql Config": {
+        "prefix": [
+			"[snp] MySql Config",
+			"[sb-config] MySql Config",
+		],
+        "body": [
+            "---",
+            "",
+            "spring:",
+            "\tconfig:",
+            "\t\tactivate:",
+            "\t\t\ton-profile:",
+            "\t\t\t\t- mysql",
+            "\tdatasource:",
+            "\t\turl: jdbc:mysql://\\${MYSQL_DATABASE_HOST:localhost}:\\${MYSQL_DATABASE_PORT:3306}/\\${MYSQL_DATABASE}",
+            "\t\tdriver-class-name: com.mysql.cj.jdbc.Driver",
+            "\t\tusername: \\${spring.application.name}",
+            "\t\tpassword: \\${MYSQL_DATABASE_PASSWORD}",
+        ],
+        "description": "MySql Config"
+    },
+    "PostgreSql Config": {
+        "prefix": [
+			"[snp] PostgreSql Config",
+			"[sb-config] PostgreSql Config",
+		],
+        "body": [
+            "---",
+            "",
+            "spring:",
+            "\tconfig:",
+            "\t\tactivate:",
+            "\t\t\ton-profile:",
+            "\t\t\t\t- postgresql",
+            "\tdatasource:",
+            "\t\turl: jdbc:postgresql://\\${POSTGRESQL_DATABASE_HOST:localhost}:\\${POSTGRESQL_DATABASE_PORT:5432}/\\${POSTGRESQL_DATABASE}",
+            "\t\tdriver-class-name: org.postgresql.Driver",
+            "\t\tusername: \\${spring.application.name}",
+            "\t\tpassword: \\${POSTGRESQL_DATABASE_PASSWORD}",
+        ],
+        "description": "PostgreSql Config"
+    },
+    "Common Config": {
+        "prefix": [
+			"[snp] Common Config",
+			"[sb-config] Common Config",
+		],
+        "body": [
+            "spring:",
+            "\tapplication:",
+            "\t\tname: <servicename>",
+            "\tconfig:",
+            "\t\timport:",
+            "\t\t- optional:file:.env[.properties]",
+            "\tprofiles:",
+            "\t\tactive:",
+            "\t\t- <h2/mysql/postgresql>",
+            "\t\t- jpa",
+            "\t\t- actuator",
+            "server:",
+            "\tport: 8081",
+        ],
+        "description": "Application yaml - common config"
+    },
+    "Actuator Config": {
+        "prefix": [
+			"[snp] Actuator Config",
+			"[sb-config] Actuator Config",
+		],
+        "body": [
+            "---",
+            "",
+            "spring:",
+            "\tconfig:",
+            "\t\tactivate:",
+            "\t\t\ton-profile:",
+            "\t\t\t\t- actuator",
+            "",
+            "management:",
+            "\tendpoints:",
+            "\t\tweb:",
+            "\t\t\texposure:",
+            "\t\t\t\tinclude:",
+            "\t\t\t\t- \"*\"",
+        ],
+        "description": "Actuator Config"
+    },
+    "Jpa Config": {
+        "prefix": [
+			"[snp] Jpa Config",
+			"[sb-config] Jpa Config",
+		],
+        "body": [
+            "---",
+            "",
+            "spring:",
+            "\tconfig:",
+            "\t\tactivate:",
+            "\t\t\ton-profile:",
+            "\t\t\t\t- jpa",
+            "\tjpa:",
+            "\t\thibernate:",
+            "\t\t\tddl-auto: update",
+            "\t\tshow-sql: true"
+        ],
+        "description": "Jpa Config"
+    },
+}

@@ -1,0 +1,72 @@
+{
+	// Place your snippets for json here. Each snippet is defined under a snippet name and has a prefix, body and
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the
+	// same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	// *****************************************************************************
+	// Vscode Test Configuration
+	// *****************************************************************************
+	"vscode test configuration": {
+        "prefix": [
+			"[snp] vscode test conf",
+			"[vscode] vscode test conf",
+			"[settings] vscode test conf",
+		],
+        "body": [
+            "{",
+            "\t// Ref. https://github.com/Microsoft/vscode-java-test/wiki/Run-with-Configuration",
+            "\t\"java.test.config\": [",
+            "\t\t{",
+            "\t\t\t\"name\": \"myConfiguration\",",
+            "\t\t\t\"workingDirectory\": \"\\${workspaceFolder}\",",
+            "\t\t\t\"vmargs\": [",
+            "\t\t\t\t\"-Xmx512M\"",
+            "\t\t\t],",
+            "\t\t\t\"env\": {",
+            "\t\t\t\t\"key\": \"value\"",
+            "\t\t\t},",
+            "\t\t\t\"testKind\": \"junit\",",
+            "\t\t\t\"filters\": {",
+            "\t\t\t\t\"tags\": [",
+            "\t\t\t\t\t\"Fast | Superfast\", // ---> include tag 'Fast' or 'Superfast'",
+            "\t\t\t\t\t\"!bar\" // ---> exclude tag 'bar'",
+            "\t\t\t\t]",
+            "\t\t\t},",
+            "\t\t},",
+            "\t\t{",
+            "\t\t\t\"name\": \"myConfiguration2\",",
+            "\t\t\t\"workingDirectory\": \"\\${workspaceFolder}\",",
+            "\t\t\t\"vmargs\": [",
+            "\t\t\t\t\"-Xmx512M\"",
+            "\t\t\t],",
+            "\t\t\t\"env\": {",
+            "\t\t\t\t\"key\": \"value\"",
+            "\t\t\t},",
+            "\t\t\t\"testKind\": \"junit\",",
+            "\t\t\t\"filters\": {",
+            "\t\t\t\t\"tags\": [",
+            "\t\t\t\t\t\"Slow\", // ---> include tag 'Slow'",
+            "\t\t\t\t\t\"!bar\" // ---> exclude tag 'bar'",
+            "\t\t\t\t]",
+            "\t\t\t},",
+            "\t\t},",
+            "\t],",
+            "\t\"java.test.defaultConfig\": \"myConfiguration\",",
+            "\t// \"java.test.defaultConfig\": \"default\",",
+            "}"
+        ],
+        "description": [
+            "vscode test conf\n",
+            "#   Ref. https://code.visualstudio.com/docs/java/java-testing#_customize-test-configurations\n",
+        ],
+    }
+}

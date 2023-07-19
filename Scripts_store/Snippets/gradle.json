@@ -1,0 +1,391 @@
+{
+	// Place your snippets for gradle here. Each snippet is defined under a snippet name and has a prefix, body and
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the
+	// same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	//
+	// *****************************************************************************
+	// LIST OF BUILD CONFIGURATIONS
+	// *****************************************************************************
+	"bootBuildImage": {
+		"prefix": [
+			"[snp] bootBuildImage",
+			"[build-config] bootBuildImage",
+		],
+		"body": [
+			"// References: https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/html/#build-image",
+			"// Examples: https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/#build-image.examples",
+			"tasks.named(\"bootBuildImage\") {",
+			"imageName.set(\"${1:indranilnandy}/${project.name}\")",
+			"publish = ${2|false,true|}",
+			"docker {",
+			"publishRegistry {",
+			"// username = project.property('${3:myUsername}')",
+			"// password = project.property('${4:myRepoPassword}')",
+			"}",
+			"}",
+			"}"
+		],
+		"description": "gradle bootBuildImage"
+	},
+	"spotless": {
+		"prefix": [
+			"[snp] spotless",
+			"[build-config] spotless",
+		],
+		"body": [
+			"// Referenes: https://github.com/diffplug/spotless/blob/main/plugin-gradle/README.md#groovy",
+			"\"spotless\" {",
+			"groovyGradle {",
+			"target '*.gradle' // default target of groovyGradle",
+			"greclipse()",
+			"}",
+			"}"
+		],
+		"description": "formatter spotless"
+	},
+	// *****************************************************************************
+	// LIST OF ALL GRADLE DEPENDENCIES
+	// *****************************************************************************
+	"lombok gradle dependency": {
+		"prefix": [
+			"[snp] lombok",
+			"[dep] lombok",
+		],
+		"body": [
+			"// Ref: https://projectlombok.org/setup/gradle",
+			"compileOnly 'org.projectlombok:lombok:${1:1.18.24}'",
+			"annotationProcessor 'org.projectlombok:lombok:${1:1.18.24}'",
+			"",
+			"testCompileOnly 'org.projectlombok:lombok:${1:1.18.24}'",
+			"testAnnotationProcessor 'org.projectlombok:lombok:${1:1.18.24}'"
+		],
+		"description": "lombok gradle dependency"
+	},
+	"slf4j-simple": {
+        "prefix": [
+			"[snp] slf4j-simple",
+			"[dep] slf4j-simple",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/org.slf4j/slf4j-simple",
+            "implementation 'org.slf4j:slf4j-simple:${1:2.0.6}'"
+        ],
+        "description": "slf4j-simple binding"
+    },
+	"slf4j(1.7.x)-log4j2 + yaml support": {
+        "prefix": [
+			"[snp] slf4j(1.7.x)-log4j2 + yaml support",
+			"[dep] slf4j(1.7.x)-log4j2 + yaml support",
+		],
+        "body": [
+			"// Ref: https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core",
+			"// implementation 'org.apache.logging.log4j:log4j-core:${1:2.19.0}'",
+			"",
+            "// Ref: https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl",
+            "implementation 'org.apache.logging.log4j:log4j-slf4j-impl:${1:2.19.0}'",
+            "",
+            "// Ref: https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind",
+            "implementation 'com.fasterxml.jackson.core:jackson-databind:${2:2.14.1}'",
+            "",
+            "// Ref: https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml",
+            "implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${3:2.14.1}'"
+        ],
+        "description": "slf4j(1.7.x)-log4j2 binding + yaml support. Note: log4j-core is included transitively, no need to declare explicitly."
+    },
+	"slf4j(2.0.x)-log4j2 + yaml support": {
+        "prefix": [
+			"[snp] slf4j(2.0.x)-log4j2 + yaml support",
+			"[dep] slf4j(2.0.x)-log4j2 + yaml support",
+		],
+        "body": [
+			"// Ref: https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core",
+			"implementation 'org.apache.logging.log4j:log4j-core:${1:2.19.0}'",
+			"",
+            "// Ref: https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j2-impl",
+            "implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:${1:2.19.0}'",
+            "",
+            "// Ref: https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind",
+            "implementation 'com.fasterxml.jackson.core:jackson-databind:${2:2.14.1}'",
+            "",
+            "// Ref: https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml",
+            "implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${3:2.14.1}'"
+        ],
+        "description": "slf4j(2.0.x)-log4j2 binding + yaml support. Note: log4j-core is NOT included transitively, so need to declare explicitly."
+    },
+	"slf4j-jdk14": {
+        "prefix": [
+			"[snp] slf4j-jdk14",
+			"[dep] slf4j-jdk14",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/org.slf4j/slf4j-jdk14",
+            "implementation 'org.slf4j:slf4j-jdk14:${1:2.0.6}'"
+        ],
+        "description": "slf4j-jdk14 binding"
+    },
+	"slf4j-jcl": {
+        "prefix": [
+			"[snp] slf4j-jcl",
+			"[dep] slf4j-jcl",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/org.slf4j/slf4j-jcl",
+            "implementation 'org.slf4j:slf4j-jcl:${1:1.7.36}'"
+        ],
+        "description": "slf4j-jcl binding"
+    },
+	"slf4j-logback-classic": {
+        "prefix": [
+			"[snp] slf4j-logback-classic",
+			"[dep] slf4j-logback-classic",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/ch.qos.logback/logback-classic",
+            "implementation 'ch.qos.logback:logback-classic:${1:1.4.5}'"
+        ],
+        "description": "slf4j-logback-classic binding"
+    },
+	"slf4j-api": {
+        "prefix": [
+			"[snp] slf4j-api",
+			"[dep] slf4j-api",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/org.slf4j/slf4j-api",
+            "implementation 'org.slf4j:slf4j-api:${1:2.0.6}'"
+        ],
+        "description": "slf4j-api"
+    },
+	"log4j2": {
+        "prefix": [
+			"[snp] log4j2",
+			"[dep] log4j2",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core",
+            "implementation 'org.apache.logging.log4j:log4j-core:${1:2.19.0}'",
+            "",
+            "// Ref: https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api",
+            "implementation 'org.apache.logging.log4j:log4j-api:${1:2.19.0}'"
+        ],
+        "description": "log4j2"
+    },
+	"jackson-databind": {
+        "prefix": [
+			"[snp] jackson-databind",
+			"[dep] jackson-databind",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind",
+            "implementation 'com.fasterxml.jackson.core:jackson-databind:${1:2.14.1}'"
+        ],
+        "description": "jackson-databind"
+    },
+	"jackson-dataformat-yaml": {
+        "prefix": [
+			"[snp] jackson-dataformat-yaml",
+			"[dep] jackson-dataformat-yaml",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml",
+            "implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${1:2.14.1}'"
+        ],
+        "description": "jackson-dataformat-yaml"
+    },
+	"log4j2 + yaml support": {
+        "prefix": [
+			"[snp] log4j2 + yaml support",
+			"[dep] log4j2 + yaml support",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core",
+            "implementation 'org.apache.logging.log4j:log4j-core:${1:2.19.0}'",
+            "",
+            "// Ref: https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api",
+            "implementation 'org.apache.logging.log4j:log4j-api:${1:2.19.0}'",
+            "",
+            "// Ref: https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind",
+            "implementation 'com.fasterxml.jackson.core:jackson-databind:${2:2.14.1}'",
+            "",
+            "// Ref: https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml",
+            "implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${3:2.14.1}'"
+        ],
+        "description": "log4j2 + yaml support"
+    },
+    "spring-boot log4j2 inclusion + logback exclusion": {
+        "prefix": [
+			"[snp] spring-boot log4j2 inclusion + logback exclusion",
+			"[dep] spring-boot log4j2 inclusion + logback exclusion",
+		],
+        "body": [
+            "// Ref: https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto.logging.log4j",
+            "implementation \"org.springframework.boot:spring-boot-starter-log4j2\"",
+            "modules {",
+            "\tmodule(\"org.springframework.boot:spring-boot-starter-logging\") {",
+            "\t\treplacedBy(\"org.springframework.boot:spring-boot-starter-log4j2\", \"Use Log4j2 instead of Logback\")",
+            "\t}",
+            "}"
+        ],
+        "description": "spring-boot log4j2 inclusion + logback exclusion"
+    },
+    "assertj": {
+        "prefix": [
+			"[snp] assertj",
+			"[dep] assertj",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/org.assertj/assertj-core",
+            "testImplementation 'org.assertj:assertj-core:3.24.2'"
+        ],
+        "description": "assertj"
+    },
+    "apache commons lang3": {
+        "prefix": [
+			"[snp] apache commons lang3",
+			"[dep] apache commons lang3",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/org.apache.commons/commons-lang3",
+            "implementation 'org.apache.commons:commons-lang3:3.12.0'"
+        ],
+        "description": "apache commons lang3"
+    },
+    "apache commons collections": {
+        "prefix": [
+			"[snp] apache commons collections",
+			"[dep] apache commons collections",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/org.apache.commons/commons-collections4",
+            "implementation 'org.apache.commons:commons-collections4:4.4'"
+        ],
+        "description": "apache commons collections"
+    },
+    "spring dotenv": {
+        "prefix": [
+			"[snp] spring dotenv",
+			"[dep] spring dotenv",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/me.paulschwarz/spring-dotenv",
+            "implementation 'me.paulschwarz:spring-dotenv:4.0.0'"
+        ],
+        "description": "spring dotenv"
+    },
+	// *****************************************************************************
+	// LIST OF ALL PLUGINS
+	// *****************************************************************************
+	"plugin-lombok": {
+		"prefix": [
+			"[snp] plugin-lombok",
+			"[plugin] plugin-lombok",
+		],
+		"body": [
+			"// Source: https://plugins.gradle.org/plugin/io.freefair.lombok",
+			"id \"io.freefair.lombok\" version \"${1:8.1.0}\""
+		],
+		"description": "plugin lombok"
+	},
+	"plugin-spotless": {
+		"prefix": [
+			"[snp] plugin-spotless",
+			"[plugin] plugin-spotless",
+		],
+		"body": [
+			"// Source: https://github.com/diffplug/spotless/tree/main/plugin-gradle",
+			"id \"com.diffplug.spotless\" version \"${1:6.19.0}\""
+		],
+		"description": "plugin spotless"
+	},
+	// *****************************************************************************
+	// LIST OF GRADLE TASKS
+	// *****************************************************************************
+	"Task-Test": {
+        "prefix": [
+			"[snp] Task-Test",
+			"[Task type] Task-Test",
+		],
+        "body": [
+            "// https://docs.gradle.org/current/dsl/org.gradle.api.tasks.testing.Test.html",
+            "tasks.named('test') {",
+            "\t// Discover and execute JUnit4-based tests",
+            "\t// useJUnit()",
+            "",
+            "\t// Discover and execute TestNG-based tests",
+            "\t// useTestNG()",
+            "",
+            "\t// Discover and execute JUnit Platform-based tests",
+            "\tuseJUnitPlatform {",
+            "\t\t// Filtering Tests",
+            "\t\t// includeTags 'api & acceptance', 'accessibility', 'Fast | Superfast'",
+            "\t\t// excludeTags 'regression', 'issue-1962', 'Fastex | Superfastex'",
+            "\t}",
+            "",
+            "\ttestLogging {",
+            "\t\tevents \"passed\", \"skipped\", \"failed\"",
+            "\t\tshowStandardStreams = true",
+            "\t}",
+            "",
+            "\t// set a system property for the test JVM(s)",
+            "\t// systemProperty 'some.prop', 'value'",
+            "",
+            "\t// explicitly include or exclude tests",
+            "\t// include 'org/foo/**'",
+            "\t// exclude 'org/boo/**'",
+            "",
+            "\t// show standard out and standard error of the test JVM(s) on the console",
+            "\t// testLogging.showStandardStreams = true",
+            "",
+            "\t// set heap size for the test JVM(s)",
+            "\t// minHeapSize = \"128m\"",
+            "\t// maxHeapSize = \"512m\"",
+            "",
+            "\t// set JVM arguments for the test JVM(s)",
+            "\t// jvmArgs '-XX:MaxPermSize=256m'",
+            "",
+            "\t// listen to events in the test execution lifecycle",
+            "\tbeforeTest { descriptor ->",
+            "\t\tlogger.lifecycle(\"Running test: \" + descriptor)",
+            "\t}",
+            "",
+            "\t// Fail the 'test' task on the first test failure",
+            "\t// failFast = true",
+            "",
+            "\t// listen to standard out and standard error of the test JVM(s)",
+            "\tonOutput { descriptor, event ->",
+            "\t\tlogger.lifecycle(\"Test: \" + descriptor + \" produced standard out/err: \" + event.message )",
+            "\t}",
+            "}"
+        ],
+        "description": "Task-Test"
+    },
+	"Task-Fat Jar": {
+        "prefix": [
+			"[snp] Fat Jar",
+			"[Task type] Fat Jar",
+		],
+        "body": [
+            "// Ref: https://www.baeldung.com/gradle-fat-jar",
+            "task customFatJar(type: Jar) {",
+            "\tmanifest {",
+            "\t\tattributes 'Main-Class': '${1:com.example.App}'",
+            "\t}",
+            "\tarchiveBaseName = '${2:all-in-one-jar}'",
+            "\tduplicatesStrategy = DuplicatesStrategy.EXCLUDE",
+            "\tfrom { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }",
+            "\twith jar",
+            "}"
+        ],
+        "description": "Task-Fat Jar"
+    }
+}

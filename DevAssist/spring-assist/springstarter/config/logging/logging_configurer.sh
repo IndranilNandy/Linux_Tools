@@ -19,10 +19,19 @@ prompt() {
 }
 
 init() {
+    echo -e
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+    echo -e "${BLUE}${BOLD}[SPRINGSTARTER CONFIG LOGGING INIT] Started.${RESET}"
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+
     # _____________________________________________________
     # springstarter config logging log4j2 init "${@}"
     # _____________________________________________________
     "$curDir"/config/logging/log4j2/log4j2_configurer.sh "init" "${@}"
+
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+    echo -e "${BLUE}${BOLD}[SPRINGSTARTER CONFIG LOGGING INIT] Finished.${RESET}"
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
 }
 
 case "${1}" in

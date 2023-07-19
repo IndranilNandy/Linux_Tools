@@ -158,6 +158,11 @@ upContainer() {
 
 init() {
     echo -e
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+    echo -e "${BLUE}${BOLD}[SPRINGSTARTER DB POSTGRESQL CONTAINER INIT] Started.${RESET}"
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+
+    echo -e
     echo -e "-----------------------------------"
     echo -e "Initializing containers"
     echo -e "-----------------------------------"
@@ -171,6 +176,11 @@ init() {
     upContainer || return 1
     configContainer "$@" || return 1
     echo -e "\nDONE"
+
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+    echo -e "${BLUE}${BOLD}[SPRINGSTARTER DB POSTGRESQL CONTAINER INIT] Finished.${RESET}"
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+
     return 0
 }
 

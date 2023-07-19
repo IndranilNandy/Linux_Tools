@@ -11,10 +11,20 @@ dotenv() {
 }
 
 init() {
+    echo -e
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+    echo -e "${BLUE}${BOLD}[SPRINGSTARTER ENV SECRETS INIT] Started.${RESET}"
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+
     # _____________________________________________________
     # springstarter env secrets dotenv init "$@"
     # _____________________________________________________
     "$curDir"/env/secrets/dotenv/dotenv_configurer.sh "init" "$@"
+
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+    echo -e "${BLUE}${BOLD}[SPRINGSTARTER ENV SECRETS INIT] Finished.${RESET}"
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+
 }
 
 prompt() {

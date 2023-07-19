@@ -11,10 +11,19 @@ container() {
 }
 
 init() {
+    echo -e
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+    echo -e "${BLUE}${BOLD}[SPRINGSTARTER DB POSTGRESQL INIT] Started.${RESET}"
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+
     # _____________________________________________________
     # springstarter db postgresql container init "${@}"
     # _____________________________________________________
     "$curDir"/db/pgsql/container/pgsql_container_configurer.sh "init" "${@}"
+
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+    echo -e "${BLUE}${BOLD}[SPRINGSTARTER DB POSTGRESQL INIT] Finished.${RESET}"
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
 }
 
 prompt() {

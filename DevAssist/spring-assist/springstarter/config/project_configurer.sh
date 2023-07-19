@@ -13,30 +13,30 @@ tmpdir="/tmp/springstarter/project"
 #     cp -r "$LINUX_TOOLS_project_config" "$tmpdir"
 # }
 
-init1() {
-    project_name="${@}"
-    echo -e "project: $project_name"
-    [[ ! -d "$(pwd)/$project_name" ]] && echo -e "Not able to find the project directory in the current directory. Exiting." && exit 1
-    (
-        cd "$(pwd)/$project_name" || exit 1
-        # mkdir -p ".setup"
-        # cp -r "$tmpdir"/config .setup
+db() {
+    # _____________________________________________________
+    # springstarter db "${@}"
+    # _____________________________________________________
+    "$curDir"/db/db_configurer.sh "$@"
+}
 
-        springstarter env secrets dotenv load
-        springstarter db init
-    )
+env() {
+    # _____________________________________________________
+    # springstarter env "${@}"
+    # _____________________________________________________
+    "$curDir"/env/env_configurer.sh "${@}"
 }
 
 init() {
+    echo -e
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+    echo -e "${BLUE}${BOLD}[SPRINGSTARTER CONFIG INIT] Started.${RESET}"
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+
     # _____________________________________________________
     # springstarter env init "${@}"
     # _____________________________________________________
     "$curDir"/env/env_configurer.sh "init" "$@"
-
-    # _____________________________________________________
-    # springstarter db init "${@}"
-    # _____________________________________________________
-    "$curDir"/db/db_configurer.sh "init" "$@"
 
     # _____________________________________________________
     # springstarter config appyaml init "${@}"
@@ -48,6 +48,14 @@ init() {
     # _____________________________________________________
     "$curDir"/config/logging/logging_configurer.sh "init" "${@}"
 
+    # _____________________________________________________
+    # springstarter db init "${@}"
+    # _____________________________________________________
+    "$curDir"/db/db_configurer.sh "init" "$@"
+
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+    echo -e "${BLUE}${BOLD}[SPRINGSTARTER CONFIG INIT] Finished.${RESET}"
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
 }
 
 prompt() {
@@ -62,22 +70,20 @@ prompt() {
     "${0}" "$choice"
 }
 
-project_name=
-
 case "${1}" in
 init)
     init "${@:2}"
     ;;
 env)
-    springstarter env "${@:2}"
+    env "${@:2}"
     ;;
 db)
-    springstarter db "${@:2}"
+    db "${@:2}"
     ;;
 appyaml)
     echo -e
     echo -e "${GREEN}${BOLD}______________________________________________________________________________________${RESET}"
-    echo -e "${GREEN}${BOLD}Application.yaml${RESET}"
+    echo -e "${GREEN}${BOLD}[CONFIG] Application.yaml${RESET}"
     echo -e "${GREEN}${BOLD}______________________________________________________________________________________${RESET}"
     "$curDir"/config/appyaml/appyaml_configurer.sh "${@:2}"
     echo -e "${GREEN}${BOLD}______________________________________________________________________________________${RESET}"
@@ -91,7 +97,7 @@ metadata)
 logging)
     echo -e
     echo -e "${GREEN}${BOLD}______________________________________________________________________________________${RESET}"
-    echo -e "${GREEN}${BOLD}Logging${RESET}"
+    echo -e "${GREEN}${BOLD}[CONFIG] Logging${RESET}"
     echo -e "${GREEN}${BOLD}______________________________________________________________________________________${RESET}"
     "$curDir"/config/logging/logging_configurer.sh "${@:2}"
     echo -e "${GREEN}${BOLD}______________________________________________________________________________________${RESET}"

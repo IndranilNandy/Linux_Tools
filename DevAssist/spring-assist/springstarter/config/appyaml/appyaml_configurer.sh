@@ -36,18 +36,23 @@ prompt() {
 }
 
 init() {
+    echo -e
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+    echo -e "${BLUE}${BOLD}[SPRINGSTARTER CONFIG APPYAML INIT] Started.${RESET}"
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+
     # _____________________________________________________
     # springstarter config appyaml empty "${@}"
     # _____________________________________________________
     empty_yaml "${@}"
+
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
+    echo -e "${BLUE}${BOLD}[SPRINGSTARTER CONFIG APPYAML INIT] Finished.${RESET}"
+    echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
 }
 
 case "${1}" in
 init)
-    echo -e
-    echo -e "-----------------------------------"
-    echo -e "application.yaml -- INIT"
-    echo -e "-----------------------------------"
     init "${@:2}"
     ;;
 empty)

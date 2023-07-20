@@ -4,3 +4,54 @@ Only the following commands should be run from the parent folder of the project 
     - springstarter all *           -- here project itself isn't created yet
     - springstarter project *       -- here either the project isn't created yet (project init/create), or just created and yet to be configured (project config)
 All other commands should run within the project root folder.
+-------------------------------------------------------------------------------------------------------
+
+springstarter init
+
+springstarter project
+springstarter project init
+springstarter project create
+springstarter project config
+springstarter project help
+
+springstarter config init
+springstarter config env "${@}"         ->  springstarter env "${@}"
+springstarter config db "${@}"          ->  springstarter db "${@}"
+springstarter config appyaml init
+springstarter config appyaml empty
+springstarter config appyaml create
+springstarter config appyaml help
+springstarter config help
+
+springstarter env init
+springstarter env secrets init
+springstarter env secrets dotenv init
+springstarter env secrets dotenv sync
+springstarter env secrets dotenv load
+springstarter env secrets dotenv show
+springstarter env secrets dotenv merge
+springstarter env secrets dotenv encrypt
+springstarter env secrets dotenv help
+springstarter env secrets help
+springstarter env help
+
+springstarter db init
+springstarter db postgresql init
+springstarter db postgresql container init
+springstarter db postgresql container up
+springstarter db postgresql container down
+springstarter db postgresql container config
+springstarter db postgresql container clean
+springstarter db postgresql container help
+springstarter db postgresql help
+
+springstarter db mysql init
+springstarter db mysql container init
+springstarter db mysql container up
+springstarter db mysql container down
+springstarter db mysql container config
+springstarter db mysql container clean
+springstarter db mysql container help
+springstarter db mysql init
+
+springstarter db help

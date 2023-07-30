@@ -238,6 +238,20 @@
         ],
         "description": "spring-boot log4j2 inclusion + logback exclusion"
     },
+	"spring-boot log4j2-yaml support": {
+        "prefix": [
+			"[snp] spring-boot log4j2-yaml support",
+			"[dep] spring-boot log4j2-yaml support",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind",
+            "implementation 'com.fasterxml.jackson.core:jackson-databind:${2:2.14.1}'",
+            "",
+            "// Ref: https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml",
+            "implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${3:2.14.1}'"
+        ],
+        "description": "spring-boot log4j2-yaml support"
+    },
     "assertj": {
         "prefix": [
 			"[snp] assertj",
@@ -248,6 +262,28 @@
             "testImplementation 'org.assertj:assertj-core:3.24.2'"
         ],
         "description": "assertj"
+    },
+    "mockito": {
+        "prefix": [
+			"[snp] mockito",
+			"[dep] mockito",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/org.mockito/mockito-core",
+            "testImplementation 'org.mockito:mockito-core:5.4.0'"
+        ],
+        "description": "mockito"
+    },
+    "mockito-junit-jupiter": {
+        "prefix": [
+			"[snp] mockito-junit-jupiter",
+			"[dep] mockito-junit-jupiter",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter",
+            "testImplementation 'org.mockito:mockito-junit-jupiter:5.4.0'"
+        ],
+        "description": "mockito-junit-jupiter"
     },
     "apache commons lang3": {
         "prefix": [

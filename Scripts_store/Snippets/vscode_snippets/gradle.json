@@ -180,6 +180,17 @@
         ],
         "description": "log4j2"
     },
+	"log4j-spring-boot": {
+        "prefix": [
+			"[snp] log4j-spring-boot",
+			"[dep] log4j-spring-boot",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-spring-boot",
+            "implementation 'org.apache.logging.log4j:log4j-spring-boot:3.0.0-alpha1'",
+        ],
+        "description": "log4j-spring-boot"
+    },
 	"jackson-databind": {
         "prefix": [
 			"[snp] jackson-databind",

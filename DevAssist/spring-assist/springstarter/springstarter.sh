@@ -37,6 +37,10 @@ prompt() {
     "${0}" "$choice"
 }
 
+help() {
+    cat "$curDir"/help/springstarter.help
+}
+
 case "${1}" in
 init)
     init "${@:2}"
@@ -54,12 +58,12 @@ env)
     "$curDir"/env/env_configurer.sh "${@:2}"
     ;;
 help)
-    echo --help
+    help
     ;;
 '')
     prompt
     ;;
 *)
-    echo "--help"
+    help
     ;;
 esac

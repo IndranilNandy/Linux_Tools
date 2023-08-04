@@ -1,0 +1,259 @@
+# Configuration Syntax: https://logging.apache.org/log4j/2.x/manual/configuration.html#ConfigurationSyntax
+# Filters: https://logging.apache.org/log4j/2.x/manual/Filters.html
+# Appenders: https://logging.apache.org/log4j/2.x/manual/appenders.html
+# Layouts: https://logging.apache.org/log4j/2.x/manual/layouts.html
+Configuration:
+    name: YAMLConfigTest
+    advertiser: multicastdns		# (Optional) The Advertiser plugin name which will be used to advertise individual FileAppender or SocketAppender configurations. The only Advertiser plugin provided is 'multicastdns".
+    status: warn					# Setting status="trace" is one of the first tools available to you if you need to troubleshoot log4j.
+    monitorInterval: 300			# The minimum amount of time, in seconds, that must elapse before the file configuration is checked for changes.
+    dest: logs/log4j2-debug.log	 # Either "err" for stderr, "out" for stdout, a file path, or a URL. This logs log4j2 internal events.
+
+    Properties:
+        Property:
+            -
+                name: package-name-jakarta
+                value: ${logger-jakarta}
+            -
+                name: package-logs-jakarta
+                value: ${log-path}/${package-name-jakarta}
+            -
+                name: package-archive-path-jakarta
+                value: ${archive-path}/${package-name-jakarta}
+            -
+                name: package-logfile-rolling-jakarta
+                value: ${appname}-rolling-${package-name-jakarta}
+            -
+                name: package-archive-rolling-path-jakarta
+                value: ${package-archive-path-jakarta}/rolling
+            -
+                name: logger-jakarta
+                value: jakarta
+
+    Appenders:
+
+        # The RollingFileAppender is an OutputStreamAppender that writes to the File named in the fileName parameter and rolls the file over according the TriggeringPolicy and the RolloverPolicy.
+        RollingFile:
+            -
+                name: RollingFile-${package-name-jakarta}-normal
+                fileName: ${package-logs-jakarta}/${package-logfile-rolling-jakarta}-normal.log	# [REMEMBER: While sing DirectWriteRolloverStrategy, this filed MUST NOT EXIST]
+                filePattern: ${package-archive-rolling-path-jakarta}/$${date:yyyy-MM}/${package-name-jakarta}-normal-%d{yyyy-MM-dd-HH-mm}-%i.log.gz
+                PatternLayout:
+                    header: "%d{ISO8601_OFFSET_DATE_TIME_HHCMM} Start of logging.%n%n"
+                    footer: "%n%d{ISO8601_OFFSET_DATE_TIME_HHCMM} End of logging.%n%n%n"
+                    pattern: ${currentLogLevel}
+                Policies:
+                    # Causes a rollover once the date/time pattern no longer applies to the active file
+                    TimeBasedTriggeringPolicy:
+                        interval: 60		# [Default: 1] How often a rollover should occur based on the most specific time unit in the date pattern.
+                        modulate: false		# [Default: false] Indicates whether the interval should be adjusted to cause the next rollover to occur on the interval boundary.
+                        maxRandomDelay: 0   # [Default: 0] Indicates the maximum number of seconds to randomly delay a rollover.
+                    # Causes a rollover once the file has reached the specified size.
+                    SizeBasedTriggeringPolicy:
+                        size: 4096 KB		# The size can be specified in bytes, with the suffix KB, MB, GB, or TB, for example 20MB. The size may also contain a fractional value such as 1.5 MB. When combined with a time based triggering policy the file pattern must contain a %i otherwise the target file will be overwritten on every rollover as the SizeBased Triggering Policy will not cause the timestamp value in the file name to change.
+
+                # The default rollover strategy accepts both a date/time pattern and an integer from the filePattern attribute specified on the RollingFileAppender itself. If the date/time pattern is present it will be replaced with the current date and time values. If the pattern contains an integer it will be incremented on each rollover. If the pattern contains both a date/time and integer in the pattern the integer will be incremented until the result of the date/time pattern changes.
+                DefaultRolloverStrategy:
+                    max: 20				# [Default: 7] The maximum value of the counter. Once this values is reached older archives will be deleted on subsequent rollovers.
+                    min: 1				# [Default: 1] The minimum value of the counter.
+                    fileIndex: max	# [Default: max] [max/min/nomax] If set to "max" (the default), files with a higher index will be newer than files with a smaller index. If set to "min", file renaming and the counter will follow the Fixed Window strategy described above. Finally, as of release 2.8, if the fileIndex attribute is set to "nomax" then the min and max values will be ignored and file numbering will increment by 1 and each rollover will have an incrementally higher value with no maximum number of files.
+                    # compressionLevel: 9	 # Sets the compression level, 0-9, where 0 = none, 1 = best speed, through 9 = best compression. Only implemented for ZIP files.
+                    # tempCompressedFilePattern: archived-${package-name-jakarta}-normal-%d{yyyy-MM-dd-HH-mm}-%i.log	   # The pattern of the file name of the archived log file during compression.
+                    Delete:
+                        basePath: ${package-archive-rolling-path-jakarta}
+                        maxDepth: 2
+                        # testMode: true	  # [Default: false] If true, files are not deleted but instead a message is printed to the status logger at INFO level. Use this to do a dry run to test if the configuration works as expected.
+                        IfFileName:
+                            glob: "*/${package-name-jakarta}-normal-*.log.gz"
+                        IfLastModified:
+                            age: P2D
+                            # age: PT1S	# https://logging.apache.org/log4j/2.x/log4j-core/apidocs/org/apache/logging/log4j/core/appender/rolling/action/Duration.html#parseCharSequence
+                Filters:
+                    ThresholdFilter:
+                        level: info
+                        onMatch: accept
+                        onMismatch: deny
+
+            -
+                name: RollingFile-${package-name-jakarta}-verbose
+                fileName: ${package-logs-jakarta}/${package-logfile-rolling-jakarta}-verbose.log	# [REMEMBER: While sing DirectWriteRolloverStrategy, this filed MUST NOT EXIST]
+                filePattern: ${package-archive-rolling-path-jakarta}/$${date:yyyy-MM}/${package-name-jakarta}-verbose-%d{yyyy-MM-dd-HH-mm}-%i.log.gz
+                PatternLayout:
+                    header: "%d{ISO8601_OFFSET_DATE_TIME_HHCMM} Start of logging.%n%n"
+                    footer: "%n%d{ISO8601_OFFSET_DATE_TIME_HHCMM} End of logging.%n%n%n"
+                    pattern: ${currentLogLevel}
+                Policies:
+                    # Causes a rollover once the date/time pattern no longer applies to the active file
+                    TimeBasedTriggeringPolicy:
+                        interval: 60		# [Default: 1] How often a rollover should occur based on the most specific time unit in the date pattern.
+                        modulate: false		# [Default: false] Indicates whether the interval should be adjusted to cause the next rollover to occur on the interval boundary.
+                        maxRandomDelay: 0   # [Default: 0] Indicates the maximum number of seconds to randomly delay a rollover.
+                    # Causes a rollover once the file has reached the specified size.
+                    SizeBasedTriggeringPolicy:
+                        size: 4096 KB		# The size can be specified in bytes, with the suffix KB, MB, GB, or TB, for example 20MB. The size may also contain a fractional value such as 1.5 MB. When combined with a time based triggering policy the file pattern must contain a %i otherwise the target file will be overwritten on every rollover as the SizeBased Triggering Policy will not cause the timestamp value in the file name to change.
+
+                # The default rollover strategy accepts both a date/time pattern and an integer from the filePattern attribute specified on the RollingFileAppender itself. If the date/time pattern is present it will be replaced with the current date and time values. If the pattern contains an integer it will be incremented on each rollover. If the pattern contains both a date/time and integer in the pattern the integer will be incremented until the result of the date/time pattern changes.
+                DefaultRolloverStrategy:
+                    max: 20				# [Default: 7] The maximum value of the counter. Once this values is reached older archives will be deleted on subsequent rollovers.
+                    min: 1				# [Default: 1] The minimum value of the counter.
+                    fileIndex: max	# [Default: max] [max/min/nomax] If set to "max" (the default), files with a higher index will be newer than files with a smaller index. If set to "min", file renaming and the counter will follow the Fixed Window strategy described above. Finally, as of release 2.8, if the fileIndex attribute is set to "nomax" then the min and max values will be ignored and file numbering will increment by 1 and each rollover will have an incrementally higher value with no maximum number of files.
+                    # compressionLevel: 9	 # Sets the compression level, 0-9, where 0 = none, 1 = best speed, through 9 = best compression. Only implemented for ZIP files.
+                    # tempCompressedFilePattern: archived-${package-name-jakarta}-verbose-%d{yyyy-MM-dd-HH-mm}-%i.log	   # The pattern of the file name of the archived log file during compression.
+                    Delete:
+                        basePath: ${package-archive-rolling-path-jakarta}
+                        maxDepth: 2
+                        # testMode: true	  # [Default: false] If true, files are not deleted but instead a message is printed to the status logger at INFO level. Use this to do a dry run to test if the configuration works as expected.
+                        IfFileName:
+                            glob: "*/${package-name-jakarta}-verbose-*.log.gz"
+                        IfLastModified:
+                            age: P2D
+                            # age: PT1S	# https://logging.apache.org/log4j/2.x/log4j-core/apidocs/org/apache/logging/log4j/core/appender/rolling/action/Duration.html#parseCharSequence
+                Filters:
+                    ThresholdFilter:
+                        level: trace
+                        onMatch: accept
+                        onMismatch: deny
+            -
+                name: RollingFile-${package-name-jakarta}-info
+                fileName: ${package-logs-jakarta}/${package-logfile-rolling-jakarta}-info.log	# [REMEMBER: While sing DirectWriteRolloverStrategy, this filed MUST NOT EXIST]
+                filePattern: ${package-archive-rolling-path-jakarta}/$${date:yyyy-MM}/${package-name-jakarta}-info-%d{yyyy-MM-dd-HH-mm}-%i.log.gz
+                PatternLayout:
+                    header: "%d{ISO8601_OFFSET_DATE_TIME_HHCMM} Start of logging.%n%n"
+                    footer: "%n%d{ISO8601_OFFSET_DATE_TIME_HHCMM} End of logging.%n%n%n"
+                    pattern: ${currentLogLevel}
+                Policies:
+                    # Causes a rollover once the date/time pattern no longer applies to the active file
+                    TimeBasedTriggeringPolicy:
+                        interval: 60		# [Default: 1] How often a rollover should occur based on the most specific time unit in the date pattern.
+                        modulate: false		# [Default: false] Indicates whether the interval should be adjusted to cause the next rollover to occur on the interval boundary.
+                        maxRandomDelay: 0   # [Default: 0] Indicates the maximum number of seconds to randomly delay a rollover.
+                    # Causes a rollover once the file has reached the specified size.
+                    SizeBasedTriggeringPolicy:
+                        size: 4096 KB		# The size can be specified in bytes, with the suffix KB, MB, GB, or TB, for example 20MB. The size may also contain a fractional value such as 1.5 MB. When combined with a time based triggering policy the file pattern must contain a %i otherwise the target file will be overwritten on every rollover as the SizeBased Triggering Policy will not cause the timestamp value in the file name to change.
+
+                # The default rollover strategy accepts both a date/time pattern and an integer from the filePattern attribute specified on the RollingFileAppender itself. If the date/time pattern is present it will be replaced with the current date and time values. If the pattern contains an integer it will be incremented on each rollover. If the pattern contains both a date/time and integer in the pattern the integer will be incremented until the result of the date/time pattern changes.
+                DefaultRolloverStrategy:
+                    max: 20				# [Default: 7] The maximum value of the counter. Once this values is reached older archives will be deleted on subsequent rollovers.
+                    min: 1				# [Default: 1] The minimum value of the counter.
+                    fileIndex: max	# [Default: max] [max/min/nomax] If set to "max" (the default), files with a higher index will be newer than files with a smaller index. If set to "min", file renaming and the counter will follow the Fixed Window strategy described above. Finally, as of release 2.8, if the fileIndex attribute is set to "nomax" then the min and max values will be ignored and file numbering will increment by 1 and each rollover will have an incrementally higher value with no maximum number of files.
+                    # compressionLevel: 9	 # Sets the compression level, 0-9, where 0 = none, 1 = best speed, through 9 = best compression. Only implemented for ZIP files.
+                    # tempCompressedFilePattern: archived-${package-name-jakarta}-info-%d{yyyy-MM-dd-HH-mm}-%i.log	   # The pattern of the file name of the archived log file during compression.
+                    Delete:
+                        basePath: ${package-archive-rolling-path-jakarta}
+                        maxDepth: 2
+                        # testMode: true	  # [Default: false] If true, files are not deleted but instead a message is printed to the status logger at INFO level. Use this to do a dry run to test if the configuration works as expected.
+                        IfFileName:
+                            glob: "*/${package-name-jakarta}-info-*.log.gz"
+                        IfLastModified:
+                            age: P2D
+                            # age: PT1S	# https://logging.apache.org/log4j/2.x/log4j-core/apidocs/org/apache/logging/log4j/core/appender/rolling/action/Duration.html#parseCharSequence
+                Filters:
+                    LevelRangeFilter:
+                        maxLevel: info
+                        minLevel: info
+                        onMatch: accept
+                        onMismatch: deny
+            -
+                name: RollingFile-${package-name-jakarta}-debug
+                fileName: ${package-logs-jakarta}/${package-logfile-rolling-jakarta}-debug.log	# [REMEMBER: While sing DirectWriteRolloverStrategy, this filed MUST NOT EXIST]
+                filePattern: ${package-archive-rolling-path-jakarta}/$${date:yyyy-MM}/${package-name-jakarta}-debug-%d{yyyy-MM-dd-HH-mm}-%i.log.gz
+                PatternLayout:
+                    header: "%d{ISO8601_OFFSET_DATE_TIME_HHCMM} Start of logging.%n%n"
+                    footer: "%n%d{ISO8601_OFFSET_DATE_TIME_HHCMM} End of logging.%n%n%n"
+                    pattern: ${currentLogLevel}
+                Policies:
+                    # Causes a rollover once the date/time pattern no longer applies to the active file
+                    TimeBasedTriggeringPolicy:
+                        interval: 60		# [Default: 1] How often a rollover should occur based on the most specific time unit in the date pattern.
+                        modulate: false		# [Default: false] Indicates whether the interval should be adjusted to cause the next rollover to occur on the interval boundary.
+                        maxRandomDelay: 0   # [Default: 0] Indicates the maximum number of seconds to randomly delay a rollover.
+                    # Causes a rollover once the file has reached the specified size.
+                    SizeBasedTriggeringPolicy:
+                        size: 4096 KB		# The size can be specified in bytes, with the suffix KB, MB, GB, or TB, for example 20MB. The size may also contain a fractional value such as 1.5 MB. When combined with a time based triggering policy the file pattern must contain a %i otherwise the target file will be overwritten on every rollover as the SizeBased Triggering Policy will not cause the timestamp value in the file name to change.
+
+                # The default rollover strategy accepts both a date/time pattern and an integer from the filePattern attribute specified on the RollingFileAppender itself. If the date/time pattern is present it will be replaced with the current date and time values. If the pattern contains an integer it will be incremented on each rollover. If the pattern contains both a date/time and integer in the pattern the integer will be incremented until the result of the date/time pattern changes.
+                DefaultRolloverStrategy:
+                    max: 20				# [Default: 7] The maximum value of the counter. Once this values is reached older archives will be deleted on subsequent rollovers.
+                    min: 1				# [Default: 1] The minimum value of the counter.
+                    fileIndex: max	# [Default: max] [max/min/nomax] If set to "max" (the default), files with a higher index will be newer than files with a smaller index. If set to "min", file renaming and the counter will follow the Fixed Window strategy described above. Finally, as of release 2.8, if the fileIndex attribute is set to "nomax" then the min and max values will be ignored and file numbering will increment by 1 and each rollover will have an incrementally higher value with no maximum number of files.
+                    # compressionLevel: 9	 # Sets the compression level, 0-9, where 0 = none, 1 = best speed, through 9 = best compression. Only implemented for ZIP files.
+                    # tempCompressedFilePattern: archived-${package-name-jakarta}-debug-%d{yyyy-MM-dd-HH-mm}-%i.log	   # The pattern of the file name of the archived log file during compression.
+                    Delete:
+                        basePath: ${package-archive-rolling-path-jakarta}
+                        maxDepth: 2
+                        # testMode: true	  # [Default: false] If true, files are not deleted but instead a message is printed to the status logger at INFO level. Use this to do a dry run to test if the configuration works as expected.
+                        IfFileName:
+                            glob: "*/${package-name-jakarta}-debug-*.log.gz"
+                        IfLastModified:
+                            age: P2D
+                            # age: PT1S	# https://logging.apache.org/log4j/2.x/log4j-core/apidocs/org/apache/logging/log4j/core/appender/rolling/action/Duration.html#parseCharSequence
+                Filters:
+                    LevelRangeFilter:
+                        maxLevel: debug
+                        minLevel: debug
+                        onMatch: accept
+                        onMismatch: deny
+            -
+                name: RollingFile-${package-name-jakarta}-error
+                fileName: ${package-logs-jakarta}/${package-logfile-rolling-jakarta}-error.log	# [REMEMBER: While sing DirectWriteRolloverStrategy, this filed MUST NOT EXIST]
+                filePattern: ${package-archive-rolling-path-jakarta}/$${date:yyyy-MM}/${package-name-jakarta}-error-%d{yyyy-MM-dd-HH-mm}-%i.log.gz
+                PatternLayout:
+                    header: "%d{ISO8601_OFFSET_DATE_TIME_HHCMM} Start of logging.%n%n"
+                    footer: "%n%d{ISO8601_OFFSET_DATE_TIME_HHCMM} End of logging.%n%n%n"
+                    pattern: ${currentLogLevel}
+                Policies:
+                    # Causes a rollover once the date/time pattern no longer applies to the active file
+                    TimeBasedTriggeringPolicy:
+                        interval: 60		# [Default: 1] How often a rollover should occur based on the most specific time unit in the date pattern.
+                        modulate: false		# [Default: false] Indicates whether the interval should be adjusted to cause the next rollover to occur on the interval boundary.
+                        maxRandomDelay: 0   # [Default: 0] Indicates the maximum number of seconds to randomly delay a rollover.
+                    # Causes a rollover once the file has reached the specified size.
+                    SizeBasedTriggeringPolicy:
+                        size: 4096 KB		# The size can be specified in bytes, with the suffix KB, MB, GB, or TB, for example 20MB. The size may also contain a fractional value such as 1.5 MB. When combined with a time based triggering policy the file pattern must contain a %i otherwise the target file will be overwritten on every rollover as the SizeBased Triggering Policy will not cause the timestamp value in the file name to change.
+
+                # The default rollover strategy accepts both a date/time pattern and an integer from the filePattern attribute specified on the RollingFileAppender itself. If the date/time pattern is present it will be replaced with the current date and time values. If the pattern contains an integer it will be incremented on each rollover. If the pattern contains both a date/time and integer in the pattern the integer will be incremented until the result of the date/time pattern changes.
+                DefaultRolloverStrategy:
+                    max: 20				# [Default: 7] The maximum value of the counter. Once this values is reached older archives will be deleted on subsequent rollovers.
+                    min: 1				# [Default: 1] The minimum value of the counter.
+                    fileIndex: max	# [Default: max] [max/min/nomax] If set to "max" (the default), files with a higher index will be newer than files with a smaller index. If set to "min", file renaming and the counter will follow the Fixed Window strategy described above. Finally, as of release 2.8, if the fileIndex attribute is set to "nomax" then the min and max values will be ignored and file numbering will increment by 1 and each rollover will have an incrementally higher value with no maximum number of files.
+                    # compressionLevel: 9	 # Sets the compression level, 0-9, where 0 = none, 1 = best speed, through 9 = best compression. Only implemented for ZIP files.
+                    # tempCompressedFilePattern: archived-${package-name-jakarta}-error-%d{yyyy-MM-dd-HH-mm}-%i.log	   # The pattern of the file name of the archived log file during compression.
+                    Delete:
+                        basePath: ${package-archive-rolling-path-jakarta}
+                        maxDepth: 2
+                        # testMode: true	  # [Default: false] If true, files are not deleted but instead a message is printed to the status logger at INFO level. Use this to do a dry run to test if the configuration works as expected.
+                        IfFileName:
+                            glob: "*/${package-name-jakarta}-error-*.log.gz"
+                        IfLastModified:
+                            age: P2D
+                            # age: PT1S	# https://logging.apache.org/log4j/2.x/log4j-core/apidocs/org/apache/logging/log4j/core/appender/rolling/action/Duration.html#parseCharSequence
+                Filters:
+                    LevelRangeFilter:
+                        maxLevel: error
+                        minLevel: error
+                        onMatch: accept
+                        onMismatch: deny
+
+
+    Loggers:
+        Logger:
+            -
+                name: ${logger-jakarta}
+                level: trace
+                AppenderRef:
+                    -
+                        level: trace
+                        ref: RollingFile-${package-name-jakarta}-normal
+                    -
+                        level: trace
+                        ref: RollingFile-${package-name-jakarta}-verbose
+                    -
+                        level: trace
+                        ref: RollingFile-${package-name-jakarta}-info
+                    -
+                        level: trace
+                        ref: RollingFile-${package-name-jakarta}-debug
+                    -
+                        level: trace
+                        ref: RollingFile-${package-name-jakarta}-error
+        root:

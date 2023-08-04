@@ -1,0 +1,10 @@
+# __________________________________________________________________________________________________________________________________________________
+# THIS IS INTENTIONALLY CREATED AS BLANK.
+
+# TO MAKE USE OF LOG4J2's COMPOSITE CONFIGURATION USING LOG4J2.SYSTEM.PROPERTIES/LOG4J2.COMPONENT.PROPERTIES OR BY EXPORTING ENVIRONMENT VARIABLE,
+# WE NEED TO PLACE THIS EMPTY YAMLS AS 'log4j2.yaml' UNDER 'resources' FOLDER.
+
+# IF YOU WANT TO USE SPRING BOOT's LOGGING PROPERTIES THROUGH application.yaml, THEN YOU DO NOT NEED THIS YAML
+
+# WE WILL PUT ALL THE LOG4J2 CONFIGURATION YAMLSs UNDER {project-root-folder}/log-config
+# __________________________________________________________________________________________________________________________________________________

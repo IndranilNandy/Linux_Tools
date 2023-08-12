@@ -7,10 +7,6 @@ else
 fi
 
 schema() {
-    echo -e
-    echo -e "-----------------------------------"
-    echo -e "Schema generator configuration"
-    echo -e "-----------------------------------"
     resources="src/main/resources"
     schema_store="jpa-schema-gen"
 
@@ -22,15 +18,11 @@ schema() {
     echo -e "### Ignore jpa generated schema ###\n$schema_store/"
     code -w ".gitignore"
 
+    echo -e "${RED}\nIf you're executing 'schema' command only, then you need to run 'springstarter config appyaml init' to configure application yamls, if not done already.${RESET}"
     return 0;
 }
 
 dml() {
-    echo -e
-    echo -e "-----------------------------------"
-    echo -e "DML configuration"
-    echo -e "-----------------------------------"
-
     resources="src/main/resources"
     hb_init="hb-db-init"
     spring_init="spring-db-init"
@@ -48,15 +40,13 @@ dml() {
     [[ -f "$resources"/"$spring_init"/schema-postgresql-02.sql ]] || touch "$resources"/"$spring_init"/schema-postgresql-02.sql
 
     echo -e "Created (if not already exists)"
+    echo -e "${RED}\nIf you're executing 'dml' command only, then you need to run 'springstarter config appyaml init' to configure application yamls, if not done already.${RESET}"
     return 0
 }
 
 ddl() {
-    echo -e
-    echo -e "-----------------------------------"
-    echo -e "DDL configuration"
-    echo -e "-----------------------------------"
     echo -e "Nothing to do."
+    echo -e "${RED}\nIf you're executing 'ddl' command only, then you need to run 'springstarter config appyaml init' to configure application yamls, if not done already.${RESET}"
 }
 
 init() {
@@ -98,12 +88,24 @@ init)
     init "${@:2}"
     ;;
 ddl)
+    echo -e
+    echo -e "-----------------------------------"
+    echo -e "DDL configuration"
+    echo -e "-----------------------------------"
     ddl "${@:2}"
     ;;
 dml)
+    echo -e
+    echo -e "-----------------------------------"
+    echo -e "DML configuration"
+    echo -e "-----------------------------------"
     dml "${@:2}"
     ;;
 schema)
+    echo -e
+    echo -e "-----------------------------------"
+    echo -e "Schema generator configuration"
+    echo -e "-----------------------------------"
     schema "${@:2}"
     ;;
 help)

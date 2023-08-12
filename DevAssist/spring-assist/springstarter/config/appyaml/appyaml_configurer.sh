@@ -7,11 +7,6 @@ else
 fi
 
 default_yamls() {
-    echo -e
-    echo -e "-----------------------------------"
-    echo -e "Default YAML configuration"
-    echo -e "-----------------------------------"
-
     resources="src/main/resources"
     yaml_store="config"
     mapping_file="$curDir"/config/appyaml/configuration/.yaml-tag-mapping
@@ -48,6 +43,11 @@ empty_yaml() {
     return 0
 }
 
+create() {
+    default_yamls "${@}"
+
+}
+
 prompt() {
     subcommands="$curDir"/config/appyaml/.commands
 
@@ -67,7 +67,7 @@ init() {
     echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
 
     # _____________________________________________________
-    # springstarter config appyaml empty "${@}"
+    # springstarter config appyaml default "${@}"
     # _____________________________________________________
     default_yamls "${@}"
 
@@ -80,15 +80,22 @@ case "${1}" in
 init)
     init "${@:2}"
     ;;
+create)
+    create "${@:2}"
+    ;;
+default)
+    echo -e
+    echo -e "-----------------------------------"
+    echo -e "Default YAML configuration"
+    echo -e "-----------------------------------"
+    default_yamls "${@:2}"
+    ;;
 empty)
     echo -e
     echo -e "-----------------------------------"
     echo -e "Creating empty application.yaml"
     echo -e "-----------------------------------"
     empty_yaml "${@:2}"
-    ;;
-create)
-    create "${@:2}"
     ;;
 help)
     echo --help

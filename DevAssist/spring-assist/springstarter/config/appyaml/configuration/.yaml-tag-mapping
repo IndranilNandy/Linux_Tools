@@ -1,0 +1,8 @@
+application.yaml|[sb-config]CommonConfig
+application-actuator.yaml|[sb-config]ActuatorConfig
+application-logging.yaml|[sb-config]LoggingConfig
+application-jpa.yaml|[sb-config]JpaConfig
+application-hibernate.yaml|[sb-config]HibernateConfig
+application-h2.yaml|[sb-config]H2Config
+application-mysql.yaml|[sb-config]MySqlConfig
+application-postgresql.yaml|[sb-config]PostgreSqlConfig

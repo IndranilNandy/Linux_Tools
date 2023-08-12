@@ -20,8 +20,11 @@ default() {
         echo -e "We are INTENTIONALLY copying and keeping an empty yaml file under 'resources' folder. Read the empty YAML file comments for more details"
     cp "$LINUX_TOOLS_logging_config"/log4j2.sample.yaml "$resources"/
 
-    echo -e "Opening $resources/log4j2-empty-sample.yaml" && code "$resources"/log4j2.yaml
-    echo -e "Opening $resources/log4j2.sample.yaml" && code "$resources"/log4j2.sample.yaml
+    [[ -f "$resources"/log4j2.yaml ]] || cp "$resources/log4j2-empty-sample.yaml" "$resources/log4j2.yaml"
+    echo -e "Opening $resources/log4j2.yaml" && code -w "$resources"/log4j2.yaml
+
+    # echo -e "Opening $resources/log4j2-empty-sample.yaml" && code "$resources"/log4j2.yaml
+    # echo -e "Opening $resources/log4j2.sample.yaml" && code "$resources"/log4j2.sample.yaml
 
     echo -e "${YELLOW}DO NOT FORGET to use 4 spaces for a tab in log4j2.yaml${RESET}"
     read -p "Did you change it to 4? [y/n].. " ans

@@ -97,6 +97,11 @@ load() {
     editor "$global_env_def"
     echo -e "\nUpdate, save and close .env before proceeding."
     editor -w "$local_env"
+
+    echo -e "${RED}You need to add $local_env to .gitignore${RESET}"
+    echo -e "Add the following lines to .gitignore\n"
+    echo -e "### Local Configuration ###\n.env"
+    code -w ".gitignore"
 }
 
 remotescope() {

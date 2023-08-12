@@ -18,6 +18,14 @@ prompt() {
     "${0}" "$choice"
 }
 
+update_gitignore() {
+    log_store="logs"
+    echo -e "${RED}You need to add $log_store to .gitignore${RESET}"
+    echo -e "Add the following lines to .gitignore\n"
+    echo -e "### Ignore logs ###\n$log_store/"
+    code -w ".gitignore"
+}
+
 init() {
     echo -e
     echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
@@ -28,6 +36,8 @@ init() {
     # springstarter config logging log4j2 init "${@}"
     # _____________________________________________________
     "$curDir"/config/logging/log4j2/log4j2_configurer.sh "init" "${@}"
+
+    update_gitignore
 
     echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
     echo -e "${BLUE}${BOLD}[SPRINGSTARTER CONFIG LOGGING INIT] Finished.${RESET}"

@@ -19,7 +19,7 @@ schema() {
 
     echo -e "${RED}You need to add $schema_store to .gitignore${RESET}"
     echo -e "Add the following lines to .gitignore\n"
-    echo -e "### Ignore jpa generated schema ###\njpa-schema-gen"
+    echo -e "### Ignore jpa generated schema ###\n$schema_store/"
     code -w ".gitignore"
 
     return 0;

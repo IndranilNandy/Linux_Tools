@@ -6,6 +6,10 @@ else
     curDir="$(pwd)"
 fi
 
+gen() {
+    "$curDir"/db/gen/db_gen_configurer.sh "$@"
+}
+
 mysql() {
     "$curDir"/db/mysql/mysql_configurer.sh "$@"
 }
@@ -24,6 +28,11 @@ init() {
     # springstarter db postgresql init "${@}"
     # _____________________________________________________
     "$curDir"/db/pgsql/pgsql_configurer.sh "init" "$@"
+
+    # _____________________________________________________
+    # springstarter db gen init "${@}"
+    # _____________________________________________________
+    "$curDir"/db/gen/db_gen_configurer.sh "init" "$@"
 
     echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
     echo -e "${BLUE}${BOLD}[SPRINGSTARTER DB INIT] Finished.${RESET}"
@@ -51,6 +60,9 @@ postgresql)
     ;;
 mysql)
     mysql "${@:2}"
+    ;;
+gen)
+    gen "${@:2}"
     ;;
 help)
     echo --help

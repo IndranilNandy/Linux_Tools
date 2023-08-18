@@ -6,3 +6,9 @@ application-hibernate.yaml|[sb-config]HibernateConfig
 application-h2.yaml|[sb-config]H2Config
 application-mysql.yaml|[sb-config]MySqlConfig
 application-postgresql.yaml|[sb-config]PostgreSqlConfig
+application-db-init-script-hb.yaml|[sb-config]Db-init-script-hbConfig
+application-db-init-script-sb.yaml|[sb-config]Db-init-script-sbConfig
+application-db-schema-gen-hb.yaml|[sb-config]Db-schema-gen-hbConfig
+application-db-schema-gen-jpa.yaml|[sb-config]Db-schema-gen-jpaConfig
+application-db-schema-gen-sb.yaml|[sb-config]Db-schema-gen-sbConfig
+application-root.yaml|[sb-config]RootConfig

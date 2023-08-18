@@ -28,6 +28,7 @@
             "\t\tname: productsvc",
             "\tconfig:",
             "\t\timport:",
+            "\t\t\t- file:./config/application-root.yaml",
             "\t\t\t- optional:file:./config/external.yaml",
             "\t\t\t# - optional:file:.env[.properties]",
             "\tprofiles:",

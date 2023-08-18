@@ -329,6 +329,30 @@
         ],
         "description": "spring dotenv"
     },
+    "spring liquibase": {
+        "prefix": [
+			"[snp] spring liquibase",
+			"[dep] spring liquibase",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/org.liquibase/liquibase-core",
+            "implementation 'org.liquibase:liquibase-core'"
+        ],
+        "description": "spring liquibase"
+    },
+    "spring liquibase runtime": {
+        "prefix": [
+			"[snp] spring liquibase runtime",
+			"[dep] spring liquibase runtime",
+		],
+        "body": [
+            "// Ref: https://github.com/liquibase/liquibase-gradle-plugin",
+            "liquibaseRuntime 'org.liquibase:liquibase-core'",
+            "liquibaseRuntime 'org.postgresql:postgresql'",
+            "liquibaseRuntime 'info.picocli:picocli:4.7.4'"
+        ],
+        "description": "spring liquibase runtime"
+    },
 	// *****************************************************************************
 	// LIST OF ALL PLUGINS
 	// *****************************************************************************
@@ -353,6 +377,17 @@
 			"id \"com.diffplug.spotless\" version \"${1:6.19.0}\""
 		],
 		"description": "plugin spotless"
+	},
+	"plugin-liquibase-gradle": {
+		"prefix": [
+			"[snp] plugin-liquibase-gradle",
+			"[plugin] plugin-liquibase-gradle",
+		],
+		"body": [
+			"// Source: https://github.com/liquibase/liquibase-gradle-plugin",
+			"id \"org.liquibase.gradle\" version \"${1:2.2.0}\""
+		],
+		"description": "plugin liquibase-gradle"
 	},
 	// *****************************************************************************
 	// LIST OF GRADLE TASKS
@@ -434,5 +469,29 @@
             "}"
         ],
         "description": "Task-Fat Jar"
-    }
+    },
+	// *****************************************************************************
+	// LIST OF DEFINED BLOCKS
+	// *****************************************************************************
+
+	"block-liquibase-activities-main": {
+		"prefix": [
+			"[snp] liquibase-activities-main",
+			"[block] liquibase-activities-main",
+		],
+		"body": [
+            "liquibase {",
+            "\tactivities {",
+            "\t\tmain {",
+            "\t\t\tchangelogFile \"db/changelog/db-changelog-root.sql\"",
+            "\t\t\turl \"jdbc:postgresql://localhost:5434/testdb\"",
+            "\t\t\tusername \"productsvc\"",
+            "\t\t\tpassword \"password\"",
+            "\t\t\tsearchPath \"/home/indranilnandy/DEV/GIT-REPOS/PracticeWS/Spring/RefExamples/product-svc/src/main/resources\"",
+            "\t\t}",
+            "\t}",
+            "}"
+		],
+		"description": "block - liquibase-activities-main"
+	},
 }

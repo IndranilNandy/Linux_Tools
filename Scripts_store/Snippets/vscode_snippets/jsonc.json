@@ -1,0 +1,145 @@
+{
+	// Place your snippets for jsonc here. Each snippet is defined under a snippet name and has a prefix, body and
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the
+	// same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+
+	// *****************************************************************************
+	// Vscode Customized Tasks Configuration
+	// *****************************************************************************
+    "tasks - gradle generateChangelog": {
+        "prefix": [
+			"[snp] gradle generateChangelog",
+			"[vscode] gradle generateChangelog",
+			"[tasks] gradle generateChangelog",
+		],
+        "body": [
+            "{",
+            "\t\"version\": \"2.0.0\",",
+            "\t\"tasks\": [",
+            "\t\t{",
+            "\t\t\t\"type\": \"gradle\",",
+            "\t\t\t\"id\": \"/home/indranilnandy/DEV/GIT-REPOS/PracticeWS/Spring/RefExamples/product-svcgenerateChangelogproduct\",",
+            "\t\t\t\"script\": \"generateChangelog\",",
+            "\t\t\t\"description\": \"Generate a Groovv changelog from the current state of the database to <LiquibaseOutputFile> or STDOUT of no file is specified.\",",
+            "\t\t\t\"group\": \"liquibase\",",
+            "\t\t\t\"project\": \"product\",",
+            "\t\t\t\"buildFile\": \"/home/indranilnandy/DEV/GIT-REPOS/PracticeWS/Spring/RefExamples/product-svc/build.gradle\",",
+            "\t\t\t\"rootProject\": \"product\",",
+            "\t\t\t\"projectFolder\": \"/home/indranilnandy/DEV/GIT-REPOS/PracticeWS/Spring/RefExamples/product-svc\",",
+            "\t\t\t\"workspaceFolder\": \"/home/indranilnandy/DEV/GIT-REPOS/PracticeWS/Spring/RefExamples/product-svc\",",
+            "\t\t\t\"args\": \"-PliquibaseExtraArgs=changelogFile=\\${workspaceFolder}/generated/liquibase/changelogs/db-changelog-\\${input:promptID}.sql\",",
+            "\t\t\t\"javaDebug\": false,",
+            "\t\t\t\"problemMatcher\": [",
+            "\t\t\t\t\"\\$gradle\"",
+            "\t\t\t],",
+            "\t\t\t\"label\": \"gradle: generateChangelog product-svc\"",
+            "\t\t}",
+            "\t],",
+            "\t\"inputs\": [",
+            "\t\t{",
+            "\t\t\t\"id\": \"generatedID\",",
+            "\t\t\t\"type\": \"command\",",
+            "\t\t\t\"command\": \"insertDateString.insertTimestamp\"",
+            "\t\t\t// type specific configuration attributes",
+            "\t\t},",
+            "\t\t{",
+            "\t\t\t\"type\": \"pickString\",",
+            "\t\t\t\"id\": \"pickID\",",
+            "\t\t\t\"description\": \"Pick the ID of the generated db-changelog\",",
+            "\t\t\t\"options\": [",
+            "\t\t\t\t\"00\",",
+            "\t\t\t\t\"01\",",
+            "\t\t\t\t\"02\",",
+            "\t\t\t\t\"03\",",
+            "\t\t\t\t\"04\",",
+            "\t\t\t\t\"05\",",
+            "\t\t\t\t\"06\",",
+            "\t\t\t\t\"07\",",
+            "\t\t\t\t\"08\",",
+            "\t\t\t\t\"09\",",
+            "\t\t\t],",
+            "\t\t\t\"default\": \"default\"",
+            "\t\t},",
+            "\t\t{",
+            "\t\t\t\"type\": \"promptString\",",
+            "\t\t\t\"id\": \"promptID\",",
+            "\t\t\t\"description\": \"Enter the ID of the generated db-changelog\",",
+            "\t\t\t\"default\": \"default\"",
+            "\t\t}",
+            "\t]",
+            "}"
+        ],
+        "description": [
+            "tasks - gradle generateChangelog\n",
+            "#   Ref. https://code.visualstudio.com/docs/editor/variables-reference#_input-variables\n",
+        ],
+    },
+
+	// *****************************************************************************
+	// Vscode Test Configuration
+	// *****************************************************************************
+	"vscode test configuration": {
+        "prefix": [
+			"[snp] vscode test conf",
+			"[vscode] vscode test conf",
+			"[settings] vscode test conf",
+		],
+        "body": [
+            "{",
+            "\t// Ref. https://github.com/Microsoft/vscode-java-test/wiki/Run-with-Configuration",
+            "\t\"java.test.config\": [",
+            "\t\t{",
+            "\t\t\t\"name\": \"myConfiguration\",",
+            "\t\t\t\"workingDirectory\": \"\\${workspaceFolder}\",",
+            "\t\t\t\"vmargs\": [",
+            "\t\t\t\t\"-Xmx512M\"",
+            "\t\t\t],",
+            "\t\t\t\"env\": {",
+            "\t\t\t\t\"key\": \"value\"",
+            "\t\t\t},",
+            "\t\t\t\"testKind\": \"junit\",",
+            "\t\t\t\"filters\": {",
+            "\t\t\t\t\"tags\": [",
+            "\t\t\t\t\t\"Fast | Superfast\", // ---> include tag 'Fast' or 'Superfast'",
+            "\t\t\t\t\t\"!bar\" // ---> exclude tag 'bar'",
+            "\t\t\t\t]",
+            "\t\t\t},",
+            "\t\t},",
+            "\t\t{",
+            "\t\t\t\"name\": \"myConfiguration2\",",
+            "\t\t\t\"workingDirectory\": \"\\${workspaceFolder}\",",
+            "\t\t\t\"vmargs\": [",
+            "\t\t\t\t\"-Xmx512M\"",
+            "\t\t\t],",
+            "\t\t\t\"env\": {",
+            "\t\t\t\t\"key\": \"value\"",
+            "\t\t\t},",
+            "\t\t\t\"testKind\": \"junit\",",
+            "\t\t\t\"filters\": {",
+            "\t\t\t\t\"tags\": [",
+            "\t\t\t\t\t\"Slow\", // ---> include tag 'Slow'",
+            "\t\t\t\t\t\"!bar\" // ---> exclude tag 'bar'",
+            "\t\t\t\t]",
+            "\t\t\t},",
+            "\t\t},",
+            "\t],",
+            "\t\"java.test.defaultConfig\": \"myConfiguration\",",
+            "\t// \"java.test.defaultConfig\": \"default\",",
+            "}"
+        ],
+        "description": [
+            "vscode test conf\n",
+            "#   Ref. https://code.visualstudio.com/docs/java/java-testing#_customize-test-configurations\n",
+        ],
+    },
+}

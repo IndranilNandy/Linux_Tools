@@ -8,7 +8,7 @@ fi
 
 schema() {
     resources="src/main/resources"
-    schema_store="jpa-schema-gen"
+    schema_store="generated/jpa/schema"
 
     [[ ! -d "$resources" ]] && echo -e "${RED}Not able to find 'resources' folder. This command should be run from the project root folder.${RESET}" && return 1
     [[ -d "$(pwd)"/"$schema_store" ]] || mkdir -p "$(pwd)"/"$schema_store"

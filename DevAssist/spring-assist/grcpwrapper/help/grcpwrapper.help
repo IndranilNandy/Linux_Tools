@@ -18,8 +18,8 @@ Command syntax:
 
 Description:
     Provides wrapper over 'Gradle Credential Plugin' -
-            > to add encrypted credentials in bulk using a file (.credParams)
-            > to remove encrypted credentials in bulk using a file (.credParams)
+            > to add encrypted credentials in bulk using a file (./.credstore/.credParams)
+            > to remove encrypted credentials in bulk using a file (./.credstore/.credParams)
     For any particular project, you can use ONLY one of the following options, while adding/removing encrypted credentials -
             > NO PASSPHRASE and NO CUSTOM location (Default location: $HOME/.gradle)
             > ONLY PASSPHRASE (Remember it, you need to pass it while running gradle tasks, e.g. gradle :bootRun -PcredentialsPassphrase=<passphrase>)
@@ -29,10 +29,10 @@ Description:
             > this means you've to enter all the credential parameters again with the NEW option.
             > the old (encrypted) gradle.*.encrypted.properties will still be there with no reference. You may manually remove it.
 
-    .credParams         > this contains only the list of credential parameters you added ALREADY, but it doesn't contain any value of those parameters
-    .credParams-temp    > this is TEMPORARILY created, when you run the command. You provide all the new parameters here, whose values are encrypted and
-                          once the command finishes successfully, these are parameters are added to .credParams, and this file is deleted.
-    $HOME/.gradle       > default location where encrypted credentials will be stored in gradle.*.encrypted.properties
+    ./.credstore/.credParams        > this contains only the list of credential parameters you added ALREADY, but it doesn't contain any value of those parameters
+    ./.credstore/.credParams-temp   > this is TEMPORARILY created, when you run the command. You provide all the new parameters here, whose values are encrypted and
+                                      once the command finishes successfully, these are parameters are added to .credParams, and this file is deleted.
+    $HOME/.gradle                   > default location where encrypted credentials will be stored in gradle.*.encrypted.properties
 
 Note:
     This script should be run from the root directory of the spring project.

@@ -6,8 +6,8 @@ else
     curDir="$(pwd)"
 fi
 
-credparams="$(pwd)"/.credparams
-credparams_temp="$(pwd)"/.credparams-temp
+credparams="$(pwd)"/.credstore/.credparams
+credparams_temp="$(pwd)"/.credstore/.credparams-temp
 
 help() {
     cat "$curDir"/help/grcpwrapper.help

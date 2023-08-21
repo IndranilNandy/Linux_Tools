@@ -69,7 +69,7 @@ removeCreds() {
         rep=$(echo "$rep" | tr [:upper:] [:lower:])
 
         if [[ "$rep" == "y" ]]; then
-            # gradleRemoveCreds "$param" "$passphrase" "$location" || return 1
+            gradleRemoveCreds "$param" "$passphrase" "$location" || return 1
             sed -i "/^$param$/d" "$credparams"
         fi
     done
@@ -152,7 +152,7 @@ addCreds() {
         if [[ "$ifexists" == "no" || "$rep" == "y" ]]; then
             [[ "$res" == "n" ]] && read -rp "$param -> " -s paramvalue || read -rp "$param -> " paramvalue
             echo -e
-            # gradleAddCreds "$param" "$paramvalue" "$passphrase" "$location" || return 1
+            gradleAddCreds "$param" "$paramvalue" "$passphrase" "$location" || return 1
             [[ "$ifexists" == "no" ]] && echo "$param" >>"$credparams"
         fi
     done

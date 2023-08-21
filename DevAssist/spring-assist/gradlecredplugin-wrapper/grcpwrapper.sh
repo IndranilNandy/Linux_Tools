@@ -9,6 +9,71 @@ fi
 credparams="$curDir"/.credparams
 credparams_temp="$curDir"/.credparams-temp
 
+gradleRemoveCreds() {
+    local key="${1}"
+    local passphrase="${2}"
+    local location="${3}"
+
+    [[ -z "$passphrase" ]] && [[ -z "$location" ]] && gradle removeCredentials --key "$key" && return 0
+    [[ -z "$passphrase" ]] && gradle removeCredentials --key "$key" -PcredentialsLocation="$location" && return 0
+    [[ -z "$location" ]] && gradle removeCredentials --key "$key" -PcredentialsPassphrase="$passphrase" && return 0
+    gradle removeCredentials --key "$key" -PcredentialsPassphrase="$passphrase" -PcredentialsLocation="$location" && return 0
+    return 1
+
+}
+
+removeCreds() {
+    local passphrase=
+    local location=default
+    local ifphraseused="no"
+
+    [[ ! -f "$curDir"/build.gradle ]] && echo -e "build.gradle doesn't exist in current directory (should be run from project root directory), hence exiting." && return 1
+    [[ ! -f "$credparams" ]] && echo -e "$credparams doesn't exist!" && return 1
+
+    for arg in "${@}"; do
+        case "$arg" in
+        -p)
+            echo -e "[WARNING!] Ensure you're using the same passphrase as the last run"
+            echo -e "Enter custom passphrase for storing credentials. Do you want to show the passphrase on screen?"
+            read -rp "[y/n] --> " res
+            res=$(echo "$res" | tr [:upper:] [:lower:])
+            ifphraseused="yes"
+
+            [[ "$res" == "n" ]] && read -rp "Enter passphrase: " -s passphrase || read -rp "Enter passphrase: " passphrase
+            ;;
+        -l)
+            read -rp "Enter custom directory location of the credentials file: " location
+            [[ ! -d "$location" ]] && echo -e "Invalid location!" && return 1
+            ;;
+        *) ;;
+        esac
+    done
+
+    existing_location=$(grep "Location:" "$credparams" | sed "s/# Location: \(.*\)/\1/")
+    if [[ ! "$existing_location" == "$location" ]]; then
+        echo -e "You are not using the same location as in $credparams!: $existing_location"
+        return 1
+    fi
+
+    existing_phrase=$(grep "Passphrase used" "$credparams" | sed "s/# Passphrase used: \(.*\)/\1/")
+    if [[ ! "$existing_phrase" == "$ifphraseused" ]]; then
+        echo -e "You cannot change your passphrase usage! Current usage: $existing_phrase"
+        return 1
+    fi
+
+    for param in $(cat "$credparams" | grep -v "^$" | grep -v " *#"); do
+        read -rp "$param: Do you want to remove? [y/n].. " rep
+        rep=$(echo "$rep" | tr [:upper:] [:lower:])
+
+        if [[ "$rep" == "y" ]]; then
+            # gradleRemoveCreds "$param" "$passphrase" "$location" || return 1
+            sed -i "/^$param$/d" "$credparams"
+        fi
+    done
+
+    return 0
+}
+
 gradleAddCreds() {
     local key="${1}"
     local value="${2}"
@@ -60,7 +125,7 @@ addCreds() {
         existing_phrase=$(grep "Passphrase used" "$credparams" | sed "s/# Passphrase used: \(.*\)/\1/")
         if [[ ! "$existing_phrase" == "$ifphraseused" ]]; then
             echo -e "You cannot change your passphrase from the last run"
-            return 1;
+            return 1
         fi
     fi
 

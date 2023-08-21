@@ -6,9 +6,12 @@ else
     curDir="$(pwd)"
 fi
 
-credparams="$curDir"/.credparams
-credparams_temp="$curDir"/.credparams-temp
+credparams="$(pwd)"/.credparams
+credparams_temp="$(pwd)"/.credparams-temp
 
+help() {
+    cat "$curDir"/help/grcpwrapper.help
+}
 gradleRemoveCreds() {
     local key="${1}"
     local passphrase="${2}"
@@ -27,7 +30,7 @@ removeCreds() {
     local location=default
     local ifphraseused="no"
 
-    [[ ! -f "$curDir"/build.gradle ]] && echo -e "build.gradle doesn't exist in current directory (should be run from project root directory), hence exiting." && return 1
+    [[ ! -f "$(pwd)"/build.gradle ]] && echo -e "build.gradle doesn't exist in current directory (should be run from project root directory), hence exiting." && return 1
     [[ ! -f "$credparams" ]] && echo -e "$credparams doesn't exist!" && return 1
 
     for arg in "${@}"; do
@@ -92,7 +95,7 @@ addCreds() {
     local location=default
     local ifphraseused="no"
 
-    [[ ! -f "$curDir"/build.gradle ]] && echo "build.gradle doesn't exist in current directory (should be run from project root directory), hence exiting." && return 1
+    [[ ! -f "$(pwd)"/build.gradle ]] && echo "build.gradle doesn't exist in current directory (should be run from project root directory), hence exiting." && return 1
 
     for arg in "${@}"; do
         case "$arg" in
@@ -169,7 +172,7 @@ help)
     help
     ;;
 '')
-    prompt
+    help
     ;;
 *)
     help

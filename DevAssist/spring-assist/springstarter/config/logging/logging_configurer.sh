@@ -19,7 +19,7 @@ prompt() {
 }
 
 update_gitignore() {
-    log_store="logs"
+    log_store="generated/logs"
     echo -e "${RED}You need to add $log_store to .gitignore${RESET}"
     echo -e "Add the following lines to .gitignore\n"
     echo -e "### Ignore logs ###\n$log_store/"

@@ -8,7 +8,7 @@ fi
 
 default_yamls() {
     resources="src/main/resources"
-    yaml_store="config"
+    yaml_store="config/application"
     mapping_file="$curDir"/config/appyaml/configuration/.yaml-tag-mapping
 
     [[ ! -d "$resources" ]] && echo -e "${RED}Not able to find 'resources' folder. This command should be run from the project root folder.${RESET}" && return 1

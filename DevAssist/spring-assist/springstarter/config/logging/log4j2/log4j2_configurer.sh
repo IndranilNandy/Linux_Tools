@@ -38,9 +38,9 @@ default() {
     echo -e "Now copying java-properties files samples to facilitate log4j2 composite configuration. Read the empty YAML file comments for more details."
     cp -i "$LINUX_TOOLS_logging_config"/custom_config/java-properties/* "$resources"/
 
-    logconfig="log-config"
+    logconfig="config/log-config"
     echo -e "Now copying sample YAML files to facilitate log4j2 composite configuration"
-    [[ -d "$curDir"/"$logconfig" ]] || mkdir "$logconfig"
+    [[ -d "$(pwd)"/"$logconfig" ]] || mkdir -p "$logconfig"
     cp -i "$LINUX_TOOLS_logging_config"/custom_config/log-config/* "$logconfig"/
 
     echo -e "${RED}DO NOT FORGET TO UPDATE CORRESPONDING PARAMETERS IN THESE CONFIGURATION YAML FILES. As examples, see below.${RESET}"

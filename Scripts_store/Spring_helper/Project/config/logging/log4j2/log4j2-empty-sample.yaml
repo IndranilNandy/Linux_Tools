@@ -6,5 +6,5 @@
 
 # IF YOU WANT TO USE SPRING BOOT's LOGGING PROPERTIES THROUGH application.yaml, THEN YOU DO NOT NEED THIS YAML
 
-# WE WILL PUT ALL THE LOG4J2 CONFIGURATION YAMLSs UNDER {project-root-folder}/log-config
+# WE WILL PUT ALL THE LOG4J2 CONFIGURATION YAMLSs UNDER {project-root-folder}/config/log-config
 # __________________________________________________________________________________________________________________________________________________

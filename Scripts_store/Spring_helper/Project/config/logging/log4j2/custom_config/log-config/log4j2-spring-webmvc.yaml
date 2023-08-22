@@ -7,7 +7,7 @@ Configuration:
     advertiser: multicastdns		# (Optional) The Advertiser plugin name which will be used to advertise individual FileAppender or SocketAppender configurations. The only Advertiser plugin provided is 'multicastdns".
     status: warn					# Setting status="trace" is one of the first tools available to you if you need to troubleshoot log4j.
     monitorInterval: 300			# The minimum amount of time, in seconds, that must elapse before the file configuration is checked for changes.
-    dest: logs/log4j2-debug.log	 # Either "err" for stderr, "out" for stdout, a file path, or a URL. This logs log4j2 internal events.
+    dest: generated/logs/log4j2-debug.log	 # Either "err" for stderr, "out" for stdout, a file path, or a URL. This logs log4j2 internal events.
 
     Properties:
         Property:

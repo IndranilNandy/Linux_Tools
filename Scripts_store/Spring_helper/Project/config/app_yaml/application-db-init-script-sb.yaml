@@ -1,0 +1,25 @@
+---
+custom:
+    sql:
+        init:
+            location:
+                data: classpath:/spring-db-init
+            data-files: &data-files
+                - ${custom.sql.init.location.data}/data-postgresql-01.sql
+                - ${custom.sql.init.location.data}/data-postgresql-02.sql
+
+spring:
+    config:
+        activate:
+            on-profile:
+                - db-init-script-sb
+    sql:
+        init:
+            # Platform to use in the default schema or data script locations, schema-${platform}.sql and data-${platform}.sql. Not needed here.
+            # platform: postgresql
+            # To enable 'always initialize' for script-based DataSource initialization using 'schema.sql' and 'data.sql'. Default: never
+            mode: always
+            data-locations: *data-files
+    jpa:
+        # If you want script-based DataSource initialization to be able to build upon the schema creation performed by Hibernate, e.g. 'data.sql' to run after schema/relation creation
+        defer-datasource-initialization: true

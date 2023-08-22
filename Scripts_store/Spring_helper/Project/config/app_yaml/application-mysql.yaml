@@ -1,0 +1,12 @@
+---
+
+spring:
+    config:
+        activate:
+            on-profile:
+                - mysql
+    datasource:
+        url: jdbc:mysql://${MYSQL_DATABASE_HOST:localhost}:${MYSQL_DATABASE_PORT:3306}/${MYSQL_DATABASE}
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: ${spring.application.name}
+        password: ${MYSQL_DATABASE_PASSWORD}

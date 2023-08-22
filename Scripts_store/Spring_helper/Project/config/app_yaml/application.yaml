@@ -1,0 +1,35 @@
+spring:
+    application:
+        name: productsvc
+    config:
+        import:
+            - file:./config/application/application-root.yaml
+            - optional:file:./config/application/external.yaml
+            - optional:file:./config/application/external1.yaml
+            - optional:file:.env[.properties]
+    profiles:
+        include:
+            - actuator
+            - logging
+        group:
+            devpsql:
+                - postgresql
+                - jpa
+                - hibernate
+                - grp-initdb
+            devmysql:
+                - mysql
+                - jpa
+                - hibernate
+            test:
+                - h2
+                - jpa
+                - hibernate
+        active:
+            - devpsql
+
+server:
+    port: 8081
+
+# debug: true
+# trace: true

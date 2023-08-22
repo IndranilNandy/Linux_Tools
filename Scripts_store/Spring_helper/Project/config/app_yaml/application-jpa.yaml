@@ -1,0 +1,9 @@
+---
+
+spring:
+    config:
+        activate:
+            on-profile:
+                - jpa
+    jpa:
+        show-sql: true

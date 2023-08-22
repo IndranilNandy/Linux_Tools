@@ -1,0 +1,48 @@
+custom:
+    spring:
+        profiles:
+
+            # PROFILES-TYPE is JUST for the sake of INFORMATION. This IS NOT A GROUP. Instead, a particualy type just documents all the available options.
+            # All of them may NOT be enabled simultaneously. No GROUP or anything can refer to a TYPE. This serves as a DOCUMENTATION only.
+            type:
+                db-schema-gen:
+                    # If db-schema-gen-jpa is ENABLED, this will have NO EFFECT
+                    - db-schema-gen-hb
+                    # This will override db-schema-gen-hb
+                    - db-schema-gen-jpa
+                    # Do NOT use this along with Database Migration Tools
+                    - db-schema-gen-sb
+                    - liquibase
+                db-init-script:
+                    - db-init-script-hb
+                    # Do NOT use this along with Database Migration Tools
+                    - db-init-script-sb
+
+            # These custom PROFILES-GROUP are referred from spring.profiles.group. Any custom GROUP CANNOT refer to a custom PROFILES-TYPE.
+            # It can ONLY refer to a custom GROUP or a spring.profiles.group or any spring profile
+            group: &profiles-group
+                grp-initdb-jpa:
+                    - db-schema-gen-jpa
+                grp-initdb-hb:
+                    - db-schema-gen-hb
+                    - db-init-script-hb
+                grp-initdb-sb:
+                    - db-schema-gen-sb
+                    - db-init-script-sb
+                grp-initdb-liquibase:
+                    - liquibase
+                grp-initdb-nodmt:
+                    - nodmt-commons
+                    - grp-initdb-jpa
+                    - grp-initdb-hb
+                    - grp-initdb-sb
+                grp-initdb-dmt:
+                    - grp-initdb-liquibase
+                grp-initdb:
+                    - grp-initdb-nodmt
+                    # - grp-initdb-dmt
+
+
+spring:
+    profiles:
+        group: *profiles-group

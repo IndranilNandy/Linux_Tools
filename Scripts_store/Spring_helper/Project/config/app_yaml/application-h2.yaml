@@ -1,0 +1,15 @@
+---
+
+spring:
+    config:
+        activate:
+            on-profile:
+                - h2
+    datasource:
+        url: jdbc:h2:mem:${H2_DATABASE};DB_CLOSE_ON_EXIT=FALSE
+        driver-class-name: org.h2.Driver
+        username: ${spring.application.name}
+        password: ${H2_DATABASE_PASSWORD}
+    h2:
+        console:
+            enabled: true

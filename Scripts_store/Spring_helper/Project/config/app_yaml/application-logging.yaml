@@ -1,0 +1,74 @@
+# Ref.: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.logging
+spring:
+    config:
+        activate:
+            on-profile:
+            - logging
+
+custom:
+    logging:
+        pattern:
+            verbosity:
+                level1: "%d{ISO8601_OFFSET_DATE_TIME_HHCMM} %highlight{%-5p} %pid --- [%t][%T] %style{[%-40.40logger{1.}]}{magenta}: %m%highlight{%rEx{full}}%n"
+                level2: "%d{ISO8601_OFFSET_DATE_TIME_HHCMM} %highlight{%-5p} %pid --- [%t][%T] %style{[%-40.40logger{1.}]}{magenta} %style{[%-40.40class{1.}]}{blue}: %m%highlight{%rEx{full}}%n"
+                level3: "%d{ISO8601_OFFSET_DATE_TIME_HHCMM} %highlight{%-5p} %pid --- [%t][%T] %style{[%-50.50logger{1.}]}{magenta} %style{[%-90.90location{1.}]}{cyan}: %m%highlight{%rEx{full}}%n"
+                level4: "%d{ISO8601_OFFSET_DATE_TIME_HHCMM} %highlight{%-5p} %pid --- [%t][%T] %style{[%-50.50logger{1.}]}{magenta} %style{[%-50.50class{1.}]}{blue} %style{[%-90.90location{1.}]}{cyan}: %m%highlight{%rEx{full}}%n"
+                level5: "%d{ISO8601_OFFSET_DATE_TIME_HHCMM} [%N] %highlight{%-5p} %pid --- [%t][%T] %style{[%-50.50logger{1.}]}{magenta} %style{[%-50.50class{1.}]}{blue} %style{[%-90.90location{1.}]}{cyan}: %m%highlight{%rEx{full}}%n"
+                level6: "%d{ISO8601_OFFSET_DATE_TIME_HHCMM} [%N] %highlight{%-5p} %pid --- [%t][%T] %style{[%-50.50logger{1.}]}{magenta} %style{[%-50.50class{1.}]}{blue} %style{[%-90.90location{1.}]}{cyan} << %map %style{%x}{BG_Blue} %style{%X}{BG_Yellow} %style{%notEmpty{[%marker]}}{Yellow} >>: %m%highlight{%rEx{full}}%n"
+
+logging:
+    # This will override logging.file.name settings. This is needed ONLY IF you want to provide your own log4j2.yaml
+    # TURNING OFF to use default logger configuration as of now, mainly due to Console output pattern still not finalized
+    config: ./config/log-config/log4j2-spring-root.yaml
+    log4j2:
+        config:
+            override:
+                - ./config/log-config/log4j2-spring-app.yaml
+                - ./config/log-config/log4j2-spring-controller.yaml
+                - ./config/log-config/log4j2-spring-service.yaml
+                - ./config/log-config/log4j2-spring-repository.yaml
+                - ./config/log-config/log4j2-spring-model.yaml
+                - ./config/log-config/log4j2-spring-autoconfiguration.yaml
+                - ./config/log-config/log4j2-spring-beans.yaml
+                - ./config/log-config/log4j2-spring-boot.yaml
+                - ./config/log-config/log4j2-spring-jpa.yaml
+                - ./config/log-config/log4j2-spring-jdbc.yaml
+                - ./config/log-config/log4j2-spring-orm.yaml
+                - ./config/log-config/log4j2-spring-webmvc.yaml
+                - ./config/log-config/log4j2-spring-postgresql.yaml
+                - ./config/log-config/log4j2-spring-mysql.yaml
+                - ./config/log-config/log4j2-spring-jackson.yaml
+                - ./config/log-config/log4j2-spring-jakarta.yaml
+                - ./config/log-config/log4j2-spring-hibernate.yaml
+                - ./config/log-config/log4j2-spring-boot-test.yaml
+                - ./config/log-config/log4j2-spring-autoconfiguration-test.yaml
+                - ./config/log-config/log4j2-spring-web-group.yaml
+                - ./config/log-config/log4j2-spring-sql-group.yaml
+                - ./config/log-config/log4j2-spring-testframework-group.yaml
+    # file:
+        # This is effective only if log4j2.yaml isn't explicitly created or logging.config isn't declared
+        # name: ./generated/logs/spring-logs/${spring.application.name}.log
+        # This is not working along with logging.file.path. Hench commenting out.
+        # path: ./applog
+    pattern:
+        # This will NOT override your confiuration set in log4j2.yaml
+        console: ${custom.logging.pattern.verbosity.level1}
+        file: ${custom.logging.pattern.verbosity.level1}
+    threshold:
+        # set at default "trace"
+        # This will NOT override your confiuration set in log4j2.yaml
+        console: "trace"
+        file: "trace"
+    group:
+        tomcat: "org.apache.catalina,org.apache.coyote,org.apache.tomcat"
+    # level:
+        # set at default "info"
+        # CAUTION: This will override your confiuration set in log4j2.yaml
+        # web: "info"
+        # sql: "info"
+        # root: "info"
+        # tomcat: "info"
+        # "[org.hibernate]": "info"
+        # "[org.springframework.web]": "trace"
+        # "[org.springframework.boot]": "info"
+        # "[com.mydomain.core.product]": "debug"

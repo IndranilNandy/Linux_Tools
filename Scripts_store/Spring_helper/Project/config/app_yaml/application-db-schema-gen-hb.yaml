@@ -1,0 +1,11 @@
+---
+
+spring:
+    config:
+        activate:
+            on-profile:
+                - db-schema-gen-hb
+    jpa:
+        hibernate:
+            # If jpa schema-generation properties are used, this property is NOT effective
+            ddl-auto: create-drop

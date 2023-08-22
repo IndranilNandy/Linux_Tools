@@ -1,0 +1,25 @@
+---
+
+spring:
+    config:
+        activate:
+            on-profile:
+                - db-init-script-hb
+    jpa:
+        properties:
+            "[hibernate.hbm2ddl.import_files]": ${custom.hibernate.init.import_files}
+            # "[hibernate.hbm2dll.create_namespaces]": true
+            # same as hibernate.ddl-auto
+            # "[hibernate.hbm2ddl.auto]": create-drop
+
+custom:
+    hibernate:
+        init:
+            import:
+                location: "/hb-db-init"
+                files:
+                    - import-script-01.sql
+                    - import-script-02.sql
+            import_files: >
+                ${custom.hibernate.init.import.location}/${custom.hibernate.init.import.files.0},
+                ${custom.hibernate.init.import.location}/${custom.hibernate.init.import.files.1},

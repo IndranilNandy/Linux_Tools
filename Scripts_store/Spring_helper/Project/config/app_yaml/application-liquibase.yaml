@@ -1,0 +1,13 @@
+---
+
+spring:
+    config:
+        activate:
+            on-profile:
+                - liquibase
+    liquibase:
+        change-log: classpath:db/changelog/db-changelog-root.sql
+        url: jdbc:postgresql://${POSTGRESQL_DATABASE_HOST:localhost}:${POSTGRESQL_DATABASE_PORT:5432}/${POSTGRESQL_DATABASE}
+        user: ${spring.application.name}
+        password: ${POSTGRESQL_DATABASE_PASSWORD}
+        # driver-class-name: org.postgresql.Driver

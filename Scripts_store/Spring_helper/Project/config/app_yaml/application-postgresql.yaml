@@ -1,0 +1,12 @@
+---
+
+spring:
+    config:
+        activate:
+            on-profile:
+                - postgresql
+    datasource:
+        url: jdbc:postgresql://${POSTGRESQL_DATABASE_HOST:localhost}:${POSTGRESQL_DATABASE_PORT:5432}/${POSTGRESQL_DATABASE}
+        driver-class-name: org.postgresql.Driver
+        username: ${spring.application.name}
+        password: ${POSTGRESQL_DATABASE_PASSWORD}

@@ -1,0 +1,29 @@
+---
+custom:
+    jpa:
+        schema-generation:
+            location:
+                create: ./generated/jpa/schema/create.sql
+                drop: ./generated/jpa/schema/drop.sql
+
+spring:
+    config:
+        activate:
+            on-profile:
+                - db-schema-gen-jpa
+    jpa:
+        properties:
+            # ---- SCHEMA GENERATION properties ----
+            # This overrides jpa.hibernate.ddl-auto property
+            jakarta:
+                persistence:
+                    schema-generation:
+                        scripts:
+                            action: drop-and-create
+                            create-target: ${custom.jpa.schema-generation.location.create}
+                            create-source: metadata
+                            drop-target: ${custom.jpa.schema-generation.location.drop}
+                            drop-source: metadata
+                        database:
+                            action: create-drop
+        show-sql: true

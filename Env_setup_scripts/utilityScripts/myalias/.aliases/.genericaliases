@@ -30,7 +30,8 @@ lsmycommandsrepo=cd /usr/local/bin/mycommands && lsa
 lsmyscriptrefs=cd /usr/local/bin/myscriptrefs && lsa
 
 syncsnippets=cp /home/indranilnandy/.config/Code/User/snippets/* /home/indranilnandy/MyTools/Linux_Tools/Scripts_store/Snippets/vscode_snippets/.
-
+syncappyaml-productsvc=cp /home/indranilnandy/DEV/GIT-REPOS/PracticeWS/Spring/RefExamples/product-svc/config/application/* /home/indranilnandy/MyTools/Linux_Tools/Scripts_store/Spring_helper/Project/config/app_yaml/.
+synclog4j2yaml-productsvc=cp /home/indranilnandy/DEV/GIT-REPOS/PracticeWS/Spring/RefExamples/product-svc/config/log-config/* /home/indranilnandy/MyTools/Linux_Tools/Scripts_store/Spring_helper/Project/config/logging/log4j2/custom_config/log-config/.
 pg-hostcon-user@admin-server@localhost-db@mytestdb=psql postgresql://admin@localhost:5432/mytestdb
 pg-hostcon-user@postgres-server@localhost-db@mytestdb=psql postgresql://postgres@localhost:5432/mytestdb
 pg-hostcon-user@postgres-server@localhost-db@pagila=psql postgresql://postgres@localhost:5432/pagila

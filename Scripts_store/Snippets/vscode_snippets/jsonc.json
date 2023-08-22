@@ -37,7 +37,7 @@
             "\t\t\t\"rootProject\": \"product\",",
             "\t\t\t\"projectFolder\": \"/home/indranilnandy/DEV/GIT-REPOS/PracticeWS/Spring/RefExamples/product-svc\",",
             "\t\t\t\"workspaceFolder\": \"/home/indranilnandy/DEV/GIT-REPOS/PracticeWS/Spring/RefExamples/product-svc\",",
-            "\t\t\t\"args\": \"-PliquibaseExtraArgs=changelogFile=\\${workspaceFolder}/generated/liquibase/changelogs/db-changelog-\\${input:promptID}.sql\",",
+            "\t\t\t\"args\": \"-PliquibaseExtraArgs=changelogFile=\\${workspaceFolder}/generated/liquibase/changelogs/db-changelog-\\${input:promptID}.sql -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore\",",
             "\t\t\t\"javaDebug\": false,",
             "\t\t\t\"problemMatcher\": [",
             "\t\t\t\t\"\\$gradle\"",

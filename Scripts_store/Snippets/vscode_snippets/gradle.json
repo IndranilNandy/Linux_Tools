@@ -340,6 +340,17 @@
         ],
         "description": "spring liquibase"
     },
+    "spring liquibase hibernate": {
+        "prefix": [
+			"[snp] spring liquibase hibernate",
+			"[dep] spring liquibase hibernate",
+		],
+        "body": [
+            "// Ref: https://mvnrepository.com/artifact/org.liquibase.ext/liquibase-hibernate6",
+            "runtimeOnly 'org.liquibase.ext:liquibase-hibernate6:4.23.1'"
+        ],
+        "description": "spring liquibase hibernate"
+    },
     "spring liquibase runtime": {
         "prefix": [
 			"[snp] spring liquibase runtime",
@@ -352,6 +363,19 @@
             "liquibaseRuntime 'info.picocli:picocli:4.7.4'"
         ],
         "description": "spring liquibase runtime"
+    },
+    "spring liquibase hibernate runtime": {
+        "prefix": [
+			"[snp] spring liquibase hibernate runtime",
+			"[dep] spring liquibase hibernate runtime",
+		],
+        "body": [
+            "// Ref: https://github.com/liquibase/liquibase-gradle-plugin",
+            "liquibaseRuntime 'org.liquibase.ext:liquibase-hibernate6:4.23.1'",
+            "liquibaseRuntime 'org.springframework.boot:spring-boot-starter-data-jpa'",
+            "liquibaseRuntime sourceSets.main.output"
+        ],
+        "description": "spring liquibase hibernate runtime"
     },
 	// *****************************************************************************
 	// LIST OF ALL PLUGINS
@@ -484,33 +508,55 @@
 	// *****************************************************************************
 	// LIST OF DEFINED BLOCKS
 	// *****************************************************************************
-	"block-liquibase-activities-main": {
+	"block-liquibase-activities": {
 		"prefix": [
-			"[snp] liquibase-activities-main",
-			"[block] liquibase-activities-main",
+			"[snp] liquibase-activities",
+			"[block] liquibase-activities",
 		],
 		"body": [
             "liquibase {",
             "\t// jvmArgs \"-Duser.dir=\\$project.projectDir\"",
             "\tactivities {",
             "\t\tmain {",
-            "\t\t\tchangelogFile project.ext.liquibaseChangelogFile",
-            "\t\t\turl project.ext.liquibaseUrl",
+            "\t\t\tdefaultsFile \"\\$project.ext.liquibaseConfigDir/properties/activities/main/liquibase.properties\"",
+            "",
+            "\t\t\t// changelogFile project.ext.liquibaseChangelogFile",
+            "\t\t\t// url project.ext.liquibaseUrl",
             "\t\t\tusername project.ext.liquibaseUsername",
             "\t\t\tpassword project.ext.liquibasePassword",
             "\t\t\tsearchPath project.ext.liquibaseSearchPath",
             "\t\t}",
-            "\t\tgenChangelog {",
-            "\t\t\tchangelogFile project.ext.liquibaseGenChangelogFile",
-            "\t\t\turl project.ext.liquibaseUrl",
+            "\t\tgen {",
+            "",
+            "\t\t\tdefaultsFile \"\\$project.ext.liquibaseConfigDir/properties/activities/gen/liquibase.properties\"",
+            "",
+            "\t\t\t// If in gradle.properties liquibaseGenChangelogFile is NOT empty, then timestamped changelogs will be created",
+            "\t\t\tif(!project.ext.liquibaseGenChangelogFile.isEmpty()) {",
+            "\t\t\t\tchangelogFile project.ext.liquibaseGenChangelogFile",
+            "\t\t\t}",
+            "\t\t\t// diffTypes 'data'",
+            "",
             "\t\t\tusername project.ext.liquibaseUsername",
             "\t\t\tpassword project.ext.liquibasePassword",
+            "",
+            "\t\t}",
+            "\t\tdiffHb {",
+            "\t\t\tdefaultsFile \"\\$project.ext.liquibaseConfigDir/properties/activities/diffHb/liquibase.properties\"",
+            "",
+            "\t\t\t// If in gradle.properties liquibaseDiffHbChangelogFile is NOT empty, then timestamped diffChangelogs will be created",
+            "\t\t\tif(!project.ext.liquibaseDiffHbChangelogFile.isEmpty()) {",
+            "\t\t\t\tchangelogFile project.ext.liquibaseDiffHbChangelogFile",
+            "\t\t\t}",
+            "",
+            "\t\t\tusername project.ext.liquibaseUsername",
+            "\t\t\tpassword project.ext.liquibasePassword",
+            "\t\t\t// driver 'org.postgresql.Driver'",
             "\t\t}",
             "\t}",
             "\trunList = project.ext.runList",
             "}"
 		],
-		"description": "block - liquibase-activities-main"
+		"description": "block - liquibase-activities"
 	},
 	// *****************************************************************************
 	// LIST OF EXT BLOCKS
@@ -522,16 +568,16 @@
 		],
 		"body": [
             "ext {",
-            "\tliquibaseChangelogFile=\"db/changelog/db-changelog-root.sql\"",
-            "\tliquibaseGenChangelogFile=\"generated/liquibase/changelogs/db-changelog-\" + getDate() + \".sql\"",
-            "",
             "\t// Read from gradle.properties from project root",
-            "\tliquibaseUrl=liquibaseUrl",
+            "\tliquibaseConfigDir=liquibaseConfigDir",
+            "\tliquibaseGenChangelogFile = liquibaseGenChangelogFile ? liquibaseGenChangelogFile + getDate() + \".sql\" : ''",
+            "\tliquibaseDiffHbChangelogFile = liquibaseDiffHbChangelogFile ? liquibaseDiffHbChangelogFile + getDate() + \".sql\" : ''",
+            "",
             "\t// Read using gradle credentials plugin. Used with grcpwrapper",
             "\tliquibaseUsername=credentials.forKey('liquibaseUsername')",
             "\tliquibasePassword=credentials.forKey('liquibasePassword')",
             "",
-            "\tliquibaseSearchPath=\"\\$project.projectDir/src/main/resources\"",
+            "\tliquibaseSearchPath=\"\\$project.projectDir/\\$liquibaseConfigDir\"",
             "",
             "\tsetPropertyDefaultValueIfNotCustomized('runList', 'main')",
             "}",

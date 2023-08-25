@@ -24,9 +24,6 @@
 		],
         "body": [
             "{",
-            "\t\"version\": \"2.0.0\",",
-            "\t\"tasks\": [",
-            "\t\t{",
             "\t\t\t\"type\": \"gradle\",",
             "\t\t\t\"id\": \"/home/indranilnandy/DEV/GIT-REPOS/PracticeWS/Spring/RefExamples/product-svcgenerateChangelogproduct\",",
             "\t\t\t\"script\": \"generateChangelog\",",
@@ -37,15 +34,60 @@
             "\t\t\t\"rootProject\": \"product\",",
             "\t\t\t\"projectFolder\": \"/home/indranilnandy/DEV/GIT-REPOS/PracticeWS/Spring/RefExamples/product-svc\",",
             "\t\t\t\"workspaceFolder\": \"/home/indranilnandy/DEV/GIT-REPOS/PracticeWS/Spring/RefExamples/product-svc\",",
-            "\t\t\t\"args\": \"-PliquibaseExtraArgs=changelogFile=\\${workspaceFolder}/generated/liquibase/changelogs/db-changelog-\\${input:promptID}.sql -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore\",",
+            "\t\t\t\"args\": \"-PliquibaseExtraArgs=changelogFile=\\${workspaceFolder}/generated/liquibase/changelogs/gen/changelog-\\${input:promptID}.sql -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore -PrunList=gen\",",
+            "\t\t\t// \"args\": \"-PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore -PrunList=gen\", THIS WOULD NOT WORK",
             "\t\t\t\"javaDebug\": false,",
             "\t\t\t\"problemMatcher\": [",
             "\t\t\t\t\"\\$gradle\"",
             "\t\t\t],",
             "\t\t\t\"label\": \"gradle: generateChangelog product-svc\"",
-            "\t\t}",
-            "\t],",
-            "\t\"inputs\": [",
+            "\t\t},"
+        ],
+        "description": [
+            "tasks - gradle generateChangelog\n",
+            "#   Ref. https://code.visualstudio.com/docs/editor/variables-reference#_input-variables\n",
+        ],
+    },
+    "tasks - gradle diffChangelog": {
+        "prefix": [
+			"[snp] gradle diffChangelog",
+			"[vscode] gradle diffChangelog",
+			"[tasks] gradle diffChangelog",
+		],
+        "body": [
+            "{",
+            "\t\t\t\"type\": \"gradle\",",
+            "\t\t\t\"id\": \"/home/indranilnandy/DEV/GIT-REPOS/PracticeWS/Spring/RefExamples/product-svcdiffChangelogproduct\",",
+            "\t\t\t\"script\": \"diffChangelog\",",
+            "\t\t\t\"description\": \"Compare two databases to produce changesets and write them to a changelog file\",",
+            "\t\t\t\"group\": \"liquibase\",",
+            "\t\t\t\"project\": \"product\",",
+            "\t\t\t\"buildFile\": \"/home/indranilnandy/DEV/GIT-REPOS/PracticeWS/Spring/RefExamples/product-svc/build.gradle\",",
+            "\t\t\t\"rootProject\": \"product\",",
+            "\t\t\t\"projectFolder\": \"/home/indranilnandy/DEV/GIT-REPOS/PracticeWS/Spring/RefExamples/product-svc\",",
+            "\t\t\t\"workspaceFolder\": \"/home/indranilnandy/DEV/GIT-REPOS/PracticeWS/Spring/RefExamples/product-svc\",",
+            "\t\t\t\"args\": \"-PliquibaseExtraArgs=changelogFile=\\${workspaceFolder}/generated/liquibase/changelogs/diff/hb/changelog-\\${input:promptID}.sql -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore -PrunList=diffHb\",",
+            "\t\t\t\"javaDebug\": false,",
+            "\t\t\t\"problemMatcher\": [",
+            "\t\t\t\t\"\\$gradle\"",
+            "\t\t\t],",
+            "\t\t\t\"label\": \"gradle: diffChangelog product-svc\"",
+            "\t\t},"
+        ],
+        "description": [
+            "tasks - gradle diffChangelog\n",
+            "#   Ref. https://code.visualstudio.com/docs/editor/variables-reference#_input-variables\n",
+        ],
+    },
+
+    "tasks - input variables": {
+        "prefix": [
+			"[snp] input variables",
+			"[vscode] input variables",
+			"[tasks] input variables",
+		],
+        "body": [
+            "\"inputs\": [",
             "\t\t{",
             "\t\t\t\"id\": \"generatedID\",",
             "\t\t\t\"type\": \"command\",",
@@ -76,11 +118,10 @@
             "\t\t\t\"description\": \"Enter the ID of the generated db-changelog\",",
             "\t\t\t\"default\": \"default\"",
             "\t\t}",
-            "\t]",
-            "}"
+            "\t]"
         ],
         "description": [
-            "tasks - gradle generateChangelog\n",
+            "tasks - input variables\n",
             "#   Ref. https://code.visualstudio.com/docs/editor/variables-reference#_input-variables\n",
         ],
     },

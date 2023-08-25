@@ -81,4 +81,9 @@ springstarter db gen dml
 springstarter db gen schema
 springstarter db gen help
 
+springstarter db liquibase
+springstarter db liquibase init
+springstarter db liquibase config
+springstarter db liquibase help
+
 springstarter db help

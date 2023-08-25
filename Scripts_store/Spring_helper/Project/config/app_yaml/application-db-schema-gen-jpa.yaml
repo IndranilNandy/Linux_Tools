@@ -25,5 +25,6 @@ spring:
                             drop-target: ${custom.jpa.schema-generation.location.drop}
                             drop-source: metadata
                         database:
-                            action: create-drop
+                            # action: create
+                            action: none
         show-sql: true

@@ -3,7 +3,8 @@ custom:
     sql:
         init:
             location:
-                data: classpath:/spring-db-init
+                # data: classpath:/spring-db-init
+                data: file:${custom.project.location.database}/init/script-based
             data-files: &data-files
                 - ${custom.sql.init.location.data}/data-postgresql-01.sql
                 - ${custom.sql.init.location.data}/data-postgresql-02.sql

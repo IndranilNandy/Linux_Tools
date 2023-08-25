@@ -1,4 +1,11 @@
 custom:
+    project:
+        location:
+            config: config
+            application: ${custom.project.location.config}/application
+            database: ${custom.project.location.config}/database
+            logconfig: ${custom.project.location.config}/log-config
+
     spring:
         profiles:
 
@@ -29,6 +36,13 @@ custom:
                 grp-initdb-sb:
                     - db-schema-gen-sb
                     - db-init-script-sb
+                grp-db-schema-gen-only:
+                    - db-schema-gen-jpa
+                    - db-schema-gen-hb
+                    - db-schema-gen-sb
+                grp-db-init-data-only:
+                    - db-init-script-hb
+                    - db-init-script-sb
                 grp-initdb-liquibase:
                     - liquibase
                 grp-initdb-nodmt:
@@ -36,10 +50,18 @@ custom:
                     - grp-initdb-jpa
                     - grp-initdb-hb
                     - grp-initdb-sb
+                grp-initdb-nodmt-schema-gen-only:
+                    - nodmt-commons
+                    - grp-db-schema-gen-only
+                grp-initdb-nodmt-init-data-only:
+                    - nodmt-commons
+                    - grp-db-init-data-only
                 grp-initdb-dmt:
                     - grp-initdb-liquibase
                 grp-initdb:
-                    - grp-initdb-nodmt
+                    # - grp-initdb-nodmt
+                    - grp-initdb-nodmt-schema-gen-only
+                    # - grp-initdb-nodmt-init-data-only
                     # - grp-initdb-dmt
 
 

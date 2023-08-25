@@ -16,7 +16,8 @@ custom:
     hibernate:
         init:
             import:
-                location: "/hb-db-init"
+                # location: "classpath:hb-db-init"
+                location: file:${custom.project.location.database}/init/hibernate
                 files:
                     - import-script-01.sql
                     - import-script-02.sql

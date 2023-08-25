@@ -7,10 +7,9 @@ else
 fi
 
 schema() {
-    resources="src/main/resources"
     schema_store="generated/jpa/schema"
 
-    [[ ! -d "$resources" ]] && echo -e "${RED}Not able to find 'resources' folder. This command should be run from the project root folder.${RESET}" && return 1
+    [[ ! -f "$(pwd)"/build.gradle ]] && echo -e "${RED}Not able to find build.gradle, this command should be run from the project root folder.${RESET}" && return 1
     [[ -d "$(pwd)"/"$schema_store" ]] || mkdir -p "$(pwd)"/"$schema_store"
 
     echo -e "${RED}You need to add $schema_store to .gitignore${RESET}"
@@ -23,21 +22,21 @@ schema() {
 }
 
 dml() {
-    resources="src/main/resources"
-    hb_init="hb-db-init"
-    spring_init="spring-db-init"
+    db_init_cfg_dir="$(pwd)"/config/database/init
+    hb_init="hibernate"
+    spring_init="script-based"
 
-    [[ ! -d "$resources" ]] && echo -e "${RED}Not able to find 'resources' folder. This command should be run from the project root folder.${RESET}" && return 1
-    [[ -d "$resources"/"$hb_init" ]] || mkdir -p "$resources"/"$hb_init"
-    [[ -d "$resources"/"$spring_init" ]] || mkdir -p "$resources"/"$spring_init"
+    [[ ! -f "$(pwd)"/build.gradle ]] && echo -e "${RED}Not able to find build.gradle, this command should be run from the project root folder.${RESET}" && return 1
+    [[ -d "$db_init_cfg_dir"/"$hb_init" ]] || mkdir -p "$db_init_cfg_dir"/"$hb_init"
+    [[ -d "$db_init_cfg_dir"/"$spring_init" ]] || mkdir -p "$db_init_cfg_dir"/"$spring_init"
 
-    [[ -f "$resources"/"$hb_init"/import-script-01.sql ]] || touch "$resources"/"$hb_init"/import-script-01.sql
-    [[ -f "$resources"/"$hb_init"/import-script-02.sql ]] || touch "$resources"/"$hb_init"/import-script-02.sql
+    [[ -f "$db_init_cfg_dir"/"$hb_init"/import-script-01.sql ]] || touch "$db_init_cfg_dir"/"$hb_init"/import-script-01.sql
+    [[ -f "$db_init_cfg_dir"/"$hb_init"/import-script-02.sql ]] || touch "$db_init_cfg_dir"/"$hb_init"/import-script-02.sql
 
-    [[ -f "$resources"/"$spring_init"/data-postgresql-01.sql ]] || touch "$resources"/"$spring_init"/data-postgresql-01.sql
-    [[ -f "$resources"/"$spring_init"/data-postgresql-02.sql ]] || touch "$resources"/"$spring_init"/data-postgresql-02.sql
-    [[ -f "$resources"/"$spring_init"/schema-postgresql-01.sql ]] || touch "$resources"/"$spring_init"/schema-postgresql-01.sql
-    [[ -f "$resources"/"$spring_init"/schema-postgresql-02.sql ]] || touch "$resources"/"$spring_init"/schema-postgresql-02.sql
+    [[ -f "$db_init_cfg_dir"/"$spring_init"/data-postgresql-01.sql ]] || touch "$db_init_cfg_dir"/"$spring_init"/data-postgresql-01.sql
+    [[ -f "$db_init_cfg_dir"/"$spring_init"/data-postgresql-02.sql ]] || touch "$db_init_cfg_dir"/"$spring_init"/data-postgresql-02.sql
+    [[ -f "$db_init_cfg_dir"/"$spring_init"/schema-postgresql-01.sql ]] || touch "$db_init_cfg_dir"/"$spring_init"/schema-postgresql-01.sql
+    [[ -f "$db_init_cfg_dir"/"$spring_init"/schema-postgresql-02.sql ]] || touch "$db_init_cfg_dir"/"$spring_init"/schema-postgresql-02.sql
 
     echo -e "Created (if not already exists)"
     echo -e "${RED}\nIf you're executing 'dml' command only, then you need to run 'springstarter config appyaml init' to configure application yamls, if not done already.${RESET}"

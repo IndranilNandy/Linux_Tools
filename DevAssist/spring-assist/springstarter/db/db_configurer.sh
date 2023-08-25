@@ -6,6 +6,10 @@ else
     curDir="$(pwd)"
 fi
 
+liquibase() {
+    "$curDir"/db/liquibase/liquibase_configurer.sh "$@"
+}
+
 gen() {
     "$curDir"/db/gen/db_gen_configurer.sh "$@"
 }
@@ -33,6 +37,11 @@ init() {
     # springstarter db gen init "${@}"
     # _____________________________________________________
     "$curDir"/db/gen/db_gen_configurer.sh "init" "$@"
+
+    # _____________________________________________________
+    # springstarter db liquibase init "${@}"
+    # _____________________________________________________
+    "$curDir"/db/liquibase/liquibase_configurer.sh "init" "$@"
 
     echo -e "${BLUE}${BOLD}______________________________________________________________________________________${RESET}"
     echo -e "${BLUE}${BOLD}[SPRINGSTARTER DB INIT] Finished.${RESET}"
@@ -63,6 +72,9 @@ mysql)
     ;;
 gen)
     gen "${@:2}"
+    ;;
+liquibase)
+    liquibase "${@:2}"
     ;;
 help)
     echo --help

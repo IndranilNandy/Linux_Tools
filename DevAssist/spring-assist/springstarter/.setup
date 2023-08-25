@@ -16,7 +16,7 @@ echo -e "${YELLOW}[springstarter] Setup process started.${RESET}"
 
 yes | sudo ln -i -s "$(pwd)"/springstarter.sh "$MYCOMMANDSREPO"/springstarter && echo -e "\nCreated symbolink link springstarter in $MYCOMMANDSREPO"
 
-mycompl -W \"project create db gen ddl dml schema postgresql mysql container init up down config clean help --f --sqltemplate=templatestore --sqltemplate=localdir --sqltemplate= localdir templatestore env secrets dotenv load sync show merge encrypt --remote --global --local appyaml empty logging log4j2 default\" springstarter
+mycompl -W \"project create db gen ddl dml schema postgresql mysql container init up down config clean help liquibase --f --sqltemplate=templatestore --sqltemplate=localdir --sqltemplate= localdir templatestore env secrets dotenv load sync show merge encrypt --remote --global --local appyaml empty logging log4j2 default\" springstarter
 
 myalias --gen ssi=springstarter init
 

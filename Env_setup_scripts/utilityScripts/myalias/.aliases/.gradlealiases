@@ -1,3 +1,20 @@
 # Aliases for Gradle commands
 
 gr=./gradlew
+
+# (Liquibase commands) These are Gradle Tasks' Aliases for custom/specific configuration
+grl-generateChangelog=gradle generateChangelog -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore -PrunList=gen
+grl-diff=gradle diff -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore -PrunList=diffHb
+grl-diffChangelog=gradle diffChangelog -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore -PrunList=diffHb
+grl-snapshot=gradle snapshot -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore
+grl-snapshotReference=gradle snapshotReference -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore -PrunList=diffHb
+grl-status=gradle status -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore
+grl-update=gradle update -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore
+grl-updateSql=gradle updateSql -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore
+grl-updateTestingRollback=gradle updateTestingRollback -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore
+grl-rollbackCount=gradle rollbackCount --count=1 -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore
+grl-rollbackCountSql-sql=gradle rollbackCountSql --count=1 -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore
+grl-changelogSync=gradle changelogSync -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore
+grl-changelogSyncSql=gradle changelogSyncSql -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore
+grl-dbDoc=gradle dbDoc -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore -PrunList=doc
+grl-history=gradle history -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore

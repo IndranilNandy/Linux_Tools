@@ -2,7 +2,7 @@
 
 gr=./gradlew
 
-# (Liquibase commands) These are Gradle Tasks' Aliases for custom/specific configuration
+# [Gradle Tasks] Liquibase commands - These are Gradle Tasks' Aliases for custom/specific configuration
 grl-generateChangelog=gradle generateChangelog -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore -PrunList=gen
 grl-diff=gradle diff -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore -PrunList=diffHb
 grl-diffChangelog=gradle diffChangelog -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore -PrunList=diffHb
@@ -18,3 +18,6 @@ grl-changelogSync=gradle changelogSync -PcredentialsPassphrase=dummypassword -Pc
 grl-changelogSyncSql=gradle changelogSyncSql -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore
 grl-dbDoc=gradle dbDoc -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore -PrunList=doc
 grl-history=gradle history -PcredentialsPassphrase=dummypassword -PcredentialsLocation=./.credstore
+
+# [Gradle Tasks] Lombok commands -
+gr-delombok=gradle delombok; echo  -e \\\n\"Generated in build\/generated\/sources\/delombok\"

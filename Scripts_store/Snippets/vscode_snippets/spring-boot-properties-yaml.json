@@ -369,7 +369,7 @@
             "\t\t\t\t\t\t\tdrop-source: metadata",
             "\t\t\t\t\t\tdatabase:",
             "\t\t\t\t\t\t\t# action: create-drop",
-            "\t\t\t\t\t\t\taction: none",
+            "\t\t\t\t\t\t\taction: validate",
             "\t\tshow-sql: true"
         ],
         "description": "Db-schema-gen-jpa Config"
@@ -562,5 +562,33 @@
             "\t\t\t\t- \"*\"",
         ],
         "description": "Actuator Config"
+    },
+
+	// *****************************************************************************
+	// Override configurations
+	// *****************************************************************************
+    "Dev override Config": {
+        "prefix": [
+			"[snp] Dev override Config",
+			"[sb-config] Dev override Config",
+		],
+        "body": [
+            "# These properties are overriding the same properties declared before. Hence this Profile NEEDS TO BE INCLUDED AT THE LAST",
+            "spring:",
+            "\tconfig:",
+            "\t\tactivate:",
+            "\t\t\ton-profile:",
+            "\t\t\t\t- dev-overrides",
+            "\tjpa:",
+            "\t\tproperties:",
+            "\t\t\t# ---- SCHEMA GENERATION properties ----",
+            "\t\t\t# This overrides jpa.hibernate.ddl-auto property",
+            "\t\t\tjakarta:",
+            "\t\t\t\tpersistence:",
+            "\t\t\t\t\tschema-generation:",
+            "\t\t\t\t\t\tdatabase:",
+            "\t\t\t\t\t\t\taction: create-drop"
+        ],
+        "description": "Dev override Config"
     },
 }

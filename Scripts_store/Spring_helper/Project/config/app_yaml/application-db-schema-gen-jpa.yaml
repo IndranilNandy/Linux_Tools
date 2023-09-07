@@ -26,5 +26,5 @@ spring:
                             drop-source: metadata
                         database:
                             # action: create
-                            action: none
+                            action: validate
         show-sql: true

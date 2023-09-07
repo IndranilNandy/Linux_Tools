@@ -47,5 +47,25 @@
             "private static final Marker ${1:MARKER} = MarkerFactory.getMarker(${2:\"XYZ\"});"
         ],
         "description": "getMarker-slf4j-()"
-    }
+    },
+	// *****************************************************************************
+	// [QP] Quick Programming
+	// *****************************************************************************
+	"entity annotations": {
+        "prefix": [
+			"[snp] entity annotations",
+			"[qp] entity annotations",
+		],
+        "body": [
+			"@Data",
+			"// @RequiredArgsConstructor",
+			"@AllArgsConstructor",
+			"@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)",
+			"@Builder",
+			"@Slf4j",
+			"@Entity",
+			"@Table",
+        ],
+        "description": "getLogger-log4j2-()"
+    },
 }

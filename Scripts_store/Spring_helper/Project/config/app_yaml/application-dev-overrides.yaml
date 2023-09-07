@@ -1,0 +1,15 @@
+# These properties are overriding the same properties declared before. Hence this Profile NEEDS TO BE INCLUDED AT THE LAST
+spring:
+    config:
+        activate:
+            on-profile:
+                - dev-overrides
+    jpa:
+        properties:
+            # ---- SCHEMA GENERATION properties ----
+            # This overrides jpa.hibernate.ddl-auto property
+            jakarta:
+                persistence:
+                    schema-generation:
+                        database:
+                            action: create-drop

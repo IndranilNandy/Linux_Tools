@@ -58,11 +58,14 @@ custom:
                     - grp-db-init-data-only
                 grp-initdb-dmt:
                     - grp-initdb-liquibase
+                grp-dev-overrides:
+                    - dev-overrides
                 grp-initdb:
                     # - grp-initdb-nodmt
                     - grp-initdb-nodmt-schema-gen-only
                     # - grp-initdb-nodmt-init-data-only
                     # - grp-initdb-dmt
+                    - grp-dev-overrides
 
 
 spring:

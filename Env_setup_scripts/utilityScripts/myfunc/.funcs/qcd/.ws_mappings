@@ -20,7 +20,13 @@ gradlespace                     $HOME/DEV/GIT-REPOS/PracticeWS/Gradle           
 springspace                     $HOME/DEV/GIT-REPOS/PracticeWS/Spring                                                                                               spring,practice
 helmspace                       $HOME/DEV/GIT-REPOS/PracticeWS/Helm                                                                                                 helm,practice
 idespace                        $HOME/DEV/GIT-REPOS/PracticeWS/IDEwise                                                                                              ide,practice
-dbspace                         $HOME/DEV/GIT-REPOS/PracticeWS/Database                                                                                              ide,practice
+dbspace                         $HOME/DEV/GIT-REPOS/PracticeWS/Database                                                                                             ide,practice
 liquispace                      $HOME/DEV/GIT-REPOS/PracticeWS/Database/Liquibase
-pythonspace                     $HOME/DEV/GIT-REPOS/PracticeWS/Python                                                                                             dbspace,practice
+pythonspace                     $HOME/DEV/GIT-REPOS/PracticeWS/Python                                                                                               dbspace,practice
 pagila                          $HOME/DEV/GIT-REPOS/DataSamples/Database/Postgres/pagila                                                                            pagila,samples-data
+tomhomberg                      $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes/Hexagonal-Architecture/HandsOnCleanArch_TomHombergs                                hexagonal,books,codesamples
+spring-boot-hexa-arch           $HOME/DEV/GIT-REPOS/CodeSamples/Topic-SourceCodes/Hexagonal-Architecture/spring_boot_hexa_arch                                      hexagonal,topics,codesamples
+banking-kata-java               $HOME/DEV/GIT-REPOS/CodeSamples/Topic-SourceCodes/Hexagonal-Architecture/banking_kata_java                                          hexagonal,topics,codesamples
+spring-shoestore                $HOME/DEV/GIT-REPOS/CodeSamples/Topic-SourceCodes/Hexagonal-Architecture/spring_shoestore                                           hexagonal,topics,codesamples
+talkadvisor-backend             $HOME/DEV/GIT-REPOS/CodeSamples/Topic-SourceCodes/Hexagonal-Architecture/talkadvisor_backend                                        hexagonal,topics,codesamples
+

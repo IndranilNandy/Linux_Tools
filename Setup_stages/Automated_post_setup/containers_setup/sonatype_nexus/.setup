@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Ref. https://www.coachdevops.com/2022/01/install-sonatype-nexus-3-using-docker.html
+# Ref. https://hub.docker.com/r/sonatype/nexus3/
+# Ref. https://onedrive.live.com/view.aspx?resid=36449486C8B7B4ED%211154&id=documents&wd=target%28Topic%20List%201.one%7C6541AEFC-AA14-4029-B8C9-F5228618C2D8%2FSonatype%20Nexus%20Repository%20OSS%7CCB5913FB-1EB4-4C71-853B-27AB257EBED8%2F%29
+# onenote:https://d.docs.live.net/36449486c8b7b4ed/Documents/DevNotes/%5bProject%5d%20Technologies/Topic%20List%201.one#Sonatype%20Nexus%20Repository%20OSS&section-id={6541AEFC-AA14-4029-B8C9-F5228618C2D8}&page-id={CB5913FB-1EB4-4C71-853B-27AB257EBED8}&end
+
+./nexus_repository_installer.sh

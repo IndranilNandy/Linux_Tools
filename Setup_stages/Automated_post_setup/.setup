@@ -23,5 +23,8 @@
         # Ref. Pagila setup: https://github.com/devrimgunduz/pagila
         cd ./pagila
         ./.setup
+
+        cd ./sonatype_nexus
+        ./.setup
     )
 )

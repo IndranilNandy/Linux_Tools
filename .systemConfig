@@ -26,3 +26,4 @@ export LINUX_TOOLS_logging_config="$LINUX_TOOLS_spring_helper"/Project/config/lo
 export LINUX_TOOLS_scrtstore="$HOME"/myscrtstore
 
 export LINUX_TOOLS_pagila="/home/indranilnandy/DEV/GIT-REPOS/DataSamples/Database/Postgres/pagila"
+export LINUX_TOOLS_nexus_repo="/home/indranilnandy/.nexus/nexus-data"

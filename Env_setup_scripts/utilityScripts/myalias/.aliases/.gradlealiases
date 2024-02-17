@@ -21,3 +21,10 @@ grl-history=gradle history -PcredentialsPassphrase=dummypassword -PcredentialsLo
 
 # [Gradle Tasks] Lombok commands -
 gr-delombok=gradle delombok; echo  -e \\\n\"Generated in build\/generated\/sources\/delombok\"
+
+# [Gradle init] Project creation -
+ginit-app-incubating=gradle init --type java-application --dsl groovy --test-framework junit-jupiter --package com.linkingway --split-project --java-version 19 --incubating
+ginit-app-incubating-no=gradle init --type java-application --dsl groovy --test-framework junit-jupiter --package com.linkingway --split-project --java-version 19 --no-incubating
+ginit-lib-incubating=gradle init --type java-library --dsl groovy --test-framework junit-jupiter --package com.linkingway --split-project --java-version 19 --incubating
+ginit-lib-incubating-no=gradle init --type java-library --dsl groovy --test-framework junit-jupiter --package com.linkingway --split-project --java-version 19 --no-incubating
+ginit-basic-incubating=gradle init --type basic --dsl groovy --java-version 19 --split-project --incubating

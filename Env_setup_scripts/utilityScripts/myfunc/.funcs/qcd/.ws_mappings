@@ -6,14 +6,6 @@ dev_tools_setup_scripts         $HOME/MyTools/Linux_Tools/Dev_tools_setup_script
 env_setup_scripts               $HOME/MyTools/Linux_Tools/Env_setup_scripts                                                                                         setup
 utility_tools_setup_scripts     $HOME/MyTools/Linux_Tools/Utility_tools_setup_scripts                                                                               setup
 k8                              $HOME/MyTools/Linux_Tools/Dev_tools_setup_scripts/k8                                                                                k8
-samples-code                    $HOME/DEV/GIT-REPOS/CodeSamples                                                                                                     samples
-samples-aggr                    $HOME/DEV/GIT-REPOS/CodeSamples/AggregatedSamples                                                                                   samples
-samples-gradle                  $HOME/DEV/GIT-REPOS/CodeSamples/AggregatedSamples/GradleSamples                                                                     samples,gradle
-books                           $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes                                                                                    books
-books-spring                    $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes/Spring                                                                             books,spring
-books-microsvc                  $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes/Spring/Microservices-with-Spring-Boot-and-Spring-Cloud-2E                          books,spring
-books-spring-in-action          $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes/Spring/Spring-in-action                                                            books,spring
-books-learning-helm             $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes/Helm/Learning-helm                                                                 books,helm
 practicews                      $HOME/DEV/GIT-REPOS/PracticeWS                                                                                                      practice
 k8space                         $HOME/DEV/GIT-REPOS/PracticeWS/Kubernetes/k8test                                                                                    k8,practice
 gradlespace                     $HOME/DEV/GIT-REPOS/PracticeWS/Gradle                                                                                               gradle,practice
@@ -23,10 +15,20 @@ idespace                        $HOME/DEV/GIT-REPOS/PracticeWS/IDEwise          
 dbspace                         $HOME/DEV/GIT-REPOS/PracticeWS/Database                                                                                             ide,practice
 liquispace                      $HOME/DEV/GIT-REPOS/PracticeWS/Database/Liquibase
 pythonspace                     $HOME/DEV/GIT-REPOS/PracticeWS/Python                                                                                               dbspace,practice
-pagila                          $HOME/DEV/GIT-REPOS/DataSamples/Database/Postgres/pagila                                                                            pagila,samples-data
+pagila                          $HOME/DEV/GIT-REPOS/DataSamples/Database/Postgres/pagila                                                                            pagila,samples-dat
+samples-code                    $HOME/DEV/GIT-REPOS/CodeSamples                                                                                                     samples
+samples-aggr                    $HOME/DEV/GIT-REPOS/CodeSamples/AggregatedSamples                                                                                   samples
+samples-gradle                  $HOME/DEV/GIT-REPOS/CodeSamples/AggregatedSamples/GradleSamples                                                                     samples,gradle
+books                           $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes                                                                                    books
+books-spring                    $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes/Spring                                                                             books,spring
+books-microsvc                  $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes/Spring/Microservices-with-Spring-Boot-and-Spring-Cloud-2E                          books,spring
+books-spring-in-action          $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes/Spring/Spring-in-action                                                            books,spring
+books-learning-helm             $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes/Helm/Learning-helm                                                                 books,helma
 tomhomberg                      $HOME/DEV/GIT-REPOS/CodeSamples/Book-SourceCodes/Hexagonal-Architecture/HandsOnCleanArch_TomHombergs                                hexagonal,books,codesamples
 spring-boot-hexa-arch           $HOME/DEV/GIT-REPOS/CodeSamples/Topic-SourceCodes/Hexagonal-Architecture/spring_boot_hexa_arch                                      hexagonal,topics,codesamples
 banking-kata-java               $HOME/DEV/GIT-REPOS/CodeSamples/Topic-SourceCodes/Hexagonal-Architecture/banking_kata_java                                          hexagonal,topics,codesamples
 spring-shoestore                $HOME/DEV/GIT-REPOS/CodeSamples/Topic-SourceCodes/Hexagonal-Architecture/spring_shoestore                                           hexagonal,topics,codesamples
 talkadvisor-backend             $HOME/DEV/GIT-REPOS/CodeSamples/Topic-SourceCodes/Hexagonal-Architecture/talkadvisor_backend                                        hexagonal,topics,codesamples
-
+spring-hexa-template            $HOME/DEV/GIT-REPOS/CodeSamples/Topic-SourceCodes/Hexagonal-Architecture/spring_hexa_template                                       hexagonal,topics,codesamples
+spring-github                   $HOME/DEV/GIT-REPOS/CodeSamples/OpenSourceProjects/Spring-Boot                                                                      spring-github
+gradle-github                   $HOME/DEV/GIT-REPOS/CodeSamples/OpenSourceProjects/Gradle                                                                           gradle-github

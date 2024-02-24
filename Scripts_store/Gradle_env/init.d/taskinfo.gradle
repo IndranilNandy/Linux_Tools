@@ -1,0 +1,15 @@
+initscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath group: 'org.barfuin.gradle.taskinfo', name: 'gradle-taskinfo', version: '2.2.0'
+    }
+}
+//rootProject {
+//    apply plugin: org.barfuin.gradle.taskinfo.GradleTaskInfoPlugin
+//}
+allprojects {
+    apply plugin: org.barfuin.gradle.taskinfo.GradleTaskInfoPlugin
+}
+

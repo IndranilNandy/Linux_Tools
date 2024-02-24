@@ -9,3 +9,4 @@
 (cd ./misc && ./.int)
 (cd ./vscode && ./.int)
 (cd ./db-connections && ./.int)
+(cd ./gradle-env && ./.int)

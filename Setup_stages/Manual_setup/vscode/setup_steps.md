@@ -6,8 +6,8 @@
 
 | Extensions  | Steps to configure | Notes  | Video |
 | ----------- | ----------- | ------ | ------|
-| 1. SqlTools | Create connection |  |
-| 2. PostgreSQL (explorer) | Create connection |  |
+| 1. SqlTools | Create connection |  |  |
+| 2. PostgreSQL (explorer) | Create connection |  |  |
 | 3. MySQL Shell | Run welcome wizard | | |
 | 4. All MySQL extensions | Create connection | | |
 | 5. GistPad | Sign in GitHub | | |

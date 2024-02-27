@@ -32,3 +32,10 @@ talkadvisor-backend             $HOME/DEV/GIT-REPOS/CodeSamples/Topic-SourceCode
 spring-hexa-template            $HOME/DEV/GIT-REPOS/CodeSamples/Topic-SourceCodes/Hexagonal-Architecture/spring_hexa_template                                       hexagonal,topics,codesamples
 spring-github                   $HOME/DEV/GIT-REPOS/CodeSamples/OpenSourceProjects/Spring-Boot                                                                      spring-github
 gradle-github                   $HOME/DEV/GIT-REPOS/CodeSamples/OpenSourceProjects/Gradle                                                                           gradle-github
+studentsvc                      $HOME/DEV/GIT-REPOS/CodeArchitecture/student-service/studentsvc                                                                     studentsvc
+studentsvc-domain               $HOME/DEV/GIT-REPOS/CodeArchitecture/student-service/studentsvc-domain                                                              studentsvc-domain
+studentsvc-api                  $HOME/DEV/GIT-REPOS/CodeArchitecture/student-service/studentsvc-api                                                                 studentsvc-api
+studentsvc-application          $HOME/DEV/GIT-REPOS/CodeArchitecture/student-service/studentsvc-application                                                         studentsvc-application
+studentsvc-userinterface        $HOME/DEV/GIT-REPOS/CodeArchitecture/student-service/studentsvc-userinterface                                                       studentsvc-userinterface
+studentsvc-infrastructure       $HOME/DEV/GIT-REPOS/CodeArchitecture/student-service/studentsvc-infrastructure                                                      studentsvc-infrastructure
+studentsvc-common               $HOME/DEV/GIT-REPOS/CodeArchitecture/student-service/studentsvc-common                                                              studentsvc-common

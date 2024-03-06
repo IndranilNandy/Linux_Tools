@@ -26,7 +26,7 @@ Subcommands:
                     --sqltemplate=templatestore will search for *.pgsql.temmplate file recursively in the template store. [You'll will be given options to choose]
                     --sqltemplate=<temmplate_file_full_path_incuding_name> will take the template as the selected one.
                 If the root directory already contains ./docker/postgresql/docker-compose.yaml, or, you've run the 'init' command earlier,
-                    then successing running of 'init' command will just 'up' the services and run the initializing sql script again.
+                    then successive running of 'init' command will just 'up' the services and run the initializing sql script again.
 
     up:         This runs all the service up. (equivalent to 'docker compose up -d')
                 You're advised to use 'docker compose up -d' command instead.
@@ -42,7 +42,7 @@ Subcommands:
                     --sqltemplate=<temmplate_file_full_path_incuding_name> will take the template as the selected one.
 
     clean:      If first runs the 'down' command, followed by an option if you also want to remove the local docker-compose.yaml file.
-                If you provid '--f' option, then it'll delete the local docker-compose.yaml instantly without asking for any confirmation.
+                If you provide '--f' option, then it'll delete the local docker-compose.yaml instantly without asking for any confirmation.
                 This doesn't clean the volumes, you need to delete it manually if wanted.
 
     help:

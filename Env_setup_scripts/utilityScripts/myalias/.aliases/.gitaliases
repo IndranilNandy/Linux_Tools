@@ -11,3 +11,6 @@ gd=git difftool
 gh=git help
 gha=git help -a
 ghg=git help -g
+
+# Aliases for aggregating set of git tasks
+gshort=ga . && gc -m "Updated" && git push

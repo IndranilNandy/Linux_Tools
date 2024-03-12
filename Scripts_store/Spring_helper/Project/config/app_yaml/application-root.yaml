@@ -9,7 +9,7 @@ custom:
     spring:
         profiles:
 
-            # PROFILES-TYPE is JUST for the sake of INFORMATION. This IS NOT A GROUP. Instead, a particualy type just documents all the available options.
+            # PROFILES-TYPE is JUST for the sake of INFORMATION. This IS NOT A GROUP. Instead, a particular type just documents all the available options.
             # All of them may NOT be enabled simultaneously. No GROUP or anything can refer to a TYPE. This serves as a DOCUMENTATION only.
             type:
                 db-schema-gen:

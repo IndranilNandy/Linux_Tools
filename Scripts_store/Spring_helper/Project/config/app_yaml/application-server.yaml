@@ -1,0 +1,14 @@
+---
+
+spring:
+    config:
+        activate:
+            on-profile:
+                - server
+
+server:
+    error:
+        include-message: always
+        include-binding-errors: always
+        include-exception: true
+        include-stacktrace: on-param

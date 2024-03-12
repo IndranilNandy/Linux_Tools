@@ -3,14 +3,18 @@ spring:
         name: productsvc
     config:
         import:
-            - file:./config/application/application-root.yaml
+            - optional:file:./config/application/application-root.yaml
             - optional:file:./config/application/external.yaml
             - optional:file:./config/application/external1.yaml
+            - optional:classpath:./config/application/application-root.yaml
+            - optional:classpath:./config/application/external.yaml
+            - optional:classpath:./config/application/external1.yaml
             - optional:file:.env[.properties]
     profiles:
         include:
             - actuator
             - logging
+            - server
         group:
             devpsql:
                 - postgresql
@@ -29,7 +33,7 @@ spring:
             - devpsql
 
 server:
-    port: 8081
+    port: 8091
 
 # debug: true
 # trace: true

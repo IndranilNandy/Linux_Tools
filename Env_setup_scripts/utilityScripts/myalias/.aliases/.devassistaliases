@@ -7,3 +7,13 @@ dev-log-error=code .\/generated\/logs/current\/_aggregated\/*error.log
 dev-log-debug=code .\/generated\/logs/current\/_aggregated\/*debug.log
 dev-log-verbose-watch=watch cat .\/generated\/logs/current\/_aggregated\/*verbose.log \| tail -n \$\(\(\$LINES - 2\)\)
 
+# Aliases for studentsvc Project using hexagonal/clean architecture
+bootrun=./.scripts/helper/buildscripts/primary_profile/bootrunJarPrimaryProfile.sh
+build=./.scripts/helper/buildscripts/primary_profile/buildAppJarPrimaryProfile.sh
+run=./.scripts/helper/buildscripts/primary_profile/runJarPrimaryProfile.sh
+
+bootrunAll=./.scripts/helper/buildscripts/all_profiles/bootrunAllJarProfiles.sh
+buildAll=./.scripts/helper/buildscripts/all_profiles/buildAppJarAllProfilesCombination.sh
+runAll=./.scripts/helper/buildscripts/all_profiles/runAllJarProfiles.sh
+
+publishAll=./.scripts/helper/buildscripts/buildAndPublishByModules.sh
